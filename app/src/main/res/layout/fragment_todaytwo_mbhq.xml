@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/swipeLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                >
+
+                <RelativeLayout
+                    android:id="@+id/rlTop"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:minHeight="50dp">
+
+                    <com.ashysystem.mbhq.view.TextViewBold
+                        android:id="@+id/txtHeading"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:text="TODAY'S HABITS"
+                        android:textAllCaps="true"
+                        android:textColor="@color/mbhq_base_color"
+                        android:textSize="@dimen/fab_eighteen"
+                        android:textStyle="bold" />
+
+                    <ImageView
+                        android:id="@+id/imgAddHabit"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:padding="10dp"
+                        android:src="@drawable/ic_add_green" />
+
+                    <ImageView
+                        android:id="@+id/imgWinTheWeekStats"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="15dp"
+                        android:padding="2dp"
+                        android:src="@drawable/trophy" />
+                </RelativeLayout>
+
+                <ImageView
+                    android:id="@+id/selectAll"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginBottom="10dp"
+                    android:padding="8dp"
+                    android:src="@drawable/mbhq_circle_green"
+                    android:tag="tag_uncheked" />
+
+                <RelativeLayout
+                    android:id="@+id/rlHabitList"
+                    android:layout_width="210dp"
+                    android:layout_height="40dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:background="@drawable/rounded_corner_border_habit_list">
+
+                    <com.ashysystem.mbhq.view.TextViewBold
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:text="habit list"
+                        android:textAllCaps="true"
+                        android:textColor="@color/mbhq_base_color"
+                        android:textSize="@dimen/fab_fourteen"
+                        android:textStyle="bold" />
+                </RelativeLayout>
+                <RelativeLayout
+                    android:id="@+id/rlLoadingNoDataFound"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_below="@+id/rlTop"
+                    android:layout_above="@+id/rlHabitList"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp">
+
+                    <com.ashysystem.mbhq.view.TextViewRaleWay
+                        android:id="@+id/txtLoading"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="20dp"
+                        android:text="loading..."
+                        android:textAllCaps="true"
+                        android:textColor="@color/mbhq_base_color"
+                        android:textSize="@dimen/fab_sixteen" />
+                    <ImageView
+                        android:id="@+id/imgBigPlus"
+                        android:layout_width="200dp"
+                        android:layout_height="200dp"
+                        android:src="@drawable/ic_add_mbhq_green_plus"
+                        android:layout_centerInParent="true"
+                        android:visibility="gone"/>
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/rlSaveHabitCancel"
+                    android:layout_width="match_parent"
+                    android:layout_height="55dp"
+                    android:layout_above="@+id/rlHabitList"
+                    android:background="@color/white"
+                    android:visibility="gone">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="45dp"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:orientation="horizontal">
+
+                        <RelativeLayout
+                            android:id="@+id/rlCancel"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_marginRight="5dp"
+                            android:layout_weight=".5"
+                            android:background="@drawable/rounded_corner_green">
+
+                            <com.ashysystem.mbhq.view.TextViewBold
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerInParent="true"
+                                android:text="cancel"
+                                android:textAllCaps="true"
+                                android:textColor="@color/white"
+                                android:textSize="@dimen/fab_sixteen" />
+                        </RelativeLayout>
+
+                        <RelativeLayout
+                            android:id="@+id/rlSaveHabitMultiple"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_marginLeft="5dp"
+                            android:layout_weight=".5"
+                            android:background="@drawable/rounded_corner_green">
+
+                            <com.ashysystem.mbhq.view.TextViewBold
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerInParent="true"
+                                android:text="save"
+                                android:textAllCaps="true"
+                                android:textColor="@color/white"
+                                android:textSize="@dimen/fab_sixteen" />
+                        </RelativeLayout>
+                    </LinearLayout>
+                </RelativeLayout>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerTodayHabit"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_above="@+id/rlSaveHabitCancel"
+                    android:layout_below="@+id/rlTop"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp">
+
+                </androidx.recyclerview.widget.RecyclerView>
+
+            </RelativeLayout>
+
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+<ImageView
+    android:id="@+id/img_notaccess_habit"
+    android:layout_width="match_parent"
+    android:visibility="gone"
+    android:layout_height="match_parent"
+    android:src="@drawable/habit_access">
+
+
+</ImageView>
+    </FrameLayout>
+
+
+</RelativeLayout>

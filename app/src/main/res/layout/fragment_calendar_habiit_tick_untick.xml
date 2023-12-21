@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:id="@+id/llHeader"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginBottom="10dp"
+        android:background="@color/mbhq_background">
+
+        <RelativeLayout
+            android:id="@+id/rlBack"
+            android:layout_width="80dp"
+            android:layout_height="match_parent"
+            android:layout_centerVertical="true">
+
+            <com.ashysystem.mbhq.view.TextViewBold
+                android:id="@+id/txtBack"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="10dp"
+                android:text="Back"
+                android:textSize="@dimen/fab_sixteen"
+                android:textStyle="bold"
+                android:textColor="@color/black" />
+        </RelativeLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight=".4">
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight=".6">
+
+                <RelativeLayout
+                    android:id="@+id/rlTickHabbit"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1">
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/rlTickBreak"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1">
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/rlEdit"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1">
+
+                    <ImageView
+                        android:id="@+id/imgFilter"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginRight="20dp"
+                        android:layout_marginBottom="10dp"
+                        android:src="@drawable/ic_down_arrow_green" />
+                </RelativeLayout>
+            </LinearLayout>
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/llHeader">
+
+
+        <LinearLayout
+            android:id="@+id/rlTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight=".45">
+
+                <com.ashysystem.mbhq.view.TextViewRalewayMedium
+                    android:id="@+id/txtHabbitName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginLeft="10dp"
+                    android:text="Test"
+                    android:textColor="@color/black"
+                    android:maxLines="3"
+                    android:ellipsize="end"
+                    android:textSize="@dimen/fab_sixteen"></com.ashysystem.mbhq.view.TextViewRalewayMedium>
+            </RelativeLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight=".1">
+
+                <com.ashysystem.mbhq.view.TextViewRalewayMedium
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=" vs  "
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/fab_twenty"></com.ashysystem.mbhq.view.TextViewRalewayMedium>
+            </LinearLayout>
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight=".45">
+
+                <com.ashysystem.mbhq.view.TextViewRalewayMedium
+                    android:id="@+id/txtBreakName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginRight="10dp"
+                    android:text="Testttt"
+                    android:textColor="@color/black"
+                    android:maxLines="3"
+                    android:ellipsize="end"
+                    android:textSize="@dimen/fab_sixteen"></com.ashysystem.mbhq.view.TextViewRalewayMedium>
+            </RelativeLayout>
+        </LinearLayout>
+
+        <RelativeLayout
+            android:id="@+id/rlSaveHabitCancel"
+            android:layout_width="match_parent"
+            android:layout_height="55dp"
+            android:layout_alignParentBottom="true"
+            android:background="@color/white"
+            android:visibility="gone">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:orientation="horizontal">
+
+                <RelativeLayout
+                    android:id="@+id/rlCancel"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginRight="5dp"
+                    android:layout_weight=".5"
+                    android:background="@drawable/rounded_corner_green">
+
+                    <com.ashysystem.mbhq.view.TextViewBold
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:text="cancel"
+                        android:textAllCaps="true"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/fab_sixteen" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/rlSaveHabitMultiple"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="5dp"
+                    android:layout_weight=".5"
+                    android:background="@drawable/rounded_corner_green">
+
+                    <com.ashysystem.mbhq.view.TextViewBold
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:text="save"
+                        android:textAllCaps="true"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/fab_sixteen" />
+                </RelativeLayout>
+            </LinearLayout>
+        </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@+id/rlSaveHabitCancel"
+            android:layout_below="@+id/rlTitle">
+            <com.ashysystem.mbhq.view.TextViewRaleWay
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/fab_eighteen"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="25dp"
+                android:textColor="@color/mbhq_base_color"
+                android:text="Loading..."/>
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvList"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:background="@color/white">
+            </androidx.recyclerview.widget.RecyclerView>
+        </RelativeLayout>
+    </RelativeLayout>
+</RelativeLayout>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:padding="@dimen/spacing_4dp"
+    tools:ignore="MissingDefaultResource">
+
+    <com.ashysystem.mbhq.view.ButtonRaleWay
+        android:id="@+id/habitHistoryBtn"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:minHeight="0dp"
+        android:background="@drawable/mbhq_rounded_corner_base_color"
+        android:text="Today"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:textSize="@dimen/fab_twenty"
+        android:padding="@dimen/fab_eight"
+        />
+
+</RelativeLayout>

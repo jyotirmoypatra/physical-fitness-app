@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <RelativeLayout
+        android:id="@+id/rlIndicator"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:background="@color/colorPrimary"
+        android:layout_alignParentBottom="true">
+        <com.viewpagerindicator.CirclePageIndicator
+            android:id="@+id/indicator"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:gravity="bottom"
+            android:padding="15dip"
+            app:centered="true"
+            app:fillColor="@color/black"
+            app:pageColor="@color/white"
+            app:snap="false" />
+    </RelativeLayout>
+    <RelativeLayout
+        android:id="@+id/rlViewpager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/rlIndicator">
+        <com.ashysystem.mbhq.util.CustomViewPager
+            android:id="@+id/viewPagerHabit"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        </com.ashysystem.mbhq.util.CustomViewPager>
+    </RelativeLayout>
+</RelativeLayout>

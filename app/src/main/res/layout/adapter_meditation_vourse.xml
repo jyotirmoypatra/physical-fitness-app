@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="5dp"
+        android:layout_marginBottom="5dp"
+        app:cardBackgroundColor="@color/subtle_gray"
+        app:cardCornerRadius="8dp"
+        app:cardElevation="0dp">
+
+        <LinearLayout
+            android:id="@+id/llRoot"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="@dimen/fab_eight">
+
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginStart="@dimen/fab_eight">
+
+
+                <!-- <ImageView
+                     android:id="@+id/imgCircular"
+                     android:layout_width="60dp"
+                     android:layout_height="60dp"
+                     android:layout_centerInParent="true"
+                     android:background="@drawable/empty_image_old"
+                     android:scaleType="centerCrop" />-->
+                <androidx.cardview.widget.CardView
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:layout_centerInParent="true"
+                    android:elevation="10dp"
+                    app:cardCornerRadius="8dp">
+
+                    <ImageView
+                        android:id="@+id/imgCircular"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@color/white"
+                        android:scaleType="fitCenter"
+                        android:src="@drawable/empty_image_old" />
+                </androidx.cardview.widget.CardView>
+
+            </RelativeLayout>
+
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/fab_eight"
+                android:paddingTop="@dimen/fab_twelve"
+                android:paddingBottom="@dimen/fab_twelve">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:orientation="vertical">
+
+                    <com.ashysystem.mbhq.view.TextViewSemiBold
+                        android:id="@+id/txtCourseNmae"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Clean Up"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/fab_sixteen"
+                        android:textStyle="bold" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:orientation="horizontal">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1">
+
+                            <ImageView
+                                android:id="@+id/imgClock"
+                                android:layout_width="15dp"
+                                android:layout_height="15dp"
+                                android:src="@drawable/mbhq_clock_green_grey"
+                                android:visibility="gone" />
+
+                            <com.ashysystem.mbhq.view.TextViewRalewayMedium
+                                android:id="@+id/txtDuration"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:text="5 min"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/fab_fourteen"
+                                android:textStyle="bold" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:orientation="horizontal">
+
+                            <com.ashysystem.mbhq.view.TextViewRalewayMedium
+                                android:id="@+id/txtTag"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Breath Control"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/fab_fourteen"
+                                android:textStyle="bold" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginTop="10dp"
+                        android:gravity="center"
+                        android:orientation="horizontal">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1">
+
+                            <ImageView
+                                android:id="@+id/imgFab"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="start"
+                                android:layout_marginStart="10dp"
+                                android:background="@drawable/mbhq_heart_active_m" />
+                        </LinearLayout>
+
+
+                        <RelativeLayout
+                            android:id="@+id/rlState"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:background="@drawable/capsule_light_green">
+
+                            <com.ashysystem.mbhq.view.TextViewSemiBold
+                                android:id="@+id/txtState"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerInParent="true"
+                                android:text="RESTART"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/fab_twelve" />
+
+                        </RelativeLayout>
+                    </LinearLayout>
+
+
+                    <LinearLayout
+                        android:id="@+id/llTag"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="7dp"
+                        android:orientation="vertical"
+                        android:visibility="gone">
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+
+            </RelativeLayout>
+
+            <!-- <RelativeLayout
+                 android:layout_width="0dp"
+                 android:layout_height="match_parent"
+                 android:layout_weight=".3"
+                 android:orientation="vertical">
+                 <LinearLayout
+                     android:layout_width="match_parent"
+                     android:layout_height="wrap_content"
+                     android:orientation="vertical"
+                     android:layout_centerInParent="true">
+                    <ImageView
+                        android:id="@+id/imgFab"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:background="@drawable/mbhq_heart_active_m"></ImageView>
+                     <RelativeLayout
+                         android:id="@+id/rlState"
+                         android:layout_width="match_parent"
+                         android:layout_height="wrap_content"
+                         android:layout_marginTop="10dp"
+                         android:background="@drawable/capsule_light_green">
+                         <com.ashysystem.mbhq.view.TextViewSemiBold
+                             android:id="@+id/txtState"
+                             android:layout_width="wrap_content"
+                             android:layout_height="wrap_content"
+                             android:layout_centerInParent="true"
+                             android:textSize="@dimen/fab_twelve"
+                             android:text="RESTART"/>
+
+                     </RelativeLayout>
+                 </LinearLayout>
+             </RelativeLayout>-->
+
+
+        </LinearLayout>
+
+        <!-- <View
+             android:layout_width="match_parent"
+             android:layout_height="1dp"
+             android:layout_below="@+id/llRoot"
+             android:layout_marginTop="5dp"
+             android:background="@color/ashseparator"/>-->
+
+    </androidx.cardview.widget.CardView>
+
+</RelativeLayout>

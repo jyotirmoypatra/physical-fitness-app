@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="wrap_content"
+    android:background="#B3000000"
+    >
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:background="@color/white">
+        <ImageView
+            android:id="@+id/imgCross"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/mbhq_closemodal"></ImageView>
+        <com.ashysystem.mbhq.util.ProportionalImageView
+            android:id="@+id/imgMain"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/imgCross"
+            android:src="@drawable/mbhq_bucketlist_modal"
+            ></com.ashysystem.mbhq.util.ProportionalImageView>
+        <RelativeLayout
+            android:id="@+id/rlGotIt"
+            android:layout_width="150dp"
+            android:layout_height="40dp"
+            android:layout_below="@+id/imgMain"
+            android:layout_marginBottom="20dp"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/rounded_corner_green">
+            <com.ashysystem.mbhq.view.TextViewBold
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Got It!"
+                android:textColor="@color/white"
+                android:layout_centerInParent="true"></com.ashysystem.mbhq.view.TextViewBold>
+
+        </RelativeLayout>
+    </RelativeLayout>
+
+</androidx.core.widget.NestedScrollView>

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <LinearLayout
+        android:id="@+id/llTop"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:orientation="horizontal"
+        android:minHeight="45dp">
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight=".15">
+
+            <ImageView
+                android:id="@+id/imgHabit"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_centerInParent="true"
+                android:padding="8dp"
+                android:src="@drawable/mbhq_circle_green" />
+        </RelativeLayout>
+        <RelativeLayout
+            android:id="@+id/rlHabitMain"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight=".70">
+            <com.ashysystem.mbhq.view.TextViewRaleWay
+                android:id="@+id/txtHabit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:textSize="@dimen/fab_eighteen"
+                android:textColor="@color/black"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                />
+        </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight=".15">
+            <ImageView
+                android:id="@+id/imgnotification"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_centerInParent="true"
+                android:padding="8dp"
+                android:visibility="gone"
+                android:src="@drawable/mbhq_notification" />
+        </RelativeLayout>
+    </LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/subtle_gray"
+        android:layout_below="@+id/llTop"/>
+</RelativeLayout>

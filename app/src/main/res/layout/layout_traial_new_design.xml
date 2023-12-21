@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_trial"
+    >
+
+    <ImageView
+        android:id="@+id/imgLogo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/mbhq__main_logo" />
+    <com.ashysystem.mbhq.view.TextViewSemiBold
+        android:id="@+id/txtWelcome"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/imgLogo"
+        android:textSize="@dimen/fab_twenty_six"
+        android:gravity="center"
+        android:textColor="@color/black"
+        android:layout_marginTop="100dp"
+        android:text="Welcome to your 7 \nDay TRIAL"/>
+    <com.ashysystem.mbhq.view.TextViewSemiBold
+        android:id="@+id/txtPersonal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/txtWelcome"
+        android:textSize="@dimen/fab_twenty"
+        android:gravity="center"
+        android:textColor="@color/black"
+        android:layout_marginTop="30dp"
+        android:layout_marginLeft="25dp"
+        android:layout_marginRight="25dp"
+        android:text="Let's set a goal and create a personalised program to maximise result!"/>
+    <RelativeLayout
+        android:id="@+id/rlDoBtn"
+        android:layout_width="match_parent"
+        android:layout_marginRight="25dp"
+        android:layout_marginLeft="25dp"
+        android:layout_height="60dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="30dp"
+        android:layout_below="@+id/txtPersonal"
+        android:background="@drawable/capsule_white">
+        <com.ashysystem.mbhq.view.TextViewSemiBold
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:textColor="@color/colorPrimary"
+            android:textSize="@dimen/fab_twenty"
+            android:text="LET'S DO THIS"/>
+    </RelativeLayout>
+
+</RelativeLayout>

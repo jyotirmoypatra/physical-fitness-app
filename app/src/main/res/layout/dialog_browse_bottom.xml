@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    >
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:gravity="center_horizontal"
+        >
+
+
+
+        <RelativeLayout
+            android:id="@+id/rlCam"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="#FFFFFF">
+            <com.ashysystem.mbhq.view.TextViewRaleWay
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:layout_centerInParent="true"
+                android:text="Take Photo"
+                android:id="@+id/txtCamera"
+                android:layout_marginTop="15dp"
+                android:textColor="#52A0FC"
+                android:textSize="@dimen/fab_twenty" />
+        </RelativeLayout>
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#949493"/>
+
+        <RelativeLayout
+            android:id="@+id/rlGal"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="#FFFFFF">
+
+            <com.ashysystem.mbhq.view.TextViewRaleWay
+                android:id="@+id/txtGallery"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_marginTop="15dp"
+                android:text="Browse Photo"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="#52A0FC"
+                android:textSize="@dimen/fab_twenty" />
+        </RelativeLayout>
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="5dp"
+            android:background="#949493"/>
+
+        <RelativeLayout
+            android:id="@+id/rlCancel"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="#FFFFFF">
+            <com.ashysystem.mbhq.view.TextViewRaleWay
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:layout_centerInParent="true"
+                android:textStyle="bold"
+                android:text="Cancel"
+                android:id="@+id/txtCancel"
+                android:layout_marginTop="15dp"
+                android:textColor="#52A0FC"
+                android:textSize="@dimen/fab_twenty" />
+        </RelativeLayout>
+
+
+    </LinearLayout>
+</RelativeLayout>
+

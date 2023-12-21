@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#B3000000">
+    <ImageView
+        android:id="@+id/imgCross"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/s_cross"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"/>
+    <LinearLayout
+        android:id="@+id/llTextBlock"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@drawable/edittext_background_green"
+        android:layout_margin="10dp"
+        android:minHeight="250dp"
+        android:layout_centerInParent="true">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/action_bar_height"
+            >
+            <com.ashysystem.mbhq.view.TextViewBold
+                android:id="@+id/tvTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Notes"
+                android:textSize="@dimen/fab_eighteen"
+                android:textColor="@color/black"
+                android:layout_centerInParent="true"/>
+        </RelativeLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/black"></View>
+        <com.ashysystem.mbhq.view.EditTextRaleWay
+            android:id="@+id/edtDesc"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minLines="6"
+            android:textSize="@dimen/fab_eighteen"
+            android:layout_margin="10dp"
+            android:textColor="@color/black"
+            android:inputType="textMultiLine"
+            android:background="@null"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            />
+
+    </LinearLayout>
+    <RelativeLayout
+        android:id="@+id/rlSave"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/rounded_corner_mbhq_filled"
+        android:layout_below="@+id/llTextBlock"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="15dp">
+
+        <com.ashysystem.mbhq.view.TextViewRalewayMedium
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="7dp"
+            android:layout_marginRight="15dp"
+            android:layout_marginBottom="7dp"
+            android:text="SAVE"
+            android:textColor="#FFFFFF"
+            android:textSize="@dimen/fab_sixteen" />
+    </RelativeLayout>
+</RelativeLayout>

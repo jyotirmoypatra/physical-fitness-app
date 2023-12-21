@@ -1,0 +1,242 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:id="@+id/llCalHead1"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_margin="10dp">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight=".8"
+            android:weightSum="7">
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="5dp"
+                android:layout_weight="1">
+
+                <RelativeLayout
+                    android:id="@+id/rlMon"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:visibility="invisible">
+
+                    <com.ashysystem.mbhq.view.TextViewRalewayMedium
+                        android:id="@+id/txtMon"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:text="MON"
+                        android:textSize="@dimen/fab_sixteen" />
+
+                    <ImageView
+                        android:id="@+id/imgMon"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:scaleType="centerInside"
+                        android:layout_centerInParent="true" />
+
+                </RelativeLayout>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="5dp"
+                android:layout_weight="1">
+
+                <RelativeLayout
+                    android:id="@+id/rlTue"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:visibility="invisible">
+
+                    <com.ashysystem.mbhq.view.TextViewRalewayMedium
+                        android:id="@+id/txtTue"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:text="TUE"
+                        android:textSize="@dimen/fab_sixteen" />
+
+                    <ImageView
+                        android:id="@+id/imgTue"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:scaleType="centerInside"
+                        android:layout_centerInParent="true"
+                        />
+                </RelativeLayout>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="5dp"
+                android:layout_weight="1">
+
+                <RelativeLayout
+                    android:id="@+id/rlWed"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:visibility="invisible">
+
+                    <com.ashysystem.mbhq.view.TextViewRalewayMedium
+                        android:id="@+id/txtWed"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:text="WED"
+                        android:textSize="@dimen/fab_sixteen" />
+
+                    <ImageView
+                        android:id="@+id/imgWed"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:scaleType="centerInside"
+                        android:layout_centerInParent="true" />
+                </RelativeLayout>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="5dp"
+                android:layout_weight="1">
+
+                <RelativeLayout
+                    android:id="@+id/rlThu"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:visibility="invisible">
+
+                    <com.ashysystem.mbhq.view.TextViewRalewayMedium
+                        android:id="@+id/txtThus"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:text="THU"
+                        android:textSize="@dimen/fab_sixteen" />
+
+                    <ImageView
+                        android:id="@+id/imgThu"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:scaleType="centerInside"
+                        android:layout_centerInParent="true" />
+                </RelativeLayout>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="5dp"
+                android:layout_weight="1">
+
+                <RelativeLayout
+                    android:id="@+id/rlFri"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:visibility="invisible">
+
+                    <com.ashysystem.mbhq.view.TextViewRalewayMedium
+                        android:id="@+id/txtFri"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:text="FRI"
+                        android:textSize="@dimen/fab_sixteen" />
+
+                    <ImageView
+                        android:id="@+id/imgFri"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:scaleType="centerInside"
+                        android:layout_centerInParent="true" />
+                </RelativeLayout>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="5dp"
+                android:layout_weight="1">
+
+                <RelativeLayout
+                    android:id="@+id/rlSat"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:visibility="invisible">
+
+                    <com.ashysystem.mbhq.view.TextViewRalewayMedium
+                        android:id="@+id/txtSat"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:text="SAT"
+                        android:textSize="@dimen/fab_sixteen" />
+
+                    <ImageView
+                        android:id="@+id/imgSat"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:scaleType="centerInside"
+                        android:layout_centerInParent="true" />
+                </RelativeLayout>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="5dp"
+                android:layout_weight="1">
+
+                <RelativeLayout
+                    android:id="@+id/rlSun"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:visibility="invisible">
+
+                    <com.ashysystem.mbhq.view.TextViewRalewayMedium
+                        android:id="@+id/txtSun"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:text="SUN"
+                        android:textSize="@dimen/fab_sixteen" />
+
+                    <ImageView
+                        android:id="@+id/imgSun"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:scaleType="centerInside"
+                        android:layout_centerInParent="true" />
+                </RelativeLayout>
+            </RelativeLayout>
+
+
+        </LinearLayout>
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight=".2">
+
+            <com.ashysystem.mbhq.view.TextViewRalewayMedium
+                android:id="@+id/txtStat"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="10dp"
+                android:textSize="@dimen/fab_sixteen"></com.ashysystem.mbhq.view.TextViewRalewayMedium>
+        </RelativeLayout>
+    </LinearLayout>
+
+</RelativeLayout>

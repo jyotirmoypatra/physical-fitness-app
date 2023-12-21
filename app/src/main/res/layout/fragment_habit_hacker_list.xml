@@ -1,0 +1,278 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white">
+
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipeLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <RelativeLayout
+                android:id="@+id/rlTopFilterPrint"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/action_bar_height"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp">
+
+                <ImageView
+                    android:id="@+id/imgHabitAdd"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="10dp"
+                    android:padding="10dp"
+                    android:src="@drawable/ic_add_green" />
+
+                <LinearLayout
+                    android:id="@+id/llFilterPrint"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true">
+
+                    <ImageView
+                        android:id="@+id/imgInfoHabit"
+                        android:layout_width="35dp"
+                        android:layout_height="35dp"
+                        android:layout_gravity="center_vertical"
+                        android:padding="5dp"
+                        android:src="@drawable/mbhq_info"
+                        android:visibility="gone" />
+
+                    <ImageView
+                        android:id="@+id/imgFilterHabit"
+                        android:layout_width="35dp"
+                        android:layout_height="35dp"
+                        android:layout_marginLeft="10dp"
+                        android:padding="5dp"
+                        android:src="@drawable/mbhq_filter" />
+
+                    <RelativeLayout
+                        android:id="@+id/rlHabitPercentage"
+                        android:layout_width="35dp"
+                        android:layout_height="35dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true"
+                            android:text="%"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/fab_twenty" />
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:id="@+id/rlManualTick"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:visibility="gone">
+
+                        <ImageView
+                            android:id="@+id/imgManualTick"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:layout_marginLeft="10dp"
+                            android:padding="5dp"
+                            android:src="@drawable/tick_c" />
+
+                    </RelativeLayout>
+                </LinearLayout>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/rlLoadingNoDataFound"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@+id/rlTopFilterPrint"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp">
+
+                <com.ashysystem.mbhq.view.TextViewRaleWay
+                    android:id="@+id/txtLoading"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="20dp"
+                    android:text="loading..."
+                    android:textAllCaps="true"
+                    android:textColor="@color/mbhq_base_color"
+                    android:textSize="@dimen/fab_sixteen" />
+
+                <ImageView
+                    android:id="@+id/imgBigPlus"
+                    android:layout_width="200dp"
+                    android:layout_height="200dp"
+                    android:layout_centerInParent="true"
+                    android:src="@drawable/ic_add_mbhq_green_plus"
+                    android:visibility="gone" />
+            </RelativeLayout>
+
+
+            <RelativeLayout
+                android:id="@+id/rlAddHabitWhole"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_alignParentBottom="true"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:background="@color/white"
+                android:visibility="gone">
+
+                <RelativeLayout
+                    android:id="@+id/rlAddHabitSwap"
+                    android:layout_width="180dp"
+                    android:layout_height="45dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:background="@drawable/rounded_corner_mbhq_filled">
+
+                    <com.ashysystem.mbhq.view.TextViewRaleWay
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:text="add habit swap"
+                        android:textAllCaps="true"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/fab_sixteen" />
+                </RelativeLayout>
+            </RelativeLayout>
+
+            <androidx.core.widget.NestedScrollView
+                android:id="@+id/nestedScrollView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_above="@+id/rlAddHabitWhole"
+                android:layout_below="@+id/rlTopFilterPrint"
+                android:layout_marginBottom="60dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    <RelativeLayout
+                        android:id="@+id/rl_active"
+                        android:visibility="gone"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+                        <com.ashysystem.mbhq.view.TextViewBold
+                            android:id="@+id/tv_active"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="start"
+                            android:background="@color/white"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/fab_sixteen"
+                            android:textAllCaps="true"
+                            android:textStyle="bold"
+                            android:text="IN PROGRESS"/>
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/recyclerHabitList"
+                            android:layout_below="@+id/tv_active"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@color/white"
+                            android:visibility="visible">
+
+                        </androidx.recyclerview.widget.RecyclerView>
+
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:id="@+id/rl_hidden"
+                        android:visibility="gone"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="15dp">
+
+                        <com.ashysystem.mbhq.view.TextViewBold
+                            android:id="@+id/tv_hidden"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="start"
+                            android:background="@color/white"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/fab_sixteen"
+                            android:text="HIDDEN"
+                            android:textAllCaps="true"
+                            android:textStyle="bold" />
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/recyclerHabitList_hidden"
+                            android:layout_below="@+id/tv_hidden"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@color/white"
+                            android:visibility="visible">
+
+                        </androidx.recyclerview.widget.RecyclerView>
+
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:id="@+id/rl_completed"
+                        android:visibility="gone"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="15dp">
+                        <com.ashysystem.mbhq.view.TextViewBold
+                            android:id="@+id/tv_complete"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="start"
+                            android:background="@color/white"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/fab_sixteen"
+                            android:textAllCaps="true"
+                            android:textStyle="bold"
+                            android:text="COMPLETED"/>
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/recyclerHabitList_completed"
+                            android:layout_below="@+id/tv_complete"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="@color/white"
+                            android:visibility="visible">
+
+                        </androidx.recyclerview.widget.RecyclerView>
+
+                    </RelativeLayout>
+
+
+                </LinearLayout>
+
+
+            </androidx.core.widget.NestedScrollView>
+            <RelativeLayout
+                android:id="@+id/todayHabbit"
+                android:layout_width="210dp"
+                android:layout_height="40dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="10dp"
+                android:background="@drawable/rounded_corner_border_habit_list">
+                <com.ashysystem.mbhq.view.TextViewBold
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/mbhq_base_color"
+                    android:layout_centerInParent="true"
+                    android:textSize="@dimen/fab_fourteen"
+                    android:textAllCaps="true"
+                    android:textStyle="bold"
+                    android:text="TODAY'S HABITS"/>
+            </RelativeLayout>
+
+
+        </RelativeLayout>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+</RelativeLayout>

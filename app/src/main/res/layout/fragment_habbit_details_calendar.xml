@@ -1,0 +1,902 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="5dp">
+    <RelativeLayout
+        android:id="@+id/rlTopBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <RelativeLayout
+            android:id="@+id/rlHeader"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@color/mbhq_background">
+
+            <RelativeLayout
+                android:id="@+id/rlBack"
+                android:layout_width="80dp"
+                android:layout_height="match_parent"
+                android:layout_centerVertical="true">
+
+                <com.ashysystem.mbhq.view.TextViewBold
+                    android:id="@+id/txtBack"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="10dp"
+                    android:text="Back"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/fab_sixteen"
+                    android:textStyle="bold" />
+            </RelativeLayout>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true">
+                <ImageView
+                    android:id="@+id/imgFilter"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_gravity="center_vertical"
+                    android:src="@drawable/mbhq_filter" />
+                <ImageView
+                    android:id="@+id/imgEditPencil"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_gravity="center_vertical"
+                    android:src="@drawable/ic_edit_gray"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="15dp"/>
+
+                <ImageView
+                    android:id="@+id/notifyBtn"
+                    android:layout_width="29dp"
+                    android:layout_height="30dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginRight="15dp"
+                    android:src="@drawable/mbhq_notification" />
+                <ImageView
+                    android:id="@+id/imgDeleteBtn"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_gravity="center_vertical"
+                    android:src="@drawable/ic_delete_grey"
+                    android:layout_marginRight="15dp"/>
+            </LinearLayout>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rlAction"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_below="@+id/rlHeader">
+
+            <ImageView
+                android:id="@+id/imgBack"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="10dp"
+                android:src="@drawable/ic_arrow_left_grey"/>
+
+            <com.ashysystem.mbhq.view.TextViewSemiBold
+                android:id="@+id/txtMonthName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="January 2020"
+                android:textColor="@color/black"
+                android:textSize="@dimen/fab_sixteen"/>
+
+            <ImageView
+                android:id="@+id/imgForward"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="10dp"
+                android:src="@drawable/ic_arrow_right_grey"/>
+        </RelativeLayout>
+    </RelativeLayout>
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/rlMain"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/rlTopBar"
+        android:layout_above="@+id/llBottom">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+
+            <RelativeLayout
+                android:id="@+id/rlCalendarView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="visible">
+
+                <RelativeLayout
+                    android:id="@+id/rlMainView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+
+
+                    <View
+                        android:id="@+id/view1"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/subtle_gray"/>
+
+                    <RelativeLayout
+                        android:id="@+id/rlHead1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/view1"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginBottom="10dp"
+                        android:minHeight="40dp">
+
+                        <com.ashysystem.mbhq.view.TextViewSemiBold
+                            android:id="@+id/txtHabbitHeader"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="10dp"
+                            android:text=""
+                            android:textColor="@color/black"></com.ashysystem.mbhq.view.TextViewSemiBold>
+
+                        <com.ashysystem.mbhq.view.TextViewSemiBold
+                            android:id="@+id/txtMonthStat"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:layout_centerVertical="true"
+                            android:layout_marginRight="10dp"
+                            android:text=""
+                            android:textColor="@color/black"></com.ashysystem.mbhq.view.TextViewSemiBold>
+                    </RelativeLayout>
+
+                    <LinearLayout
+                        android:id="@+id/llCalHead1"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:layout_below="@+id/rlHead1"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginBottom="10dp">
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight=".8"
+                            android:weightSum="7">
+
+
+                            <RelativeLayout
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_marginLeft="5dp"
+                                android:layout_weight="1">
+
+                                <com.ashysystem.mbhq.view.TextViewSemiBold
+                                    android:id="@+id/txtMon"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_centerInParent="true"
+                                    android:text="MON"></com.ashysystem.mbhq.view.TextViewSemiBold>
+                            </RelativeLayout>
+
+                            <RelativeLayout
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_marginLeft="5dp"
+                                android:layout_weight="1">
+
+                                <com.ashysystem.mbhq.view.TextViewSemiBold
+                                    android:id="@+id/txtTue"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_centerInParent="true"
+                                    android:text="TUE"></com.ashysystem.mbhq.view.TextViewSemiBold>
+                            </RelativeLayout>
+
+                            <RelativeLayout
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_marginLeft="5dp"
+                                android:layout_weight="1">
+
+                                <com.ashysystem.mbhq.view.TextViewSemiBold
+                                    android:id="@+id/txtWed"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_centerInParent="true"
+                                    android:text="WED"></com.ashysystem.mbhq.view.TextViewSemiBold>
+                            </RelativeLayout>
+
+                            <RelativeLayout
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_marginLeft="5dp"
+                                android:layout_weight="1">
+
+                                <com.ashysystem.mbhq.view.TextViewSemiBold
+                                    android:id="@+id/txtThus"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_centerInParent="true"
+                                    android:text="THU"></com.ashysystem.mbhq.view.TextViewSemiBold>
+                            </RelativeLayout>
+
+                            <RelativeLayout
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_marginLeft="5dp"
+                                android:layout_weight="1">
+
+                                <com.ashysystem.mbhq.view.TextViewSemiBold
+                                    android:id="@+id/txtFri"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_centerInParent="true"
+                                    android:text="FRI"></com.ashysystem.mbhq.view.TextViewSemiBold>
+                            </RelativeLayout>
+
+                            <RelativeLayout
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_marginLeft="5dp"
+                                android:layout_weight="1">
+
+                                <com.ashysystem.mbhq.view.TextViewSemiBold
+                                    android:id="@+id/txtSat"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_centerInParent="true"
+                                    android:text="SAT"></com.ashysystem.mbhq.view.TextViewSemiBold>
+                            </RelativeLayout>
+
+                            <RelativeLayout
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_marginLeft="5dp"
+                                android:layout_weight="1">
+
+                                <com.ashysystem.mbhq.view.TextViewSemiBold
+                                    android:id="@+id/txtSun"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_centerInParent="true"
+                                    android:text="SUN"></com.ashysystem.mbhq.view.TextViewSemiBold>
+                            </RelativeLayout>
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight=".2"></LinearLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/llCalendar1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/llCalHead1"
+                        android:orientation="vertical"></LinearLayout>
+
+                    <View
+                        android:id="@+id/view2"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_below="@+id/llCalendar1"
+                        android:layout_marginTop="20dp"
+                        android:background="@color/subtle_gray"/>
+
+                    <RelativeLayout
+                        android:id="@+id/rlHead2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/view2"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginBottom="10dp"
+                        android:minHeight="40dp">
+
+                        <com.ashysystem.mbhq.view.TextViewSemiBold
+                            android:id="@+id/txtBreakHeader"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="10dp"
+                            android:text=""
+                            android:textColor="@color/black"></com.ashysystem.mbhq.view.TextViewSemiBold>
+
+                        <com.ashysystem.mbhq.view.TextViewSemiBold
+                            android:id="@+id/txtMonthStatBreak"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:layout_centerVertical="true"
+                            android:layout_marginRight="10dp"
+                            android:text=""
+                            android:textColor="@color/black"></com.ashysystem.mbhq.view.TextViewSemiBold>
+                    </RelativeLayout>
+
+                    <LinearLayout
+                        android:id="@+id/llCalHead2"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:layout_below="@+id/rlHead2"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginBottom="10dp">
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight=".8"
+                            android:weightSum="7">
+
+                            <RelativeLayout
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_marginLeft="5dp"
+                                android:layout_weight="1">
+
+                                <com.ashysystem.mbhq.view.TextViewSemiBold
+                                    android:id="@+id/txtSunH"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_centerInParent="true"
+                                    android:text="SUN"></com.ashysystem.mbhq.view.TextViewSemiBold>
+                            </RelativeLayout>
+
+                            <RelativeLayout
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_marginLeft="5dp"
+                                android:layout_weight="1">
+
+                                <com.ashysystem.mbhq.view.TextViewSemiBold
+                                    android:id="@+id/txtMonH"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_centerInParent="true"
+                                    android:text="MON"></com.ashysystem.mbhq.view.TextViewSemiBold>
+                            </RelativeLayout>
+
+                            <RelativeLayout
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_marginLeft="5dp"
+                                android:layout_weight="1">
+
+                                <com.ashysystem.mbhq.view.TextViewSemiBold
+                                    android:id="@+id/txtTueH"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_centerInParent="true"
+                                    android:text="TUE"></com.ashysystem.mbhq.view.TextViewSemiBold>
+                            </RelativeLayout>
+
+                            <RelativeLayout
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_marginLeft="5dp"
+                                android:layout_weight="1">
+
+                                <com.ashysystem.mbhq.view.TextViewSemiBold
+                                    android:id="@+id/txtWedH"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_centerInParent="true"
+                                    android:text="WED"></com.ashysystem.mbhq.view.TextViewSemiBold>
+                            </RelativeLayout>
+
+                            <RelativeLayout
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_marginLeft="5dp"
+                                android:layout_weight="1">
+
+                                <com.ashysystem.mbhq.view.TextViewSemiBold
+                                    android:id="@+id/txtThusH"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_centerInParent="true"
+                                    android:text="THU"></com.ashysystem.mbhq.view.TextViewSemiBold>
+                            </RelativeLayout>
+
+                            <RelativeLayout
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_marginLeft="5dp"
+                                android:layout_weight="1">
+
+                                <com.ashysystem.mbhq.view.TextViewSemiBold
+                                    android:id="@+id/txtFriH"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_centerInParent="true"
+                                    android:text="FRI"></com.ashysystem.mbhq.view.TextViewSemiBold>
+                            </RelativeLayout>
+
+                            <RelativeLayout
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_marginLeft="5dp"
+                                android:layout_weight="1">
+
+                                <com.ashysystem.mbhq.view.TextViewSemiBold
+                                    android:id="@+id/txtSatH"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_centerInParent="true"
+                                    android:text="SAT"></com.ashysystem.mbhq.view.TextViewSemiBold>
+                            </RelativeLayout>
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight=".2"></LinearLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/llCalendar2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/llCalHead2"
+                        android:orientation="vertical"></LinearLayout>
+                </RelativeLayout>
+
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/rlYearlyView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:visibility="gone">
+
+                <com.ashysystem.mbhq.view.TextViewRalewayMedium
+                    android:id="@+id/txtYearHeader"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:text="YEARLY STATS"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/fab_sixteen"></com.ashysystem.mbhq.view.TextViewRalewayMedium>
+
+                <com.ashysystem.mbhq.view.TextViewRalewayMedium
+                    android:id="@+id/txtYearHabbitHeader"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/txtYearHeader"
+                    android:layout_marginLeft="10dp"
+                    android:text="TEST"
+                    android:textColor="@color/base_green"
+                    android:textSize="@dimen/fab_twenty"></com.ashysystem.mbhq.view.TextViewRalewayMedium>
+
+                <RelativeLayout
+                    android:id="@+id/rlHabbitTopVal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/txtYearHabbitHeader"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginRight="10dp">
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/recyclerYearHabit"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+                    </androidx.recyclerview.widget.RecyclerView>
+                    <com.ashysystem.mbhq.view.TextViewRalewayMedium
+                        android:id="@+id/txtLeftHabbit"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text=""
+                        android:textColor="@color/black"
+                        android:visibility="gone"
+                        android:textSize="@dimen/fab_sixteen"></com.ashysystem.mbhq.view.TextViewRalewayMedium>
+
+                    <com.ashysystem.mbhq.view.TextViewRalewayMedium
+                        android:id="@+id/txtRightHabbit"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_alignParentRight="true"
+                        android:text=""
+                        android:textColor="@color/black"
+                        android:visibility="gone"
+                        android:textSize="@dimen/fab_sixteen"></com.ashysystem.mbhq.view.TextViewRalewayMedium>
+                </RelativeLayout>
+
+                <com.ashysystem.mbhq.view.TextViewRalewayMedium
+                    android:id="@+id/txtYearBreakHeader"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/rlHabbitTopVal"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="15dp"
+                    android:text="break"
+                    android:textColor="@color/red"
+                    android:textSize="@dimen/fab_twenty"></com.ashysystem.mbhq.view.TextViewRalewayMedium>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/txtYearBreakHeader"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginRight="10dp">
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/recyclerYearBreak"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+                    </androidx.recyclerview.widget.RecyclerView>
+                    <com.ashysystem.mbhq.view.TextViewRalewayMedium
+                        android:id="@+id/txtLeftBreak"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text=""
+                        android:textColor="@color/black"
+                        android:visibility="gone"
+                        android:textSize="@dimen/fab_sixteen"></com.ashysystem.mbhq.view.TextViewRalewayMedium>
+
+                    <com.ashysystem.mbhq.view.TextViewRalewayMedium
+                        android:id="@+id/txtRightBreak"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:text=""
+                        android:textColor="@color/black"
+                        android:visibility="gone"
+                        android:textSize="@dimen/fab_sixteen"></com.ashysystem.mbhq.view.TextViewRalewayMedium>
+                </RelativeLayout>
+
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/rlQuaterView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:visibility="gone">
+
+                <com.ashysystem.mbhq.view.TextViewRalewayMedium
+                    android:id="@+id/txtQuaterHeader"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:text="QUARTERLY STATS"
+                    android:textColor="@color/black"
+                    android:layout_marginTop="5dp"
+                    android:textSize="@dimen/fab_sixteen"></com.ashysystem.mbhq.view.TextViewRalewayMedium>
+
+                <com.ashysystem.mbhq.view.TextViewRalewayMedium
+                    android:id="@+id/txtQuaterHabbitName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/txtQuaterHeader"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="15dp"
+                    android:text="TEST"
+                    android:textColor="@color/base_green"
+                    android:textSize="@dimen/fab_twenty"></com.ashysystem.mbhq.view.TextViewRalewayMedium>
+
+                <RelativeLayout
+                    android:id="@+id/rlHabbitVal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/txtQuaterHabbitName">
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/recyclerQuarterHabit"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+                    </androidx.recyclerview.widget.RecyclerView>
+                    <RelativeLayout
+                        android:id="@+id/rlQuaterVal4"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginRight="10dp"
+                        android:visibility="gone">
+
+                        <com.ashysystem.mbhq.view.TextViewRalewayMedium
+                            android:id="@+id/txtLeftHabbitQ4"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="OCTOBER-DECEMBER"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/fab_sixteen"></com.ashysystem.mbhq.view.TextViewRalewayMedium>
+
+                        <com.ashysystem.mbhq.view.TextViewRalewayMedium
+                            android:id="@+id/txtRightHabbitQ4"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:text="0%"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/fab_sixteen"></com.ashysystem.mbhq.view.TextViewRalewayMedium>
+                    </RelativeLayout>
+                    <RelativeLayout
+                        android:id="@+id/rlQuaterVal3"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/rlQuaterVal4"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginRight="10dp"
+                        android:visibility="gone">
+
+                        <com.ashysystem.mbhq.view.TextViewRalewayMedium
+                            android:id="@+id/txtLeftHabbitQ3"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="JULY-SEPTEMBER"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/fab_sixteen"></com.ashysystem.mbhq.view.TextViewRalewayMedium>
+
+                        <com.ashysystem.mbhq.view.TextViewRalewayMedium
+                            android:id="@+id/txtRightHabbitQ3"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_alignParentRight="true"
+                            android:text="0%"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/fab_sixteen"></com.ashysystem.mbhq.view.TextViewRalewayMedium>
+                    </RelativeLayout>
+                    <RelativeLayout
+                        android:id="@+id/rlQuaterVal2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/rlQuaterVal3"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginRight="10dp"
+                        android:visibility="gone">
+
+                        <com.ashysystem.mbhq.view.TextViewRalewayMedium
+                            android:id="@+id/txtLeftHabbitQ2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="APRIL-JUNE"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/fab_sixteen"></com.ashysystem.mbhq.view.TextViewRalewayMedium>
+
+                        <com.ashysystem.mbhq.view.TextViewRalewayMedium
+                            android:id="@+id/txtRightHabbitQ2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:text="0%"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/fab_sixteen"></com.ashysystem.mbhq.view.TextViewRalewayMedium>
+                    </RelativeLayout>
+                    <RelativeLayout
+                        android:id="@+id/rlQuaterVal1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_below="@+id/rlQuaterVal2"
+                        android:visibility="gone">
+
+                        <com.ashysystem.mbhq.view.TextViewRalewayMedium
+                            android:id="@+id/txtLeftHabbitQ1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="JANUARY-MARCH"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/fab_sixteen"></com.ashysystem.mbhq.view.TextViewRalewayMedium>
+
+                        <com.ashysystem.mbhq.view.TextViewRalewayMedium
+                            android:id="@+id/txtRightHabbitQ1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:text="0%"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/fab_sixteen"></com.ashysystem.mbhq.view.TextViewRalewayMedium>
+                    </RelativeLayout>
+                </RelativeLayout>
+
+                <com.ashysystem.mbhq.view.TextViewRalewayMedium
+                    android:id="@+id/txtQuaterBreakName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/rlHabbitVal"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="15dp"
+                    android:text="BREAK"
+                    android:textColor="@color/red"
+                    android:textSize="@dimen/fab_twenty"></com.ashysystem.mbhq.view.TextViewRalewayMedium>
+
+                <RelativeLayout
+                    android:id="@+id/rlBreakVal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/txtQuaterBreakName"
+                    android:layout_marginTop="5dp">
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/recyclerQuarterBreak"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+                    </androidx.recyclerview.widget.RecyclerView>
+                    <RelativeLayout
+                        android:id="@+id/rlQuaterBreakVal4"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginRight="10dp"
+                        android:visibility="gone">
+
+                        <com.ashysystem.mbhq.view.TextViewRalewayMedium
+                            android:id="@+id/txtLeftBreakQ4"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="OCTOBER-DECEMBER"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/fab_sixteen"></com.ashysystem.mbhq.view.TextViewRalewayMedium>
+
+                        <com.ashysystem.mbhq.view.TextViewRalewayMedium
+                            android:id="@+id/txtRightBreakQ4"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:text="0%"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/fab_sixteen"></com.ashysystem.mbhq.view.TextViewRalewayMedium>
+                    </RelativeLayout>
+                    <RelativeLayout
+                        android:id="@+id/rlQuaterBreakVal3"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/rlQuaterBreakVal4"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginRight="10dp"
+                        android:visibility="gone">
+
+                        <com.ashysystem.mbhq.view.TextViewRalewayMedium
+                            android:id="@+id/txtLeftBreakQ3"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="JULY-SEPTEMBER"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/fab_sixteen"></com.ashysystem.mbhq.view.TextViewRalewayMedium>
+
+                        <com.ashysystem.mbhq.view.TextViewRalewayMedium
+                            android:id="@+id/txtRightBreakQ3"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:text="0%"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/fab_sixteen"></com.ashysystem.mbhq.view.TextViewRalewayMedium>
+                    </RelativeLayout>
+                    <RelativeLayout
+                        android:id="@+id/rlQuaterBreakVal2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/rlQuaterBreakVal3"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginRight="10dp"
+                        android:visibility="gone">
+
+                        <com.ashysystem.mbhq.view.TextViewRalewayMedium
+                            android:id="@+id/txtLeftBreakQ2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="APRIL-JUNE"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/fab_sixteen"></com.ashysystem.mbhq.view.TextViewRalewayMedium>
+
+                        <com.ashysystem.mbhq.view.TextViewRalewayMedium
+                            android:id="@+id/txtRightBreakQ2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:text="0%"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/fab_sixteen"></com.ashysystem.mbhq.view.TextViewRalewayMedium>
+                    </RelativeLayout>
+                    <RelativeLayout
+                        android:id="@+id/rlQuaterBreakVal1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_below="@+id/rlQuaterBreakVal2"
+                        android:visibility="gone">
+
+                        <com.ashysystem.mbhq.view.TextViewRalewayMedium
+                            android:id="@+id/txtLeftBreakQ1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="JANUARY-MARCH"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/fab_sixteen"></com.ashysystem.mbhq.view.TextViewRalewayMedium>
+
+                        <com.ashysystem.mbhq.view.TextViewRalewayMedium
+                            android:id="@+id/txtRightBreakQ1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:text="0%"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/fab_sixteen"></com.ashysystem.mbhq.view.TextViewRalewayMedium>
+                    </RelativeLayout>
+                </RelativeLayout>
+            </RelativeLayout>
+
+            <com.ashysystem.mbhq.view.TextViewSemiBold
+                android:id="@+id/txtNoData"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="NO DATA FOUND"
+                android:textColor="@color/black"
+                android:textSize="@dimen/fab_twenty"
+                android:visibility="gone"></com.ashysystem.mbhq.view.TextViewSemiBold>
+        </RelativeLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+    <LinearLayout
+        android:id="@+id/llBottom"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginTop="10dp"
+        android:visibility="gone">
+
+        <RelativeLayout
+            android:id="@+id/rlHabitDetails"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="10dp"
+            android:layout_weight=".5"
+            android:background="@drawable/rounded_corner_green_border_white_inside">
+
+            <com.ashysystem.mbhq.view.TextViewRalewayMedium
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="DETAILS"></com.ashysystem.mbhq.view.TextViewRalewayMedium>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_weight=".5"
+            android:background="@drawable/rounded_corner_green">
+
+            <com.ashysystem.mbhq.view.TextViewRalewayMedium
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="STATS"
+                android:textColor="@color/white"></com.ashysystem.mbhq.view.TextViewRalewayMedium>
+        </RelativeLayout>
+    </LinearLayout>
+</RelativeLayout>

@@ -1,0 +1,787 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/swipeLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <RelativeLayout
+                    android:id="@+id/rlMainBlock"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:visibility="gone">
+
+                    <RelativeLayout
+                        android:id="@+id/rlTop"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:background="#F6F6F6">
+
+                        <RelativeLayout
+                            android:id="@+id/rlBack"
+                            android:layout_width="80dp"
+                            android:layout_height="match_parent">
+
+                            <com.ashysystem.mbhq.view.TextViewBold
+                                android:id="@+id/txtBack"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerVertical="true"
+                                android:layout_marginLeft="10dp"
+                                android:text="Back"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/fab_sixteen"
+                                android:textStyle="bold" />
+                        </RelativeLayout>
+
+                        <com.ashysystem.mbhq.view.ButtonSemiBold
+                            android:id="@+id/btnFindMyLevel"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_marginEnd="20dp"
+                            android:layout_toStartOf="@+id/imgInfoMeditation"
+                            android:background="@drawable/searchbox_black"
+                            android:maxHeight="45dp"
+                            android:minHeight="0dp"
+                            android:paddingStart="@dimen/fab_sixteen"
+                            android:paddingTop="@dimen/fab_eight"
+                            android:paddingEnd="@dimen/fab_sixteen"
+                            android:paddingBottom="@dimen/fab_eight"
+                            android:text="FIND MY LEVEL"
+                            android:textAllCaps="false"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/fab_twelve" />
+
+                        <ImageView
+                            android:id="@+id/imgInfoMeditation"
+                            android:layout_width="25dp"
+                            android:layout_height="25dp"
+                            android:layout_alignParentEnd="true"
+                            android:layout_centerVertical="true"
+                            android:layout_marginEnd="20dp"
+                            android:cropToPadding="true"
+                            android:src="@drawable/statistics" />
+
+
+                    </RelativeLayout>
+
+                    <LinearLayout
+                        android:id="@+id/llHeaderTop"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/rlTop"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:focusableInTouchMode="true"
+                        android:orientation="horizontal">
+
+                        <EditText
+                            android:id="@+id/edtSearch"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_margin="2dp"
+                            android:layout_weight=".85"
+                            android:background="@drawable/searchbox_black"
+                            android:hint="Search for meditation name"
+                            android:imeOptions="actionSearch"
+                            android:inputType="text"
+                            android:padding="5dp"
+                            android:visibility="visible" />
+
+                        <RelativeLayout
+                            android:id="@+id/rlFilter"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight=".15"
+                            android:gravity="end">
+
+                            <ImageView
+                                android:id="@+id/imgFilter"
+                                android:layout_width="25dp"
+                                android:layout_height="25dp"
+                                android:layout_centerInParent="true"
+                                android:layout_marginTop="10dp"
+                                android:layout_marginRight="10dp"
+                                android:background="@drawable/mbhq_filter" />
+                        </RelativeLayout>
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/txtNoDataFound"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:gravity="center"
+                        android:text="No data found."
+                        android:textSize="@dimen/fab_twenty_two"
+                        android:visibility="gone" />
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/clNoFavouriteFound"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:gravity="center"
+                        android:padding="@dimen/fab_twelve"
+                        android:text="No data found."
+                        android:visibility="gone">
+
+                        <TextView
+                            android:id="@+id/txtNoFav"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:text="You haven’t added any meditations to your favourites list yet."
+                            android:textSize="@dimen/fab_twenty_two"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:id="@+id/txtFavSuggestion"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:text="Click the [heart icon pic] next to the meditations you love most and they will appear here."
+                            android:textSize="@dimen/fab_twenty_two"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/txtNoFav" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rvCourseM_main"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_below="@+id/llHeaderTop"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginRight="10dp"
+                        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+                        tools:listitem="@layout/adapter_course_list" />
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rvCourseM_nointernate"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_below="@+id/llHeaderTop"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginRight="10dp"
+                        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+                        tools:listitem="@layout/adapter_course_list" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rvCourseM"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_below="@+id/llHeaderTop"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginRight="10dp"
+                        android:minHeight="200dp"
+                        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+                        tools:itemCount="6"
+                        tools:listitem="@layout/adapter_course_list" />
+                </RelativeLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/llLandingOptions"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:layout_marginStart="@dimen/fab_thirty"
+                    android:layout_marginTop="30dp"
+                    android:layout_marginEnd="@dimen/fab_thirty"
+                    android:layout_marginBottom="30dp"
+                    android:orientation="vertical"
+                    android:visibility="gone">
+
+                    <RelativeLayout
+                        android:id="@+id/rlBreath"
+                        android:layout_width="0dp"
+                        android:layout_height="50dp"
+                        android:background="@drawable/capsule_green"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintWidth_percent="1.2">
+
+                        <com.ashysystem.mbhq.view.TextViewRalewayMedium
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true"
+                            android:text="BREATH CONTROL"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/fab_eighteen"></com.ashysystem.mbhq.view.TextViewRalewayMedium>
+                    </RelativeLayout>
+                    <RelativeLayout
+                        android:id="@+id/rlMindfulness"
+                        android:layout_width="0dp"
+                        android:layout_height="50dp"
+                        android:layout_marginTop="30dp"
+                        android:background="@drawable/capsule_green"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/rlBreath"
+                        app:layout_constraintWidth_percent=".9">
+
+                        <com.ashysystem.mbhq.view.TextViewRalewayMedium
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true"
+                            android:text="MINDFULNESS"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/fab_eighteen"></com.ashysystem.mbhq.view.TextViewRalewayMedium>
+                    </RelativeLayout>
+
+
+                    <RelativeLayout
+                        android:id="@+id/rlPowerNap"
+                        android:layout_width="0dp"
+                        android:layout_height="50dp"
+                        android:layout_marginTop="30dp"
+                        android:background="@drawable/capsule_green"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/rlMindfulness"
+                        app:layout_constraintWidth_percent=".8">
+
+                        <com.ashysystem.mbhq.view.TextViewRalewayMedium
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true"
+                            android:text="POWER"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/fab_eighteen"></com.ashysystem.mbhq.view.TextViewRalewayMedium>
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:id="@+id/rlHealing"
+                        android:layout_width="0dp"
+                        android:layout_height="50dp"
+                        android:layout_marginTop="30dp"
+                        android:background="@drawable/capsule_green"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/rlPowerNap"
+                        app:layout_constraintWidth_percent=".6">
+
+                        <com.ashysystem.mbhq.view.TextViewRalewayMedium
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true"
+                            android:text="GUIDED"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/fab_eighteen"></com.ashysystem.mbhq.view.TextViewRalewayMedium>
+                    </RelativeLayout>
+
+
+                    <RelativeLayout
+                        android:id="@+id/rlSleep"
+                        android:layout_width="0dp"
+                        android:layout_height="50dp"
+                        android:layout_marginTop="30dp"
+                        android:background="@drawable/capsule_green"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/rlHealing"
+                        app:layout_constraintWidth_percent=".4"
+                        android:visibility="gone">
+
+                        <com.ashysystem.mbhq.view.TextViewRalewayMedium
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true"
+                            android:text="SLEEP"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/fab_eighteen"></com.ashysystem.mbhq.view.TextViewRalewayMedium>
+                    </RelativeLayout>
+
+
+                    <ImageView
+                        android:id="@+id/imgFab"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="30dp"
+                        android:background="@drawable/mbhq_heart_active_m"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/rlSleep" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <RelativeLayout
+                    android:id="@+id/rlNoMeditationDownload"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/white"
+                    android:visibility="gone">
+                    >
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="45dp"
+                        android:background="@color/mbhq_background">
+
+                        <com.ashysystem.mbhq.view.TextViewBold
+                            android:id="@+id/txtBackDownload"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_marginLeft="10dp"
+                            android:text="Back"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/fab_sixteen"
+                            android:textStyle="bold" />
+                    </RelativeLayout>
+
+                    <com.ashysystem.mbhq.view.TextViewRaleWay
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginRight="15dp"
+                        android:gravity="center_horizontal"
+                        android:text="You have not downloaded a meditation yet. Please restore your internet to download a meditation and be able to play it in aeroplane mode."
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/fab_eighteen" />
+                </RelativeLayout>
+
+                <LinearLayout
+                    android:id="@+id/llTimeTagFilter"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_centerInParent="true"
+                    android:orientation="vertical"
+                    android:visibility="gone">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <RelativeLayout
+                            android:id="@+id/rlBreathTimeBack"
+                            android:layout_width="80dp"
+                            android:layout_height="50dp"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent">
+
+                            <com.ashysystem.mbhq.view.TextViewBold
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerVertical="true"
+                                android:layout_marginLeft="10dp"
+                                android:text="Back"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/fab_sixteen"
+                                android:textStyle="bold" />
+                        </RelativeLayout>
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="30dp"
+                            android:layout_marginEnd="30dp"
+                            android:orientation="vertical"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent">
+
+                            <RelativeLayout
+                                android:id="@+id/rl5Min"
+                                android:layout_width="0dp"
+                                android:layout_height="50dp"
+                                android:background="@drawable/capsule_green"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:layout_constraintWidth_percent="1">
+
+                                <com.ashysystem.mbhq.view.TextViewRalewayMedium
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_centerInParent="true"
+                                    android:text="5 Min"
+                                    android:textColor="@color/white"
+                                    android:textSize="@dimen/fab_eighteen"></com.ashysystem.mbhq.view.TextViewRalewayMedium>
+                            </RelativeLayout>
+
+                            <RelativeLayout
+                                android:id="@+id/rl10Min"
+                                android:layout_width="0dp"
+                                android:layout_height="50dp"
+                                android:layout_marginTop="40dp"
+                                android:background="@drawable/capsule_green"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@id/rl5Min"
+                                app:layout_constraintWidth_percent=".8">
+
+                                <com.ashysystem.mbhq.view.TextViewRalewayMedium
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentStart="true"
+                                    android:layout_alignParentBottom="true"
+                                    android:layout_centerVertical="true"
+                                    android:layout_marginStart="15dp"
+                                    android:layout_marginBottom="-15dp"
+                                    android:foregroundGravity="bottom|center"
+                                    android:gravity="center"
+                                    android:text="*"
+                                    android:textColor="@color/white"
+                                    android:textSize="@dimen/fab_fortyEight" />
+
+                                <com.ashysystem.mbhq.view.TextViewRalewayMedium
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentEnd="true"
+                                    android:layout_alignParentBottom="true"
+                                    android:layout_centerVertical="true"
+                                    android:layout_marginEnd="15dp"
+                                    android:layout_marginBottom="-15dp"
+                                    android:foregroundGravity="bottom"
+                                    android:gravity="bottom"
+                                    android:text="*"
+                                    android:textColor="@color/white"
+                                    android:textSize="@dimen/fab_fortyEight" />
+
+                                <com.ashysystem.mbhq.view.TextViewRalewayMedium
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_centerInParent="true"
+                                    android:text="10 Min"
+                                    android:textColor="@color/white"
+                                    android:textSize="@dimen/fab_eighteen" />
+                            </RelativeLayout>
+
+
+                            <RelativeLayout
+                                android:id="@+id/rl20Min"
+                                android:layout_width="0dp"
+                                android:layout_height="50dp"
+                                android:layout_marginTop="40dp"
+                                android:background="@drawable/capsule_green"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@id/rl10Min"
+                                app:layout_constraintWidth_percent=".6">
+
+                                <com.ashysystem.mbhq.view.TextViewRalewayMedium
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_centerInParent="true"
+                                    android:text="20 Min"
+                                    android:textColor="@color/white"
+                                    android:textSize="@dimen/fab_eighteen"></com.ashysystem.mbhq.view.TextViewRalewayMedium>
+                            </RelativeLayout>
+
+                            <RelativeLayout
+                                android:id="@+id/rl30Min"
+                                android:layout_width="0dp"
+                                android:layout_height="50dp"
+                                android:layout_marginTop="40dp"
+                                android:background="@drawable/capsule_green"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@id/rl20Min"
+                                app:layout_constraintWidth_percent=".4">
+
+                                <com.ashysystem.mbhq.view.TextViewRalewayMedium
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_centerInParent="true"
+                                    android:text="30 Min"
+                                    android:textColor="@color/white"
+                                    android:textSize="@dimen/fab_eighteen"></com.ashysystem.mbhq.view.TextViewRalewayMedium>
+                            </RelativeLayout>
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/llNapTimeTagFilter"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_centerInParent="true"
+                    android:gravity="start"
+                    android:orientation="vertical"
+                    android:visibility="gone">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+
+                        <RelativeLayout
+                            android:id="@+id/rlNapTimeBack"
+                            android:layout_width="80dp"
+                            android:layout_height="50dp"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent">
+
+                            <com.ashysystem.mbhq.view.TextViewBold
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerVertical="true"
+                                android:layout_marginLeft="10dp"
+                                android:text="Back"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/fab_sixteen"
+                                android:textStyle="bold" />
+                        </RelativeLayout>
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="30dp"
+                            android:layout_marginEnd="30dp"
+                            android:orientation="vertical"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent">
+
+                            <RelativeLayout
+                                android:id="@+id/rlMorning"
+                                android:layout_width="0dp"
+                                android:layout_height="50dp"
+                                android:background="@drawable/capsule_green"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:layout_constraintWidth_percent="1.2">
+
+                                <com.ashysystem.mbhq.view.TextViewRalewayMedium
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_centerInParent="true"
+                                    android:text="MORNING ROUTINE"
+                                    android:textColor="@color/white"
+                                    android:textSize="18sp" />
+                            </RelativeLayout>
+                            <RelativeLayout
+                                android:id="@+id/rlNapTime20Min"
+                                android:layout_width="0dp"
+                                android:layout_height="50dp"
+                                android:layout_marginTop="90dp"
+                                android:background="@drawable/capsule_green"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:layout_constraintTop_toBottomOf="@+id/rlMorning"
+                                app:layout_constraintWidth_percent=".9">
+
+                                <com.ashysystem.mbhq.view.TextViewRalewayMedium
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_centerInParent="true"
+                                    android:text="20 Min"
+                                    android:textColor="@color/white"
+                                    android:textSize="@dimen/fab_eighteen" />
+                            </RelativeLayout>
+
+                            <RelativeLayout
+                                android:id="@+id/rlNapTime90Min"
+                                android:layout_width="0dp"
+                                android:layout_height="50dp"
+                                android:layout_marginTop="40dp"
+                                android:background="@drawable/capsule_green"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@+id/rlNapTime20Min"
+                                app:layout_constraintWidth_percent=".8">
+
+                                <com.ashysystem.mbhq.view.TextViewRalewayMedium
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_centerInParent="true"
+                                    android:text="90 Min"
+                                    android:textColor="@color/white"
+                                    android:textSize="@dimen/fab_eighteen" />
+                            </RelativeLayout>
+
+                            <RelativeLayout
+                                android:id="@+id/rlPowerUp"
+                                android:layout_width="0dp"
+                                android:layout_height="50dp"
+                                android:layout_marginTop="40dp"
+                                android:background="@drawable/capsule_green"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@+id/rlNapTime90Min"
+                                app:layout_constraintWidth_percent=".6">
+
+                                <com.ashysystem.mbhq.view.TextViewRalewayMedium
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_centerInParent="true"
+                                    android:text="Power Ups"
+                                    android:textColor="@color/white"
+                                    android:textSize="@dimen/fab_eighteen" />
+                            </RelativeLayout>
+
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/llHealingTagFilter"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_centerInParent="true"
+                    android:gravity="start"
+                    android:orientation="vertical"
+                    android:visibility="gone">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+
+                        <RelativeLayout
+                            android:id="@+id/rlHealingBack"
+                            android:layout_width="80dp"
+                            android:layout_height="50dp"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent">
+
+                            <com.ashysystem.mbhq.view.TextViewBold
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerVertical="true"
+                                android:layout_marginLeft="10dp"
+                                android:text="Back"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/fab_sixteen"
+                                android:textStyle="bold" />
+                        </RelativeLayout>
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="30dp"
+                            android:layout_marginEnd="30dp"
+                            android:orientation="vertical"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent">
+
+
+                            <RelativeLayout
+                                android:id="@+id/rlGuidedMeditations"
+                                android:layout_width="0dp"
+                                android:layout_height="50dp"
+                                android:background="@drawable/capsule_green"
+                                android:visibility="visible"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:layout_constraintWidth_percent="1">
+
+                                <com.ashysystem.mbhq.view.TextViewRalewayMedium
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_centerInParent="true"
+                                    android:text="Guided Meditations"
+                                    android:textColor="@color/white"
+                                    android:textSize="@dimen/fab_eighteen" />
+                            </RelativeLayout>
+
+                            <RelativeLayout
+                                android:id="@+id/rlVisualisations"
+                                android:layout_width="0dp"
+                                android:layout_height="50dp"
+                                android:layout_marginTop="40dp"
+                                android:background="@drawable/capsule_green"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@+id/rlGuidedMeditations"
+                                app:layout_constraintWidth_percent=".8">
+
+                                <com.ashysystem.mbhq.view.TextViewRalewayMedium
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_centerInParent="true"
+                                    android:text="Visualisations"
+                                    android:textColor="@color/white"
+                                    android:textSize="@dimen/fab_eighteen" />
+                            </RelativeLayout>
+
+                            <RelativeLayout
+                                android:id="@+id/rlHealingMeditations"
+                                android:layout_width="0dp"
+                                android:layout_height="50dp"
+                                android:layout_marginTop="40dp"
+                                android:background="@drawable/capsule_green"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@+id/rlVisualisations"
+                                app:layout_constraintWidth_percent=".6">
+
+                                <com.ashysystem.mbhq.view.TextViewRalewayMedium
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_centerInParent="true"
+                                    android:text="Healing"
+                                    android:textColor="@color/white"
+                                    android:textSize="@dimen/fab_eighteen" />
+                            </RelativeLayout>
+
+                            <RelativeLayout
+                                android:id="@+id/rlHealingsleep"
+                                android:layout_width="0dp"
+                                android:layout_height="50dp"
+                                android:layout_marginTop="40dp"
+                                android:background="@drawable/capsule_green"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@+id/rlHealingMeditations"
+                                app:layout_constraintWidth_percent=".6">
+
+                                <com.ashysystem.mbhq.view.TextViewRalewayMedium
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_centerInParent="true"
+                                    android:text="Sleep"
+                                    android:textColor="@color/white"
+                                    android:textSize="@dimen/fab_eighteen" />
+                            </RelativeLayout>
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+                </LinearLayout>
+
+            </RelativeLayout>
+
+
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+        <ImageView
+            android:id="@+id/img_notaccess_meditation"
+            android:layout_width="match_parent"
+            android:visibility="gone"
+            android:layout_height="match_parent"
+            android:src="@drawable/meditation_access">
+
+
+        </ImageView>
+
+    </FrameLayout>
+
+
+</RelativeLayout>

@@ -1,0 +1,91 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:layout_width="match_parent" android:layout_height="match_parent" android:orientation="vertical" android:background="@drawable/mbhq_main_bg">
+    <RelativeLayout android:layout_width="match_parent" android:layout_height="match_parent" android:visibility="gone">
+        <androidx.viewpager.widget.ViewPager android:id="@+id/viewpager" android:layout_width="match_parent" android:layout_height="match_parent"/>
+        <com.ashysystem.mbhq.view.TextViewOswaldRegular android:id="@+id/txtBack" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Back" android:layout_marginTop="5dp" android:layout_marginLeft="10dp" android:textSize="18dp" android:textColor="#FFFFFF"/>
+        <ImageView android:layout_width="wrap_content" android:layout_height="wrap_content" android:background="@drawable/back_v" android:layout_marginTop="5dp" android:visibility="gone" android:layout_marginLeft="10dp"/>
+        <RelativeLayout android:layout_width="match_parent" android:layout_height="?android:attr/actionBarSize" android:layout_gravity="top" android:layout_marginLeft="5dp" android:layout_marginRight="5dp" android:layout_marginTop="5dp" android:visibility="gone"> </RelativeLayout>
+        <RelativeLayout android:layout_width="match_parent" android:layout_height="?android:attr/actionBarSize" android:layout_gravity="bottom" android:visibility="gone">
+            <View android:id="@+id/dummy_space" android:layout_width="12dp" android:layout_height="match_parent" android:layout_centerInParent="true"/>
+            <com.ashysystem.mbhq.view.ButtonOswaldMedium android:id="@+id/btn_facebook" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_centerVertical="true" android:layout_toLeftOf="@id/dummy_space" android:gravity="center" android:minHeight="45dp"/>
+            <com.ashysystem.mbhq.view.ButtonOswaldMedium android:id="@+id/btn_email_login" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_centerVertical="true" android:layout_toRightOf="@id/dummy_space" android:gravity="center" android:minHeight="45dp" android:padding="6dp" android:textAllCaps="true" android:textColor="@color/white" android:textSize="15dp" android:textStyle="bold"/>
+        </RelativeLayout>
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_gravity="bottom" android:orientation="vertical">
+            <RelativeLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginBottom="10dp"> </RelativeLayout>
+            <LinearLayout android:layout_width="match_parent" android:layout_height="?android:attr/actionBarSize" android:orientation="horizontal" android:background="#333333">
+                <RelativeLayout android:id="@+id/rlSignUp" android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight=".5">
+                    <com.ashysystem.mbhq.view.TextViewOswaldLight android:layout_width="wrap_content" android:layout_height="wrap_content" android:textSize="18dp" android:textColor="#FFFFFF" android:layout_centerInParent="true" android:textAllCaps="true" android:text="SIGN UP"/>
+                    <View android:layout_width="1dp" android:layout_height="match_parent" android:background="#FFFFFF" android:layout_marginTop="5dp" android:layout_marginBottom="5dp" android:layout_alignParentRight="true"/>
+                </RelativeLayout>
+                <RelativeLayout android:id="@+id/rlLogIn" android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight=".5">
+                    <com.ashysystem.mbhq.view.TextViewOswaldLight android:layout_width="wrap_content" android:layout_height="wrap_content" android:textSize="18dp" android:textColor="#FFFFFF" android:layout_centerInParent="true" android:textAllCaps="true" android:text="LOG IN"/>
+                </RelativeLayout>
+            </LinearLayout>
+        </LinearLayout>
+    </RelativeLayout>
+    <LinearLayout android:layout_width="match_parent" android:layout_height="match_parent" android:orientation="vertical" android:layout_marginTop="30dp">
+        <RelativeLayout android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight=".6">
+            <ImageView android:id="@+id/imgUpLogo" android:layout_width="wrap_content" android:layout_centerHorizontal="true" android:layout_height="wrap_content" android:src="@drawable/logo_mbhq" android:visibility="gone"/>
+            <RelativeLayout android:layout_width="match_parent" android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/imgBack"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/back_v"
+                    android:visibility="visible" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <com.ashysystem.mbhq.view.TextViewSemiBold
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="30dp"
+                    android:gravity="center_horizontal"
+                    android:text="Welcome To \n Emotional Fitness Club"
+                    android:textColor="@color/white"
+                    android:textSize="24dp"
+                    android:visibility="gone" />
+
+                <ImageView
+                    android:id="@+id/txtHeader1"
+                    android:layout_width="200dp"
+                    android:layout_height="100dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="40dp"
+                    android:gravity="center_horizontal"
+                    android:src="@drawable/logo_mbhq_white"
+                    android:textSize="24dp" />
+
+                <ImageView
+                    android:id="@+id/imgBelowLogo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/txtHeader1"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="25dp"
+                    android:src="@drawable/mbhq_manny_meditation" />
+            </RelativeLayout>
+        </RelativeLayout>
+        <RelativeLayout android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight=".4">
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical">
+                <com.ashysystem.mbhq.view.TextViewOswaldRegular android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_gravity="center" android:textColor="@color/white" android:textSize="20dp"/>
+                <RelativeLayout android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_gravity="center_horizontal">
+                    <com.ashysystem.mbhq.view.TextViewBold android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="10dp" android:gravity="center_horizontal" android:text="RE-TRAIN YOUR BRAIN" android:textAllCaps="true" android:textColor="@color/white" android:textSize="22dp" android:visibility="gone"/>
+                </RelativeLayout>
+                <RelativeLayout android:id="@+id/rlLogInNew" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_gravity="center_horizontal" android:layout_marginLeft="40dp" android:layout_marginRight="40dp" android:background="@drawable/round_corner_white" android:minHeight="35dp">
+                    <com.ashysystem.mbhq.view.EditTextOswaldRegular android:id="@+id/edtEmailAddress" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_centerInParent="true" android:layout_marginBottom="10dp" android:background="@null" android:hint="ENTER EMAIL" android:imeOptions="actionDone" android:inputType="textEmailAddress" android:minHeight="35dp" android:padding="8dp" android:singleLine="true" android:textColor="@color/base_green" android:textSize="16dp"/>
+                </RelativeLayout>
+                <RelativeLayout android:id="@+id/rlLetsGo" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_gravity="center_horizontal" android:layout_marginLeft="40dp" android:layout_marginTop="10dp" android:layout_marginRight="40dp" android:background="@drawable/rounded_corner_green" android:minHeight="35dp">
+                    <com.ashysystem.mbhq.view.TextViewSemiBold android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_centerInParent="true" android:layout_marginLeft="20dp" android:layout_marginRight="20dp" android:layout_marginBottom="10dp" android:padding="8dp" android:text="LET'S GO!" android:textAllCaps="true" android:textColor="@color/white" android:textSize="20dp"/>
+                </RelativeLayout>
+                <com.ashysystem.mbhq.view.TextViewOswaldLight android:id="@+id/txtAlreadyHaveAccount" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_gravity="center_horizontal" android:layout_marginTop="10dp" android:textColor="#FFFFFF" android:textSize="14dp" android:visibility="gone"/>
+            </LinearLayout>
+        </RelativeLayout>
+    </LinearLayout>
+</FrameLayout>

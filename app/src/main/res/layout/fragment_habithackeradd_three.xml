@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorPrimary">
+    <ImageView
+        android:id="@+id/imgBack"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/back_v"
+        android:padding="10dp"/>
+    <ImageView
+        android:id="@+id/imgManny"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="10dp"
+        android:src="@drawable/mbhq_manny_habit_add"/>
+    <com.ashysystem.mbhq.view.TextViewRaleWay
+        android:id="@+id/txtNewHabit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        android:layout_below="@+id/imgManny"
+        android:layout_marginTop="15dp"
+        android:layout_marginLeft="10dp"
+        android:textSize="@dimen/fab_sixteen"
+        android:text="What will cue you to do the new action?"/>
+    <RelativeLayout
+        android:id="@+id/rlNewHabitTime"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/txtNewHabit"
+        android:layout_marginTop="15dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:background="@drawable/round_corner_white">
+
+        <com.ashysystem.mbhq.view.EditTextRaleWay
+            android:id="@+id/edtCueNewAction"
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:background="@null"
+            android:gravity="top"
+            android:inputType="textMultiLine|textCapSentences"
+            android:paddingLeft="5dp"
+            android:paddingTop="5dp"
+            android:textColor="@color/black"
+            android:textSize="@dimen/fab_sixteen" />
+    </RelativeLayout>
+    <com.ashysystem.mbhq.view.TextViewRaleWay
+        android:id="@+id/txtHowLong"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        android:layout_below="@+id/rlNewHabitTime"
+        android:layout_marginTop="15dp"
+        android:layout_marginLeft="10dp"
+        android:textSize="@dimen/fab_fourteen"
+        android:text="Tip: What will remind you to do the new habit? Many times choosing the same cue as the old habit is helpful. If seeing your phone is the cue to scroll fb, then we can use the same cue and just change the routine.IE When I see my phone I check my organisation system and calendar to decide on whats's the most productive thing I can do right now."/>
+
+    <RelativeLayout
+        android:id="@+id/rlNext"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="15dp"
+        android:layout_marginRight="10dp">
+        <ImageView
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:src="@drawable/mbhq_ic_right_arrow"/>
+    </RelativeLayout>
+</RelativeLayout>

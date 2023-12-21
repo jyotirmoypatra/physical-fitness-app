@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/clRoot"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/live_chat_blue_deep"
+    android:paddingStart="@dimen/fab_thirtyTwo"
+    android:paddingTop="@dimen/fab_sixteen"
+    android:paddingEnd="@dimen/fab_thirtyTwo"
+    android:paddingBottom="@dimen/fab_sixteen">
+
+
+    <com.ashysystem.mbhq.util.ProportionalImageView
+        android:id="@+id/imgVideoPreview"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="@dimen/fab_eight"
+        android:background="@color/black"
+        android:scaleType="fitXY"
+        app:layout_constraintDimensionRatio="h,16:9"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:src="@drawable/mbhq_ic_play_button"
+        app:layout_constraintBottom_toBottomOf="@+id/imgVideoPreview"
+        app:layout_constraintEnd_toEndOf="@+id/imgVideoPreview"
+        app:layout_constraintStart_toStartOf="@+id/imgVideoPreview"
+        app:layout_constraintTop_toTopOf="@+id/imgVideoPreview" />
+
+    <com.ashysystem.mbhq.view.TextViewBold
+        android:id="@+id/txtSubHeader"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/fab_eight"
+        android:text="Live chat #1"
+        android:textColor="@color/white"
+        android:textSize="@dimen/fab_eighteen"
+        app:layout_constraintEnd_toEndOf="@+id/imgVideoPreview"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/imgVideoPreview"
+        app:layout_constraintTop_toBottomOf="@+id/imgVideoPreview" />
+
+
+    <com.ashysystem.mbhq.view.TextViewRalewayMedium
+        android:id="@+id/txtPresenter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/fab_eight"
+        android:text="Ashi and Levi"
+        android:textColor="@color/white"
+        android:textSize="@dimen/fab_fourteen"
+        app:layout_constraintEnd_toEndOf="@+id/imgVideoPreview"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/imgVideoPreview"
+        app:layout_constraintTop_toBottomOf="@+id/txtSubHeader" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/chipGroupTagContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="visible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtPresenter">
+
+    </androidx.recyclerview.widget.RecyclerView>
+</androidx.constraintlayout.widget.ConstraintLayout>

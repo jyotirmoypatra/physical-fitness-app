@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="60dp">
+    <LinearLayout
+        android:id="@+id/llBottomMenuVideo"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_alignParentBottom="true"
+        android:background="#01D0B9"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        >
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight=".2"
+            android:clickable="true"
+            android:gravity="center">
+
+            <RelativeLayout
+                android:id="@+id/rlPersonalSetting"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:padding="2dp">
+
+                <ImageView
+                    android:id="@+id/imgPersonalSetting"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/person" />
+
+            </RelativeLayout>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight=".2"
+            android:gravity="center"
+            android:clickable="true">
+
+            <RelativeLayout
+                android:id="@+id/rlMusicSetting"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:padding="2dp">
+                <ImageView
+                    android:id="@+id/imgMusicSetting"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/music" />
+
+            </RelativeLayout>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight=".2"
+            android:clickable="true"
+            android:gravity="center"
+            android:visibility="visible">
+
+            <RelativeLayout
+                android:id="@+id/rlCustomNutritionSetting"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:padding="2dp">
+
+                <ImageView
+                    android:id="@+id/imgCustomNutritionSetting"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/nutrition_setting_new" />
+
+            </RelativeLayout>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight=".2"
+            android:clickable="true"
+            android:gravity="center"
+            android:visibility="visible">
+
+            <RelativeLayout
+                android:id="@+id/rlCustomProgramSetting"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:padding="2dp">
+
+                <ImageView
+                    android:id="@+id/imgCustomProgramSetting"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/excercise_settings_new" />
+
+            </RelativeLayout>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rlSettingBackToMain"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight=".2"
+            android:clickable="true"
+            android:gravity="center">
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:padding="2dp">
+
+                <ImageView
+                    android:id="@+id/imgSet"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/settings" />
+
+            </RelativeLayout>
+        </RelativeLayout>
+    </LinearLayout>
+
+
+</LinearLayout>

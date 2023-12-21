@@ -1,0 +1,250 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#AA000000"
+    >
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <RelativeLayout
+                    android:id="@+id/rlHeader"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <!--<com.ashysystem.mbhq.view.TextViewBold
+                        android:id="@+id/txtBack"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:padding="10dp"
+                        android:text="Back"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/fab_sixteen"
+                        android:textStyle="bold" />-->
+                    <ImageView
+                        android:id="@+id/closeModal"
+                        android:layout_width="@dimen/fab_thirty"
+                        android:layout_height="@dimen/fab_thirty"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginTop="16dp"
+                        android:layout_marginEnd="16dp"
+                        android:src="@drawable/ic_cancel"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                </RelativeLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:layout_constraintTop_toBottomOf="@+id/rlHeader">
+
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_margin="@dimen/fab_eight"
+                        app:cardBackgroundColor="@color/subtle_gray"
+                        app:cardCornerRadius="8dp"
+                        app:cardElevation="0dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:padding="@dimen/fab_sixteen">
+
+                            <androidx.cardview.widget.CardView
+                                android:id="@+id/meditationImageContainer"
+                                android:layout_width="80dp"
+                                android:layout_height="80dp"
+                                app:cardCornerRadius="40dp"
+                                app:cardElevation="0dp"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent">
+
+                                <ImageView
+                                    android:id="@+id/imgCircular"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:background="@color/white"
+                                    android:scaleType="centerCrop"
+                                    android:src="@drawable/empty_image_old" />
+                            </androidx.cardview.widget.CardView>
+
+                            <com.ashysystem.mbhq.view.TextViewSemiBold
+                                android:id="@+id/txtCourseName"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="8dp"
+                                android:text="Clean Up"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/fab_eighteen"
+                                app:layout_constraintBottom_toBottomOf="@+id/meditationImageContainer"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toEndOf="@+id/meditationImageContainer"
+                                app:layout_constraintTop_toTopOf="@+id/meditationImageContainer" />
+
+                            <View
+                                android:id="@+id/separator1"
+                                android:layout_width="match_parent"
+                                android:layout_height="2dp"
+                                android:layout_marginTop="8dp"
+                                android:background="@color/foodClubWhite"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@+id/meditationImageContainer" />
+
+                            <androidx.constraintlayout.widget.ConstraintLayout
+                                android:id="@+id/meditationMiscDetailsContainer"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:paddingTop="@dimen/fab_eight"
+                                android:paddingBottom="@dimen/fab_eight"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@+id/separator1">
+
+                                <LinearLayout
+                                    android:id="@+id/meditationDurationContainer"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    app:layout_constraintBottom_toBottomOf="parent"
+                                    app:layout_constraintEnd_toStartOf="@+id/txtLevel"
+                                    app:layout_constraintHorizontal_bias="0.5"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent"
+                                    app:layout_constraintWidth_percent=".3">
+
+                                    <ImageView
+                                        android:id="@+id/imgClock"
+                                        android:layout_width="15dp"
+                                        android:layout_height="15dp"
+                                        android:src="@drawable/mbhq_clock_green_grey"
+                                        android:visibility="gone" />
+
+                                    <com.ashysystem.mbhq.view.TextViewRalewayMedium
+                                        android:id="@+id/txtDuration"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center"
+                                        android:text="5 min"
+                                        android:textColor="@color/black"
+                                        android:textSize="@dimen/fab_fourteen" />
+                                </LinearLayout>
+
+                                <com.ashysystem.mbhq.view.TextViewRalewayMedium
+                                    android:id="@+id/txtLevel"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:text="Level 5"
+                                    android:textColor="@color/black"
+                                    android:textSize="@dimen/fab_fourteen"
+                                    app:layout_constraintBottom_toBottomOf="@+id/meditationDurationContainer"
+                                    app:layout_constraintEnd_toStartOf="@+id/txtTag"
+                                    app:layout_constraintHorizontal_bias="0.5"
+                                    app:layout_constraintStart_toEndOf="@+id/meditationDurationContainer"
+                                    app:layout_constraintTop_toTopOf="@+id/meditationDurationContainer"
+                                    app:layout_constraintWidth_percent=".3" />
+
+                                <com.ashysystem.mbhq.view.TextViewRalewayMedium
+                                    android:id="@+id/txtTag"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:text="Breath Control"
+                                    android:textColor="@color/black"
+                                    android:textSize="@dimen/fab_fourteen"
+                                    app:layout_constraintBottom_toBottomOf="@+id/meditationDurationContainer"
+
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintHorizontal_bias="0.5"
+                                    app:layout_constraintStart_toEndOf="@+id/txtLevel"
+                                    app:layout_constraintTop_toTopOf="@+id/meditationDurationContainer"
+                                    app:layout_constraintWidth_percent=".3" />
+
+                            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+                            <View
+                                android:id="@+id/separator2"
+                                android:layout_width="match_parent"
+                                android:layout_height="2dp"
+                                android:background="@color/foodClubWhite"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@+id/meditationMiscDetailsContainer" />
+
+                            <TextView
+                                android:id="@+id/txtMeditationDescription"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="16dp"
+                                android:textSize="@dimen/fab_twelve"
+                                android:text="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets "
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@+id/separator2" />
+
+                            <Button
+                                android:id="@+id/btnStartMeditation"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="16dp"
+                                android:background="@drawable/capsule_light_green"
+                                android:text="Start"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/fab_twenty"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@+id/txtMeditationDescription"
+                                app:layout_constraintWidth_percent=".7" />
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    </androidx.cardview.widget.CardView>
+
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.core.widget.NestedScrollView>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+
+

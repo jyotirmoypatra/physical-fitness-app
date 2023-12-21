@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/mbhq_main_bg">
+  <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight=".15"
+
+       >
+        <ImageView
+            android:id="@+id/imgUpLogo"
+            android:layout_width="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:src="@drawable/logo_mbhq"
+            android:visibility="gone"/>
+        <com.ashysystem.mbhq.view.TextViewOswaldRegular
+            android:id="@+id/txtBack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Back"
+            android:visibility="gone"
+            android:layout_marginTop="5dp"
+            android:layout_marginLeft="10dp"
+            android:textSize="@dimen/fab_eighteen"
+            android:textColor="#FFFFFF"
+            />
+
+      <ImageView
+          android:id="@+id/imgBack"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_below="@+id/imgUpLogo"
+          android:layout_marginLeft="10dp"
+          android:layout_marginTop="10dp"
+          android:background="@drawable/back_v"
+          android:visibility="visible" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight=".85"
+        >
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:orientation="vertical">
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/mbhq_manny_meditation"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="10dp"
+                android:layout_below="@+id/imgSmallLogo"/>
+
+
+            <com.ashysystem.mbhq.view.EditTextOswaldLight
+                android:id="@+id/edtEmailAddress"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:background="@drawable/round_corner_white"
+                android:drawablePadding="5dp"
+                android:layout_marginTop="10dp"
+                android:hint="EMAIL"
+                android:imeOptions="actionNext"
+                android:lines="1"
+                android:nextFocusDown="@+id/edtPassword"
+                android:padding="10dp"
+                android:singleLine="true"
+                android:textColor="#929497"
+                android:textColorHint="#929497"
+                android:textSize="@dimen/fab_eighteen"
+                android:inputType="textEmailAddress"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_below="@+id/edtEmailAddress"
+                android:layout_marginTop="5dp"
+                android:background="#B6B6B6"
+                android:visibility="gone"/>
+
+            <com.ashysystem.mbhq.view.EditTextOswaldLight
+                android:id="@+id/edtPassword"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/round_corner_white"
+                android:drawablePadding="5dp"
+                android:hint="PASSWORD"
+                android:imeOptions="actionDone"
+                android:inputType="textPassword"
+                android:padding="10dp"
+                android:textColor="#929497"
+                android:textColorHint="#929497"
+                android:textSize="@dimen/fab_eighteen"
+               />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_below="@+id/edtEmailAddress"
+                android:layout_marginTop="10dp"
+                android:visibility="gone"
+                android:background="#B6B6B6" />
+            <RelativeLayout
+                android:id="@+id/rlLogIn"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/round_corner_white">
+                <com.ashysystem.mbhq.view.TextViewSemiBold
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:textColor="@color/base_green"
+                    android:textSize="@dimen/fab_twenty"
+                    android:text="LET'S GO!"/>
+            </RelativeLayout>
+
+
+            <com.ashysystem.mbhq.view.TextViewOswaldRegular
+                android:id="@+id/txtForgotPassword"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAllCaps="true"
+                android:textColor="@color/white"
+                android:textSize="@dimen/fab_fourteen"
+                android:layout_marginTop="10dp"
+                android:layout_gravity="center_horizontal"
+                android:text="FORGOT PASSWORD ?"/>
+            <com.ashysystem.mbhq.view.TextViewOswaldRegular
+                android:id="@+id/tv_terms"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/ll_fields"
+                android:layout_centerHorizontal="true"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_marginTop="15dp"
+                android:gravity="center_horizontal"
+                android:text=""
+                android:textAllCaps="false"
+                android:textAppearance="?android:textAppearanceSmall"
+                android:textColor="@color/white"
+                android:textSize="@dimen/signup_term_txt_size"
+                android:textStyle="bold"
+                />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:orientation="horizontal"
+                android:layout_marginLeft="2dp"
+                android:layout_marginRight="2dp"
+                android:visibility="gone"
+                >
+                <RelativeLayout
+                    android:id="@+id/rlSevenDayTrial"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight=".5"
+                    android:layout_marginRight="2dp">
+                    <com.ashysystem.mbhq.view.TextViewOswaldRegular
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/white"
+                        android:layout_centerInParent="true"
+                        android:textSize="@dimen/fab_sixteen"
+                        android:visibility="gone"
+                        android:text="7 DAY TRIAL"/>
+                </RelativeLayout>
+                <RelativeLayout
+                    android:id="@+id/rlSignUpNow"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight=".5"
+                    android:visibility="gone"
+                    android:layout_marginLeft="2dp">
+                    <com.ashysystem.mbhq.view.TextViewOswaldRegular
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/white"
+                        android:layout_centerInParent="true"
+                        android:textSize="@dimen/fab_sixteen"
+                        android:text="SIGN UP NOW"/>
+                </RelativeLayout>
+            </LinearLayout>
+            <com.ashysystem.mbhq.view.ButtonOswaldMedium
+                android:id="@+id/btn_sign_up"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:layout_margin="@dimen/spacing_4dp"
+                android:background="@drawable/signupnormal"
+                android:textStyle="bold"
+                android:visibility="gone"/>
+        </LinearLayout>
+    </RelativeLayout>
+</LinearLayout>

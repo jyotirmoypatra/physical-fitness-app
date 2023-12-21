@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#B3000000">
+    <ImageView
+        android:id="@+id/imgCross"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
+        android:src="@drawable/s_cross"
+        android:padding="10dp"/>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:background="@drawable/rounded_corner_white"
+        android:minHeight="300dp">
+
+        <com.ashysystem.mbhq.view.TextViewSemiBold
+            android:id="@+id/txtHiUseName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20dp"
+            android:text="Hi Username"
+            android:textColor="@color/black"
+            android:textSize="@dimen/fab_twenty"
+            android:textStyle="bold" />
+        <com.ashysystem.mbhq.view.TextViewSemiBold
+            android:id="@+id/txtInactive"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/txtHiUseName"
+            android:layout_margin="20dp"
+            android:gravity="center_horizontal"
+            android:textSize="18dp"
+            android:textColor="@color/black"
+            android:text="Your MindbodyHQ subscription is currently inactive."/>
+        <ImageView
+            android:id="@+id/imgCrying"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/txtInactive"
+            android:layout_centerHorizontal="true"
+            android:src="@drawable/mbhq_crying_manny"/>
+        <com.ashysystem.mbhq.view.TextViewSemiBold
+            android:id="@+id/txtCheckOut"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/imgCrying"
+            android:layout_margin="20dp"
+            android:gravity="center_horizontal"
+            android:textSize="18dp"
+            android:textColor="@color/black"
+            android:text="Please update your membership. Use discount code mb20 for 20% off at checkout."/>
+        <ImageView
+            android:id="@+id/imgLike"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/txtCheckOut"
+            android:layout_centerHorizontal="true"
+            android:src="@drawable/mbhq_img_s"/>
+        <com.ashysystem.mbhq.view.TextViewSemiBold
+            android:id="@+id/txtEmail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/imgLike"
+            android:layout_margin="20dp"
+            android:gravity="center_horizontal"
+            android:textSize="@dimen/fab_eighteen"
+            android:textColor="@color/black"
+            android:text="Your email is [email]"/>
+        <com.ashysystem.mbhq.view.ButtonSemiBold
+            android:id="@+id/btnUpdateNow"
+            android:layout_width="130dp"
+            android:layout_height="45dp"
+            android:layout_below="@+id/txtEmail"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="20dp"
+            android:background="@drawable/rounded_corner_green"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            android:textAllCaps="true"
+            android:text="update now"
+            android:gravity="center"
+            />
+    </RelativeLayout>
+</RelativeLayout>

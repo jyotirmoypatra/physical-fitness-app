@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorPrimary">
+    <ImageView
+        android:id="@+id/imgBack"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/back_v"
+        android:padding="10dp"/>
+    <ImageView
+        android:id="@+id/imgManny"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="10dp"
+        android:src="@drawable/mbhq_manny_habit_add"/>
+    <com.ashysystem.mbhq.view.TextViewRaleWay
+        android:id="@+id/txtNewHabit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        android:layout_below="@+id/imgManny"
+        android:layout_marginTop="15dp"
+        android:layout_marginLeft="10dp"
+        android:textSize="@dimen/fab_sixteen"
+        android:text="How can we make it EASIER to do the new habit? How can we make it more SEEN or simple to take action on?"/>
+    <RelativeLayout
+        android:id="@+id/rlNewHabitTime"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/txtNewHabit"
+        android:layout_marginTop="15dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:background="@drawable/round_corner_white">
+        <com.ashysystem.mbhq.view.EditTextRaleWay
+            android:id="@+id/edtMoreSeen"
+            android:layout_width="match_parent"
+            android:layout_height="140dp"
+            android:textSize="@dimen/fab_sixteen"
+            android:textColor="@color/black"
+            android:background="@null"
+            android:gravity="top"
+            android:paddingLeft="5dp"
+            android:paddingTop="5dp"
+            android:inputType="textMultiLine|textCapSentences"
+            />
+    </RelativeLayout>
+    <com.ashysystem.mbhq.view.TextViewRaleWay
+        android:id="@+id/txtHowLong"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        android:layout_below="@+id/rlNewHabitTime"
+        android:layout_marginTop="15dp"
+        android:layout_marginLeft="10dp"
+        android:textSize="@dimen/fab_fourteen"
+        android:text="Tip: If you want to have fruit instead of chocolate for an afternoon snack you could put fruit in a bowl on the kitchen bench so you always see it. At the same time you might hide chocolate out of sight so it never accidentally cues you to want it."/>
+
+    <RelativeLayout
+        android:id="@+id/rlNext"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="15dp"
+        android:layout_marginRight="10dp">
+        <ImageView
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:src="@drawable/mbhq_ic_right_arrow"/>
+    </RelativeLayout>
+</RelativeLayout>

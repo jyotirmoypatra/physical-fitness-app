@@ -1,0 +1,875 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:background="@drawable/capsule_white"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:id="@+id/rlTop"
+            android:layout_width="match_parent"
+            android:layout_height="50dp">
+
+            <RelativeLayout
+                android:id="@+id/rlBack"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:padding="8dp">
+
+                <ImageView
+                    android:id="@+id/imgBack"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="15dp"
+                    android:background="@drawable/mbhq_close" />
+            </RelativeLayout>
+
+            <com.ashysystem.mbhq.view.TextViewOswaldRegular
+                android:id="@+id/txtReminderSettingsHeading"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="REMINDER SETTINGS"
+                android:textColor="#585858"
+                android:textSize="@dimen/fab_sixteen" />
+
+        </RelativeLayout>
+
+        <View
+            android:id="@+id/vwTop"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_below="@+id/rlTop"
+            android:layout_marginTop="2dp"
+            android:background="@color/ashseparator"></View>
+
+        <LinearLayout
+            android:id="@+id/llMainBlock"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/vwTop"
+            android:layout_centerInParent="true"
+            android:layout_margin="10dp"
+            android:orientation="vertical">
+
+
+            <LinearLayout
+                android:id="@+id/llPush"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <com.ashysystem.mbhq.view.TextViewOswaldLight
+                    android:id="@+id/txtPushNotification"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight=".5"
+                    android:text="Push Notification"
+                    android:textColor="#585858" />
+
+                <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight=".5">
+
+                    <CheckBox
+                        android:id="@+id/chkPushNotification"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginBottom="10dp"
+                        android:background="@drawable/drawable_custom_toggle"
+                        android:button="@null"/>
+                </RelativeLayout>
+            </LinearLayout>
+
+            <View
+                android:id="@+id/vwPush"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="2dp"
+                android:background="@color/ashseparator"></View>
+
+            <LinearLayout
+                android:id="@+id/llEmail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <com.ashysystem.mbhq.view.TextViewOswaldLight
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight=".5"
+                    android:text="Email Notification"
+                    android:textColor="#585858" />
+
+                <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight=".5">
+
+                    <CheckBox
+                        android:id="@+id/chkEmailNotification"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginBottom="10dp"
+                        android:background="@drawable/drawable_custom_toggle"
+                        android:button="@null" />
+                </RelativeLayout>
+            </LinearLayout>
+
+            <View
+                android:id="@+id/vwEmail"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="2dp"
+                android:background="@color/ashseparator"></View>
+
+            <LinearLayout
+                android:id="@+id/llReminderFrequency"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <com.ashysystem.mbhq.view.TextViewOswaldLight
+                    android:id="@+id/txtReminderFrequency"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight=".33"
+                    android:text="Reminder Frequency"
+                    android:textColor="#585858" />
+
+                <LinearLayout
+                    android:id="@+id/llReminderFrequencySpinner"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight=".33"
+                    android:orientation="horizontal"
+                    android:visibility="visible">
+
+                    <Spinner
+                        android:id="@+id/spReminderFrequency"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:visibility="visible"></Spinner>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/llDaily"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight=".33"
+                    android:orientation="horizontal"
+                    android:visibility="gone">
+
+                    <Spinner
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:visibility="gone">
+
+                    </Spinner>
+
+                    <com.ashysystem.mbhq.view.TextViewOswaldLight
+                        android:id="@+id/txtReminderFrequencyType"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginBottom="10dp"
+                        android:gravity="right"
+                        android:text="Daily"
+                        android:textColor="@color/colorPrimary"
+                        android:visibility="visible" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <View
+                android:id="@+id/vwLLReminder"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="2dp"
+                android:background="@color/ashseparator"
+                android:visibility="gone">
+
+            </View>
+
+            <LinearLayout
+                android:id="@+id/llWk"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:visibility="gone">
+
+                <com.ashysystem.mbhq.view.TextViewOswaldLight
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight=".4"
+                    android:gravity="center_vertical"
+                    android:text="Choose specific days"
+                    android:textColor="#585858" />
+
+                <LinearLayout
+                    android:id="@+id/layout"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:layout_weight=".6"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <Button
+                            android:id="@+id/buttonS"
+                            android:layout_width="0dp"
+                            android:layout_height="30dp"
+                            android:layout_margin="2dp"
+                            android:layout_weight=".2"
+                            android:background="@drawable/circle_gray_month"
+                            android:text="S"
+                            android:textColor="@color/white" />
+
+                        <Button
+                            android:id="@+id/buttonM"
+                            android:layout_width="0dp"
+                            android:layout_height="30dp"
+                            android:layout_margin="2dp"
+                            android:layout_weight=".2"
+                            android:background="@drawable/circle_gray_month"
+                            android:text="M"
+                            android:textColor="@color/white" />
+
+                        <Button
+                            android:id="@+id/buttonT"
+                            android:layout_width="0dp"
+                            android:layout_height="30dp"
+                            android:layout_margin="2dp"
+                            android:layout_weight=".2"
+                            android:background="@drawable/circle_gray_month"
+                            android:text="T"
+                            android:textColor="@color/white" />
+
+                        <Button
+                            android:id="@+id/buttonW"
+                            android:layout_width="0dp"
+                            android:layout_height="30dp"
+                            android:layout_margin="2dp"
+                            android:layout_weight=".2"
+                            android:background="@drawable/circle_gray_month"
+                            android:text="W"
+                            android:textColor="@color/white" />
+
+                        <Button
+                            android:id="@+id/buttonTH"
+                            android:layout_width="0dp"
+                            android:layout_height="30dp"
+                            android:layout_margin="2dp"
+                            android:layout_weight=".2"
+                            android:background="@drawable/circle_gray_month"
+                            android:text="T"
+                            android:textColor="@color/white" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <Button
+                            android:id="@+id/buttonF"
+                            android:layout_width="0dp"
+                            android:layout_height="30dp"
+                            android:layout_margin="2dp"
+                            android:layout_weight=".2"
+                            android:background="@drawable/circle_gray_month"
+                            android:text="F"
+                            android:textColor="@color/white" />
+
+                        <Button
+                            android:id="@+id/buttonSa"
+                            android:layout_width="0dp"
+                            android:layout_height="30dp"
+                            android:layout_margin="2dp"
+                            android:layout_weight=".2"
+                            android:background="@drawable/circle_gray_month"
+                            android:text="S"
+                            android:textColor="@color/white" />
+
+                        <RelativeLayout
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_margin="2dp"
+                            android:layout_weight=".2" />
+
+                        <RelativeLayout
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_margin="2dp"
+                            android:layout_weight=".2" />
+
+                        <RelativeLayout
+                            android:layout_width="0dp"
+                            android:layout_height="30dp"
+                            android:layout_margin="2dp"
+                            android:layout_weight=".2" />
+                    </LinearLayout>
+
+                </LinearLayout>
+            </LinearLayout>
+
+            <View
+                android:id="@+id/vwWK"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="2dp"
+                android:background="@color/ashseparator"
+                android:visibility="gone"></View>
+
+            <LinearLayout
+                android:id="@+id/llYear"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:visibility="gone">
+
+                <com.ashysystem.mbhq.view.TextViewOswaldLight
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight=".3"
+                    android:text="Choose specific Month."
+                    android:textColor="#585858" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight=".7"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight=".5"
+                        android:orientation="horizontal">
+
+                        <Button
+                            android:id="@+id/buttonJan"
+                            android:layout_width="0dp"
+                            android:layout_height="30dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/circle_gray_month"
+                            android:text="Jan"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/fab_ten" />
+
+                        <Button
+                            android:id="@+id/buttonFeb"
+                            android:layout_width="0dp"
+                            android:layout_height="30dp"
+                            android:layout_margin="2dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/circle_gray_month"
+                            android:text="Feb"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/fab_ten" />
+
+                        <Button
+                            android:id="@+id/buttonMar"
+                            android:layout_width="0dp"
+                            android:layout_height="30dp"
+                            android:layout_margin="2dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/circle_gray_month"
+                            android:text="Mar"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/fab_ten" />
+
+                        <Button
+                            android:id="@+id/buttonApr"
+                            android:layout_width="0dp"
+                            android:layout_height="30dp"
+                            android:layout_margin="2dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/circle_gray_month"
+                            android:text="Apr"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/fab_ten" />
+
+                        <Button
+                            android:id="@+id/buttonMay"
+                            android:layout_width="0dp"
+                            android:layout_height="30dp"
+                            android:layout_margin="2dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/circle_gray_month"
+                            android:text="May"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/fab_ten" />
+
+                        <Button
+                            android:id="@+id/buttonJun"
+                            android:layout_width="0dp"
+                            android:layout_height="30dp"
+                            android:layout_margin="2dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/circle_gray_month"
+                            android:text="Jun"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/fab_ten" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight=".5"
+                        android:orientation="horizontal">
+
+
+                        <Button
+                            android:id="@+id/buttonJul"
+                            android:layout_width="0dp"
+                            android:layout_height="30dp"
+                            android:layout_margin="2dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/circle_gray_month"
+                            android:text="Jul"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/fab_ten" />
+
+                        <Button
+                            android:id="@+id/buttonAug"
+                            android:layout_width="0dp"
+                            android:layout_height="30dp"
+                            android:layout_margin="2dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/circle_gray_month"
+                            android:text="Aug"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/fab_ten" />
+
+                        <Button
+                            android:id="@+id/buttonSep"
+                            android:layout_width="0dp"
+                            android:layout_height="30dp"
+                            android:layout_margin="2dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/circle_gray_month"
+                            android:text="Sep"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/fab_ten" />
+
+                        <Button
+                            android:id="@+id/buttonOct"
+                            android:layout_width="0dp"
+                            android:layout_height="30dp"
+                            android:layout_margin="2dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/circle_gray_month"
+                            android:text="Oct"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/fab_ten" />
+
+                        <Button
+                            android:id="@+id/buttonNov"
+                            android:layout_width="0dp"
+                            android:layout_height="30dp"
+                            android:layout_margin="2dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/circle_gray_month"
+                            android:text="Nov"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/fab_ten" />
+
+                        <Button
+                            android:id="@+id/buttonDec"
+                            android:layout_width="0dp"
+                            android:layout_height="30dp"
+                            android:layout_margin="2dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/circle_gray_month"
+                            android:text="Dec"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/fab_ten" />
+                    </LinearLayout>
+
+                </LinearLayout>
+            </LinearLayout>
+
+            <View
+                android:id="@+id/vwYear"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="2dp"
+                android:background="@color/ashseparator"
+                android:visibility="gone"></View>
+
+            <LinearLayout
+                android:id="@+id/llDay"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:visibility="gone">
+
+                <com.ashysystem.mbhq.view.TextViewOswaldLight
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight=".5"
+                    android:text="Select Day for Month Reminder"
+                    android:textColor="#585858"
+                    android:layout_marginRight="10dp"/>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight=".5"
+                    android:orientation="horizontal">
+
+                    <Spinner
+                        android:id="@+id/spMonth"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:visibility="visible"></Spinner>
+
+                    <com.ashysystem.mbhq.view.TextViewOswaldLight
+                        android:id="@+id/txtReminderDayFrequencyMonth"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginBottom="10dp"
+                        android:gravity="right"
+                        android:text="19 Day of month"
+                        android:textColor="@color/colorPrimary"
+                        android:visibility="gone" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <View
+                android:id="@+id/vwDay"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="2dp"
+                android:background="@color/ashseparator"></View>
+
+            <LinearLayout
+                android:id="@+id/llBtwnUp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:visibility="visible"
+                android:orientation="horizontal">
+
+                <com.ashysystem.mbhq.view.TextViewOswaldLight
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight=".33"
+                    android:text="Reminder"
+                    android:textColor="#585858" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight=".33"
+                    android:orientation="horizontal">
+
+                    <Spinner
+                        android:id="@+id/spBtwn"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp">
+
+                    </Spinner>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/llAmPmUp"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight=".33"
+                    android:orientation="horizontal">
+
+                    <Spinner
+                        android:id="@+id/spAmPm"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:visibility="gone">
+
+                    </Spinner>
+
+                    <com.ashysystem.mbhq.view.TextViewRaleWay
+                        android:id="@+id/txtTimePicker"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:gravity="right|center_vertical"
+                        android:paddingRight="10dp"
+                        android:text="12:00 PM"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="@dimen/fab_sixteen"
+                        android:textStyle="bold"/>
+
+                    <com.ashysystem.mbhq.view.TextViewOswaldLight
+                        android:id="@+id/txtAmPmUp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginBottom="10dp"
+                        android:gravity="right"
+                        android:text="12pm"
+                        android:textColor="@color/colorPrimary"
+                        android:visibility="gone" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <View
+                android:id="@+id/vwBtwnUp"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="2dp"
+                android:background="@color/ashseparator"></View>
+            <LinearLayout
+                android:id="@+id/llBtwnDown"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:visibility="visible"
+                android:orientation="horizontal">
+
+                <com.ashysystem.mbhq.view.TextViewOswaldLight
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight=".33"
+                    android:text="and"
+                    android:textColor="#585858" />
+
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight=".33"
+                    android:orientation="horizontal">
+
+                    <Spinner
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:visibility="gone"></Spinner>
+                </LinearLayout>
+
+
+
+                <LinearLayout
+                    android:id="@+id/llAmPmDown"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight=".33"
+                    android:orientation="horizontal">
+
+                    <Spinner
+                        android:id="@+id/spAmPmDown"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:visibility="gone">
+
+                    </Spinner>
+
+                    <com.ashysystem.mbhq.view.TextViewRaleWay
+                        android:id="@+id/txtTimePickerDown"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:gravity="right|center_vertical"
+                        android:paddingRight="10dp"
+                        android:text="12:00 PM"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="@dimen/fab_sixteen"
+                        android:textStyle="bold"/>
+
+                    <com.ashysystem.mbhq.view.TextViewOswaldLight
+                        android:id="@+id/txtAmPmDownwn"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginBottom="10dp"
+                        android:gravity="right"
+                        android:text="12pm"
+                        android:textColor="@color/colorPrimary"
+                        android:visibility="gone" />
+                </LinearLayout>
+            </LinearLayout>
+
+<!--
+            <LinearLayout
+                android:id="@+id/llBtwnDown"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:visibility="visible"
+                android:orientation="horizontal">
+
+                <com.ashysystem.mbhq.view.TextViewOswaldLight
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight=".33"
+                    android:text="and"
+                    android:textColor="#585858" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight=".33"
+                    android:orientation="horizontal">
+
+                    <Spinner
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:visibility="gone"></Spinner>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:visibility="gone"
+                    android:id="@+id/llAmPmDown"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight=".33"
+                    android:orientation="horizontal">
+
+                    <Spinner
+                        android:id="@+id/spAmPmDown"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:visibility="visible">
+
+                    </Spinner>
+
+                    <com.ashysystem.mbhq.view.TextViewRaleWay
+                        android:id="@+id/txtTimePickerDown"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:gravity="right|center_vertical"
+                        android:paddingRight="10dp"
+                        android:text="12:00 PM"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="@dimen/fab_sixteen"
+                        android:textStyle="bold"/>
+
+                    <com.ashysystem.mbhq.view.TextViewOswaldLight
+                        android:id="@+id/txtAmPmDownwn"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginBottom="10dp"
+                        android:gravity="right"
+                        android:text="12pm"
+                        android:textColor="@color/colorPrimary"
+                        android:visibility="visible" />
+                </LinearLayout>
+            </LinearLayout>
+-->
+
+
+
+            <LinearLayout
+                android:id="@+id/llBtwnDown1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:visibility="gone"
+                android:orientation="horizontal">
+
+                <com.ashysystem.mbhq.view.TextViewOswaldLight
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight=".33"
+                    android:text="Link to my calender"
+                    android:textColor="#585858" />
+
+
+                <LinearLayout
+                    android:id="@+id/llcalender"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight=".33"
+                    android:orientation="horizontal">
+
+
+
+                    <com.ashysystem.mbhq.view.TextViewRaleWay
+                        android:id="@+id/txtCalender"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:gravity="right|center_vertical"
+                        android:paddingRight="10dp"
+                        android:text="Open Calender"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="@dimen/fab_sixteen"
+                        android:textStyle="bold"/>
+
+                </LinearLayout>
+            </LinearLayout>
+
+
+
+
+
+
+
+
+            <View
+                android:id="@+id/vwDown"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:visibility="gone"
+                android:layout_marginTop="50dp"
+                android:background="@color/ashseparator"></View>
+
+        </LinearLayout>
+
+        <RelativeLayout
+            android:id="@+id/btnApply"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/action_bar_height"
+            android:layout_below="@+id/llMainBlock"
+            android:background="@drawable/capsule_below_btn"
+            android:visibility="visible">
+
+            <com.ashysystem.mbhq.view.TextViewOswaldRegular
+                android:id="@+id/txtSave"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="APPLY"
+                android:textColor="@color/white"
+                android:textSize="@dimen/fab_eighteen" />
+
+            <View
+                android:layout_width="wrap_content"
+                android:layout_height="1dp"
+                android:layout_below="@+id/txtSave"
+                android:layout_alignLeft="@+id/txtSave"
+                android:layout_alignRight="@+id/txtSave"
+                android:background="@color/white"></View>
+        </RelativeLayout>
+    </LinearLayout>
+
+
+</RelativeLayout>

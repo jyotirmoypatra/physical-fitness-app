@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorPrimary">
+    <ImageView
+        android:id="@+id/imgBack"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/back_v"
+        android:padding="10dp"/>
+    <ImageView
+        android:id="@+id/imgManny"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="10dp"
+        android:src="@drawable/mbhq_manny_habit_add"/>
+    <com.ashysystem.mbhq.view.TextViewRaleWay
+        android:id="@+id/txtNewHabit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        android:layout_below="@+id/imgManny"
+        android:layout_marginTop="15dp"
+        android:layout_marginLeft="10dp"
+        android:textSize="@dimen/fab_sixteen"
+        android:text="What new habit do you want to create?"/>
+    <RelativeLayout
+        android:id="@+id/rlNewHabitTime"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/txtNewHabit"
+        android:layout_marginTop="15dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:background="@drawable/round_corner_white">
+
+        <com.ashysystem.mbhq.view.EditTextRaleWay
+            android:id="@+id/edtNewHabit"
+            android:layout_width="match_parent"
+            android:layout_height="120dp"
+            android:background="@null"
+            android:gravity="top"
+            android:inputType="textMultiLine|textCapSentences"
+            android:paddingLeft="10dp"
+            android:paddingTop="5dp"
+            android:textColor="@color/black"
+            android:textSize="@dimen/fab_sixteen" />
+    </RelativeLayout>
+    <com.ashysystem.mbhq.view.TextViewRaleWay
+        android:id="@+id/txtHowLong"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        android:layout_below="@+id/rlNewHabitTime"
+        android:layout_marginTop="5dp"
+        android:layout_marginLeft="10dp"
+        android:textSize="@dimen/fab_twelve"
+        android:text="Tip: What action are you going to do consistently from now on to create a new habit?"/>
+
+    <com.ashysystem.mbhq.view.ButtonRaleWay
+        android:id="@+id/btnPopularHabits"
+        android:layout_width="200dp"
+        android:layout_height="40dp"
+        android:layout_below="@+id/txtHowLong"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="10dp"
+        android:background="@drawable/round_corner_white"
+        android:gravity="center"
+        android:text="Popular Habits"
+        android:textAllCaps="false"
+        android:textColor="@color/black"
+        android:textSize="@dimen/fab_sixteen" />
+
+    <com.ashysystem.mbhq.view.TextViewRaleWay
+        android:id="@+id/txtHowOften"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        android:layout_below="@+id/btnPopularHabits"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="10dp"
+        android:textSize="@dimen/fab_sixteen"
+        android:text="When will you do the new habit?"/>
+    <RelativeLayout
+        android:id="@+id/rlHowOften"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:layout_below="@+id/txtHowOften"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:background="@drawable/round_corner_white">
+
+        <com.ashysystem.mbhq.view.TextViewSemiBold
+            android:id="@+id/txtHowOftenTime"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="Daily"
+            android:textColor="@color/black"
+            android:textSize="@dimen/fab_sixteen" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rlNext"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="15dp"
+        android:layout_marginRight="10dp">
+
+        <ImageView
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:src="@drawable/mbhq_ic_right_arrow" />
+    </RelativeLayout>
+</RelativeLayout>

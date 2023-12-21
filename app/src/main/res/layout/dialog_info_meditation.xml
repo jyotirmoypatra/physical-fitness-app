@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#B3000000">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:background="@color/white">
+
+        <ImageView
+            android:id="@+id/imgCross"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="10dp"
+            android:background="@drawable/mbhq_closemodal" />
+
+
+        <com.ashysystem.mbhq.util.ProportionalImageView
+            android:id="@+id/imgMain"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/imgCross"
+            android:src="@drawable/go_through_popup_meditations_1_anroid"
+            android:visibility="visible" />
+
+        <com.ashysystem.mbhq.view.ButtonSemiBold
+            android:id="@+id/btnFindMyLevel"
+            android:layout_width="150dp"
+            android:layout_height="45dp"
+            android:layout_below="@+id/imgMain"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="25dp"
+            android:layout_marginBottom="25dp"
+            android:background="@drawable/rounded_corner_green"
+            android:text="FIND MY LEVEL"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textSize="@dimen/fab_eighteen" />
+
+
+        <com.ashysystem.mbhq.util.ProportionalImageView
+            android:id="@+id/imgMain2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/btnFindMyLevel"
+            android:src="@drawable/go_through_popup_meditations_2_anroid1"
+            android:visibility="visible" />
+
+        <!---->
+
+        <com.ashysystem.mbhq.view.ButtonSemiBold
+            android:id="@+id/btnGotIt"
+            android:layout_width="150dp"
+            android:layout_height="45dp"
+            android:layout_below="@+id/imgMain2"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="25dp"
+            android:background="@drawable/rounded_corner_green"
+            android:text="Ok"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textSize="@dimen/fab_eighteen"
+            android:visibility="gone" />
+
+        <com.ashysystem.mbhq.view.ButtonSemiBold
+            android:id="@+id/btnMeditateNow"
+            android:layout_width="150dp"
+            android:layout_height="45dp"
+            android:layout_below="@+id/imgMain2"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="25dp"
+            android:background="@drawable/rounded_corner_green"
+            android:text="MEDITATE NOW"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textSize="@dimen/fab_eighteen" />
+
+        <LinearLayout
+            android:id="@+id/btnDontShow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/btnMeditateNow"
+            android:layout_centerHorizontal="true"
+            android:gravity="center"
+            android:layout_marginBottom="30dp"
+            android:orientation="horizontal">
+
+            <com.ashysystem.mbhq.view.CheckBoxOswaldRegular
+                android:id="@+id/ivCheck"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"  />
+
+            <com.ashysystem.mbhq.view.TextViewBold
+                android:id="@+id/tvDontShow"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="15dp"
+                android:text="Don't show this pop up again"
+                android:textAllCaps="false"
+                android:textColor="@color/black"
+                android:textSize="@dimen/fab_sixteen" />
+        </LinearLayout>
+
+
+    </RelativeLayout>
+
+</androidx.core.widget.NestedScrollView>

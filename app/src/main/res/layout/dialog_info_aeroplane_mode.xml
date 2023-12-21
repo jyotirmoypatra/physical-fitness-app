@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#B3000000">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:background="@color/white">
+
+        <ImageView
+            android:id="@+id/imgCross"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="10dp"
+            android:background="@drawable/mbhq_closemodal"
+            android:padding="10dp" />
+
+
+        <com.ashysystem.mbhq.util.ProportionalImageView
+            android:id="@+id/imgMain"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/imgCross"
+            android:src="@drawable/aeroplane_mode_walkthrough1"
+            android:visibility="visible" />
+
+        <Button
+            android:id="@+id/btnGotIt"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/imgMain"
+            android:layout_marginBottom="20dp"
+            android:background="@drawable/rounded_corner_green"
+            android:text="Got It!"
+            android:textAllCaps="false"
+            android:layout_centerHorizontal="true"
+            android:textColor="@color/white"
+            android:textSize="@dimen/fab_eighteen" />
+
+    </RelativeLayout>
+
+</androidx.core.widget.NestedScrollView>

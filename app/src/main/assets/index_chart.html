@@ -1,0 +1,44 @@
+<!DOCTYPE HTML>
+<html xmlns:height="http://www.w3.org/1999/xhtml" xmlns:position="http://www.w3.org/1999/xhtml"
+	  xmlns:width="http://www.w3.org/1999/xhtml">
+<head>
+	<meta name="viewport" content="width=device-width,height=device-height,initial-scale=1.0"/>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
+	<title>Highcharts Example</title>
+
+	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+	<style type="text/css">
+.containerstyle {
+    position: absolute;
+    top: 0; right: 0; bottom: 0; left: 0;
+    //background-color: #9ED4E1;
+    //border: 15px solid orange
+}
+	</style>
+</head><body>
+<script src="https://code.highcharts.com/highcharts.js"></script>
+
+<div id="container"  class="containerstyle"></div>
+
+
+
+<script type="text/javascript">
+function chart(value,height1,width)
+{
+
+console.log(value);
+console.log(height1);
+
+//document.getElementById("container").style.height=250;
+//document.getElementById('container').setAttribute("style","height:300px");
+//document.getElementById('container').style.height = height1+"px";
+var chart=Highcharts.chart('container', value);
+//chart.setSize(width,height1);
+
+
+}
+
+            </script>
+</body>
+</html>

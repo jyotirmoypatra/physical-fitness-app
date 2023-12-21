@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#B3000000">
+    <ImageView
+        android:id="@+id/imgCross"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/s_cross"
+        android:layout_gravity="right"
+        android:layout_alignParentRight="true"
+        android:padding="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_centerVertical="true"
+        android:background="@color/white"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/action_bar_height"
+            android:background="@color/colorPrimary">
+            <com.ashysystem.mbhq.view.TextViewBold
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/fab_eighteen"
+                android:layout_centerInParent="true"
+                android:layout_marginLeft="10dp"
+                android:textColor="#FFFFFF"
+                android:textStyle="bold"
+                android:text="Please select :"/>
+        </RelativeLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:minHeight="80dp">
+            <RelativeLayout
+                android:id="@+id/rlNoSetTime"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight=".5">
+                <com.ashysystem.mbhq.view.TextViewBold
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:textSize="@dimen/fab_eighteen"
+                    android:textColor="@color/black"
+                    android:textAllCaps="true"
+                    android:textStyle="bold"
+                    android:text="no set time"/>
+            </RelativeLayout>
+            <RelativeLayout
+                android:id="@+id/rlSetTime"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight=".5">
+                <com.ashysystem.mbhq.view.TextViewBold
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:textSize="@dimen/fab_eighteen"
+                    android:textColor="@color/black"
+                    android:textAllCaps="true"
+                    android:textStyle="bold"
+                    android:text="set time"/>
+            </RelativeLayout>
+        </LinearLayout>
+    </LinearLayout>
+</RelativeLayout>

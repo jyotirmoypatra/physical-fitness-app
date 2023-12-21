@@ -1,0 +1,105 @@
+<RelativeLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:tools="http://schemas.android.com/tools"
+	android:layout_width="fill_parent"
+	android:layout_height="fill_parent"
+	android:background="#B3000000"
+	android:orientation="vertical"
+	tools:ignore="MissingDefaultResource">
+	<RelativeLayout
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_centerInParent="true"
+		android:background="@color/white"
+		android:paddingBottom="20dp">
+
+		<ImageView
+			android:id="@+id/imgLogo"
+			android:layout_width="60dp"
+			android:layout_height="60dp"
+			android:layout_centerHorizontal="true"
+			android:layout_marginTop="30dp"
+			android:background="@drawable/app_icon"/>
+
+		<com.ashysystem.mbhq.view.TextViewOswaldRegular
+			android:id="@+id/txtHead"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_below="@+id/imgLogo"
+			android:layout_centerHorizontal="true"
+			android:layout_marginTop="5dp"
+			android:text="Loving MBHQ? Please Rate Us"
+			android:textColor="@color/black"
+			android:textSize="@dimen/fab_eighteen"
+		/>
+		<com.ashysystem.mbhq.view.TextViewOswaldExtraLight
+			android:id="@+id/txtSubHead"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_below="@+id/txtHead"
+			android:layout_centerHorizontal="true"
+			android:layout_marginTop="10dp"
+			android:gravity="center"
+			android:text="Tap a rate  to rate it on Play Store"
+			android:textColor="@color/black"
+			android:textSize="@dimen/fab_twelve"
+			android:visibility="gone"
+		/>
+		<View
+			android:id="@+id/vwUp"
+			android:layout_width="match_parent"
+			android:layout_height="1dp"
+			android:layout_below="@+id/txtSubHead"
+			android:layout_marginTop="5dp"
+			android:background="@color/ashseparator"
+			android:visibility="gone"
+		/>
+		<RatingBar
+			android:id="@+id/ratingBar"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_below="@+id/vwUp"
+			android:layout_centerHorizontal="true"
+			android:layout_marginTop="5dp"
+			android:numStars="5"
+			android:stepSize="1.0"
+			android:visibility="gone"
+		/>
+		<View
+			android:id="@+id/vwBelow"
+			android:layout_width="match_parent"
+			android:layout_height="1dp"
+			android:layout_below="@+id/ratingBar"
+			android:layout_marginTop="5dp"
+			android:background="@color/ashseparator"
+			android:visibility="gone"
+		/>
+		<com.ashysystem.mbhq.view.TextViewOswaldRegular
+			android:id="@+id/txtRate"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_below="@+id/vwBelow"
+			android:layout_centerHorizontal="true"
+			android:layout_marginTop="15dp"
+			android:padding="5dp"
+			android:text="Rate Now"
+			android:textStyle="bold"
+			android:textSize="@dimen/fab_eighteen"
+			android:textColor="@color/colorPrimary"
+		/>
+		<com.ashysystem.mbhq.view.TextViewOswaldLight
+			android:id="@+id/txtNot"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_below="@+id/txtRate"
+			android:layout_centerHorizontal="true"
+			android:layout_marginTop="5dp"
+			android:text="Close"
+			android:textSize="@dimen/fab_eighteen"
+			android:textColor="@color/black"
+		/>
+	
+	</RelativeLayout>
+
+
+</RelativeLayout>

@@ -1,0 +1,495 @@
+<?xml version="1.0" encoding="utf-8"?><!-- Copyright 2012 Square, Inc. -->
+
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="app_name">Efc</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
+
+    <string name="video">Video</string>
+
+    <string name="audio">Audio</string>
+
+    <string name="text">Text</string>
+
+    <string name="retry">Retry</string>
+
+    <string name="equipment_broadcast">EquipmentBroadcast</string>
+
+    <string name="selection_disabled">Disabled</string>
+
+    <string name="selection_default">Default</string>
+
+    <string name="selection_default_none">Default (none)</string>
+
+    <string name="unexpected_intent_action">Unexpected intent action: <xliff:g id="action">%1$s</xliff:g></string>
+
+    <string name="enable_random_adaptation">Enable random adaptation</string>
+
+    <string name="error_drm_not_supported">Protected content not supported on API levels below 18</string>
+
+    <string name="error_drm_unsupported_scheme">This device does not support the required DRM scheme</string>
+
+    <string name="error_drm_unknown">An unknown DRM error occurred</string>
+
+    <string name="error_no_decoder">This device does not provide a decoder for <xliff:g id="mime_type">%1$s</xliff:g></string>
+
+    <string name="error_no_secure_decoder">This device does not provide a secure decoder for <xliff:g id="mime_type">%1$s</xliff:g></string>
+
+    <string name="error_querying_decoders">Unable to query device decoders</string>
+
+    <string name="error_instantiating_decoder">Unable to instantiate decoder <xliff:g id="decoder_name">%1$s</xliff:g></string>
+
+    <string name="error_unsupported_video">Media includes video tracks, but none are playable by this device</string>
+
+    <string name="error_unsupported_audio">Media includes audio tracks, but none are playable by this device</string>
+
+    <string name="storage_permission_denied">Permission to access storage was denied</string>
+
+    <string name="sample_list_load_error">One or more sample lists failed to load</string>
+
+
+    <string name="facebook_app_id">173507396486976</string>
+
+    <string name="day_name_format">EEE</string>
+    <string name="invalid_date">Date must be between %1$s and %2$s.</string>
+    <string name="month_name_format">MMMM yyyy</string>
+    <!-- ###################### -->
+
+
+    <string name="goto_start" msgid="8979658707407220934">"Library"</string>
+    <string name="party_shuffle" msgid="8213359225506006168">"Party shuffle"</string>
+    <string name="party_shuffle_off" msgid="1828744483354711679">"Party shuffle off"</string>
+    <string name="delete_item" msgid="3363330144534750601">"Delete"</string>
+    <string name="shuffle_all" msgid="1388193611787878773">"Shuffle all"</string>
+    <string name="play_all" msgid="6309622568869321842">"Play all"</string>
+    <string name="delete_artist_desc" msgid="8665759524898379194">"Permanently delete all songs by <xliff:g id="ARTIST">%s</xliff:g> from the SD card?"</string>
+    <string name="delete_artist_desc_nosdcard" msgid="5729059309796497914">"Permanently delete all songs by <xliff:g id="ARTIST">%s</xliff:g> from USB storage?"</string>
+    <string name="delete_album_desc" msgid="8172412873562794429">"Permanently delete the entire album \"<xliff:g id="ALBUM">%s</xliff:g>\" from the SD card?"</string>
+    <string name="delete_album_desc_nosdcard" msgid="8612559166069885285">"Permanently delete the entire album \"<xliff:g id="ALBUM">%s</xliff:g>\" from USB storage?"</string>
+    <string name="delete_song_desc" msgid="1842681623848282205">"Permanently delete \"<xliff:g id="SONG">%s</xliff:g>\" from the SD card?"</string>
+    <string name="delete_song_desc_nosdcard" msgid="5064973032624148730">"Permanently delete \"<xliff:g id="SONG">%s</xliff:g>\" from USB storage?"</string>
+    <string name="delete_confirm_button_text" msgid="7008121194944357274">"OK"</string>
+    <plurals name="NNNtracksdeleted" formatted="false" msgid="2499334199042190643">
+        <item quantity="other"><xliff:g id="SONGS_TO_DELETE">%d</xliff:g> songs were deleted.</item>
+        <item quantity="one">1 song was deleted.</item>
+    </plurals>
+    <string name="scanning" msgid="3529383847223198502">"Scanning SD card…"</string>
+    <string name="scanning_nosdcard" msgid="8105284774487360148">"Scanning USB storage…"</string>
+    <string name="nowplaying_title" msgid="8342523844307751761">"Now playing"</string>
+    <string name="partyshuffle_title" msgid="6582413231529992125">"Party shuffle"</string>
+    <string name="artists_title" msgid="8490372367259160067">"Artists"</string>
+    <string name="albums_menu" msgid="5807982055590211900">"Albums"</string>
+    <string name="albums_title" msgid="8773880394961378035">"Albums"</string>
+    <string name="tracks_menu" msgid="6942246568246092330">"Songs"</string>
+    <string name="tracks_title" msgid="3229389424532295124">"Songs"</string>
+    <string name="playlists_menu" msgid="5382792649771928849">"Playlists"</string>
+    <string name="playlists_title" msgid="5094238486322957927">"Playlists"</string>
+    <string name="videos_title" msgid="2066741954354129115">"Videos"</string>
+    <string name="all_title" msgid="6880186414437237653">"All media"</string>
+    <string name="browse_menu" msgid="5248122473075843289">"Artists"</string>
+    <string name="search_title" msgid="1016971653383739344">"Search"</string>
+    <string name="no_tracks_title" msgid="8805805388271238471">"No songs"</string>
+    <string name="no_videos_title" msgid="6218814130364793104">"No videos"</string>
+    <string name="no_playlists_title" msgid="4456351945617594418">"No playlists"</string>
+    <string name="delete_playlist_menu" msgid="8998637685583495247">"Delete"</string>
+    <string name="edit_playlist_menu" msgid="571618502105370684">"Edit"</string>
+    <string name="rename_playlist_menu" msgid="3133463747389494668">"Rename"</string>
+    <string name="playlist_deleted_message" msgid="9008053828193961455">"Playlist deleted."</string>
+    <string name="playlist_renamed_message" msgid="7187580192703005990">"Playlist renamed."</string>
+    <string name="recentlyadded" msgid="110978416756366953">"Recently added"</string>
+    <string name="recentlyadded_title" msgid="3153322287249901914">"Recently added"</string>
+    <string name="podcasts_listitem" msgid="8657809279717670634">"Podcasts"</string>
+    <string name="podcasts_title" msgid="4928414142496858304">"Podcasts"</string>
+    <string name="sdcard_missing_title" msgid="9008284946643270850">"No SD card"</string>
+    <string name="sdcard_missing_title_nosdcard" msgid="7984839174824243958">"No USB storage"</string>
+    <string name="sdcard_missing_message" msgid="2100061456003981823">"Your phone doesn\'t have an SD card inserted."</string>
+    <string name="sdcard_missing_message_nosdcard" msgid="4459620970330194881">"Your phone doesn\'t have USB storage."</string>
+    <string name="sdcard_busy_title" msgid="1162763571147174655">"SD card unavailable"</string>
+    <string name="sdcard_busy_title_nosdcard" msgid="3319125156566499501">"USB storage unavailable"</string>
+    <string name="sdcard_busy_message" msgid="579981082201215537">"Your SD card is busy."</string>
+    <string name="sdcard_busy_message_nosdcard" msgid="1493449756827869166">"Your USB storage is busy."</string>
+    <string name="sdcard_error_title" msgid="165682155008600643">"SD card error"</string>
+    <string name="sdcard_error_title_nosdcard" msgid="7564338137076303931">"USB storage error"</string>
+    <string name="sdcard_error_message" msgid="4574563894036627855">"An error was encountered on your SD card."</string>
+    <string name="sdcard_error_message_nosdcard" msgid="4983430848526821234">"An error was encountered on your USB storage."</string>
+    <string name="unknown_artist_name" msgid="5567811106415855219">"Unknown artist"</string>
+    <string name="unknown_album_name" msgid="8525145988941244727">"Unknown album"</string>
+    <string name="shuffle_on_notif" msgid="5453708337808483943">"Shuffle is on."</string>
+    <string name="shuffle_off_notif" msgid="4251189610017886263">"Shuffle is off."</string>
+    <string name="repeat_off_notif" msgid="1149406899083479716">"Repeat is off."</string>
+    <string name="repeat_current_notif" msgid="1227153936360904196">"Repeating current song."</string>
+    <string name="repeat_all_notif" msgid="6443293055987316642">"Repeating all songs."</string>
+    <string name="ringtone_menu" msgid="2737472190159134599">"Use as phone ringtone"</string>
+    <string name="ringtone_menu_short" msgid="3367622038867238133">"Use as ringtone"</string>
+    <string name="ringtone_set" msgid="5325818347613843130">"\"<xliff:g id="NAME">%s</xliff:g>\" set as phone ringtone."</string>
+    <string name="play_selection" msgid="2854921021814550018">"Play"</string>
+    <string name="add_to_playlist" msgid="7110273488645072783">"Add to playlist"</string>
+    <string name="queue" msgid="2937629819482787704">"Current playlist"</string>
+    <string name="new_playlist" msgid="7588112979692632867">"New"</string>
+    <string name="new_playlist_name_template" msgid="905710296728900597">"New playlist <xliff:g id="NUMBER">%d</xliff:g>"</string>
+    <plurals name="NNNtrackstoplaylist" formatted="false" msgid="4679501954832581077">
+        <item quantity="other"><xliff:g id="NUMBER">%d</xliff:g> songs added to playlist.</item>
+        <item quantity="one">1 song added to playlist.</item>
+    </plurals>
+    <string name="emptyplaylist" msgid="6711555673997896344">"Selected playlist is empty."</string>
+    <string name="create_playlist_create_text" msgid="8149755205483279143">"Save"</string>
+    <string name="create_playlist_overwrite_text" msgid="2007808383561024706">"Overwrite"</string>
+    <string name="service_start_error_title" msgid="8649916852210198813">"Playback problem"</string>
+    <string name="service_start_error_msg" msgid="7061754255330276478">"The song couldn\'t be played."</string>
+    <string name="service_start_error_button" msgid="480888406592240723">"OK"</string>
+    <string-array name="weeklist">
+        <item msgid="7005918873419323862">"1 week"</item>
+        <item msgid="7487749116155425822">"2 weeks"</item>
+        <item msgid="1565338360539555185">"3 weeks"</item>
+        <item msgid="2142986059836933072">"4 weeks"</item>
+        <item msgid="4332403875260507291">"5 weeks"</item>
+        <item msgid="3847281907869868565">"6 weeks"</item>
+        <item msgid="2942654998558867799">"7 weeks"</item>
+        <item msgid="2115529325850052227">"8 weeks"</item>
+        <item msgid="1396675336665198092">"9 weeks"</item>
+        <item msgid="3178819129208998649">"10 weeks"</item>
+        <item msgid="2727959579637914171">"11 weeks"</item>
+        <item msgid="8708754966127584739">"12 weeks"</item>
+    </string-array>
+    <string name="weekpicker_set" msgid="7636608790418067496">"Done"</string>
+    <string name="weekpicker_title" msgid="699535378922101701">"Set time"</string>
+    <string name="save_as_playlist" msgid="5180413608901885255">"Save as playlist"</string>
+    <string name="clear_playlist" msgid="4565515100924905315">"Clear playlist"</string>
+    <string name="musicbrowserlabel" msgid="3162022214114562892">"Music"</string>
+    <string name="musicshortcutlabel" msgid="2602980193508150226">"Music playlist"</string>
+    <string name="mediaplaybacklabel" msgid="6733604841530940397">"Music"</string>
+    <string name="videobrowserlabel" msgid="8522326678447494657">"Videos"</string>
+    <string name="mediapickerlabel" msgid="4549836003229914299">"Music"</string>
+    <string name="playback_failed" msgid="3811851150820251398">"The player doesn\'t support this type of audio file."</string>
+    <string name="cancel" msgid="886559484711947520">"Cancel"</string>
+    <string name="remove_from_playlist" msgid="2548577514849026354">"Remove from playlist"</string>
+    <string name="streamloadingtext" msgid="8842426517396356215">"Connecting to <xliff:g id="HOST">%s</xliff:g>…"</string>
+    <string name="mediasearch" msgid="959222971261132292">"Search for <xliff:g id="TERM">%s</xliff:g>, using:"</string>
+    <string name="working_artists" msgid="8678357432732156580">"Artists…"</string>
+    <string name="working_albums" msgid="8713273699401457426">"Albums…"</string>
+    <string name="working_songs" msgid="2201491972050410684">"Songs…"</string>
+    <string name="working_playlists" msgid="4424950806134653351">"Playlists…"</string>
+    <string name="loading" msgid="1991660396037155453">"Loading…"</string>
+    <string name="sort_by_track" msgid="7662999005554152565">"Tracks"</string>
+    <string name="sort_by_album" msgid="2912837715658975248">"Albums"</string>
+    <string name="sort_by_artist" msgid="4607024967813199992">"Artists"</string>
+    <string name="music_picker_title" msgid="4143865470317360605">"Choose music track"</string>
+    <string name="search_settings_description" msgid="6520975349259883368">"Artists, albums and tracks"</string>
+    <string name="search_hint" msgid="3766854898072633001">"Search Music"</string>
+    <string name="fast_scroll_alphabet" msgid="5548732936480723311">" ABCDEFGHIJKLMNOPQRSTUVWXYZ"</string>
+    <string name="widget_initial_text" msgid="3166878738860903586">"Touch to choose music."</string>
+    <string name="effectspanel" msgid="8804547581593509614">"Sound effects"</string>
+
+    <!-- ################ -->
+
+
+    <string name="time_set">Set time</string>
+    <string name="time">Time : </string>
+    <string name="something_went_wrong_message">Something went wrong , please try again later.</string>
+
+    <string name="app_fly_dev_key">fvcWEuttagSYwiZqfz9mSP</string>
+
+
+    <string name="standard">Standard </string>
+    <string name="nomeasure"> No Measure</string>
+    <string name="valueStandardMeasure">0% - 0%</string>
+    <string name="txtNoMeasure">\'No Measure\' meals are extra simple, tasty and clean meals designed so that even the least confident person can cook clean without having to measure, weight or count a thing.</string>
+    <string name="txtWithYour">With your custom menu plan you get to decide if you would like more \'no measure\' meals or more \'standard\' meals that are measuring the exact calories and macro\'s for your goals.</string>
+    <string name="txtIfThere">If there are not enough \'no measure\' meals to fit your preferences, then we will add in \'standard\' meals to fit the gaps.</string>
+    <string name="txtPleaseTry">Please try both and find what works best for you. Learning how to make clean and healthy meals that you love the taste of, that keep you feeling full and energised and that help you achieve your goals is probably the number one skill you need to develop. Once you nail this, everything else becomes easier.</string>
+
+    <string name="thisisan">This is an Ashy Bines ‘No Measure’ meal.</string>
+    <string name="asimple">A simple, tasty and clean meal designed so that even the least confident cook can make it without having to measure, weight or count a thing.</string>
+    <string name="creating">Creating healthy meals that get you results has never been easier.</string>
+
+
+    <!--Camera-->
+    <string name="mcam_defaultDuration">00:00</string>
+    <string name="mcam_permissions_needed">Permissions Needed</string>
+    <string name="mcam_video_perm_warning">Permission to access your microphone and camera is
+		needed, the camera will now close.
+	</string>
+    <string name="mcam_retry">RETAKE</string>
+    <string name="mcam_use_video">USE VIDEO</string>
+    <string name="mcam_use_stillshot">USE</string>
+    <string name="mcam_portrait">Portrait</string>
+    <string name="mcam_portrait_warning">It\'s recommended that you record in landscape. Record in
+		portrait?
+	</string>
+    <string name="mcam_yes">Yes</string>
+    <string name="mcam_error">Error</string>
+    <string name="mcam_video_capture_unsupported">Your device does not support video capture.
+	</string>
+    <string name="mcam_no_audio_access">You haven\'t given access to your microphone; no audio will
+		be recorded.
+	</string>
+    <string name="mcam_file_size_limit_reached">You\'ve reached the maximum file size!</string>
+    <string name="mcam_image_preview_error_title">Image preview error</string>
+    <string name="mcam_image_preview_error_message">Could not decode bitmap</string>
+    <string name="txt_camera">Camera</string>
+    <string name="txt_my_photos">My Photos</string>
+    <string name="txt_weigh_ins">Weigh Ins</string>
+    <string name="default_picture">default picture</string>
+    <string name="txt_scale_and_pan_you_image">Scale and Pan your progress photos.</string>
+    <!--Camera-->
+    <string name="sign_up">Sign Up</string>
+    <string name="mealmatch">Track Calories</string>
+    <string name="my_plan">MY PLAN</string>
+    <string name="my_day">MY DAY</string>
+    <string name="my_plantxt">My Plan</string>
+    <string name="my_intaketxt">My Intake</string>
+    <string name="difference">Difference</string>
+    <string name="waterxt">Water</string>
+    <string name="addWater">Add Water</string>
+    <string name="add">Add</string>
+    <string name="welcometosquad">Welcome to Squad!</string>
+    <string name="let_setup">Let’s Set Up Your</string>
+    <string name="custom_program">CUSTOM PROGRAM</string>
+    <string name="pleaseContinue">Please continue your registration and start a FREE TRIAL.</string>
+    <string name="create_customplan_now">Create Free Account</string>
+
+    <string name="txt_upload_message">Uploading please wait...</string>
+
+    ////////////////////////////////////////////////
+
+    <string name="title_activity">RT Editor Activity</string>
+    <string name="title_fragment">RT Editor Fragment</string>
+
+    <string name="label_subject">Subject</string>
+    <string name="label_message">Message</string>
+    <string name="label_signature">Signature</string>
+
+    <string name="menu_save">Save</string>
+    <string name="menu_load">Load</string>
+    <string name="menu_dark_theme">Dark theme</string>
+    <string name="menu_light_theme">Light theme</string>
+    <string name="menu_single_toolbar">Single toolbar</string>
+    <string name="menu_split_toolbar">Split toolbar</string>
+    <string name="menu_fragment">Use Fragment</string>
+    <string name="menu_activity">Use Activity</string>
+
+    <string name="save_as">Save as…</string>
+    <string name="save_as_success">Text saved as %s</string>
+    <string name="save_as_failure">Text could not be saved: %s</string>
+    <string name="load_failure_1">This isn\'t a valid rich text editor file</string>
+    <string name="load_failure_2">This isn\'t a valid rich text editor file: %s</string>
+
+    <string name="permission_denied">Permission denied</string>
+    <string name="permission_denied_storage">Without this permission you can\'t insert camera pictures. Are you sure you want to deny this permission?</string>
+    <string name="permission_deny">Deny</string>
+    <string name="permission_retry">Re-try</string>
+
+    <string name="no_file_picker">There\'s no app installed to handle picking a directory: %s</string>
+
+    ///////////////////////////////////////////////
+
+    <string name="strclick">4. Click \"My Music\" To set your playlist</string>
+    <string name="strWeight">3. CLICK \" MY WEIGHTS \"TO RECORD YOUR WEIGHT</string>
+    <string name="top_tips">TOP TIPS:</string>
+    <string name="edit_workout_time"><u>Edit Workout Time</u></string>
+
+    <string name="hide_what_s_on_my_plan">Hide my plan</string>
+    <string name="show_what_s_on_my_plan">Show my plan</string>
+    <string name="analyse">Analyse</string>
+    <string name="add_water">Add Water</string>
+    <string name="remove_water">Remove Water</string>
+    <string name="remove">remove</string>
+    <string name="what_s_on_my_plan">My Plan</string>
+    <string name="what_i_m_eating">My Intake</string>
+    <string name="shop_list">Shop List</string>
+    <string name="shopping_list_save">Save</string>
+    <string name="add_to_list">Add To List</string>
+    <string name="txt_current_week">Current Week</string>
+    <string name="hide_completed">Hide Completed</string>
+    <string name="show_completed">Show Completed</string>
+    <string name="show_unmeasured_ingredients">Show unmeasured</string>
+    <string name="hide_unmeasured_ingredients">Hide unmeasured</string>
+
+    <string-array name="arrayName">
+        <item>Viewing All</item>
+        <item>Array Item Two</item>
+        <item>Array Item Three</item>
+    </string-array>
+
+    <string-array name="arrayNameBody">
+        <item>All</item>
+        <item>Hiit</item>
+        <item>Pilates</item>
+        <item>Yoga</item>
+        <item>Cardio</item>
+        <item>Weight</item>
+    </string-array>
+
+    <string name="ingredient_list">Ingredient List</string>
+    <string name="edit_ingredient">Edit Ingredients</string>
+    <string name="add_ingredient">Add Ingredients</string>
+
+    <string name="delete">Delete</string>
+    <string name="edit">Edit</string>
+    <string name="food_prep_meals">Food Prep Meals</string>
+    <string name="add_meal">Add Meal</string>
+    <string name="meal_save_and_continue"><![CDATA[SAVE & NEXT]]></string>
+    <string name="title_add_food_prep">Add Food Prep</string>
+    <string name="title_edit_food_prep">Edit Food Prep</string>
+    <string name="txt_weekly_food_prep_meal_search">Advance Meal Search</string>
+    <string name="carbs_fats_and_protein_content"><![CDATA[Carbs, Fats & Protein Content]]></string>
+    <string name="select_range">Select Range</string>
+    <string name="food_i_like">Food I Like</string>
+    <string name="food_not_like">Food I Don\'t Like</string>
+    <string name="my_favourite_protein_sources">My Favourite Protein Sources</string>
+    <string name="my_favourite_carb_sources">My Favourite Carb Sources</string>
+    <string name="moderate_21_to_45">Moderate 21% to 45%</string>
+    <string name="low_20"><![CDATA[low < 20%]]></string>
+    <string name="low_amp_moderate_45"><![CDATA[Low & moderate < 45%]]></string>
+    <string name="high_amp_moderate_21"><![CDATA[high & moderate > 21%]]></string>
+    <string name="high_45"><![CDATA[High > 45%]]></string>
+    <string name="veryhigh_60"><![CDATA[Veryhigh > 60%]]></string>
+    <string name="min">MIN %</string>
+    <string name="max">MAX %</string>
+
+    <item name="meal_prep_button_entry" type="id" />
+    <item name="meal_prep_button_status" type="id" />
+    <item name="meal_prep_range" type="id" />
+    <item name="object_reference" type="id" />
+
+
+    <!--Firebase Ui-->
+    <string name="sign_in_cancelled">Sign in cancelled</string>
+    <string name="no_internet_connection">No internet connection</string>
+    <string name="unknown_error">Unknown Error</string>
+    <string name="unknown_sign_in_response">Unknown sign in response</string>
+    <string name="authenticating">Authenticating</string>
+
+    <string name="push_channel_name">Message Notifications</string>
+    <string name="select_more_than_one_user_to_create_a_group">Select more than one user to create a
+		group
+	</string>
+    <string name="txt_create_chat_group">Create Group</string>
+    <string name="my_chat_messages">My Messages</string>
+    <string name="chat_friend_request">You sent a friend request</string>
+    <string name="create_chat_thread_with_users_fail_toast">Unable to create chat thread as user
+		does not have the latest version of the app
+	</string>
+    <!--Firebase Ui-->
+
+    <!--Meal Analyse-->
+    <string name="meal_match_analysis">Meal Match Analyse</string>
+    <string name="saved_analysing_nutrition_search">Saved Analysing Nutrition Search</string>
+    <string name="are_associated_with_emotions">Are Associated With Emotions</string>
+    <string name="select_one">Select One</string>
+    <string name="show_me_all_the">Show me all the</string>
+    <string name="name">Name</string>
+    <string name="type">Type</string>
+    <string name="association">Association</string>
+    <string name="action">Action</string>
+    <string name="save_search">Save Search</string>
+    <string name="av_rating">Av.Rating</string>
+    <string name="frequency">Frequency</string>
+    <string name="exp_av">Exp Av</string>
+    <string name="exp_ingr">Exp Ingr</string>
+    <string name="enter_search_name">ENTER SEARCH NAME</string>
+    <string name="exp_meal">Exp Meal</string>
+    <string name="exp_av_rating">Exp Av.Rating</string>
+    <item name="meal_analyse_model" type="id" />
+    <!--Meal Analyse-->
+
+    <!--Session List Search-->
+    <item name="session_list_button_entry" type="id" />
+    <item name="session_list_button_status" type="bool" />
+    <item name="session_list_all_button_selection" type="bool" />
+
+    <!--Session List Search-->
+
+    <string name="infinity">&#8734;</string>
+    <string name="helptext">Welcome To HELP<br></br><br></br>
+
+To learn about the incredible features available with the SQUAD program <b>look for the [i] screens in the top right hand corner of your app.</b>   Simply click on the [i] to learn more about the screen you are on.<br></br><br></br>
+
+More are being added every week to help you navigate and get the most out of your program.<br></br><br></br>
+
+This HELP section will be updated by October 2018 to ensure all help videos and tips are available to view here.</string>
+    <string name="helptexAgain">![CDATA[Welcome To HELP<br></br><br></br>
+
+To learn about the incredible features available with the SQUAD program <b>look for the [i] screens in the top right hand corner of your app.</b>   Simply click on the [i] to learn more about the screen you are on.<br></br><br></br>
+
+More are being added every week to help you navigate and get the most out of your program.<br></br><br></br>
+
+This HELP section will be updated by October 2018 to ensure all help videos and tips are available to view here]]</string>
+    <string name="my_string"><b>Hello World!</b> This is an example.</string>
+    <string name="edit_mealmatch"><u>Edit</u></string>
+    <string name="setaction">Set Goal &amp; Actions</string>
+    <string name="set_reminder">SET REMINDER</string>
+    <string name="cohen_ans">Your goal is to reduce your score over time\n\nCompare your score to the \"Average\" scores below. You may compare against people of your age or your gender. If you are more than six points above the \"average\" than you probably have a medium-high amount of stress, and if you are six points below than you are relatively stress free. If you are 12 points above the noted average score, than you likely are experiencing significantly high amounts of stress and may be endangering your health.</string>
+    <string name="rahe_text"><font color='#000000'><b>Score Interpretation</b></font>\n\n<font color='#000000'><b>11-150</b></font>\n<font color='#838383'>You have only a low to moderate chance of becoming ill in the near future.</font>\n<font color='#000000'><b>150-299</b></font>\n<font color='#838383'>You have a moderate to high chance of becoming ill in the near future.</font>\n
+<font color='#000000'><b>300+</b>\n</font><font color='#838383'>You have a high or very high risk of becoming ill in the near future.</font></string>
+    <string name="happiness_text">\u2022 The higher your percentage, the higher your happiness level.\n
+\u2022 Aim to improve your score over time.\n
+\u2022 The Squad Appreciate Section is a great resource to help improve your score\n</string>
+    <string name="settings">GFITSTRING</string>
+    <string name="permission_rationale">GFIT ACCESS</string>
+    <string name="permission_denied_explanation">GFIT DENIED</string>
+    <string name="log_in_wit_facebook">LOG IN WIT...FACEBOOK</string>
+    <string name="test_your_fitness_strength"><![CDATA[TEST YOUR FITNESS & STRENGTH]]></string>
+
+    <string name="clickhere">
+         <u>Click here</u>.
+    </string>
+    <string name="letsgo">LET\'S GO!</string>
+
+
+    <string name="happinesstext">Start your \n Happiness Habbit \n now!</string>
+    <string name="congratulationstxt">You are one step closer to improving your happiness and hacking your potential!</string>
+    <!--    <string name="welcome_to_mindbody_hq">Welcome To \n MindBody HQ</string>-->
+    <string name="welcome_to_mindbody_hq">Welcome To \n Emotional Fitness Club</string>
+
+    <string name="what_does_it_mean_to_future_me">What does it mean to \'future me\'?</string>
+
+    <string name="achieve_your_goals_n_find_your_calm_n_improve_your_happiness">RE-TRAIN YOUR BRAIN</string>
+    <string name="cohen_ans_new"><font color='#838383'>Your goal is to reduce your score over time</font></string>
+
+    <string name="my_programs"><u>My Courses</u></string>
+    <string name="live_programs"><u>Live Courses</u></string>
+    <string name="member_programs"><u>Members Only Programs</u></string>
+    <string name="paid_programs"><u>Paid Courses</u></string>
+
+    <string name="click_here"><u>Click Here</u></string>
+    <string name="click_to_read_more"><u>Click to read more</u></string>
+
+    <string name="click_to_read_less"><u>Click to read less</u></string>
+    <string name="title_activity_main2">MainActivity</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <!--    <string name="customer_support_email"><u>customercare@mindbodyhq.com</u></string>-->
+    <string name="customer_support_email"><u>customercare@emotionalfitnessclub.com</u></string>
+    -->
+
+    <string name="meditation_details_for_level_0">This is a level %1$s meditation.\n\nif they are too slow and you would like to breath sooner, try level %2$s.\n\nOver time as you become more experienced your level may increase. Please adjust as necessary.</string>
+    <string name="meditation_details_for_level_6">This is a level %1$s meditation.\n\nIf the breath cues in this track feel too fast and you would like to breathe slower, please try level %2$s.\n\nOver time as you become more experienced your level may increase. Please adjust as necessary.</string>
+    <string name="meditation_details">This is a level %1$s meditation.\n\nIf the breath cues in this track feel too fast and you would like to breathe slower, please try level %2$s.\n\nif they are too slow and you would like to breath sooner, try level %3$s.\n\nOver time as you become more experienced your level may increase. Please adjust as necessary.</string>
+    <string name="meditation_details_short">This is a level %1$s meditation.\n</string>
+    <string name="shop_now">Shop Now</string>
+    <string name="test_now">Test Now</string>
+    <!--    <string name="meditation_task_bait">Take your meditations next level by reducing sensory input with a \'Meditation Mask\' by MindbodyHQ.</string>-->
+    <string name="meditation_task_bait">Take your meditations next level by reducing sensory input with a \'Meditation Mask\' by Emotional Fitness Club.</string>
+
+    <string name="meditation_level_bait">Unsure of the perfect level for you? Do a quick test now.</string>
+
+
+    <string name="meditation_non_cued_help">Breath control meditations get your body and mind into the perfect state to achieve the most from your meditation practice. \n\nThe non-cued extension option allows you to practice un-assisted meditation while in this optimal state. \n\nWith your mind quiet, you will find un-assisted meditation and self-introspection easier than ever before. As you build focus in this optimal environment your ability to become present anywhere at any time (even during highly stressful events) will improve.</string>
+    <string name="masterclass"><u>Masterclass</u></string>
+    <string name="paid_masterclass"><u>Paid Masterclass</u></string>
+
+    <string name="win_the_week_info">The ultimate way to keep yourself accountable!\n\n\nIt\'s easy and fun.\n\nTick off all \'today\'s habits\' and <b>WIN THE DAY</b>.\n\nWin multiple days in a row to create a <b>STREAK</b>.\n\nWin 4 or more days in a week to <b>WIN THE WEEK</b>.\n\nRemember habit change isn\'t about perfection. It\'s about doing the new habit more often than you don\'t.\n\n If you\'re winning your weeks, you\'re \n<b>WINNING AT LIFE!</b></string>
+
+    <string name="apply">apply</string>
+    <string name="clear">clear</string>
+    <string name="podcast"><u>Podcast</u></string>
+
+</resources>

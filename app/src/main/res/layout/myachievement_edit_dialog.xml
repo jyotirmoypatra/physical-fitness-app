@@ -1,0 +1,169 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
+    <LinearLayout
+        android:id="@+id/dialogLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#2E434343"
+        android:orientation="vertical">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="50dp"
+            android:gravity="right"
+            android:orientation="horizontal">
+
+            <FrameLayout
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+
+                android:layout_marginRight="17dp">
+
+                <ImageView
+                    android:layout_width="75dp"
+                    android:layout_height="50dp"
+                    android:layout_marginLeft="145dp"
+                    android:src="@drawable/ic_mbhq_up_arrow" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:background="@drawable/round_corner_bg"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:paddingLeft="15dp"
+                    android:paddingRight="10dp">
+
+                    <ImageView
+                        android:id="@+id/editDialogClose"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginTop="6dp"
+                        android:layout_marginRight="5dp"
+                        android:src="@drawable/ic_close_green" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/editDialogClose"
+                        android:layout_marginTop="25dp"
+                        android:orientation="vertical">
+
+
+                        <RelativeLayout
+                            android:id="@+id/editAchievement"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="20dp"
+                            android:gravity="center">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentLeft="true"
+                                android:layout_centerInParent="true"
+                                android:text="EDIT"
+                                android:textColor="@color/black"
+                                android:textSize="20sp" />
+
+                            <ImageView
+                                android:layout_width="25dp"
+                                android:layout_height="25dp"
+                                android:layout_alignParentRight="true"
+                                android:layout_marginRight="12dp"
+                                android:src="@drawable/ic_edit_gray" />
+                        </RelativeLayout>
+
+                        <RelativeLayout
+                            android:id="@+id/shareAchievement"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="20dp"
+                            android:gravity="center">
+
+                            <TextView
+                                android:id="@+id/tv_status"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentLeft="true"
+                                android:layout_centerInParent="true"
+                                android:text="SHARE"
+                                android:textColor="@color/black"
+                                android:textSize="20sp" />
+
+                            <ImageView
+
+                                android:id="@+id/img_status"
+                                android:layout_width="25dp"
+                                android:layout_height="35dp"
+                                android:layout_alignParentRight="true"
+                                android:layout_marginRight="12dp"
+                                android:src="@drawable/fb_share"
+                                app:tint="@color/body_grey" />
+                        </RelativeLayout>
+                        <RelativeLayout
+                            android:id="@+id/rl_folder"
+                            android:visibility="gone"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="20dp"
+                            android:gravity="center">
+
+                            <TextView
+                                android:id="@+id/tv_foldername"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentLeft="true"
+                                android:layout_centerInParent="true"
+                                android:text="Folder"
+                                android:textColor="@color/black"
+                                android:textSize="20sp" />
+
+                            <ImageView
+
+                                android:id="@+id/img_editfolder"
+                                android:layout_width="25dp"
+                                android:layout_height="35dp"
+                                android:layout_alignParentRight="true"
+                                android:layout_marginRight="12dp"
+                                android:src="@drawable/ic_edit_gray"
+                                app:tint="@color/body_grey" />
+                        </RelativeLayout>
+
+                        <RelativeLayout
+                            android:id="@+id/deleteAchievement"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="15dp">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentLeft="true"
+                                android:layout_centerInParent="true"
+                                android:text="DELETE"
+                                android:textColor="@color/black"
+                                android:textSize="20sp" />
+
+                            <ImageView
+                                android:layout_width="25dp"
+                                android:layout_height="25dp"
+                                android:layout_alignParentRight="true"
+                                android:layout_marginRight="12dp"
+                                android:src="@drawable/delete" />
+                        </RelativeLayout>
+                    </LinearLayout>
+                </RelativeLayout>
+            </FrameLayout>
+        </LinearLayout>
+    </LinearLayout>
+</RelativeLayout>
