@@ -85,7 +85,7 @@ public class LogInActivity extends Activity implements View.OnClickListener {
         Util.refresh_gratitude="yes";
         initWidgets();
     }
-//sahenita
+
     @SuppressLint("MissingPermission")
     private void initWidgets() {
         sharedPreference = new SharedPreference(LogInActivity.this);
