@@ -90,7 +90,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-//test add jp
+
 public class MeditationFragment extends Fragment {
 
     /* String accesstype="3";
