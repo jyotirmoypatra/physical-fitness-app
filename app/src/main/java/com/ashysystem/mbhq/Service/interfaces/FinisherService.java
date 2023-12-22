@@ -9,14 +9,17 @@ import com.ashysystem.mbhq.model.GetStreakDataResponse;
 import com.ashysystem.mbhq.model.GetTaskStatusForDateResponse;
 import com.ashysystem.mbhq.model.GetUserPaidStatusModel;
 
+import com.ashysystem.mbhq.model.IndividualAchievementModel;
 import com.ashysystem.mbhq.model.IndividualBucketListModel;
 import com.ashysystem.mbhq.model.LoginRes.LoginResponse;
 import com.ashysystem.mbhq.model.MeditationCourseModel;
 import com.ashysystem.mbhq.model.MeditationTagResponse;
+import com.ashysystem.mbhq.model.MyAchievementsListModel;
 import com.ashysystem.mbhq.model.MyValueListResponse;
 import com.ashysystem.mbhq.model.TodayPage.GetAppHomePageValuesResponseModel;
 import com.ashysystem.mbhq.model.UpdateBadgeShownResponse;
 import com.ashysystem.mbhq.model.eqfolder.Eqfolder;
+import com.ashysystem.mbhq.model.eqfolder.Folderdefaultresponse;
 import com.ashysystem.mbhq.model.habit_hacker.GetHabitTemplatesResponseModel;
 import com.ashysystem.mbhq.model.habit_hacker.GetUserHabitSwapModel;
 import com.ashysystem.mbhq.model.habit_hacker.HabbitCalendarModel;
@@ -195,6 +198,27 @@ public interface FinisherService {
     Call<HabbitCalendarModel> GetHabitStats(@Body HashMap<String, Object> modelHashMap);
     @POST("api/mindset/UpdateTaskNote")
     Call<JsonObject> UpdateTaskNote(@Body HashMap<String, Object> modelHashMap);
+
+    @POST("api/mindset/EmailReverseBucketList")
+    Call<JsonObject> emailReverseBucketList(@Body HashMap<String, Object> modelHashMap);
+
+    @POST("api/mindset/GetReverseBucketListAPI")
+    Call<MyAchievementsListModel> getMyAchievevmentsList(@Body HashMap<String, Object> modelHashMap);
+
+    @POST("api/mindset/DeleteReverseBucketAPI")
+    Call<JsonObject> deleteAchievement(@Body HashMap<String, Object> modelHashMap);
+
+    @POST("api/mindset/AddUpdateReverseBucketAPI")
+    Call<AddUpdateMyAchievementModel> addUpdateAchievement(@Body HashMap<String, Object> modelHashMap);
+
+    @POST("api/eqjournal/SetDefaultViewEqFolder")
+    Call<Folderdefaultresponse> setDefault(@Body HashMap<String, Object> modelHashMap);
+
+    @POST("api/mindset/GetReverseBuckeSelectAPI")
+    Call<IndividualAchievementModel> selectAchievement(@Body HashMap<String, Object> modelHashMap);
+
+    @POST("api/eqjournal/MoveEqJournalToFolder")
+    Call<JsonObject> moveeqname(@Body HashMap<String, Object> modelHashMap);
 
 }
 

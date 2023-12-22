@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/llTotalContent"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:focusableInTouchMode="false">
+
+    <RelativeLayout
+        android:id="@+id/item_gratitude"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:id="@+id/rlcard"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:id="@+id/llClick"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_toLeftOf="@+id/rlNotification"
+                    android:focusableInTouchMode="false"
+                    android:minHeight="@dimen/action_bar_height"
+                    android:orientation="horizontal"
+                    android:clickable="true">
+
+                    <RelativeLayout
+                        android:id="@+id/rlNameAndDate"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:focusableInTouchMode="false"
+                        android:minHeight="@dimen/action_bar_height"
+                        >
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_marginTop="8dp"
+                            android:layout_marginBottom="5dp"
+                            android:focusableInTouchMode="false"
+                            android:orientation="vertical">
+
+                            <com.ashysystem.mbhq.view.TextViewRalewayMedium
+                                android:id="@+id/txtGratitudeDate"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="20dp"
+                                android:layout_marginRight="10dp"
+                                android:focusableInTouchMode="false"
+                                android:text="Date"
+                                android:textColor="#474747"
+                                android:textSize="@dimen/fab_eleven" />
+
+                            <com.ashysystem.mbhq.view.TextViewRalewayMedium
+                                android:id="@+id/Id"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="20dp"
+                                android:layout_marginRight="10dp"
+                                android:focusableInTouchMode="false"
+                                android:text="Date"
+                                android:textColor="#474747"
+                                android:textSize="@dimen/fab_eleven"
+                                android:visibility="gone" />
+
+                            <com.ashysystem.mbhq.view.TextViewRaleWay
+                                android:id="@+id/html_text"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="20dp"
+                                android:layout_marginTop="2dp"
+                                android:layout_marginRight="10dp"
+                                android:focusableInTouchMode="false"
+                                android:maxLength="500"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/fab_sixteen"
+                                android:textStyle="bold" />
+
+                            <androidx.cardview.widget.CardView
+                                android:id="@+id/imgCardView"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_marginLeft="20dp"
+                                android:layout_marginTop="3dp"
+                                android:layout_marginRight="20dp"
+                                android:layout_marginBottom="3dp"
+                                android:elevation="0dp"
+                                app:cardCornerRadius="20dp">
+
+                                <RelativeLayout
+                                    android:id="@+id/imgSection"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content">
+
+                                    <com.ashysystem.mbhq.util.ProportionalImageView
+                                        android:id="@+id/journalImg"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:adjustViewBounds="true"
+                                        android:fitsSystemWindows="true"
+                                        android:scaleType="fitXY"
+                                        android:src="@drawable/empty_image_old"
+                                        android:visibility="visible"
+                                        tools:ignore="TooDeepLayout" />
+
+
+                                    <ProgressBar
+                                        android:id="@+id/loadImageJournal"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_centerInParent="true"
+                                        android:visibility="gone" />
+
+                                </RelativeLayout>
+                            </androidx.cardview.widget.CardView>
+                        </LinearLayout>
+                    </RelativeLayout>
+
+                </LinearLayout>
+
+
+                <RelativeLayout
+                    android:id="@+id/rlNotification"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerInParent="false"
+                    android:focusableInTouchMode="false"
+                    android:minHeight="@dimen/action_bar_height"
+                    android:visibility="visible">
+
+                    <RelativeLayout
+                        android:id="@+id/rlNotificationInner"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_centerInParent="true">
+
+                        <ImageView
+                            android:id="@+id/imgNotification"
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:layout_centerInParent="true"
+                            android:src="@drawable/mbhq_notification" />
+                    </RelativeLayout>
+                </RelativeLayout>
+
+
+            </RelativeLayout>
+
+
+        </LinearLayout>
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_below="@+id/item_gratitude"
+        android:background="@color/ashseparator"
+        android:visibility="visible" />
+
+</RelativeLayout>

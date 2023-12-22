@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#80000000">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        android:background="@drawable/rounded_corner_white">
+        <com.ashysystem.mbhq.view.TextViewBold
+            android:id="@+id/txtSuccess"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="15dp"
+            android:layout_centerHorizontal="true"
+            android:textSize="@dimen/fab_eighteen"
+            android:textColor="@color/black"
+            android:textAllCaps="true"
+            android:text="SUCCESS"
+            />
+        <com.ashysystem.mbhq.view.TextViewSemiBold
+            android:id="@+id/txtMessage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/txtSuccess"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:gravity="center_horizontal"
+            android:textColor="@color/black"
+            android:textSize="@dimen/fab_sixteen"
+            android:text="Your growth was saved.\n
+Please Note: Your 1st growth for the day will be visible on the today page in aeroplane mode. Extra growth will be only visible once'aeroplane' mode is turned off."/>
+        <View
+            android:id="@+id/vw1"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_below="@+id/txtMessage"
+            android:layout_marginTop="15dp"
+            android:background="@color/ashseparator"></View>
+        <RelativeLayout
+            android:id="@+id/rlOk"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:background="@drawable/rounded_corner_white"
+            android:layout_below="@+id/vw1">
+            <com.ashysystem.mbhq.view.TextViewBold
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/fab_eighteen"
+                android:textAllCaps="true"
+                android:textColor="@color/chat_blue"
+                android:textStyle="bold"
+                android:text="ok"
+                android:layout_centerInParent="true"/>
+        </RelativeLayout>
+    </RelativeLayout>
+</RelativeLayout>

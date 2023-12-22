@@ -49,6 +49,7 @@ import com.ashysystem.mbhq.model.MeditationCourseModel;
 import com.ashysystem.mbhq.model.eqfolder.UserEqFolder;
 import com.ashysystem.mbhq.model.livechat.Chat;
 import com.ashysystem.mbhq.model.livechat.Meditations;
+import com.ashysystem.mbhq.model.response.MyAchievementsListInnerModel;
 import com.ashysystem.mbhq.video.DemoApplication;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -225,7 +226,7 @@ public class Util {
     public static final String TAG_CROSS= "tag_cross";
     public static final String TAG_ALLCHECKED="tag_allchecked";
 
-
+    public static ArrayList<MyAchievementsListInnerModel> lstShowAll_db_nointernate = new ArrayList<MyAchievementsListInnerModel>();
 
     ///////BOOLEAN FOR MAIN PAGE RELOADING//////////////
     public static boolean isNetworkAvailable = false;

@@ -1,14 +1,285 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/clRoot"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragment.meditation.MeditationDetailsNew_video">
+    android:background="@color/white"
+    android:clickable="true">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <RelativeLayout
+        android:id="@+id/rlHead"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="wrap_content"
+        android:background="#F6F6F6">
 
-</FrameLayout>
+        <com.ashysystem.mbhq.view.TextViewBold
+            android:id="@+id/txtBack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:text="Back"
+            android:textColor="@color/black"
+            android:textSize="@dimen/fab_sixteen"
+            android:textStyle="bold" />
+
+    </RelativeLayout>
+
+    <FrameLayout
+        android:id="@+id/frameVideo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/rlHead"
+        android:background="@color/subtle_gray"
+        android:visibility="visible">
+        <RelativeLayout
+            android:id="@+id/videoViewContainer"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:layout_gravity="center"
+            android:gravity="center">
+            <VideoView
+                android:id="@+id/liveChatVideoView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_centerInParent="true"
+                android:layout_centerHorizontal="true"
+                android:visibility="visible"
+                android:drawingCacheQuality="high"/>
+
+        </RelativeLayout>
+        <RelativeLayout
+            android:id="@+id/rlFullscreen"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_gravity="bottom|end"
+            android:visibility="visible">
+
+            <ImageView
+                android:id="@+id/imgFullScreen"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentBottom="true"
+                android:padding="5dp"
+                app:tint="@color/black"
+                android:src="@drawable/ic_switch_to_full_screen"
+                android:visibility="visible" />
+        </RelativeLayout>
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/videoControlsOnVideoView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:background="@color/black_translucent"
+            android:padding="@dimen/fab_sixteen"
+            android:focusable="true"
+            android:clickable="true"
+            android:visibility="gone">
+
+            <ImageView
+                android:id="@+id/imgBackwardOnVideo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/mbhq_backward"
+                app:layout_constraintBottom_toBottomOf="@+id/imgPlayPauseOnVideo"
+                app:layout_constraintEnd_toStartOf="@+id/imgPlayPauseOnVideo"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/imgPlayPauseOnVideo" />
+
+            <ImageView
+                android:id="@+id/imgPlayPauseOnVideo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toTopOf="@+id/seekBarOnVideo"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/imgForwardOnVideo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/mbhq_forward"
+                app:layout_constraintBottom_toBottomOf="@+id/imgPlayPauseOnVideo"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/imgPlayPauseOnVideo"
+                app:layout_constraintTop_toTopOf="@+id/imgPlayPauseOnVideo" />
+
+            <TextView
+                android:id="@+id/txtElapsedDurationOnVideo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="00:00"
+                android:textColor="@color/colorPrimary"
+                app:layout_constraintBottom_toBottomOf="@+id/seekBarOnVideo"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/seekBarOnVideo" />
+
+            <TextView
+                android:id="@+id/txtTotalDurationOnVideo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="00:00"
+                android:textColor="@color/colorPrimary"
+                app:layout_constraintBottom_toBottomOf="@+id/seekBarOnVideo"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/seekBarOnVideo" />
+
+            <SeekBar
+                android:id="@+id/seekBarOnVideo"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:padding="18dp"
+                app:layout_constraintEnd_toStartOf="@+id/txtTotalDurationOnVideo"
+                app:layout_constraintStart_toEndOf="@+id/txtElapsedDurationOnVideo"
+                app:layout_constraintTop_toBottomOf="@+id/imgPlayPauseOnVideo"
+                app:layout_constraintBottom_toBottomOf="parent"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </FrameLayout>
+
+
+    <ProgressBar
+        android:id="@+id/progressVideoBuffer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:visibility="gone" />
+
+    <LinearLayout
+        android:id="@+id/llSeek"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/frameVideo"
+        android:padding="10dp"
+        android:visibility="visible">
+
+        <com.ashysystem.mbhq.view.TextViewRaleWay
+            android:id="@+id/txtElapsedDuration"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_weight=".15"
+            android:text="00:00" />
+
+        <SeekBar
+            android:id="@+id/seekBarForVideo"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight=".7" />
+
+        <com.ashysystem.mbhq.view.TextViewRaleWay
+            android:id="@+id/txtTotalDuration"
+            android:layout_width="0dp"
+
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_weight=".15"
+            android:text="00:00" />
+    </LinearLayout>
+
+
+    <RelativeLayout
+        android:id="@+id/videoViewControlsContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/llSeek"
+        android:visibility="visible">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:gravity="center">
+
+            <ImageView
+                android:id="@+id/imgRewind"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/mbhq_backward"
+                app:tint="@color/black" />
+
+            <ImageView
+                android:id="@+id/imgPlayPause"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="50dp"
+                app:tint="@color/black" />
+
+            <ImageView
+                android:id="@+id/imgFastForward"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="50dp"
+                android:src="@drawable/mbhq_forward"
+                app:tint="@color/black" />
+        </LinearLayout>
+    </RelativeLayout>
+
+    <com.ashysystem.mbhq.view.TextViewBold
+        android:id="@+id/txtLiveChatTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/videoViewControlsContainer"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="15dp"
+        android:text="balance live"
+        android:textColor="@color/black"
+        android:textSize="@dimen/fab_twenty_two"
+        android:textStyle="bold" />
+
+    <com.ashysystem.mbhq.view.TextViewRalewayMedium
+        android:id="@+id/txtLiveChatPresenter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/txtLiveChatTitle"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="15dp"
+        android:text="Ashy and Levi"
+        android:textColor="@color/black"
+        android:textSize="@dimen/fab_sixteen" />
+
+
+
+    <LinearLayout
+        android:id="@+id/llAction"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/txtLiveChatPresenter"
+        android:orientation="horizontal"
+        android:padding="10dp"
+        android:visibility="visible">
+
+
+        <RelativeLayout
+            android:id="@+id/rl_suggestedmedicines"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight=".4"
+            android:visibility="gone"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:background="@drawable/capsule_border_green_black">
+
+            <com.ashysystem.mbhq.view.TextViewSemiBold
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="Suggested meditation"
+                android:textAllCaps="true"
+                android:textColor="@color/white"
+                android:textSize="12sp" />
+        </RelativeLayout>
+
+    </LinearLayout>
+
+
+
+
+</RelativeLayout>

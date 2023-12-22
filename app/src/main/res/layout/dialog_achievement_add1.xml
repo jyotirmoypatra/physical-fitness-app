@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="#fff"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <RelativeLayout
         android:id="@+id/rlTop"
@@ -154,7 +154,6 @@
                 android:text="Jan 31,2022"
                 android:textColor="@color/body_grey"
                 android:textSize="20sp"
-
                 android:textStyle="bold" />
 
             <ImageView
@@ -163,16 +162,18 @@
                 android:layout_height="30dp"
                 android:layout_weight=".5"
                 android:src="@drawable/ic_edit_gray"
+                app:tint="@color/body_grey"
 
-                app:tint="@color/body_grey" />
+                />
 
         </LinearLayout>
 
         <ScrollView
             android:id="@+id/scrollLayout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_above="@+id/buttonPanelEditmode"
+            android:layout_height="460dp"
+
+
             android:layout_below="@+id/topSection">
 
             <LinearLayout
@@ -202,7 +203,7 @@
                         android:paddingTop="20dp"
                         android:text="Journal Entry : "
                         android:textColor="@color/black"
-                        android:textSize="22sp"
+                        android:textSize="20sp"
                         android:textStyle="bold" />
 
                     <View
@@ -212,6 +213,7 @@
                         android:background="@color/ashseparator"
                         android:visibility="gone"></View>
                 </LinearLayout>
+
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
@@ -229,21 +231,21 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="20dp"
-                            android:layout_marginRight="20dp"
                             android:layout_marginTop="10dp"
+                            android:layout_marginRight="20dp"
                             android:layout_weight=".8"
                             android:background="@null"
-                            android:imeOptions="actionDone"
                             android:gravity="start"
+                            android:imeOptions="actionDone"
                             android:overScrollMode="always"
-                            android:paddingTop="5dp"
                             android:paddingLeft="5dp"
+                            android:paddingTop="5dp"
                             android:paddingBottom="5dp"
                             android:scrollbarStyle="insideInset"
                             android:scrollbars="vertical"
                             android:singleLine="false"
                             android:textColor="@color/black"
-                            android:textSize="@dimen/fab_eighteen" />
+                            android:textSize="20sp" />
 
                         <RelativeLayout
                             android:id="@+id/rlEditCopy"
@@ -287,8 +289,8 @@
                         android:id="@+id/fram_"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:visibility="visible"
-                        android:layout_below="@+id/ll_">
+                        android:layout_below="@+id/ll_"
+                        android:visibility="visible">
 
                         <androidx.cardview.widget.CardView
                             android:id="@+id/imgGratitudeMainCard"
@@ -330,7 +332,6 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="bottom|right"
                             android:layout_marginRight="1dp"
-                            android:background="#80FFFFFF"
                             android:orientation="horizontal"
                             android:visibility="gone">
 
@@ -368,15 +369,7 @@
                     </FrameLayout>
 
 
-
-
                 </RelativeLayout>
-
-
-
-
-
-
 
 
                 <View
@@ -428,7 +421,6 @@
                     android:textColor="#000000"
                     android:textStyle="bold"
                     android:visibility="gone" />
-
 
 
                 <RelativeLayout
@@ -675,11 +667,36 @@
 
         </ScrollView>
 
+        <com.ashysystem.mbhq.view.TextViewBold
+            android:id="@+id/tv_selectfolder"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/scrollLayout"
+            android:layout_marginTop="5dp"
+            android:text="Select Folder:"
+            android:textColor="#000000"
+            android:textSize="@dimen/fab_sixteen"
+            android:visibility="gone"
+            android:textStyle="bold" />
+
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rl_F1"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:layout_above="@+id/buttonPanelEditmode"
+            android:layout_below="@+id/tv_selectfolder"
+            android:visibility="gone">
+
+        </androidx.recyclerview.widget.RecyclerView>
+
+
+
         <LinearLayout
             android:id="@+id/buttonPanelEditmode"
             android:layout_width="wrap_content"
             android:layout_height="90dp"
-            android:visibility="gone"
+            android:visibility="visible"
             android:layout_alignParentBottom="true">
 
             <RelativeLayout
@@ -712,6 +729,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="35dp"
                         android:layout_weight="1"
+                        app:tint="@color/body_grey"
                         android:src="@drawable/ic_camera" />
 
                     <ImageView
@@ -719,6 +737,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="35dp"
                         android:layout_weight="1"
+                        app:tint="@color/body_grey"
                         android:src="@drawable/ic_gallery" />
 
                     <CheckBox
@@ -735,6 +754,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="35dp"
                         android:layout_weight="1"
+                        app:tint="@color/body_grey"
                         android:src="@drawable/ic_calendar" />
 
                     <ImageView

@@ -32,6 +32,7 @@ import com.ashysystem.mbhq.fragment.CourseDetailsFragment;
 
 import com.ashysystem.mbhq.fragment.meditation.MeditationDetailsNew;
 
+import com.ashysystem.mbhq.fragment.meditation.MeditationDetailsNew_video;
 import com.ashysystem.mbhq.model.AvailableCourseModel;
 import com.ashysystem.mbhq.model.MeditationCourseModel;
 import com.ashysystem.mbhq.model.response.AddCourseResponseModel;
@@ -344,8 +345,8 @@ public class MeditationCourseAdapter extends RecyclerView.Adapter<MeditationCour
 
                     Util.clearMeditation_onpause="no";
 if(lstData.get(position).getEventItemVideoDetails().get(0).getMediaType().equalsIgnoreCase("VIDEO")){
-//     ((MainActivity) context).clearCacheForParticularFragment(MeditationDetailsNew_video.newInstance(lstData.get(position)));
-//                    ((MainActivity) context).loadFragment(MeditationDetailsNew_video.newInstance(lstData.get(position)), "LiveChatPlayer", null);//temporary bt jyoti
+   ((MainActivity) context).clearCacheForParticularFragment(MeditationDetailsNew_video.newInstance(lstData.get(position)));
+                   ((MainActivity) context).loadFragment(MeditationDetailsNew_video.newInstance(lstData.get(position)), "LiveChatPlayer", null);//temporary bt jyoti
 }else{
     Util.backto="";
     ((MainActivity) context).clearCacheForParticularFragment(new MeditationDetailsNew());
@@ -462,8 +463,8 @@ if(lstData.get(position).getEventItemVideoDetails().get(0).getMediaType().equals
 
                 Util.clearMeditation_onpause="no";
                 if(lstData.get(position).getEventItemVideoDetails().get(0).getMediaType().equalsIgnoreCase("VIDEO")){
-//                    ((MainActivity) context).clearCacheForParticularFragment(MeditationDetailsNew_video.newInstance(lstData.get(position)));
-//                    ((MainActivity) context).loadFragment(MeditationDetailsNew_video.newInstance(lstData.get(position)), "LiveChatPlayer", null);//temporary bt jyoti
+                   ((MainActivity) context).clearCacheForParticularFragment(MeditationDetailsNew_video.newInstance(lstData.get(position)));
+                   ((MainActivity) context).loadFragment(MeditationDetailsNew_video.newInstance(lstData.get(position)), "LiveChatPlayer", null);//temporary bt jyoti
                 }else{
                     Util.backto="";
                     ((MainActivity) context).clearCacheForParticularFragment(new MeditationDetailsNew());

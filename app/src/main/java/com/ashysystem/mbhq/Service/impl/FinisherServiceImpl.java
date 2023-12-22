@@ -14,14 +14,17 @@ import com.ashysystem.mbhq.model.GetStreakDataResponse;
 import com.ashysystem.mbhq.model.GetTaskStatusForDateResponse;
 import com.ashysystem.mbhq.model.GetUserPaidStatusModel;
 
+import com.ashysystem.mbhq.model.IndividualAchievementModel;
 import com.ashysystem.mbhq.model.IndividualBucketListModel;
 import com.ashysystem.mbhq.model.LoginRes.LoginResponse;
 import com.ashysystem.mbhq.model.MeditationCourseModel;
 import com.ashysystem.mbhq.model.MeditationTagResponse;
+import com.ashysystem.mbhq.model.MyAchievementsListModel;
 import com.ashysystem.mbhq.model.MyValueListResponse;
 import com.ashysystem.mbhq.model.TodayPage.GetAppHomePageValuesResponseModel;
 import com.ashysystem.mbhq.model.UpdateBadgeShownResponse;
 import com.ashysystem.mbhq.model.eqfolder.Eqfolder;
+import com.ashysystem.mbhq.model.eqfolder.Folderdefaultresponse;
 import com.ashysystem.mbhq.model.habit_hacker.GetHabitTemplatesResponseModel;
 import com.ashysystem.mbhq.model.habit_hacker.GetUserHabitSwapModel;
 import com.ashysystem.mbhq.model.habit_hacker.HabbitCalendarModel;
@@ -259,5 +262,32 @@ public class FinisherServiceImpl extends Service {
     }
     public Call<JsonObject> UpdateTaskNote(HashMap<String, Object> modelHashMap) {
         return finisherService.UpdateTaskNote(modelHashMap);
+    }
+
+    public Call<JsonObject> emailReverseBucketList(HashMap<String, Object> modelHashMap) {
+        return finisherService.emailReverseBucketList(modelHashMap);
+    }
+    public Call<MyAchievementsListModel> getMyAchievevmentsList(HashMap<String, Object> modelHashMap) {
+        return finisherService.getMyAchievevmentsList(modelHashMap);
+    }
+
+    public Call<JsonObject> deleteAchievement(HashMap<String, Object> modelHashMap) {
+        return finisherService.deleteAchievement(modelHashMap);
+    }
+
+    public Call<AddUpdateMyAchievementModel> addUpdateAchievement(HashMap<String, Object> modelHashMap) {
+        return finisherService.addUpdateAchievement(modelHashMap);
+    }
+
+    public Call<Folderdefaultresponse> setDefault(HashMap<String, Object> modelHashMap) {
+        return finisherService.setDefault(modelHashMap);
+    }
+
+    public Call<IndividualAchievementModel> selectAchievement(HashMap<String, Object> modelHashMap) {
+        return finisherService.selectAchievement(modelHashMap);
+    }
+
+    public Call<JsonObject> moveEqfolder(HashMap<String, Object> modelHashMap) {
+        return finisherService.moveeqname(modelHashMap);
     }
 }

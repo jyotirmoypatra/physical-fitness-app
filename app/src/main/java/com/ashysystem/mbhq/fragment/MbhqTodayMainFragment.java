@@ -22,6 +22,7 @@ import com.ashysystem.mbhq.R;
 import com.ashysystem.mbhq.Service.impl.FinisherServiceImpl;
 import com.ashysystem.mbhq.activity.MainActivity;
 import com.ashysystem.mbhq.adapter.mbhq_today.TodayViewPagerAdapter;
+import com.ashysystem.mbhq.fragment.achievement.MyAchievementsFragment;
 import com.ashysystem.mbhq.fragment.live_chat.LiveChatFragment;
 import com.ashysystem.mbhq.model.GetGratitudeListModelInner;
 import com.ashysystem.mbhq.model.TodayPage.GetAppHomePageValuesResponseModel;
