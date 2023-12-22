@@ -1,0 +1,616 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:id="@+id/rlTop"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/action_bar_height"
+        android:background="#00000000">
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/rlTop"
+        android:background="#B3000000">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight=".7"
+            android:background="@color/white"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp">
+
+                <com.ashysystem.mbhq.view.TextViewSemiBold
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="15dp"
+                    android:text="filter"
+                    android:textAllCaps="true"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="@dimen/fab_sixteen" />
+
+                <ImageView
+                    android:id="@+id/imgClose"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="15dp"
+                    android:background="@drawable/mbhq_close" />
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/ashseparator" />
+
+            <EditText
+                android:id="@+id/edtSearch"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/fab_twelve"
+                android:background="@drawable/searchbox_black"
+                android:hint="Search Course Here"
+                android:imeOptions="actionSearch"
+                android:inputType="text"
+                android:padding="5dp" />
+
+            <androidx.core.widget.NestedScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <RelativeLayout
+                        android:id="@+id/rlShowAll"
+                        android:layout_width="match_parent"
+                        android:layout_height="45dp">
+
+                        <CheckBox
+                            android:id="@+id/chkBoxShowAllCheck"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_centerVertical="true"
+                            android:layout_marginLeft="25dp"
+                            android:button="@drawable/drawble_custom_checkbox"
+                            android:padding="@dimen/fab_ten"
+                            android:text="show all"
+                            android:textAllCaps="true"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/fab_fourteen" />
+
+                        <!--<com.ashysystem.mbhq.view.TextViewRalewayMedium
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_marginLeft="15dp"
+                            android:layout_toRightOf="@+id/imgShowAllCheck"
+                            android:text="show all"
+                            android:textAllCaps="true"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/fab_fourteen" />-->
+                    </RelativeLayout>
+
+                    <com.ashysystem.mbhq.view.TextViewBold
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginTop="10dp"
+                        android:text="type"
+                        android:textAllCaps="true"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/fab_sixteen" />
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="45dp">
+
+                        <com.ashysystem.mbhq.view.TextViewBold
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_centerInParent="true"
+                            android:layout_marginLeft="35dp"
+                            android:button="@drawable/drawble_custom_checkbox"
+                            android:gravity="center_vertical"
+                            android:padding="@dimen/fab_ten"
+                            android:text="Courses"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/fab_sixteen" />
+
+                        <!--<com.ashysystem.mbhq.view.TextViewRalewayMedium
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_marginLeft="15dp"
+                            android:layout_toRightOf="@+id/imgMyPrograms"
+                            android:text="@string/my_programs"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/fab_fourteen" />-->
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:id="@+id/rlMyPrograms"
+                        android:layout_width="match_parent"
+                        android:layout_height="45dp">
+
+                        <CheckBox
+                            android:id="@+id/chkBoxMyPrograms"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_centerVertical="true"
+                            android:layout_marginStart="35dp"
+                            android:button="@drawable/drawble_custom_checkbox"
+                            android:padding="@dimen/fab_ten"
+                            android:text="@string/my_programs"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/fab_fourteen" />
+
+                        <!--<com.ashysystem.mbhq.view.TextViewRalewayMedium
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_marginLeft="15dp"
+                            android:layout_toRightOf="@+id/imgMyPrograms"
+                            android:text="@string/my_programs"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/fab_fourteen" />-->
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:id="@+id/rlPaidPrograms"
+                        android:layout_width="match_parent"
+                        android:layout_height="45dp">
+
+                        <CheckBox
+                            android:id="@+id/chkBoxPaidPrograms"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_centerVertical="true"
+                            android:layout_marginStart="35dp"
+                            android:button="@drawable/drawble_custom_checkbox"
+                            android:padding="@dimen/fab_ten"
+                            android:text="@string/paid_programs"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/fab_fourteen" />
+
+                        <!--<com.ashysystem.mbhq.view.TextViewRalewayMedium
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_marginLeft="15dp"
+                            android:layout_toRightOf="@+id/imgPaidPrograms"
+                            android:text="@string/paid_programs"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/fab_fourteen" />-->
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:id="@+id/rlLivePrograms"
+                        android:layout_width="match_parent"
+                        android:layout_height="45dp">
+
+                        <CheckBox
+                            android:id="@+id/chkBoxLivePrograms"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_centerVertical="true"
+                            android:layout_marginStart="35dp"
+                            android:button="@drawable/drawble_custom_checkbox"
+                            android:padding="@dimen/fab_ten"
+                            android:text="@string/live_programs"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/fab_fourteen" />
+
+                        <!--<com.ashysystem.mbhq.view.TextViewRalewayMedium
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_marginLeft="15dp"
+                            android:layout_toRightOf="@+id/imgLivePrograms"
+                            android:text="@string/live_programs"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/fab_fourteen" />-->
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="45dp">
+
+                        <CheckBox
+                            android:id="@+id/chkBoxMasterclassPrograms"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_centerVertical="true"
+                            android:layout_marginStart="10dp"
+                            android:button="@drawable/drawble_custom_checkbox"
+                            android:fontFamily="@font/raleway_semibold"
+                            android:padding="@dimen/fab_ten"
+                            android:text="@string/masterclass"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/fab_fourteen"
+                            android:textStyle="bold" />
+
+                        <!--<com.ashysystem.mbhq.view.TextViewRalewayMedium
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_marginLeft="15dp"
+                            android:layout_toRightOf="@+id/imgMyPrograms"
+                            android:text="@string/my_programs"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/fab_fourteen" />-->
+                    </RelativeLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/ashseparator" />
+
+                    <com.ashysystem.mbhq.view.TextViewBold
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginTop="10dp"
+                        android:text="Status"
+                        android:textAllCaps="true"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/fab_sixteen" />
+
+                    <RelativeLayout
+                        android:id="@+id/rlStatusAll"
+                        android:layout_width="match_parent"
+                        android:layout_height="45dp">
+
+                        <CheckBox
+                            android:id="@+id/chkBoxStatusAll"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_centerVertical="true"
+                            android:layout_marginLeft="35dp"
+                            android:button="@drawable/drawble_custom_checkbox"
+                            android:padding="@dimen/fab_ten"
+                            android:text="All"
+                            android:textAllCaps="true"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/fab_fourteen" />
+
+                        <!-- <com.ashysystem.mbhq.view.TextViewRalewayMedium
+                             android:layout_width="wrap_content"
+                             android:layout_height="wrap_content"
+                             android:layout_centerVertical="true"
+                             android:layout_marginLeft="15dp"
+                             android:layout_toRightOf="@+id/imgStatusAll"
+                             android:text="All"
+                             android:textAllCaps="true"
+                             android:textColor="@color/black"
+                             android:textSize="@dimen/fab_fourteen" />-->
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:id="@+id/rlStatusInProgress"
+                        android:layout_width="match_parent"
+                        android:layout_height="45dp">
+
+                        <CheckBox
+                            android:id="@+id/chkBoxStatusInProgress"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_centerVertical="true"
+                            android:layout_marginLeft="35dp"
+                            android:button="@drawable/drawble_custom_checkbox"
+                            android:padding="@dimen/fab_ten"
+                            android:text="In Progress"
+                            android:textAllCaps="true"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/fab_fourteen" />
+
+                        <!-- <com.ashysystem.mbhq.view.TextViewRalewayMedium
+                             android:layout_width="wrap_content"
+                             android:layout_height="wrap_content"
+                             android:layout_centerVertical="true"
+                             android:layout_marginLeft="15dp"
+                             android:layout_toRightOf="@+id/imgStatusInProgress"
+                             android:text="In Progress"
+                             android:textAllCaps="true"
+                             android:textColor="@color/black"
+                             android:textSize="@dimen/fab_fourteen" />-->
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:id="@+id/rlStatusPaused"
+                        android:layout_width="match_parent"
+                        android:layout_height="45dp">
+
+                        <CheckBox
+                            android:id="@+id/chkBoxStatusPaused"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_centerVertical="true"
+                            android:layout_marginLeft="35dp"
+                            android:button="@drawable/drawble_custom_checkbox"
+                            android:padding="@dimen/fab_ten"
+                            android:text="Paused"
+                            android:textAllCaps="true"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/fab_fourteen" />
+
+                        <!--<com.ashysystem.mbhq.view.TextViewRalewayMedium
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_marginLeft="15dp"
+                            android:layout_toRightOf="@+id/imgStatusPaused"
+                            android:text="Paused"
+                            android:textAllCaps="true"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/fab_fourteen" />-->
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:id="@+id/rlStatusCompleted"
+                        android:layout_width="match_parent"
+                        android:layout_height="45dp">
+
+                        <CheckBox
+                            android:id="@+id/chkBoxStatusCompleted"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_centerVertical="true"
+                            android:layout_marginLeft="35dp"
+                            android:button="@drawable/drawble_custom_checkbox"
+                            android:padding="@dimen/fab_ten"
+                            android:text="Completed"
+                            android:textAllCaps="true"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/fab_fourteen" />
+
+                        <!--<com.ashysystem.mbhq.view.TextViewRalewayMedium
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_marginLeft="15dp"
+                            android:layout_toRightOf="@+id/imgStatusCompleted"
+                            android:text="Completed"
+                            android:textAllCaps="true"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/fab_fourteen" />-->
+                    </RelativeLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/ashseparator" />
+
+                    <com.ashysystem.mbhq.view.TextViewBold
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginTop="10dp"
+                        android:text="tags"
+                        android:textAllCaps="true"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/fab_sixteen" />
+
+                    <LinearLayout
+                        android:id="@+id/llTagsContainer"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="35dp"
+                        android:orientation="vertical">
+
+                    </LinearLayout>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="80dp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="45dp"
+                            android:layout_centerInParent="true"
+                            android:layout_marginLeft="15dp"
+                            android:layout_marginTop="15dp"
+                            android:layout_marginRight="15dp"
+                            android:layout_marginBottom="20dp">
+
+                            <RelativeLayout
+                                android:id="@+id/rlShowResults"
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_marginRight="5dp"
+                                android:layout_weight=".5"
+                                android:background="@drawable/rounded_corner_green">
+
+                                <com.ashysystem.mbhq.view.TextViewRalewayMedium
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_centerInParent="true"
+                                    android:text="show results"
+                                    android:textAllCaps="true"
+                                    android:textColor="@color/white"
+                                    android:textSize="@dimen/fab_twelve" />
+                            </RelativeLayout>
+
+                            <RelativeLayout
+                                android:id="@+id/rlClearAll"
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_marginLeft="5dp"
+                                android:layout_weight=".5"
+                                android:background="@drawable/rounded_corner_green_border_white_inside">
+
+                                <com.ashysystem.mbhq.view.TextViewRalewayMedium
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_centerInParent="true"
+                                    android:text="clear all"
+                                    android:textAllCaps="true"
+                                    android:textColor="@color/mbhq_base_color"
+                                    android:textSize="@dimen/fab_twelve" />
+                            </RelativeLayout>
+
+                        </LinearLayout>
+                    </RelativeLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:visibility="gone">
+
+                        <RelativeLayout
+                            android:id="@+id/rlAll"
+                            android:layout_width="match_parent"
+                            android:layout_height="45dp">
+
+                            <com.ashysystem.mbhq.view.TextViewSemiBold
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerVertical="true"
+                                android:layout_marginLeft="15dp"
+                                android:text="all"
+                                android:textAllCaps="true"
+                                android:textColor="@color/colorPrimary"
+                                android:textSize="@dimen/fab_fourteen" />
+
+                            <ImageView
+                                android:id="@+id/imgAllCheck"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentRight="true"
+                                android:layout_centerVertical="true"
+                                android:layout_marginRight="15dp"
+                                android:background="@drawable/checked_blue" />
+                        </RelativeLayout>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="@color/ashseparator" />
+
+                        <RelativeLayout
+                            android:id="@+id/rlInprogress"
+                            android:layout_width="match_parent"
+                            android:layout_height="45dp">
+
+                            <com.ashysystem.mbhq.view.TextViewSemiBold
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerVertical="true"
+                                android:layout_marginLeft="15dp"
+                                android:text="in progress"
+                                android:textAllCaps="true"
+                                android:textColor="@color/colorPrimary"
+                                android:textSize="@dimen/fab_fourteen" />
+
+                            <ImageView
+                                android:id="@+id/imgActiveCheck"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentRight="true"
+                                android:layout_centerVertical="true"
+                                android:layout_marginRight="15dp"
+                                android:background="@drawable/checked_blue"
+                                android:visibility="gone" />
+                        </RelativeLayout>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="@color/ashseparator"></View>
+
+                        <RelativeLayout
+                            android:id="@+id/rlPaused"
+                            android:layout_width="match_parent"
+                            android:layout_height="45dp">
+
+                            <com.ashysystem.mbhq.view.TextViewSemiBold
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerVertical="true"
+                                android:layout_marginLeft="15dp"
+                                android:text="paused"
+                                android:textAllCaps="true"
+                                android:textColor="@color/colorPrimary"
+                                android:textSize="@dimen/fab_fourteen" />
+
+                            <ImageView
+                                android:id="@+id/imgAvailableCheck"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentRight="true"
+                                android:layout_centerVertical="true"
+                                android:layout_marginRight="15dp"
+                                android:background="@drawable/checked_blue"
+                                android:visibility="gone" />
+                        </RelativeLayout>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="@color/ashseparator"></View>
+
+                        <RelativeLayout
+                            android:id="@+id/rlCompleted"
+                            android:layout_width="match_parent"
+                            android:layout_height="45dp">
+
+                            <com.ashysystem.mbhq.view.TextViewSemiBold
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerVertical="true"
+                                android:layout_marginLeft="15dp"
+                                android:text="completed"
+                                android:textAllCaps="true"
+                                android:textColor="@color/colorPrimary"
+                                android:textSize="@dimen/fab_fourteen" />
+
+                            <ImageView
+                                android:id="@+id/imgCompletedCheck"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentRight="true"
+                                android:layout_centerVertical="true"
+                                android:layout_marginRight="15dp"
+                                android:background="@drawable/checked_blue"
+                                android:visibility="gone" />
+                        </RelativeLayout>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="@color/ashseparator" />
+
+                    </LinearLayout>
+
+
+                </LinearLayout>
+
+            </androidx.core.widget.NestedScrollView>
+
+
+        </LinearLayout>
+
+        <RelativeLayout
+            android:id="@+id/rlTransparent"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight=".3">
+
+        </RelativeLayout>
+    </LinearLayout>
+</RelativeLayout>

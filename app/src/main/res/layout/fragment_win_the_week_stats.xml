@@ -1,14 +1,185 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragment.WinTheWeekStatsFragment">
+    tools:context=".fragment.habit_hacker.WinTheWeekStatsFragment"
+    >
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <RelativeLayout
+        android:id="@+id/rlTop"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="50dp"
+        android:background="#F6F6F6"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-</FrameLayout>
+        <RelativeLayout
+            android:id="@+id/rlBack"
+            android:layout_width="80dp"
+            android:layout_height="match_parent">
+
+            <com.ashysystem.mbhq.view.TextViewBold
+                android:id="@+id/txtBack"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="10dp"
+                android:text="Back"
+                android:textColor="@color/black"
+                android:textSize="@dimen/fab_sixteen"
+                android:textStyle="bold" />
+        </RelativeLayout>
+
+        <ImageView
+            android:id="@+id/imgInfoWinTheWeek"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="20dp"
+            android:cropToPadding="true"
+            android:visibility="gone"
+            android:src="@drawable/mbhq_info" />
+
+        <com.ashysystem.mbhq.view.ButtonSemiBold
+            android:id="@+id/textInfoWinTheWeek"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="20dp"
+            android:layout_marginStart="@dimen/spacing_4dp"
+            android:layout_marginTop="@dimen/spacing_4dp"
+            android:layout_marginBottom="@dimen/spacing_4dp"
+            android:background="@drawable/ic_green_question"
+            android:gravity="center_horizontal|center_vertical"
+            android:minWidth="0dp"
+            android:minHeight="0dp"
+            />
+
+    </RelativeLayout>
+
+    <com.ashysystem.mbhq.view.TextViewSemiBold
+        android:id="@+id/wintTheWeekStaticText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="WIN THE WEEK"
+        android:textColor="@color/black"
+        android:textSize="@dimen/fab_twenty_two"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/daysStatsContainer"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/rlTop" />
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/daysStatsContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@+id/weeksStatsContainer"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/wintTheWeekStaticText">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/daysWonCountContainer"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="@drawable/circle_light_green"
+            app:layout_constraintDimensionRatio="1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintWidth_percent=".4">
+
+            <com.ashysystem.mbhq.view.TextViewRaleWay
+                android:id="@+id/daysWonCount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0"
+                android:textColor="@color/black"
+                android:textSize="@dimen/fab_twenty_four"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        <com.ashysystem.mbhq.view.TextViewRaleWay
+            android:id="@+id/daysWonStatisText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="Days Won"
+            android:textAllCaps="true"
+            android:textColor="@color/black"
+            android:textSize="@dimen/fab_eighteen"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/daysWonCountContainer" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/weeksStatsContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/daysStatsContainer">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/weeksWonCountContainer"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="@drawable/circle_light_green"
+            app:layout_constraintDimensionRatio="1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintWidth_percent=".4">
+
+            <com.ashysystem.mbhq.view.TextViewRaleWay
+                android:id="@+id/weeksWonCount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0"
+                android:textColor="@color/black"
+                android:textSize="@dimen/fab_twenty_four"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        <com.ashysystem.mbhq.view.TextViewRaleWay
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="Weeks Won"
+            android:textAllCaps="true"
+            android:textColor="@color/black"
+            android:textSize="@dimen/fab_eighteen"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/weeksWonCountContainer" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

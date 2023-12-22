@@ -1,14 +1,635 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragment.ProgramDetailsFragment">
+    tools:context=".fragment.course.ProgramDetailsFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <Button
+        android:id="@+id/backBtn"
+        style="@android:style/Widget.DeviceDefault.Button.Borderless"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="wrap_content"
+        android:background="#F6F6F6"
+        android:fontFamily="sans-serif"
+        android:gravity="start|center_vertical"
+        android:paddingStart="@dimen/fab_ten"
+        android:text="Back"
+        android:textAllCaps="false"
 
-</FrameLayout>
+        android:textColor="@color/black"
+        android:textSize="@dimen/fab_sixteen"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/backBtn">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="@dimen/fab_eight">
+
+            <RelativeLayout
+                android:id="@+id/headerContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/coverImageContainer"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:cardCornerRadius="@dimen/fab_sixteen"
+                        app:cardElevation="0dp"
+                        app:layout_constraintDimensionRatio="w,2:3"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.0"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <com.ashysystem.mbhq.util.ProportionalImageView
+                            android:id="@+id/coverImage"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/empty_image_old"
+                            app:layout_constraintDimensionRatio="w,2:3"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintHorizontal_bias="0.0"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                    </androidx.cardview.widget.CardView>
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/header"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/coverImageContainer">
+
+                        <com.ashysystem.mbhq.view.TextViewBold
+                            android:id="@+id/programName"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:paddingStart="@dimen/fab_eight"
+                            android:paddingTop="@dimen/fab_sixteen"
+                            android:paddingEnd="@dimen/fab_eight"
+                            android:paddingBottom="@dimen/fab_sixteen"
+                            android:text="Morning Routine"
+                            android:textAllCaps="true"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/fab_eighteen"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <!-- <de.hdodenhof.circleimageview.CircleImageView
+                             android:id="@+id/authorImage"
+                             android:layout_width="50sp"
+                             android:layout_height="50sp"
+                             android:layout_marginTop="16dp"
+                             android:src="@drawable/default_user"
+                             android:visibility="gone"
+                             app:layout_constraintStart_toStartOf="parent"
+                             app:layout_constraintTop_toBottomOf="@+id/programName" />-->
+
+                        <com.ashysystem.mbhq.view.TextViewRalewayMedium
+                            android:id="@+id/authorName"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/foodClubWhite"
+                            android:textSize="@dimen/fab_sixteen"
+                            android:textStyle="bold"
+                            android:visibility="gone"
+                            app:layout_constraintEnd_toEndOf="@id/programName"
+                            app:layout_constraintStart_toStartOf="@+id/programName"
+                            app:layout_constraintTop_toBottomOf="@+id/programName" />
+
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </RelativeLayout>
+
+
+            <com.ashysystem.mbhq.view.TextViewRalewayMedium
+                android:id="@+id/programDescription"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/fab_eight"
+                android:layout_marginEnd="@dimen/fab_eight"
+                android:ellipsize="end"
+                android:text="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum."
+                android:textColor="@color/black"
+                android:textSize="@dimen/fab_sixteen"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/headerContainer" />
+
+            <TextView
+                android:id="@+id/readMore"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:autoLink="all"
+                android:linksClickable="false"
+                android:minHeight="0dp"
+                android:selectAllOnFocus="false"
+                android:text="@string/click_to_read_more"
+                android:textColor="@color/colorPrimary"
+                android:visibility="gone"
+                app:layout_constraintStart_toStartOf="@+id/programDescription"
+                app:layout_constraintTop_toBottomOf="@+id/programDescription" />
+
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/authorDescription"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/readMore">
+
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/authorImageContainer"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    app:cardCornerRadius="@dimen/fab_sixteen"
+                    app:cardElevation="0dp"
+                    app:layout_constraintDimensionRatio="w,2:3"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <ImageView
+                        android:id="@+id/authorImage"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/empty_image_old" />
+                </androidx.cardview.widget.CardView>
+
+                <com.ashysystem.mbhq.view.TextViewBold
+                    android:id="@+id/meetTheAuthorText"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:paddingStart="@dimen/fab_eight"
+                    android:paddingTop="@dimen/fab_sixteen"
+                    android:paddingEnd="@dimen/fab_eight"
+                    android:paddingBottom="@dimen/fab_sixteen"
+                    android:text="Meet The Author"
+                    android:textAllCaps="true"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/fab_eighteen"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/authorImageContainer" />
+
+                <com.ashysystem.mbhq.view.TextViewRalewayMedium
+                    android:id="@+id/extraText"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/fab_eight"
+                    android:layout_marginEnd="@dimen/fab_eight"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/fab_sixteen"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="@+id/meetTheAuthorText"
+                    app:layout_constraintTop_toBottomOf="@+id/meetTheAuthorText" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/programActionContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/fab_twenty"
+                android:layout_marginBottom="@dimen/fab_twenty"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/authorDescription">
+
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/liveSeminarDetails"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    android:visibility="visible"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+
+                    <com.ashysystem.mbhq.view.TextViewSemiBold
+                        android:id="@+id/liveSeminarStaticHeader"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:background="@color/colorPrimary"
+                        android:gravity="center"
+                        android:padding="@dimen/fab_twelve"
+                        android:text="Live Program Details"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/fab_twenty"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <com.ashysystem.mbhq.view.TextViewRalewayMedium
+                        android:id="@+id/officialStartDateTimeTxtStatic"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/fab_twelve"
+                        android:layout_marginTop="@dimen/fab_twelve"
+                        android:layout_marginEnd="@dimen/fab_twelve"
+                        android:text="Official Start Date :"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="@dimen/fab_sixteen"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/liveSeminarStaticHeader" />
+
+                    <TextView
+                        android:id="@+id/officialStartDateTimeTxt"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/fab_twelve"
+                        android:layout_marginEnd="@dimen/fab_twelve"
+                        android:text=""
+                        android:textSize="@dimen/fab_sixteen"
+                        android:textStyle="bold"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/officialStartDateTimeTxtStatic" />
+
+                    <com.ashysystem.mbhq.view.TextViewRalewayMedium
+                        android:id="@+id/weeklyWebinarTimingTxtStatic"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/fab_twelve"
+                        android:layout_marginTop="@dimen/fab_twelve"
+                        android:layout_marginEnd="@dimen/fab_twelve"
+                        android:text="Weekly Webinar (not live webinar) :"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="@dimen/fab_sixteen"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/officialStartDateTimeTxt" />
+
+                    <TextView
+                        android:id="@+id/weeklyWebinarTimingTxt"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/fab_twelve"
+                        android:layout_marginEnd="@dimen/fab_twelve"
+                        android:text=""
+                        android:textSize="@dimen/fab_sixteen"
+                        android:textStyle="bold"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/weeklyWebinarTimingTxtStatic" />
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/webinarLinkContainer"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/white"
+                        android:visibility="visible"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/weeklyWebinarTimingTxt">
+
+                        <com.ashysystem.mbhq.view.TextViewRalewayMedium
+                            android:id="@+id/liveWebinarLinkStatic"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/fab_twelve"
+                            android:layout_marginTop="@dimen/fab_twelve"
+                            android:layout_marginEnd="@dimen/fab_twelve"
+                            android:text="Weekly Webinar Link :"
+                            android:textColor="@color/colorPrimary"
+                            android:textSize="@dimen/fab_sixteen"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:id="@+id/liveWebinarLinkTxt"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/fab_twelve"
+                            android:autoLink="all"
+                            android:linksClickable="false"
+                            android:minHeight="0dp"
+                            android:paddingTop="@dimen/fab_eight"
+                            android:paddingBottom="@dimen/fab_eight"
+                            android:selectAllOnFocus="false"
+                            android:text="@string/click_here"
+                            android:textAllCaps="false"
+                            android:textColor="@color/black"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/liveWebinarLinkStatic" />
+
+                        <ImageView
+                            android:id="@+id/liveWebinarLinkCopyImg"
+                            android:layout_width="@dimen/fab_twenty"
+                            android:layout_height="@dimen/fab_twenty"
+                            android:layout_marginEnd="@dimen/fab_eighteen"
+                            android:src="@drawable/ic_copy"
+                            app:layout_constraintBottom_toBottomOf="@+id/liveWebinarLinkTxt"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="@+id/liveWebinarLinkTxt" />
+
+
+                        <com.ashysystem.mbhq.view.TextViewRalewayMedium
+                            android:id="@+id/passwordStatic"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/fab_twelve"
+                            android:layout_marginTop="@dimen/fab_twelve"
+                            android:layout_marginEnd="@dimen/fab_twelve"
+                            android:text="Weekly Webinar Password :"
+                            android:textColor="@color/colorPrimary"
+                            android:textSize="@dimen/fab_sixteen"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/liveWebinarLinkTxt" />
+
+                        <com.ashysystem.mbhq.view.TextViewSemiBold
+                            android:id="@+id/passwordTxt"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/fab_twelve"
+                            android:text=""
+                            android:textSize="16sp"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/passwordStatic" />
+
+                        <ImageView
+                            android:id="@+id/passwordCopyImg"
+                            android:layout_width="@dimen/fab_twenty"
+                            android:layout_height="@dimen/fab_twenty"
+                            android:layout_marginEnd="@dimen/fab_eighteen"
+                            android:src="@drawable/ic_copy"
+                            app:layout_constraintBottom_toBottomOf="@+id/passwordTxt"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="@+id/passwordTxt" />
+
+
+                        <com.ashysystem.mbhq.view.TextViewRalewayMedium
+                            android:id="@+id/forumLinkStatic"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/fab_twelve"
+                            android:layout_marginTop="@dimen/fab_twelve"
+                            android:layout_marginEnd="@dimen/fab_twelve"
+                            android:text="Forum :"
+                            android:textColor="@color/colorPrimary"
+                            android:textSize="@dimen/fab_sixteen"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/passwordTxt" />
+
+                        <TextView
+                            android:id="@+id/forumLinkTxt"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/fab_twelve"
+                            android:layout_marginBottom="@dimen/fab_twelve"
+                            android:autoLink="all"
+                            android:linksClickable="false"
+                            android:minHeight="0dp"
+                            android:paddingTop="@dimen/fab_eight"
+                            android:paddingBottom="@dimen/fab_eight"
+                            android:selectAllOnFocus="false"
+                            android:text="@string/click_here"
+                            android:textAllCaps="false"
+                            android:textColor="@color/black"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/forumLinkStatic" />
+
+                        <ImageView
+                            android:id="@+id/forumLinkCopyImg"
+                            android:layout_width="@dimen/fab_twenty"
+                            android:layout_height="@dimen/fab_twenty"
+                            android:layout_marginEnd="@dimen/fab_eighteen"
+                            android:src="@drawable/ic_copy"
+                            app:layout_constraintBottom_toBottomOf="@+id/forumLinkTxt"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="@+id/forumLinkTxt" />
+
+
+                        <!--<com.ashysystem.mbhq.view.TextViewRalewayMedium
+                            android:id="@+id/mbhqForumLinkStatic"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/fab_twelve"
+                            android:layout_marginTop="@dimen/fab_twelve"
+                            android:layout_marginEnd="@dimen/fab_twelve"
+                            android:text="Mbhq Forum :"
+                            android:textColor="@color/colorPrimary"
+                            android:textSize="@dimen/fab_twenty_two"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/forumLinkTxt" />
+
+                        <com.ashysystem.mbhq.view.ButtonSemiBold
+                            android:id="@+id/mbhqforumLinkTxt"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/fab_twelve"
+                            android:layout_marginTop="8dp"
+                            android:layout_marginBottom="@dimen/fab_twelve"
+                            android:background="@drawable/capsule_transparent_black_bordered"
+                            android:minHeight="0dp"
+                            android:paddingStart="@dimen/fab_twenty"
+                            android:paddingEnd="@dimen/fab_twenty"
+                            android:text="Click Here"
+                            android:textAllCaps="false"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/mbhqForumLinkStatic" />
+
+                        <ImageView
+                            android:id="@+id/mbhqForumLinkCopyImg"
+                            android:layout_width="@dimen/fab_twenty"
+                            android:layout_height="@dimen/fab_twenty"
+                            android:layout_marginEnd="@dimen/fab_eighteen"
+                            android:src="@drawable/ic_copy"
+                            app:layout_constraintBottom_toBottomOf="@+id/mbhqforumLinkTxt"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="@+id/mbhqforumLinkTxt" />
+
+                        <com.ashysystem.mbhq.view.TextViewRalewayMedium
+                            android:id="@+id/fbForumLinkStatic"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/fab_twelve"
+                            android:layout_marginTop="@dimen/fab_twelve"
+                            android:layout_marginEnd="@dimen/fab_twelve"
+                            android:text="Fb Forum :"
+                            android:textColor="@color/colorPrimary"
+                            android:textSize="@dimen/fab_twenty_two"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/mbhqforumLinkTxt" />
+
+                        <com.ashysystem.mbhq.view.ButtonSemiBold
+                            android:id="@+id/fbforumLinkTxt"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/fab_twelve"
+                            android:layout_marginTop="8dp"
+                            android:layout_marginBottom="@dimen/fab_twelve"
+                            android:background="@drawable/capsule_transparent_black_bordered"
+                            android:minHeight="0dp"
+                            android:paddingStart="@dimen/fab_twenty"
+                            android:paddingEnd="@dimen/fab_twenty"
+                            android:text="Click Here"
+                            android:textAllCaps="false"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/fbForumLinkStatic" />
+
+                        <ImageView
+                            android:id="@+id/fbForumLinkCopyImg"
+                            android:layout_width="@dimen/fab_twenty"
+                            android:layout_height="@dimen/fab_twenty"
+                            android:layout_marginEnd="@dimen/fab_eighteen"
+                            android:src="@drawable/ic_copy"
+                            app:layout_constraintBottom_toBottomOf="@+id/fbforumLinkTxt"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="@+id/fbforumLinkTxt" />-->
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+                <com.ashysystem.mbhq.view.ButtonSemiBold
+                    android:id="@+id/joinMembership"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/fab_twenty"
+                    android:background="@drawable/mbhq_rounded_corner_base_color"
+                    android:text="JOIN"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/fab_eighteen"
+                    android:visibility="visible"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/liveSeminarDetails"
+                    app:layout_constraintWidth_percent=".7" />
+
+                <com.ashysystem.mbhq.view.ButtonSemiBold
+                    android:id="@+id/startProgram"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/fab_twenty"
+                    android:background="@drawable/mbhq_rounded_corner_base_color"
+                    android:text="START"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/fab_eighteen"
+                    android:visibility="gone"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/liveSeminarDetails"
+                    app:layout_constraintWidth_percent=".7" />
+
+                <com.ashysystem.mbhq.view.ButtonSemiBold
+                    android:id="@+id/viewProgramsBtn"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:background="@drawable/mbhq_rounded_corner_base_color"
+                    android:text="IN PROGRESS"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/fab_eighteen"
+                    android:visibility="gone"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/liveSeminarDetails"
+                    app:layout_constraintWidth_percent=".7" />
+
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/buyProgramContainer"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/fab_ten"
+                    android:visibility="visible"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/viewProgramsBtn">
+
+                    <com.ashysystem.mbhq.view.TextViewOswaldMedium
+                        android:id="@+id/buyItText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Buy Now! At Just"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/fab_twenty_four"
+                        android:textStyle="bold"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <com.ashysystem.mbhq.view.TextViewOswaldMedium
+                        android:id="@+id/programPrice"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="$149"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="@dimen/fab_twenty_eight"
+                        android:textStyle="bold"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/buyItText" />
+
+                    <com.ashysystem.mbhq.view.ButtonSemiBold
+                        android:id="@+id/purchaseProgram"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:background="@drawable/mbhq_rounded_corner_base_color"
+                        android:text="Purchase Now"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/fab_eighteen"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/programPrice"
+                        app:layout_constraintWidth_percent=".7" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

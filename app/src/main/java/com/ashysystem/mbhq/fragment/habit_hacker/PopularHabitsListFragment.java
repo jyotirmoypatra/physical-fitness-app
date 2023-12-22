@@ -34,8 +34,6 @@ import com.ashysystem.mbhq.Service.impl.FinisherServiceImpl;
 import com.ashysystem.mbhq.activity.MainActivity;
 import com.ashysystem.mbhq.adapter.PopularHabitsAdapter;
 import com.ashysystem.mbhq.dialog.CustomReminderDialogForPopularHabits;
-import com.ashysystem.mbhq.fragment.MbhqTodayMainFragment;
-import com.ashysystem.mbhq.fragment.MbhqTodayTwoFragment;
 import com.ashysystem.mbhq.model.habit_hacker.DemoHabitTemplateModel;
 import com.ashysystem.mbhq.model.habit_hacker.GetHabitTemplatesResponseModel;
 import com.ashysystem.mbhq.model.habit_hacker.HabitSwap;

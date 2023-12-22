@@ -1,14 +1,145 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<!--
+<android.support.v4.widget.NestedScrollView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+-->
+
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragment.OnlyProgramPurchasedFragment">
+    android:background="@color/white"
+    android:paddingStart="@dimen/fab_ten"
+    android:paddingEnd="@dimen/fab_ten">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <ImageView
+        android:id="@+id/imgCross"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="24dp"
+        android:background="@drawable/mbhq_closemodal"
+        android:visibility="visible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.ashysystem.mbhq.view.TextViewRaleWay
+        android:id="@+id/lifetimeAccessStaticTxt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:paddingStart="@dimen/fab_eight"
+        android:paddingEnd="@dimen/fab_eight"
+        android:text="You have lifetime access to the following programs via the programs tab."
+        android:textColor="@color/black"
+        android:textSize="@dimen/fab_eighteen"
+        app:layout_constraintBottom_toTopOf="@+id/purchasedProgramRV"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/inactiveSubscriptionStaticTxt" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/purchasedProgramRV"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="wrap_content"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        app:layout_constraintBottom_toTopOf="@+id/restrictionBaitTxt"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/lifetimeAccessStaticTxt"
+        tools:itemCount="3"
+        tools:listitem="@layout/layout_adapter_restriction_item" />
 
-</FrameLayout>
+    <com.ashysystem.mbhq.view.TextViewRaleWay
+        android:id="@+id/inactiveSubscriptionStaticTxt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:paddingStart="@dimen/fab_eight"
+        android:paddingEnd="@dimen/fab_eight"
+        android:text="Your MindbodyHQ subscription is currently inactive."
+        android:textColor="@color/black"
+        android:textSize="@dimen/fab_eighteen"
+        app:layout_constraintBottom_toTopOf="@+id/lifetimeAccessStaticTxt"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/greetUserTxt" />
+
+    <com.ashysystem.mbhq.view.TextViewOswaldRegular
+        android:id="@+id/greetUserTxt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="HI LEVI!"
+        android:textColor="@color/black"
+        android:textSize="@dimen/fab_twenty_two"
+        app:layout_constraintBottom_toTopOf="@+id/inactiveSubscriptionStaticTxt"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/imgCross"
+        app:layout_constraintVertical_bias="0.51"
+        app:layout_constraintVertical_chainStyle="spread_inside" />
+
+    <com.ashysystem.mbhq.view.TextViewRaleWay
+        android:id="@+id/restrictionBaitTxt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:gravity="center"
+        android:paddingStart="@dimen/fab_eight"
+        android:paddingEnd="@dimen/fab_eight"
+        android:text="To use the gratitude and growth journals please update your membership here."
+        android:textColor="@color/black"
+        android:textSize="@dimen/fab_eighteen"
+        app:layout_constraintBottom_toTopOf="@+id/updateNowBtn"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/purchasedProgramRV" />
+
+    <com.ashysystem.mbhq.view.ButtonRaleWay
+        android:id="@+id/updateNowBtn"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/capsule_green"
+        android:gravity="center"
+        android:padding="@dimen/fab_eight"
+        android:text="Update Now"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:textSize="@dimen/fab_twenty"
+        app:layout_constraintBottom_toTopOf="@+id/discountCodeTxt"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintWidth_percent=".7" />
+
+    <com.ashysystem.mbhq.view.TextViewSemiBold
+        android:id="@+id/discountCodeTxt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:text="Use code: mb10 for 10% off"
+        android:textColor="@color/black"
+        android:textSize="@dimen/fab_sixteen"
+        app:layout_constraintBottom_toTopOf="@+id/emailTxt"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <com.ashysystem.mbhq.view.TextViewSemiBold
+        android:id="@+id/emailTxt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:text="Your email is: "
+        android:textColor="@color/black"
+        android:textSize="@dimen/fab_sixteen"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout><!--</android.support.v4.widget.NestedScrollView>-->

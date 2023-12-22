@@ -26,14 +26,10 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.TimePicker;
 
-import com.ashysystem.mbhq.R;
 import com.ashysystem.mbhq.Service.impl.FinisherServiceImpl;
 import com.ashysystem.mbhq.activity.MainActivity;
 import com.ashysystem.mbhq.dialog.HabitHackerReminderAddDialog;
-import com.ashysystem.mbhq.fragment.MbhqTodayMainFragment;
-import com.ashysystem.mbhq.fragment.MbhqTodayTwoFragment;
 import com.ashysystem.mbhq.model.habit_hacker.HabitSwap;
 import com.ashysystem.mbhq.util.AlertDialogCustom;
 import com.ashysystem.mbhq.util.AlertDialogWithCustomButton;

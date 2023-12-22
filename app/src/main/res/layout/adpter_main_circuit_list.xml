@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    >
+
+    <RelativeLayout
+        android:id="@+id/llRoot"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#FFFFFF"
+        android:duplicateParentState="true"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+           >
+
+            <com.ashysystem.mbhq.view.TextViewOswaldRegular
+                android:id="@+id/txtIndex"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight=".1"
+                android:text="1."
+                android:textColor="#FFFFFF"
+                android:layout_gravity="center_vertical"
+                android:gravity="center"
+                android:visibility="invisible"
+                android:textSize="@dimen/fab_fourteen" />
+
+            <com.ashysystem.mbhq.view.TextViewOswaldRegular
+                android:id="@+id/txtExerciseName"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight=".45"
+                android:text="Smith Horizontal"
+                android:textColor="@color/black"
+                android:layout_gravity="center_vertical"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:textStyle="bold"
+                android:textSize="@dimen/fab_fourteen" />
+
+            <com.ashysystem.mbhq.view.TextViewOswaldRegular
+                android:id="@+id/txtReps"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_weight=".25"
+                android:layout_gravity="center_vertical"
+                android:textSize="@dimen/fab_ten" />
+            <ImageView
+                android:id="@+id/imgBr"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight=".05"
+                android:visibility="visible" />
+            <RelativeLayout
+                android:id="@+id/rlInformation"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight=".08">
+                <ImageView
+                    android:id="@+id/imgInformation"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:src="@drawable/info"
+                    android:visibility="visible" />
+            </RelativeLayout>
+
+            <com.ashysystem.mbhq.view.TextViewOswaldRegular
+                android:id="@+id/txtSet"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight=".2"
+                android:textSize="@dimen/fab_fourteen"
+                android:layout_gravity="center_vertical"
+                android:visibility="gone" />
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight=".08">
+                <ImageView
+                    android:id="@+id/imgArrow"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+
+                    android:visibility="visible" />
+            </RelativeLayout>
+        </LinearLayout>
+    </RelativeLayout>
+
+    <View
+        android:id="@+id/viewTotal"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@+id/llRoot"
+        android:background="@color/colorPrimary"></View>
+
+    <LinearLayout
+        android:id="@+id/llInfoTips"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_below="@+id/viewTotal"
+        android:background="#EFEEF3"
+        android:visibility="gone">
+        <LinearLayout
+            android:id="@+id/llInfoMain"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <com.ashysystem.mbhq.view.TextViewOswaldRegular
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="10dp"
+                android:textSize="@dimen/fab_fourteen"
+                android:textColor="#000000"
+                android:text="Circuit Instructions:"
+                />
+            <LinearLayout
+                android:id="@+id/llDynamicInfo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp">
+
+            </LinearLayout>
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/llTips"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <com.ashysystem.mbhq.view.TextViewOswaldRegular
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:layout_marginLeft="10dp"
+                android:textSize="@dimen/fab_fourteen"
+                android:textColor="#000000"
+                android:text="Circuit Tips:"
+                />
+            <LinearLayout
+                android:id="@+id/llDynamicTips"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginBottom="10dp">
+
+            </LinearLayout>
+        </LinearLayout>
+        <VideoView
+            android:id="@+id/videoInstruction"
+            android:layout_width="match_parent"
+            android:layout_height="160dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:visibility="gone"
+            />
+    </LinearLayout>
+</RelativeLayout>

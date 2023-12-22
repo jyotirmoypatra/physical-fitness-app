@@ -30,8 +30,6 @@ import com.ashysystem.mbhq.Service.impl.FinisherServiceImpl;
 import com.ashysystem.mbhq.activity.MainActivity;
 
 import com.ashysystem.mbhq.adapter.HabbitCalendarTickUntickAdapter;
-import com.ashysystem.mbhq.fragment.MbhqTodayMainFragment;
-import com.ashysystem.mbhq.fragment.MbhqTodayTwoFragment;
 import com.ashysystem.mbhq.model.habit_hacker.HabbitCalendarModel;
 import com.ashysystem.mbhq.model.habit_hacker.HabitBreakTickUntickModel;
 import com.ashysystem.mbhq.roomDatabase.Injection;

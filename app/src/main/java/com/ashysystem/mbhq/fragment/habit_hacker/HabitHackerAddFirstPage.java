@@ -32,8 +32,6 @@ import android.widget.TextView;
 import com.ashysystem.mbhq.Service.impl.FinisherServiceImpl;
 import com.ashysystem.mbhq.activity.MainActivity;
 import com.ashysystem.mbhq.dialog.CustomReminderDialogAddGratitude;
-import com.ashysystem.mbhq.fragment.MbhqTodayMainFragment;
-import com.ashysystem.mbhq.fragment.MbhqTodayTwoFragment;
 import com.ashysystem.mbhq.model.habit_hacker.HabitSwap;
 import com.ashysystem.mbhq.model.habit_hacker.NewAction;
 import com.ashysystem.mbhq.model.habit_hacker.SwapAction;

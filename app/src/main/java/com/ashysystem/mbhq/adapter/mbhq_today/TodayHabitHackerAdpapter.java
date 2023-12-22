@@ -22,10 +22,9 @@ import com.ashysystem.mbhq.Service.impl.FinisherServiceImpl;
 import com.ashysystem.mbhq.activity.MainActivity;
 
 import com.ashysystem.mbhq.fragment.habit_hacker.HabbitDetailsCalendarFragment;
-import com.ashysystem.mbhq.fragment.habit_hacker.HabitHackerAddSecondPage;
 import com.ashysystem.mbhq.fragment.habit_hacker.HabitHackerEditFragment;
 import com.ashysystem.mbhq.fragment.habit_hacker.HabitHackerListFragment;
-import com.ashysystem.mbhq.fragment.MbhqTodayTwoFragment;
+import com.ashysystem.mbhq.fragment.habit_hacker.MbhqTodayTwoFragment;
 import com.ashysystem.mbhq.model.habit_hacker.HabitSwap;
 import com.ashysystem.mbhq.model.habit_hacker.NewAction;
 import com.ashysystem.mbhq.model.habit_hacker.SwapAction;

@@ -50,7 +50,7 @@ import com.ashysystem.mbhq.R;
 import com.ashysystem.mbhq.Service.impl.FinisherServiceImpl;
 import com.ashysystem.mbhq.activity.MainActivity;
 import com.ashysystem.mbhq.adapter.MeditationCourseAdapter;
-import com.ashysystem.mbhq.fragment.MbhqTodayMainFragment;
+import com.ashysystem.mbhq.fragment.habit_hacker.MbhqTodayMainFragment;
 import com.ashysystem.mbhq.model.GetMeditationCacheExpiryTimeResponse;
 import com.ashysystem.mbhq.model.MeditationCourseModel;
 

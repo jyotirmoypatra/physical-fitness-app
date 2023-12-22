@@ -23,7 +23,6 @@ import android.widget.TextView;
 
 import com.ashysystem.mbhq.activity.MainActivity;
 import com.ashysystem.mbhq.adapter.mbhq_today.TodayViewPagerAdapter;
-import com.ashysystem.mbhq.fragment.MbhqTodayMainFragment;
 import com.ashysystem.mbhq.model.habit_hacker.HabitSwap;
 
 import com.ashysystem.mbhq.util.CustomViewPager;

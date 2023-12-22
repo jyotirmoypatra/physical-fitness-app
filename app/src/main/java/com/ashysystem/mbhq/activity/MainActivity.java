@@ -115,6 +115,9 @@ import com.ashysystem.mbhq.Service.impl.ServiceSessionMain;
 import com.ashysystem.mbhq.fragment.*;
 import com.ashysystem.mbhq.fragment.bucket.BucketAddEditFragment;
 import com.ashysystem.mbhq.fragment.bucket.BucketListFragment;
+import com.ashysystem.mbhq.fragment.course.CourseDetailsFragment;
+import com.ashysystem.mbhq.fragment.course.CourseFragment;
+import com.ashysystem.mbhq.fragment.course.ProgramDetailsFragment;
 import com.ashysystem.mbhq.fragment.habit_hacker.HabbitCalendarTickUntickFragment;
 import com.ashysystem.mbhq.fragment.habit_hacker.HabbitDetailsCalendarFragment;
 import com.ashysystem.mbhq.fragment.habit_hacker.HabitHackerAddEight;
@@ -132,11 +135,18 @@ import com.ashysystem.mbhq.fragment.habit_hacker.HabitHackerAddThree;
 import com.ashysystem.mbhq.fragment.habit_hacker.HabitHackerAddTwo;
 import com.ashysystem.mbhq.fragment.habit_hacker.HabitHackerEditFragment;
 import com.ashysystem.mbhq.fragment.habit_hacker.HabitHackerListFragment;
+import com.ashysystem.mbhq.fragment.habit_hacker.MbhqTodayMainFragment;
+import com.ashysystem.mbhq.fragment.habit_hacker.MbhqTodayTwoFragment;
 import com.ashysystem.mbhq.fragment.habit_hacker.PopularHabitsListFragment;
+import com.ashysystem.mbhq.fragment.habit_hacker.WinTheWeekStatsFragment;
 import com.ashysystem.mbhq.fragment.live_chat.LiveChatFragment;
+import com.ashysystem.mbhq.fragment.live_chat.NewHelpFragment;
 import com.ashysystem.mbhq.fragment.meditation.MeditationDetails;
 import com.ashysystem.mbhq.fragment.meditation.MeditationDetailsNew;
 import com.ashysystem.mbhq.fragment.meditation.MeditationFragment;
+import com.ashysystem.mbhq.fragment.programme.OnlyProgramPurchasedFragment;
+import com.ashysystem.mbhq.fragment.reward.RewardMeditationFragment;
+import com.ashysystem.mbhq.fragment.reward.RewardNewFragment;
 import com.ashysystem.mbhq.listener.OnLoadFragmentRequestListener;
 import com.ashysystem.mbhq.listener.UploadCallback;
 import com.ashysystem.mbhq.listener.UploadDatabaseCallback;
@@ -1332,16 +1342,12 @@ public class MainActivity extends AppCompatActivity implements OnLoadFragmentReq
                     loadFragment(new OnlyProgramPurchasedFragment(), "OnlyProgramPurchased", bun);
                 } else {
                     if (Util.checkConnection(MainActivity.this)) {
+                        // funTabBarforReward(true);
                         if (restrictionBool()) {
                             funTrainRestriction();
 
                         } else {
-                            if (isBoolExerciseNutritionSettings()) {
-                                showDialogForNutritionExerciseSetting();
-                            } else {
-                                /*commentout by sahenita (temporary)*/
-                               // funTabBarforReward(true);
-                            }
+                            funTabBarforReward(true);
                         }
                     } else {
                         Util.showToast(MainActivity.this, Util.networkMsg);
@@ -1619,7 +1625,6 @@ public class MainActivity extends AppCompatActivity implements OnLoadFragmentReq
     }*/
 
     /*commentout by sahenita (temporary)*/
-/*
     public void funTabBarforReward(boolean isGraditutePage) {
         if (isGraditutePage) {
             sharedPreference.write("learn_nav_pos", "", 0 + "");
@@ -1737,7 +1742,6 @@ public class MainActivity extends AppCompatActivity implements OnLoadFragmentReq
         funTabselection("learn_nav_pos", arrRelative, arrTextView, llHorTab, horTab);
 
     }
-*/
 
     private void funBottomMenu() {
 
@@ -3907,7 +3911,7 @@ public class MainActivity extends AppCompatActivity implements OnLoadFragmentReq
             AppreciateFragment appreciateFragment = (AppreciateFragment) getSupportFragmentManager().findFragmentByTag("appricate");
             SquadDailyListFragment squadDailyListFragment = (SquadDailyListFragment) getSupportFragmentManager().findFragmentByTag("squaddaily");
             TrainOptionFragment trainOptionFragment = (TrainOptionFragment) getSupportFragmentManager().findFragmentByTag("trainop");
-            SessionOverviewFragment sessionOverviewFragment = (SessionOverviewFragment) getSupportFragmentManager().findFragmentByTag("sov");
+           // SessionOverviewFragment sessionOverviewFragment = (SessionOverviewFragment) getSupportFragmentManager().findFragmentByTag("sov");
             if (connectFragment != null) {
                 if (connectFragment.isVisible())
                     Log.i("called landind","16");
@@ -3949,12 +3953,12 @@ public class MainActivity extends AppCompatActivity implements OnLoadFragmentReq
                     loadFragment(new SquadDailyListFragment(), "squaddaily", null);
 
                 }
-            } else if (sessionOverviewFragment != null) {
+            } /*else if (sessionOverviewFragment != null) {
                 if (sessionOverviewFragment.isVisible()) {
                     loadFragment(new TrainOptionFragment(), "trainop", null);
 
                 }
-            }
+            }*/
 
         }
 
@@ -6771,7 +6775,7 @@ public class MainActivity extends AppCompatActivity implements OnLoadFragmentReq
                 currentFragmentTab instanceof MusicFragment ||
                 currentFragmentTab instanceof SpotifyFragment ||
                 currentFragmentTab instanceof SpotifyAlbumListFragment ||
-                currentFragmentTab instanceof SessionOverviewFragment ||
+               // currentFragmentTab instanceof SessionOverviewFragment ||
                 currentFragmentTab instanceof MealMatchAnalyseFragment ||
                 currentFragmentTab instanceof AddUpdateCustomProgramFragment ||
 

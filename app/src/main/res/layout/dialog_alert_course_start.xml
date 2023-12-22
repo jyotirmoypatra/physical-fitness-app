@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#B3000000"
+    >
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:orientation="vertical"
+        android:layout_margin="20dp"
+        android:background="@drawable/capsule_white">
+
+        <LinearLayout
+            android:id="@+id/llMainBlock"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:layout_centerInParent="true"
+            android:orientation="vertical"
+            android:layout_below="@+id/vwTop"
+            >
+            <com.ashysystem.mbhq.view.TextViewSemiBold
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:textColor="@color/black"
+                android:layout_marginTop="20dp"
+                android:textSize="@dimen/fab_eighteen"
+                android:text="Warning!"></com.ashysystem.mbhq.view.TextViewSemiBold>
+            <com.ashysystem.mbhq.view.TextViewRalewayMedium
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:textColor="@color/black"
+                android:textSize="@dimen/fab_sixteen"
+                android:text=" This is the RESET program button. If you reset your program, all the tasks you have done will be cleared. Do you want to start the program again and have you history erased?!"></com.ashysystem.mbhq.view.TextViewRalewayMedium>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="20dp"
+                android:background="@color/ashseparator"></View>
+            <com.ashysystem.mbhq.view.TextViewRalewayMedium
+                android:id="@+id/txtYes"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:textColor="@color/chat_blue"
+                android:textSize="@dimen/fab_fourteen"
+                android:layout_marginTop="10dp"
+                android:text="Yes"></com.ashysystem.mbhq.view.TextViewRalewayMedium>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="10dp"
+                android:background="@color/ashseparator"></View>
+            <com.ashysystem.mbhq.view.TextViewRalewayMedium
+                android:id="@+id/txtNo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:textColor="@color/chat_blue"
+                android:textSize="@dimen/fab_fourteen"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="20dp"
+                android:text="No I want ti keep going"></com.ashysystem.mbhq.view.TextViewRalewayMedium>
+
+
+
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+
+</RelativeLayout>

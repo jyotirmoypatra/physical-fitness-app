@@ -4,6 +4,8 @@ import android.content.Context;
 
 import com.ashysystem.mbhq.Service.interfaces.SessionService;
 import com.ashysystem.mbhq.model.AddRewardModel;
+import com.ashysystem.mbhq.model.ShowIndividualVideoModel;
+
 import java.util.HashMap;
 import retrofit2.Call;
 
@@ -23,5 +25,7 @@ public class SessionServiceImpl extends ServiceSessionMain {
     public Call<AddRewardModel> addRewardApi(HashMap<String, Object> hashReq) {
         return sessionService.AddRewardApi(hashReq);
     }
-
+    public Call<ShowIndividualVideoModel> getIndividualVideo(HashMap<String, Object> modelHashMap){
+        return sessionService.getIndividualVideo(modelHashMap);
+    }
 }

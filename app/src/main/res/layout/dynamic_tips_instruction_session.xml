@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    >
+    <!--<ImageView
+        android:id="@+id/imgCircle1"
+        android:layout_width="10dp"
+        android:layout_height="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/circle_black"/>-->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:background="@drawable/edittext_circuit">
+    <com.ashysystem.mbhq.view.TextViewOswaldExtraLight
+        android:id="@+id/txtTipsInstructions"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:textSize="@dimen/fab_fourteen"
+        android:layout_centerInParent="true"
+        android:textColor="@color/white"
+        android:text="aaaaaaa"/>
+    </RelativeLayout>
+</LinearLayout>

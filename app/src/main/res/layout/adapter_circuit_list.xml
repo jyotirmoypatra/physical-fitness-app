@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <RelativeLayout
+        android:id="@+id/llRoot"
+        android:layout_width="match_parent"
+        android:layout_height="82dp"
+        android:background="#FFFFFF"
+        android:duplicateParentState="true"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:orientation="horizontal">
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight=".2">
+                <ImageView
+                    android:id="@+id/imgExercise"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"/>
+            </RelativeLayout>
+
+           <!-- <com.ashysystem.mbhq.view.TextViewOswaldExtraLight
+                android:id="@+id/txtIndex"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight=".1"
+                android:text="1."
+                android:layout_gravity="center_vertical"
+                android:textSize="@dimen/fab_fourteen"
+                />-->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight=".5"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="5dp"
+                android:orientation="vertical">
+
+
+            <com.ashysystem.mbhq.view.TextViewOswaldExtraLight
+                android:id="@+id/txtExerciseName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Smith Horizontal"
+                android:textSize="@dimen/fab_fourteen"
+                android:layout_marginTop="5dp"/>
+                <com.ashysystem.mbhq.view.TextViewRaleWay
+                    android:id="@+id/txtDummy"
+                    android:layout_width="1dp"
+                    android:layout_height="1dp"
+                    android:layout_gravity="center_vertical"
+                    android:gravity="center_horizontal" />
+
+            <com.ashysystem.mbhq.view.TextViewOswaldExtraLight
+                android:id="@+id/txtReps"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:textSize="@dimen/fab_fourteen" />
+            </LinearLayout>
+
+
+           <ImageView
+                android:id="@+id/imgBr"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight=".1"
+                android:visibility="visible" />
+
+            <com.ashysystem.mbhq.view.TextViewRaleWay
+                android:id="@+id/txtSet"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight=".1"
+                android:textSize="@dimen/fab_fourteen"
+                android:textColor="@color/colorPrimary"
+                android:layout_gravity="center_vertical"
+                android:visibility="gone" />
+            <ImageView
+                android:id="@+id/imgArrow"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight=".1"
+                android:visibility="visible" />
+        </LinearLayout>
+    </RelativeLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_below="@+id/llRoot">
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight=".7">
+           <!--<View
+                android:id="@+id/viewOne"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/ashseparator">-->
+        </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight=".3">
+          <!--<View
+                android:id="@+id/viewTwo"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/ashseparator">-->
+        </RelativeLayout>
+
+    </LinearLayout>
+
+
+
+
+</RelativeLayout>

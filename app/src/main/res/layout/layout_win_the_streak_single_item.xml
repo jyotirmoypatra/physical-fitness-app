@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+
+    <TextView
+        android:id="@+id/txtStreakDate"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:gravity="center|end"
+        android:padding="@dimen/spacing_4dp"
+        android:text="Mar 15-21"
+        android:textColor="@color/black"
+        android:textSize="@dimen/fab_eighteen"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/imgBracket"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_marginStart="8dp"
+        android:scaleType="fitCenter"
+        app:layout_constraintBottom_toBottomOf="@id/txtStreakDate"
+        app:layout_constraintStart_toEndOf="@+id/txtStreakDate"
+        app:layout_constraintTop_toTopOf="@id/txtStreakDate"
+        android:src="@drawable/thired_last_half_blue" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

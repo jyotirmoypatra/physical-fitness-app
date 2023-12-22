@@ -40,8 +40,6 @@ import com.ashysystem.mbhq.activity.WebViewActivity;
 import com.ashysystem.mbhq.adapter.HabitHackerListAdapter;
 import com.ashysystem.mbhq.adapter.HabitHackerListAdapter_completed;
 import com.ashysystem.mbhq.adapter.HabitHackerListAdapter_hidden;
-import com.ashysystem.mbhq.fragment.MbhqTodayMainFragment;
-import com.ashysystem.mbhq.fragment.MbhqTodayTwoFragment;
 import com.ashysystem.mbhq.model.habit_hacker.HabitSwap;
 import com.ashysystem.mbhq.model.habit_hacker.HabitSwap_completed;
 import com.ashysystem.mbhq.model.habit_hacker.SearchUserHabitSwapsModel;

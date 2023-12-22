@@ -6,7 +6,9 @@ import com.ashysystem.mbhq.Service.interfaces.FinisherService;
 
 import com.ashysystem.mbhq.model.AddRewardModel;
 import com.ashysystem.mbhq.model.AddUpdateGratitudeModel;
+import com.ashysystem.mbhq.model.AvailableCourseModel;
 import com.ashysystem.mbhq.model.BucketListModel;
+import com.ashysystem.mbhq.model.CourseDetailModel;
 import com.ashysystem.mbhq.model.GetGratitudeCacheExpiryTimeResponse;
 import com.ashysystem.mbhq.model.GetMeditationCacheExpiryTimeResponse;
 import com.ashysystem.mbhq.model.GetPrompt;
@@ -14,11 +16,13 @@ import com.ashysystem.mbhq.model.GetStreakDataResponse;
 import com.ashysystem.mbhq.model.GetTaskStatusForDateResponse;
 import com.ashysystem.mbhq.model.GetUserPaidStatusModel;
 
+import com.ashysystem.mbhq.model.GetWinTheWeekStatsResponse;
 import com.ashysystem.mbhq.model.IndividualBucketListModel;
 import com.ashysystem.mbhq.model.LoginRes.LoginResponse;
 import com.ashysystem.mbhq.model.MeditationCourseModel;
 import com.ashysystem.mbhq.model.MeditationTagResponse;
 import com.ashysystem.mbhq.model.MyValueListResponse;
+import com.ashysystem.mbhq.model.ProgressCourseResponse;
 import com.ashysystem.mbhq.model.TodayPage.GetAppHomePageValuesResponseModel;
 import com.ashysystem.mbhq.model.UpdateBadgeShownResponse;
 import com.ashysystem.mbhq.model.eqfolder.Eqfolder;
@@ -259,5 +263,32 @@ public class FinisherServiceImpl extends Service {
     }
     public Call<JsonObject> UpdateTaskNote(HashMap<String, Object> modelHashMap) {
         return finisherService.UpdateTaskNote(modelHashMap);
+    }
+    public Call<JsonObject> updateHabitStatus(HashMap<String, Object> modelHashMap) {
+        return finisherService.updateHabitStatus(modelHashMap);
+    }
+    public Call<GetWinTheWeekStatsResponse> getWinTheWeekStats(HashMap<String, Object> modelHashMap) {
+        return finisherService.getWinTheWeekStats(modelHashMap);
+    }
+    public Call<AvailableCourseModel> getAvailableCourse(HashMap<String, Object> modelHashMap) {
+        return finisherService.getAvailableCourse(modelHashMap);
+    }
+    public Call<ProgressCourseResponse> getProgressResponse(HashMap<String, Object> modelHashMap) {
+        return finisherService.getProgressReponse(modelHashMap);
+    }
+    public Call<CourseDetailModel> getCourseDetail(HashMap<String, Object> modelHashMap) {
+        return finisherService.getCourseDetails(modelHashMap);
+    }
+    public Call<JsonObject> updateCourseStats(HashMap<String, Object> modelHashMap) {
+        return finisherService.UpdateCourseStatus(modelHashMap);
+    }
+    public Call<JsonObject> toggleMessageNotificationFlag(HashMap<String, Object> modelHashMap) {
+        return finisherService.ToggleMessageNotificationFlag(modelHashMap);
+    }
+    public Call<JsonObject> toggleSeminarNotificationFlag(HashMap<String, Object> modelHashMap) {
+        return finisherService.toggleSeminarNotificationFlag(modelHashMap);
+    }
+    public Call<JsonObject> refreshCourse(HashMap<String, Object> modelHashMap) {
+        return finisherService.refreshCourse(modelHashMap);
     }
 }

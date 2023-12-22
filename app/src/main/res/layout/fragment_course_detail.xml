@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:id="@+id/rlTop"
+
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="#F6F6F6">
+
+        <RelativeLayout
+            android:id="@+id/rlBack"
+            android:layout_width="80dp"
+            android:layout_height="match_parent">
+
+            <com.ashysystem.mbhq.view.TextViewBold
+                android:id="@+id/txtBack"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="10dp"
+                android:text="Back"
+                android:textColor="@color/black"
+                android:textSize="@dimen/fab_sixteen"
+                android:textStyle="bold" />
+        </RelativeLayout>
+
+        <ImageView
+            android:id="@+id/imgNotification"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="10dp"
+            android:src="@drawable/mbhq_notification"/>
+
+        <ImageView
+            android:id="@+id/imgLink"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="10dp"
+            android:visibility="gone"
+            android:src="@drawable/ic_link"/>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/llRoot"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:layout_below="@+id/rlTop">
+
+        <com.ashysystem.mbhq.view.TextViewSemiBold
+            android:id="@+id/txtHeaderUp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_marginTop="10dp"
+            android:text="Course Name"
+            android:textColor="@color/base_green"
+            android:textSize="@dimen/fab_eighteen"></com.ashysystem.mbhq.view.TextViewSemiBold>
+
+        <ImageView
+            android:id="@+id/imgRefresh"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="15dp"
+            android:background="@drawable/ic_refresh_pink"
+            android:visibility="gone" />
+    </RelativeLayout>
+
+    <View
+        android:id="@+id/view1"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@+id/llRoot"
+        android:layout_marginTop="5dp"
+        android:background="@color/ashseparator"
+        android:visibility="visible"></View>
+
+    <LinearLayout
+        android:id="@+id/llProgress"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/view1"
+        android:layout_margin="10dp">
+
+        <ProgressBar
+            android:id="@+id/progressBarRest"
+            style="@android:style/Widget.ProgressBar.Horizontal"
+            android:layout_width="0dp"
+            android:layout_height="5dp"
+            android:layout_below="@+id/view1"
+            android:layout_gravity="center"
+            android:layout_weight=".85"
+            android:max="100"
+            android:progress="20"
+            android:progressDrawable="@drawable/blue_progress" />
+
+        <com.ashysystem.mbhq.view.TextViewOswaldRegular
+            android:id="@+id/txtQuestion"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_weight=".15"
+            android:textColor="@color/black"
+            android:textSize="@dimen/fab_sixteen" />
+    </LinearLayout>
+
+    <View
+        android:id="@+id/view2"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@+id/llProgress"
+        android:layout_marginTop="10dp"
+        android:background="@color/ashseparator"
+        android:visibility="gone"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/view2"
+        >
+        <!--android:background="#d4d4d6"-->
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvCourseDetail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:listitem="@layout/adapter_expanble_article_child" />
+    </RelativeLayout>
+</RelativeLayout>

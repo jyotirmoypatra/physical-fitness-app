@@ -71,7 +71,7 @@ import com.ashysystem.mbhq.Service.impl.FinisherServiceImpl;
 import com.ashysystem.mbhq.activity.MainActivity;
 import com.ashysystem.mbhq.adapter.GuidedMeditationAdapter;
 import com.ashysystem.mbhq.adapter.OtherGuidedMeditationAdapter;
-import com.ashysystem.mbhq.fragment.CourseArticleDetailsNewFragment;
+import com.ashysystem.mbhq.fragment.course.CourseArticleDetailsNewFragment;
 import com.ashysystem.mbhq.fragment.LearnFragment;
 
 import com.ashysystem.mbhq.fragment.TrainFragment;

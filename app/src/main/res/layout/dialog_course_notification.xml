@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#B3000000"
+    >
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:orientation="vertical"
+        android:layout_margin="20dp"
+        android:background="@drawable/capsule_white">
+        <RelativeLayout
+            android:id="@+id/rlTop"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <RelativeLayout
+                android:id="@+id/rlBack"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="8dp"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true">
+
+            </RelativeLayout>
+
+            <ImageView
+                android:id="@+id/imgBack"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/mbhq_close_green"
+                android:layout_alignParentRight="true"
+                android:layout_margin="10dp"
+                android:layout_centerVertical="true"/>
+
+        </RelativeLayout>
+
+        <LinearLayout
+            android:id="@+id/llMainBlock"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:layout_centerInParent="true"
+            android:orientation="vertical"
+            android:layout_below="@+id/vwTop"
+            >
+          <com.ashysystem.mbhq.view.TextViewSemiBold
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:text="Program Status :"
+              android:textSize="@dimen/fab_eighteen"
+              android:textColor="@color/black"
+              ></com.ashysystem.mbhq.view.TextViewSemiBold>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:orientation="vertical">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="50dp"
+                    android:layout_weight=".5"
+                    android:orientation="horizontal">
+                    <CheckBox
+                        android:id="@+id/chkActive"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:paddingLeft="10dp"
+                        android:button="@drawable/drawble_custom_checkbox"
+                        android:text="Active"></CheckBox>
+                    
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="50dp"
+                    android:layout_weight=".5"
+                    android:orientation="horizontal">
+                    <CheckBox
+                        android:id="@+id/chkPause"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight=".5"
+                        android:paddingLeft="10dp"
+                        android:button="@drawable/drawble_custom_checkbox"
+                        android:text="Pause"></CheckBox>
+
+                </LinearLayout>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="50dp"
+                        android:layout_weight=".5"
+                        android:orientation="horizontal">
+                        <CheckBox
+                            android:id="@+id/chkCompleted"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:paddingLeft="10dp"
+                            android:button="@drawable/drawble_custom_checkbox"
+                            android:text="Completed"></CheckBox>
+
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="50dp"
+                        android:layout_weight=".5"
+                        android:orientation="horizontal">
+
+                    </LinearLayout>
+                </LinearLayout>
+
+            </LinearLayout>
+            <com.ashysystem.mbhq.view.TextViewSemiBold
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Program Notification :"
+                android:textSize="@dimen/fab_eighteen"
+                android:textColor="@color/black"
+                ></com.ashysystem.mbhq.view.TextViewSemiBold>
+            <CheckBox
+                android:id="@+id/chkMsg"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:visibility="gone"
+                android:button="@drawable/drawable_custom_toggle"
+                android:text="Message Notification"></CheckBox>
+            <CheckBox
+                android:id="@+id/chkSeminar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:button="@drawable/drawable_custom_toggle"
+                android:text="Seminar Notification"></CheckBox>
+
+
+
+        </LinearLayout>
+        <RelativeLayout
+            android:id="@+id/rlReset"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_margin="10dp"
+            android:background="@drawable/capsule_green">
+            <com.ashysystem.mbhq.view.TextViewSemiBold
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:textColor="@color/white"
+                android:text="RESET NOW"></com.ashysystem.mbhq.view.TextViewSemiBold>
+        </RelativeLayout>
+        <RelativeLayout
+            android:id="@+id/btnApply"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@drawable/capsule_below_btn"
+            android:layout_below="@+id/llMainBlock"
+            android:visibility="visible">
+
+            <com.ashysystem.mbhq.view.TextViewOswaldRegular
+                android:id="@+id/txtSave"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="APPLY"
+                android:textColor="@color/white"
+                android:textSize="@dimen/fab_eighteen" />
+            <View
+                android:layout_width="wrap_content"
+                android:layout_height="1dp"
+                android:layout_below="@+id/txtSave"
+                android:layout_alignLeft="@+id/txtSave"
+                android:layout_alignRight="@+id/txtSave"
+                android:background="@color/white"></View>
+        </RelativeLayout>
+    </LinearLayout>
+
+
+
+</RelativeLayout>

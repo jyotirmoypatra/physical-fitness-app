@@ -1,0 +1,654 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white">
+    <RelativeLayout
+        android:id="@+id/rlTop"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/mbhq_background"
+        android:minHeight="45dp">
+
+        <com.ashysystem.mbhq.view.TextViewBold
+            android:id="@+id/txtBack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:paddingTop="10dp"
+            android:paddingRight="10dp"
+            android:paddingBottom="10dp"
+            android:text="Back"
+            android:textColor="@color/black" />
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:layout_marginRight="10dp"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true">
+            <ImageView
+                android:id="@+id/imgEditHabit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/mbhq_edit_inactive"
+                android:padding="5dp"
+                android:layout_marginRight="10dp"
+                />
+            <ImageView
+                android:id="@+id/imgDeleteHabit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_delete_grey"
+                android:padding="5dp"
+                />
+        </LinearLayout>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rlBottom"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp">
+
+        <LinearLayout
+            android:id="@+id/llBottom"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone">
+
+            <RelativeLayout
+                android:id="@+id/rlDetails"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginRight="5dp"
+                android:layout_weight=".5"
+                android:background="@drawable/rounded_corner_green">
+
+                <com.ashysystem.mbhq.view.TextViewRalewayMedium
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:text="DETAILS"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/fab_sixteen">
+
+                </com.ashysystem.mbhq.view.TextViewRalewayMedium>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/rlStats"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="5dp"
+                android:layout_weight=".5"
+                android:background="@drawable/rounded_corner_green_border_white_inside">
+
+                <com.ashysystem.mbhq.view.TextViewRalewayMedium
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:text="STATS"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="@dimen/fab_sixteen"></com.ashysystem.mbhq.view.TextViewRalewayMedium>
+            </RelativeLayout>
+        </LinearLayout>
+
+        <RelativeLayout
+            android:id="@+id/rlSaveHabit"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/rounded_corner_green"
+            android:visibility="gone">
+
+            <com.ashysystem.mbhq.view.TextViewRalewayMedium
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="save"
+                android:textAllCaps="true"
+                android:textColor="@color/white"
+                android:textSize="@dimen/fab_sixteen" />
+        </RelativeLayout>
+    </RelativeLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/rlBottom"
+        android:layout_below="@+id/rlTop">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <com.ashysystem.mbhq.view.TextViewBold
+                android:id="@+id/txtHabitName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:gravity="center_vertical"
+                android:minLines="3"
+                android:paddingLeft="10dp"
+                android:textColor="@color/colorPrimary"
+                android:textSize="@dimen/fab_eighteen"></com.ashysystem.mbhq.view.TextViewBold>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal">
+
+                <com.ashysystem.mbhq.view.TextViewSemiBold
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Frequency :"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/fab_sixteen"
+                    android:textStyle="bold" />
+
+                <com.ashysystem.mbhq.view.TextViewSemiBold
+                    android:id="@+id/txtFrequencyValue1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="10dp"
+                    android:text=""
+                    android:textColor="#6D6C6C"
+                    android:textSize="@dimen/fab_sixteen" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="15dp"
+                android:orientation="horizontal">
+
+                <com.ashysystem.mbhq.view.TextViewSemiBold
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Time of day :"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/fab_sixteen"
+                    android:textStyle="bold" />
+
+                <com.ashysystem.mbhq.view.TextViewSemiBold
+                    android:id="@+id/txtWhenValue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:text=""
+                    android:textColor="#6D6C6C"
+                    android:textSize="@dimen/fab_sixteen" />
+
+                <LinearLayout
+                    android:id="@+id/llForTwiceDaily"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:orientation="horizontal">
+
+                    <com.ashysystem.mbhq.view.TextViewSemiBold
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="And"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/fab_sixteen"
+                        android:textStyle="bold" />
+
+                    <com.ashysystem.mbhq.view.TextViewSemiBold
+                        android:id="@+id/txtWhenValue2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:text=""
+                        android:textColor="#6D6C6C"
+                        android:textSize="@dimen/fab_sixteen" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="15dp"
+                android:orientation="horizontal">
+
+                <com.ashysystem.mbhq.view.TextViewSemiBold
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="For how long :"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/fab_sixteen"
+                    android:textStyle="bold" />
+
+                <com.ashysystem.mbhq.view.TextViewSemiBold
+                    android:id="@+id/txtHowLongValue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:text=""
+                    android:textColor="#6D6C6C"
+                    android:textSize="@dimen/fab_sixteen" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="15dp"
+                android:orientation="horizontal">
+
+                <com.ashysystem.mbhq.view.TextViewSemiBold
+                    android:id="@+id/txtHabitReminder"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Reminder"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/fab_sixteen"
+                    android:textStyle="bold" />
+
+                <CheckBox
+                    android:id="@+id/chkSetReminder"
+                    android:layout_width="50dp"
+                    android:layout_height="29dp"
+                    android:layout_marginLeft="20dp"
+                    android:background="@drawable/drawable_custom_toggle"
+                    android:button="@null" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="10dp"
+                android:background="@color/ashseparator"></View>
+
+            <com.ashysystem.mbhq.view.TextViewSemiBold
+                android:id="@+id/txtWhereNewHabitQuestion"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
+                android:text="Where will you do the new habit?"
+                android:textColor="@color/black"
+                android:textSize="@dimen/fab_sixteen"
+                android:textStyle="bold" />
+
+            <com.ashysystem.mbhq.view.TextViewSemiBold
+                android:id="@+id/txtWhereNewHabit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:background="@null"
+                android:gravity="center_vertical"
+                android:minLines="3"
+                android:paddingLeft="10dp"
+                android:text=""
+                android:textColor="#6D6C6C"
+                android:textSize="@dimen/fab_sixteen" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/ashseparator"></View>
+
+            <com.ashysystem.mbhq.view.TextViewSemiBold
+                android:id="@+id/txtCueNewHabitQuestion"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
+                android:text="What will cue you to do the new action?"
+                android:textColor="@color/black"
+                android:textSize="@dimen/fab_sixteen"
+                android:textStyle="bold" />
+
+            <com.ashysystem.mbhq.view.TextViewSemiBold
+                android:id="@+id/txtCueNewAction"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:background="@null"
+                android:gravity="center_vertical"
+                android:minLines="3"
+                android:paddingLeft="10dp"
+                android:text=""
+                android:textColor="#6D6C6C"
+                android:textSize="@dimen/fab_sixteen" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/ashseparator"></View>
+
+            <com.ashysystem.mbhq.view.TextViewSemiBold
+                android:id="@+id/txtSpecificNewActionQuestion"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="10dp"
+                android:text="Tell me about the new action. Tell me exactly what you will do. Be Specific"
+                android:textColor="@color/black"
+                android:textSize="@dimen/fab_sixteen"
+                android:textStyle="bold" />
+
+            <com.ashysystem.mbhq.view.TextViewSemiBold
+                android:id="@+id/txtBeSpecific"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:background="@null"
+                android:gravity="center_vertical"
+                android:minLines="3"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:text=""
+                android:textColor="#6D6C6C"
+                android:textSize="@dimen/fab_sixteen" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/ashseparator"></View>
+
+            <com.ashysystem.mbhq.view.TextViewSemiBold
+                android:id="@+id/txtSeenNewHabitQuestion"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="10dp"
+                android:text="How can we make it more &quot;SEEN&quot;? How do we make it easier for you to do this action instead of the old one?"
+                android:textColor="@color/black"
+                android:textSize="@dimen/fab_sixteen"
+                android:textStyle="bold" />
+
+            <com.ashysystem.mbhq.view.TextViewSemiBold
+                android:id="@+id/txtSeen"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:background="@null"
+                android:gravity="center_vertical"
+                android:minLines="3"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:text=""
+                android:textColor="#6D6C6C"
+                android:textSize="@dimen/fab_sixteen" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/ashseparator"></View>
+
+            <com.ashysystem.mbhq.view.TextViewSemiBold
+                android:id="@+id/txtRewardNewHabitQuestion"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="10dp"
+                android:text="How can we make this fun and rewarding (instantly if possible)"
+                android:textColor="@color/black"
+                android:textSize="@dimen/fab_sixteen"
+                android:textStyle="bold" />
+
+            <com.ashysystem.mbhq.view.TextViewSemiBold
+                android:id="@+id/txtFunReward"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:background="@null"
+                android:gravity="center_vertical"
+                android:minLines="3"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:text=""
+                android:textColor="#6D6C6C"
+                android:textSize="@dimen/fab_sixteen" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/ashseparator"></View>
+
+            <com.ashysystem.mbhq.view.TextViewSemiBold
+                android:id="@+id/txtAccountableHabitQuestion"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="10dp"
+                android:text="How can we make yourself more accountable?"
+                android:textColor="@color/black"
+                android:textSize="@dimen/fab_sixteen"
+                android:textStyle="bold" />
+
+            <com.ashysystem.mbhq.view.TextViewSemiBold
+                android:id="@+id/txtMoreAccountable"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:background="@null"
+                android:gravity="center_vertical"
+                android:minLines="3"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:text=""
+                android:textColor="#6D6C6C"
+                android:textSize="@dimen/fab_sixteen" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/ashseparator"></View>
+
+            <com.ashysystem.mbhq.view.TextViewBold
+                android:id="@+id/txtBreakName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:gravity="center_vertical"
+                android:minLines="3"
+                android:paddingLeft="10dp"
+                android:text=""
+                android:textColor="@color/red"
+                android:textSize="@dimen/fab_eighteen"></com.ashysystem.mbhq.view.TextViewBold>
+
+            <com.ashysystem.mbhq.view.TextViewSemiBold
+                android:id="@+id/txtBreakOldActionQuestion"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="10dp"
+                android:text="Tell me about the old action we are going to break. What do you do that you no longer want to do? Be specific"
+                android:textColor="@color/black"
+                android:textSize="@dimen/fab_sixteen"
+                android:textStyle="bold" />
+
+            <com.ashysystem.mbhq.view.TextViewSemiBold
+                android:id="@+id/txtBreakBeSpecific"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:background="@null"
+                android:gravity="center_vertical"
+                android:minLines="3"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:text=""
+                android:textColor="#6D6C6C"
+                android:textSize="@dimen/fab_sixteen" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/ashseparator"></View>
+
+            <com.ashysystem.mbhq.view.TextViewSemiBold
+                android:id="@+id/txtHarderBreakQuestion"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="10dp"
+                android:text="How can we make this old habit harder to do and hidden from sight? Can we make things, hide things, change something?"
+                android:textColor="@color/black"
+                android:textSize="@dimen/fab_sixteen"
+                android:textStyle="bold" />
+
+            <com.ashysystem.mbhq.view.TextViewSemiBold
+                android:id="@+id/txtChangeSomething"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:background="@null"
+                android:gravity="center_vertical"
+                android:minLines="3"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:text=""
+                android:textColor="#6D6C6C"
+                android:textSize="@dimen/fab_sixteen" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/ashseparator"></View>
+
+            <com.ashysystem.mbhq.view.TextViewSemiBold
+                android:id="@+id/txtReframeBreakHabitQuestion"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="10dp"
+                android:text="How can we reframe the old habit, so when you think about doing it, you aren't interested in doing it anymore.IE It seem horrible and unappealing to who you want to be."
+                android:textColor="@color/black"
+                android:textSize="@dimen/fab_sixteen"
+                android:textStyle="bold" />
+
+            <com.ashysystem.mbhq.view.TextViewSemiBold
+                android:id="@+id/txtReframe"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:background="@null"
+                android:gravity="center_vertical"
+                android:minLines="3"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:text=""
+                android:textColor="#6D6C6C"
+                android:textSize="@dimen/fab_sixteen" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/ashseparator"></View>
+
+            <com.ashysystem.mbhq.view.TextViewSemiBold
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="10dp"
+                android:text="Mark as :"
+                android:textColor="@color/black"
+                android:textSize="@dimen/fab_sixteen"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginBottom="20dp"
+                android:minHeight="55dp"
+                android:orientation="horizontal"
+                android:weightSum="3">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <com.ashysystem.mbhq.view.TextViewSemiBold
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:text="In Progress"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/fab_sixteen" />
+
+                    <ImageView
+                        android:id="@+id/imgInProgress"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:padding="10dp"
+                        android:src="@drawable/mbhq_ic_untick" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <com.ashysystem.mbhq.view.TextViewSemiBold
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:text="Completed"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/fab_sixteen" />
+
+                    <ImageView
+                        android:id="@+id/imgCompleted"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:padding="10dp"
+                        android:src="@drawable/mbhq_ic_untick" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <com.ashysystem.mbhq.view.TextViewSemiBold
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:text="Hidden"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/fab_sixteen" />
+
+                    <ImageView
+                        android:id="@+id/imgHidden"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:padding="10dp"
+                        android:src="@drawable/mbhq_ic_untick" />
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+</RelativeLayout>

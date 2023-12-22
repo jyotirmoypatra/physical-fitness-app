@@ -1,7 +1,9 @@
 package com.ashysystem.mbhq.Service.interfaces;
 
 import com.ashysystem.mbhq.model.AddUpdateGratitudeModel;
+import com.ashysystem.mbhq.model.AvailableCourseModel;
 import com.ashysystem.mbhq.model.BucketListModel;
+import com.ashysystem.mbhq.model.CourseDetailModel;
 import com.ashysystem.mbhq.model.GetGratitudeCacheExpiryTimeResponse;
 import com.ashysystem.mbhq.model.GetMeditationCacheExpiryTimeResponse;
 import com.ashysystem.mbhq.model.GetPrompt;
@@ -9,11 +11,13 @@ import com.ashysystem.mbhq.model.GetStreakDataResponse;
 import com.ashysystem.mbhq.model.GetTaskStatusForDateResponse;
 import com.ashysystem.mbhq.model.GetUserPaidStatusModel;
 
+import com.ashysystem.mbhq.model.GetWinTheWeekStatsResponse;
 import com.ashysystem.mbhq.model.IndividualBucketListModel;
 import com.ashysystem.mbhq.model.LoginRes.LoginResponse;
 import com.ashysystem.mbhq.model.MeditationCourseModel;
 import com.ashysystem.mbhq.model.MeditationTagResponse;
 import com.ashysystem.mbhq.model.MyValueListResponse;
+import com.ashysystem.mbhq.model.ProgressCourseResponse;
 import com.ashysystem.mbhq.model.TodayPage.GetAppHomePageValuesResponseModel;
 import com.ashysystem.mbhq.model.UpdateBadgeShownResponse;
 import com.ashysystem.mbhq.model.eqfolder.Eqfolder;
@@ -195,6 +199,24 @@ public interface FinisherService {
     Call<HabbitCalendarModel> GetHabitStats(@Body HashMap<String, Object> modelHashMap);
     @POST("api/mindset/UpdateTaskNote")
     Call<JsonObject> UpdateTaskNote(@Body HashMap<String, Object> modelHashMap);
+    @POST("api/mindset/UpdateHabitStatus")
+    Call<JsonObject> updateHabitStatus(@Body HashMap<String, Object> modelHashMap);
+    @POST("api/mindset/GetWinTheWeekStats")
+    Call<GetWinTheWeekStatsResponse> getWinTheWeekStats(@Body HashMap<String, Object> modelHashMap);
+    @POST("api/mbhqCourse/GetCourseList ")
+    Call<AvailableCourseModel> getAvailableCourse(@Body HashMap<String, Object> modelHashMap);
+    @POST("api/MbhqCourse/SetProgressBar")
+    Call<ProgressCourseResponse> getProgressReponse(@Body HashMap<String, Object> modelHashMap);
+    @POST("api/MbhqCourse/GetCourseDetail")
+    Call<CourseDetailModel> getCourseDetails(@Body HashMap<String, Object> modelHashMap);
+    @POST("api/MbhqCourse/UpdateCourseStatus")
+    Call<JsonObject> UpdateCourseStatus(@Body HashMap<String, Object> modelHashMap);
+    @POST("api/MbhqCourse/ToggleMessageNotificationFlag")
+    Call<JsonObject> ToggleMessageNotificationFlag(@Body HashMap<String, Object> modelHashMap);
+    @POST("api/MbhqCourse/ToggleSeminarNotificationFlag")
+    Call<JsonObject> toggleSeminarNotificationFlag(@Body HashMap<String, Object> modelHashMap);
+    @POST("api/ResetWeekChallenge")
+    Call<JsonObject> refreshCourse(@Body HashMap<String, Object> modelHashMap);
 
 }
 

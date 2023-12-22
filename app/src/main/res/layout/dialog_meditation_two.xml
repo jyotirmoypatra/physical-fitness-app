@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#B3000000">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:background="@color/white">
+
+        <ImageView
+            android:id="@+id/imgCross"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="10dp"
+            android:background="@drawable/mbhq_closemodal" />
+
+
+        <com.ashysystem.mbhq.util.ProportionalImageView
+            android:id="@+id/imgMain"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/imgCross"
+            android:src="@drawable/meditation_non_cued_help1"
+            android:visibility="visible" />
+
+        <!---->
+        <!-- android:src="@drawable/meditation_non_cued_help1"-->
+        <com.ashysystem.mbhq.view.ButtonSemiBold
+            android:id="@+id/btnGotIt"
+            android:layout_width="150dp"
+            android:layout_height="45dp"
+            android:background="@drawable/rounded_corner_green"
+            android:layout_below="@+id/imgMain"
+            android:layout_marginTop="25dp"
+            android:layout_marginBottom="25dp"
+            android:textColor="@color/white"
+            android:textSize="@dimen/fab_eighteen"
+            android:text="Got It!"
+            android:visibility="visible"
+            android:textAllCaps="false"
+            android:layout_centerHorizontal="true"/>
+
+    </RelativeLayout>
+
+</androidx.core.widget.NestedScrollView>

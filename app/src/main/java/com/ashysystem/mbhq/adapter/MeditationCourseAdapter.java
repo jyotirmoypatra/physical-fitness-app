@@ -28,7 +28,7 @@ import com.ashysystem.mbhq.Service.impl.FinisherServiceImpl;
 import com.ashysystem.mbhq.activity.MainActivity;
 
 import com.ashysystem.mbhq.activity.PlaySoundActivity;
-import com.ashysystem.mbhq.fragment.CourseDetailsFragment;
+import com.ashysystem.mbhq.fragment.course.CourseDetailsFragment;
 
 import com.ashysystem.mbhq.fragment.meditation.MeditationDetailsNew;
 

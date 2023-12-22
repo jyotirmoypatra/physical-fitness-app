@@ -34,8 +34,6 @@ import com.ashysystem.mbhq.adapter.HabitBreakYearAdapter;
 import com.ashysystem.mbhq.adapter.HabitQuarterBreakAdapter;
 import com.ashysystem.mbhq.adapter.HabitQuaterAdapter;
 import com.ashysystem.mbhq.adapter.HabitYearAdapter;
-import com.ashysystem.mbhq.fragment.MbhqTodayMainFragment;
-import com.ashysystem.mbhq.fragment.MbhqTodayTwoFragment;
 import com.ashysystem.mbhq.model.habit_hacker.GetUserHabitSwapModel;
 import com.ashysystem.mbhq.model.habit_hacker.HabbitCalendarModel;
 import com.ashysystem.mbhq.model.habit_hacker.HabitSwap;

@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#B3000000"
+    >
+    <ImageView
+        android:id="@+id/imgCross"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/s_cross"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="10dp"
+        android:layout_above="@+id/llMainBlock"
+        android:layout_marginTop="10dp"/>
+    <LinearLayout
+        android:id="@+id/llMainBlock"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:orientation="vertical"
+        android:layout_margin="20dp"
+        android:paddingBottom="10dp"
+        android:background="@color/white">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@color/colorPrimary">
+            <com.ashysystem.mbhq.view.TextViewRalewayMedium
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:textColor="@color/white"
+                android:textSize="@dimen/fab_twenty_four"
+                android:text="ALERT"></com.ashysystem.mbhq.view.TextViewRalewayMedium>
+        </RelativeLayout>
+        <com.ashysystem.mbhq.view.TextViewRalewayMedium
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:textColor="@color/black"
+            android:textSize="@dimen/fab_twenty_four"
+            android:layout_margin="20dp"
+            android:text="When do you want to start the course ?"></com.ashysystem.mbhq.view.TextViewRalewayMedium>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_margin="10dp">
+            <RelativeLayout
+                android:id="@+id/rlToday"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight=".5"
+                android:background="@color/colorPrimary">
+                <com.ashysystem.mbhq.view.TextViewRalewayMedium
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/white"
+                    android:layout_centerInParent="true"
+                    android:textSize="@dimen/fab_eighteen"
+                    android:text="Today"></com.ashysystem.mbhq.view.TextViewRalewayMedium>
+            </RelativeLayout>
+            <RelativeLayout
+                android:id="@+id/rlNextWeek"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight=".5"
+                android:layout_marginLeft="10dp"
+                android:background="@color/colorPrimary">
+                <com.ashysystem.mbhq.view.TextViewRalewayMedium
+                    android:id="@+id/txtNextWeekDate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/fab_eighteen"
+                    android:text="Next Monday\n(2020-02-10)"></com.ashysystem.mbhq.view.TextViewRalewayMedium>
+            </RelativeLayout>
+        </LinearLayout>
+
+
+
+    </LinearLayout>
+
+
+
+</RelativeLayout>

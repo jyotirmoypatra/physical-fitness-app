@@ -1,0 +1,968 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:id="@+id/llHeaderTop"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:orientation="horizontal"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp">
+
+            <EditText
+                android:id="@+id/edtSearch"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight=".85"
+                android:background="@drawable/searchbox_black"
+                android:hint="Search Course Here"
+                android:imeOptions="actionSearch"
+                android:inputType="text"
+                android:padding="5dp"
+                android:visibility="gone" />
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight=".15"
+                android:gravity="end">
+
+                <ImageView
+                    android:id="@+id/imgFilter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="20dp"
+                    android:background="@drawable/mbhq_filter" />
+            </RelativeLayout>
+        </LinearLayout>
+
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/swipeLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/llHeaderTop">
+
+            <androidx.core.widget.NestedScrollView
+                android:id="@+id/nsv"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:fillViewport="true">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/liveAndPaidProgramsContainer"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/myProgramsContainer"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:visibility="gone"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent">
+
+                            <com.ashysystem.mbhq.view.TextViewBold
+                                android:id="@+id/txtMyPrograms"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="15dp"
+                                android:layout_marginTop="12dp"
+                                android:gravity="center"
+                                android:text="@string/my_programs"
+                                android:textAllCaps="true"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/fab_eighteen"
+                                android:textStyle="bold"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintHorizontal_bias="0.003"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <View
+                                android:layout_width="match_parent"
+                                android:layout_height="2dp"
+                                android:layout_marginTop="32dp"
+                                android:background="#D3D3D3"
+                                android:visibility="gone"
+                                app:layout_constraintTop_toTopOf="@+id/txtMyPrograms"
+                                tools:layout_editor_absoluteX="45dp"
+                                tools:ignore="MissingConstraints" />
+
+                            <androidx.recyclerview.widget.RecyclerView
+                                android:id="@+id/rvMyPrograms"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="10dp"
+                                android:layout_marginTop="10dp"
+                                android:layout_marginEnd="10dp"
+                                android:orientation="vertical"
+                                app:layout_behavior="@string/appbar_scrolling_view_behavior"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@+id/txtMyPrograms"
+                                tools:listitem="@layout/adapter_course_list" />
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/memberOnlyProgramsContainer"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:visibility="gone"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/myProgramsContainer">
+
+                            <com.ashysystem.mbhq.view.TextViewSemiBold
+                                android:id="@+id/txtMemberPrograms"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="10dp"
+                                android:layout_marginTop="10dp"
+                                android:text="@string/member_programs"
+                                android:textAllCaps="true"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/fab_sixteen"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintHorizontal_bias="0.003"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent"  />
+
+                            <androidx.recyclerview.widget.RecyclerView
+                                android:id="@+id/rvMemberPrograms"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="10dp"
+                                android:layout_marginTop="10dp"
+                                android:layout_marginEnd="10dp"
+                                android:orientation="vertical"
+                                app:layout_behavior="@string/appbar_scrolling_view_behavior"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@+id/txtMemberPrograms"
+                                tools:listitem="@layout/adapter_course_list" />
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/liveProgramsContainer"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:visibility="gone"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/memberOnlyProgramsContainer">
+
+                            <com.ashysystem.mbhq.view.TextViewSemiBold
+                                android:id="@+id/txtLivePrograms"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="15dp"
+                                android:layout_marginTop="12dp"
+                                android:text="@string/live_programs"
+                                android:textAllCaps="true"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/fab_eighteen"
+                                android:gravity="center"
+                                android:textStyle="bold"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintHorizontal_bias="0.003"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+                            <View
+                                android:layout_width="match_parent"
+                                android:layout_height="2dp"
+                                android:layout_marginTop="32dp"
+                                android:background="#D3D3D3"
+                                app:layout_constraintTop_toTopOf="@+id/txtLivePrograms"
+                                tools:layout_editor_absoluteX="45dp"
+                                android:visibility="gone"
+                                tools:ignore="MissingConstraints" />
+                            <androidx.recyclerview.widget.RecyclerView
+                                android:id="@+id/rvLivePrograms"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="10dp"
+                                android:layout_marginTop="10dp"
+                                android:layout_marginEnd="10dp"
+                                android:orientation="vertical"
+                                app:layout_behavior="@string/appbar_scrolling_view_behavior"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@+id/txtLivePrograms"
+                                tools:listitem="@layout/adapter_course_list" />
+
+                            <com.ashysystem.mbhq.view.TextViewSemiBold
+                                android:id="@+id/seeAllLivePrograms"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="10dp"
+                                android:text="See All"
+                                android:textColor="@color/base_green"
+                                android:textSize="@dimen/fab_sixteen"
+                                android:visibility="gone"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@id/rvLivePrograms" />
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/paidProgramsContainer"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:visibility="gone"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/liveProgramsContainer">
+
+                            <com.ashysystem.mbhq.view.TextViewBold
+                                android:id="@+id/txtPaidPrograms"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="15dp"
+                                android:layout_marginTop="40dp"
+                                android:text="@string/paid_programs"
+                                android:textAllCaps="true"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/fab_eighteen"
+                                android:gravity="center"
+                                android:textStyle="bold"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintHorizontal_bias="0.003"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+                            <View
+                                android:layout_width="match_parent"
+                                android:layout_height="2dp"
+                                android:layout_marginTop="32dp"
+                                android:background="#D3D3D3"
+                                android:visibility="gone"
+                                app:layout_constraintTop_toTopOf="@+id/txtPaidPrograms"
+                                tools:layout_editor_absoluteX="45dp"
+                                tools:ignore="MissingConstraints" />
+                            <androidx.recyclerview.widget.RecyclerView
+                                android:id="@+id/rvPaidPrograms"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="10dp"
+                                android:layout_marginTop="10dp"
+                                android:layout_marginEnd="20dp"
+                                app:layout_behavior="@string/appbar_scrolling_view_behavior"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@+id/txtPaidPrograms"
+                                tools:itemCount="3"
+                                tools:listitem="@layout/adapter_course_list" />
+
+                            <com.ashysystem.mbhq.view.TextViewSemiBold
+                                android:id="@+id/seeAllPaidPrograms"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="10dp"
+                                android:text="See All"
+                                android:textColor="@color/base_green"
+                                android:textSize="@dimen/fab_sixteen"
+                                android:visibility="gone"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@id/rvPaidPrograms" />
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/masterclassProgramsContainer"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:visibility="gone"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/paidProgramsContainer">
+
+                            <com.ashysystem.mbhq.view.TextViewBold
+                                android:id="@+id/txtMasterclassPrograms"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="15dp"
+                                android:layout_marginTop="40dp"
+                                android:text="@string/masterclass"
+                                android:textAllCaps="true"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/fab_eighteen"
+                                android:gravity="center"
+                                android:textStyle="bold"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintHorizontal_bias="0.003"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent"/>
+                            <View
+                                android:layout_width="match_parent"
+                                android:layout_height="2dp"
+                                android:layout_marginTop="32dp"
+                                android:background="#D3D3D3"
+                                android:visibility="gone"
+                                app:layout_constraintTop_toTopOf="@+id/txtMasterclassPrograms"
+                                tools:layout_editor_absoluteX="45dp"
+                                tools:ignore="MissingConstraints" />
+
+                            <androidx.recyclerview.widget.RecyclerView
+                                android:id="@+id/rvMasterclassPrograms"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="10dp"
+                                android:layout_marginTop="10dp"
+                                android:layout_marginEnd="10dp"
+                                app:layout_behavior="@string/appbar_scrolling_view_behavior"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@+id/txtMasterclassPrograms"
+                                tools:itemCount="3"
+                                tools:listitem="@layout/adapter_course_list" />
+
+                            <com.ashysystem.mbhq.view.TextViewSemiBold
+                                android:id="@+id/seeAllMasterclassPrograms"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="10dp"
+                                android:text="See All"
+                                android:textColor="@color/base_green"
+                                android:textSize="@dimen/fab_sixteen"
+                                android:visibility="gone"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@id/rvMasterclassPrograms" />
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/paidMasterclassProgramsContainer"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:visibility="gone"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/masterclassProgramsContainer">
+
+                            <com.ashysystem.mbhq.view.TextViewSemiBold
+                                android:id="@+id/txtPaidMasterclassPrograms"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="10dp"
+                                android:layout_marginTop="40dp"
+                                android:text="@string/paid_masterclass"
+                                android:textAllCaps="true"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/fab_eighteen"
+                                android:gravity="center"
+                                android:textStyle="bold"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintHorizontal_bias="0.003"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+                            <View
+                                android:layout_width="match_parent"
+                                android:layout_height="2dp"
+                                android:layout_marginTop="32dp"
+                                android:background="#D3D3D3"
+                                android:visibility="gone"
+                                app:layout_constraintTop_toTopOf="@+id/txtPaidMasterclassPrograms"
+                                tools:layout_editor_absoluteX="45dp"
+                                tools:ignore="MissingConstraints" />
+
+
+                            <androidx.recyclerview.widget.RecyclerView
+                                android:id="@+id/rvPaidMasterclassPrograms"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="10dp"
+                                android:layout_marginTop="10dp"
+                                android:layout_marginEnd="10dp"
+                                app:layout_behavior="@string/appbar_scrolling_view_behavior"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@+id/txtPaidMasterclassPrograms"
+                                tools:itemCount="3"
+                                tools:listitem="@layout/adapter_course_list" />
+
+                            <com.ashysystem.mbhq.view.TextViewSemiBold
+                                android:id="@+id/seeAllPaidMasterclassPrograms"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="10dp"
+                                android:text="See All"
+                                android:textColor="@color/base_green"
+                                android:textSize="@dimen/fab_sixteen"
+                                android:visibility="gone"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@id/rvPaidMasterclassPrograms" />
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/podcastProgramsContainer"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:visibility="gone"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/paidMasterclassProgramsContainer">
+
+                            <com.ashysystem.mbhq.view.TextViewBold
+                                android:id="@+id/txtPodcastPrograms"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="15dp"
+                                android:layout_marginTop="40dp"
+                                android:text="@string/podcast"
+                                android:textAllCaps="true"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/fab_eighteen"
+                                android:gravity="center"
+                                android:textStyle="bold"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintHorizontal_bias="0.003"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+                            <View
+                                android:layout_width="match_parent"
+                                android:layout_height="2dp"
+                                android:layout_marginTop="32dp"
+                                android:background="#D3D3D3"
+                                android:visibility="gone"
+                                app:layout_constraintTop_toTopOf="@+id/txtPodcastPrograms"
+                                tools:layout_editor_absoluteX="45dp"
+                                tools:ignore="MissingConstraints" />
+
+
+                            <androidx.recyclerview.widget.RecyclerView
+                                android:id="@+id/rvPodcastPrograms"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="10dp"
+                                android:layout_marginTop="10dp"
+                                android:layout_marginEnd="10dp"
+                                app:layout_behavior="@string/appbar_scrolling_view_behavior"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@+id/txtPodcastPrograms" />
+
+                            <com.ashysystem.mbhq.view.TextViewSemiBold
+                                android:id="@+id/seeAllPodcastPrograms"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="10dp"
+                                android:text="See All"
+                                android:textColor="@color/base_green"
+                                android:textSize="@dimen/fab_sixteen"
+                                android:visibility="gone"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@id/rvPodcastPrograms" />
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/podcastProgramsContainer1"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:visibility="gone"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/paidMasterclassProgramsContainer">
+
+                            <com.ashysystem.mbhq.view.TextViewBold
+                                android:id="@+id/txtPodcastPrograms1"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="15dp"
+                                android:layout_marginTop="40dp"
+                                android:text="@string/podcast"
+                                android:textAllCaps="true"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/fab_eighteen"
+                                android:gravity="center"
+                                android:textStyle="bold"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintHorizontal_bias="0.003"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+                            <View
+                                android:layout_width="match_parent"
+                                android:layout_height="2dp"
+                                android:layout_marginTop="32dp"
+                                android:background="#D3D3D3"
+                                android:visibility="gone"
+                                app:layout_constraintTop_toTopOf="@+id/txtPodcastPrograms1"
+                                tools:layout_editor_absoluteX="45dp"
+                                tools:ignore="MissingConstraints" />
+
+
+                            <androidx.recyclerview.widget.RecyclerView
+                                android:id="@+id/rvPodcastPrograms1"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="10dp"
+                                android:layout_marginTop="10dp"
+                                android:layout_marginEnd="10dp"
+                                app:layout_behavior="@string/appbar_scrolling_view_behavior"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@+id/txtPodcastPrograms1"
+                                tools:itemCount="3"
+                                tools:listitem="@layout/adapter_course_list" />
+
+                            <com.ashysystem.mbhq.view.TextViewSemiBold
+                                android:id="@+id/seeAllPodcastPrograms1"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="10dp"
+                                android:text="See All"
+                                android:textColor="@color/base_green"
+                                android:textSize="@dimen/fab_sixteen"
+                                android:visibility="gone"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@id/rvPodcastPrograms1" />
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <com.ashysystem.mbhq.view.TextViewSemiBold
+                        android:id="@+id/txtMediHead"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/liveAndPaidProgramsContainer"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="10dp"
+                        android:text="Meditation"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/fab_sixteen"
+                        android:visibility="gone" />
+
+                    <LinearLayout
+
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/txtMediHead"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginRight="10dp"
+                        android:minHeight="200dp"
+                        android:orientation="vertical"
+                        android:visibility="gone">
+
+                        <LinearLayout
+                            android:id="@+id/llBreath"
+                            android:layout_width="match_parent"
+                            android:layout_height="80dp"
+                            android:background="@color/white"
+                            android:orientation="horizontal">
+
+                            <RelativeLayout
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight=".2">
+
+
+                                <androidx.cardview.widget.CardView
+                                    android:layout_width="60dp"
+                                    android:layout_height="60dp"
+                                    android:layout_centerInParent="true"
+                                    android:layout_margin="5dp"
+                                    android:elevation="10dp"
+                                    app:cardCornerRadius="8dp">
+
+                                    <ImageView
+
+                                        android:layout_width="match_parent"
+                                        android:layout_height="match_parent"
+                                        android:background="@color/white"
+                                        android:scaleType="centerCrop"
+                                        android:src="@drawable/mbhq_breath_control" />
+                                </androidx.cardview.widget.CardView>
+
+                            </RelativeLayout>
+
+                            <RelativeLayout
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight=".5">
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_centerInParent="true"
+                                    android:layout_marginLeft="10dp"
+                                    android:orientation="vertical">
+
+                                    <com.ashysystem.mbhq.view.TextViewSemiBold
+                                        android:id="@+id/txtBreath"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="Breath Control"
+                                        android:textColor="@color/black"
+                                        android:textSize="@dimen/fab_fourteen" />
+
+                                    <com.ashysystem.mbhq.view.TextViewRalewayMedium
+                                        android:id="@+id/txtModule"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginTop="10dp"
+                                        android:textColor="#333333"
+                                        android:textSize="@dimen/fab_twelve" />
+                                </LinearLayout>
+
+
+                            </RelativeLayout>
+
+                            <RelativeLayout
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight=".3"
+                                android:orientation="vertical">
+
+                            </RelativeLayout>
+
+
+                        </LinearLayout>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="@color/ashseparator"></View>
+
+                        <LinearLayout
+                            android:id="@+id/llMorning"
+                            android:layout_width="match_parent"
+                            android:layout_height="80dp"
+                            android:background="@color/white"
+                            android:orientation="horizontal">
+
+                            <RelativeLayout
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight=".2">
+
+
+                                <androidx.cardview.widget.CardView
+                                    android:layout_width="60dp"
+                                    android:layout_height="60dp"
+                                    android:layout_centerInParent="true"
+                                    android:layout_margin="5dp"
+                                    android:elevation="10dp"
+                                    app:cardCornerRadius="8dp">
+
+                                    <ImageView
+
+                                        android:layout_width="match_parent"
+                                        android:layout_height="match_parent"
+                                        android:background="@color/white"
+                                        android:scaleType="centerCrop"
+                                        android:src="@drawable/mbhq_morning_routine" />
+                                </androidx.cardview.widget.CardView>
+
+                            </RelativeLayout>
+
+                            <RelativeLayout
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight=".5">
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_centerInParent="true"
+                                    android:layout_marginLeft="10dp"
+                                    android:orientation="vertical">
+
+                                    <com.ashysystem.mbhq.view.TextViewSemiBold
+                                        android:id="@+id/txtMorning"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="Morning Routine"
+                                        android:textColor="@color/black"
+                                        android:textSize="@dimen/fab_fourteen" />
+
+                                    <com.ashysystem.mbhq.view.TextViewRalewayMedium
+
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginTop="10dp"
+                                        android:textColor="#333333"
+                                        android:textSize="@dimen/fab_twelve" />
+                                </LinearLayout>
+
+
+                            </RelativeLayout>
+
+                            <RelativeLayout
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight=".3"
+                                android:orientation="vertical">
+
+                            </RelativeLayout>
+
+
+                        </LinearLayout>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="@color/ashseparator"></View>
+
+                        <LinearLayout
+                            android:id="@+id/llPowerNap"
+                            android:layout_width="match_parent"
+                            android:layout_height="80dp"
+                            android:background="@color/white"
+                            android:orientation="horizontal">
+
+                            <RelativeLayout
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight=".2">
+
+
+                                <androidx.cardview.widget.CardView
+                                    android:layout_width="60dp"
+                                    android:layout_height="60dp"
+                                    android:layout_centerInParent="true"
+                                    android:layout_margin="5dp"
+                                    android:elevation="10dp"
+                                    app:cardCornerRadius="8dp">
+
+                                    <ImageView
+
+                                        android:layout_width="match_parent"
+                                        android:layout_height="match_parent"
+                                        android:background="@color/white"
+                                        android:scaleType="centerCrop"
+                                        android:src="@drawable/mbhq_power_naps" />
+                                </androidx.cardview.widget.CardView>
+
+                            </RelativeLayout>
+
+                            <RelativeLayout
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight=".5">
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_centerInParent="true"
+                                    android:layout_marginLeft="10dp"
+                                    android:orientation="vertical">
+
+                                    <com.ashysystem.mbhq.view.TextViewSemiBold
+                                        android:id="@+id/txtPower"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="Power Nap"
+                                        android:textColor="@color/black"
+                                        android:textSize="@dimen/fab_fourteen" />
+
+                                    <com.ashysystem.mbhq.view.TextViewRalewayMedium
+
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginTop="10dp"
+                                        android:textColor="#333333"
+                                        android:textSize="@dimen/fab_twelve" />
+                                </LinearLayout>
+
+
+                            </RelativeLayout>
+
+                            <RelativeLayout
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight=".3"
+                                android:orientation="vertical">
+
+                            </RelativeLayout>
+
+
+                        </LinearLayout>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="@color/ashseparator"></View>
+
+                    </LinearLayout>
+
+                    <com.ashysystem.mbhq.view.TextViewRalewayMedium
+                        android:id="@+id/txtHeaderBelow"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="20dp"
+                        android:text="Enrolled Courses"
+                        android:textColor="#FF00A5"
+                        android:textSize="18sp"
+                        android:visibility="gone" />
+
+                    <View
+                        android:id="@+id/view3"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_below="@+id/txtHeaderBelow"
+                        android:layout_marginTop="20dp"
+                        android:background="@color/ashseparator"
+                        android:visibility="gone"></View>
+
+                    <LinearLayout
+                        android:id="@+id/llHeader"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:layout_below="@+id/view3"
+                        android:orientation="vertical"
+                        android:visibility="gone">
+                        <!--<View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="@color/ashseparator"></View>-->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:minHeight="?attr/actionBarSize">
+
+                            <RelativeLayout
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight=".33"
+                                android:gravity="center|start">
+
+                                <com.ashysystem.mbhq.view.TextViewRalewayMedium
+                                    android:id="@+id/txtCourseNmae"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="10dp"
+                                    android:text="Course"
+                                    android:textSize="18sp" />
+                            </RelativeLayout>
+
+                            <View
+                                android:layout_width="1dp"
+                                android:layout_height="match_parent"
+                                android:background="@color/ashseparator"></View>
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight=".33">
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center_vertical">
+
+                                    <com.ashysystem.mbhq.view.TextViewRalewayMedium
+                                        android:id="@+id/txtCourseType"
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginLeft="15dp"
+                                        android:layout_weight="1"
+                                        android:text="Start Date"
+                                        android:textSize="15sp" />
+                                </LinearLayout>
+                            </LinearLayout>
+
+                            <View
+                                android:layout_width="1dp"
+                                android:layout_height="match_parent"
+                                android:background="@color/ashseparator"></View>
+
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight=".33">
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center_vertical">
+
+                                    <com.ashysystem.mbhq.view.TextViewRalewayMedium
+                                        android:id="@+id/txtAction"
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginLeft="15dp"
+                                        android:layout_weight="1"
+                                        android:text="Action"
+                                        android:textSize="15sp" />
+                                </LinearLayout>
+                            </LinearLayout>
+
+
+                        </LinearLayout>
+                        <!--<View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="@color/ashseparator"></View>-->
+
+
+                    </LinearLayout>
+
+                    <View
+                        android:id="@+id/view4"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_below="@+id/llHeader"
+                        android:background="@color/ashseparator"
+                        android:visibility="gone"></View>
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rvEnroll"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/view4"
+                        android:visibility="gone"
+                        tools:listitem="@layout/adapter_enroll_course" />
+
+                    <View
+                        android:id="@+id/view5"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_below="@+id/rvEnroll"
+                        android:background="@color/ashseparator"
+                        android:visibility="gone"></View>
+                </RelativeLayout>
+            </androidx.core.widget.NestedScrollView>
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+
+    </RelativeLayout>
+
+</RelativeLayout>

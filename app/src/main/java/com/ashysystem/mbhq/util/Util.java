@@ -39,8 +39,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
+import androidx.multidex.BuildConfig;
 
-import com.ashysystem.mbhq.BuildConfig;
 import com.ashysystem.mbhq.Service.impl.SessionServiceImpl;
 import com.ashysystem.mbhq.model.AddRewardModel;
 
@@ -49,6 +49,7 @@ import com.ashysystem.mbhq.model.MeditationCourseModel;
 import com.ashysystem.mbhq.model.eqfolder.UserEqFolder;
 import com.ashysystem.mbhq.model.livechat.Chat;
 import com.ashysystem.mbhq.model.livechat.Meditations;
+import com.ashysystem.mbhq.model.response.MyAchievementsListInnerModel;
 import com.ashysystem.mbhq.video.DemoApplication;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -84,7 +85,6 @@ import retrofit2.Response;
  */
 
 public class Util {
-
 
     public static long downloadFile(Context context, String fileUrl, String fileName, String wibiner) {
         DownloadManager.Request request = new DownloadManager.Request(Uri.parse(fileUrl));

@@ -1,14 +1,278 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragment.NewHelpFragment">
+    android:background="@color/white"
+    tools:context=".fragment.live_chat.NewHelpFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <!--  <ImageButton
+          android:id="@+id/closeBtn"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:background="@color/transparent"
+          android:padding="@dimen/fab_twelve"
+          android:src="@drawable/mbhq_close"
+          app:layout_constraintEnd_toEndOf="parent"
+          app:layout_constraintTop_toTopOf="parent" />-->
+
+
+
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tabs"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="NewHelpFragment" />
+        android:layout_height="50dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:tabBackground="@drawable/tab_selector"
+        app:tabIndicatorHeight="0dp"
+        app:tabSelectedTextColor="@color/colorPrimary"
+        app:tabTextColor="#333333">
 
-</FrameLayout>
+        <com.google.android.material.tabs.TabItem
+            android:id="@+id/tabMbhqManual"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="Efc Manual"
+            />
+
+        <com.google.android.material.tabs.TabItem
+            android:id="@+id/tabWalkthrough"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="Walkthrough" />
+
+    </com.google.android.material.tabs.TabLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/content"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tabs">
+
+        <WebView
+            android:id="@+id/customWebview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/walthroughFragmentContainer"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            />
+
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/walkthroughContent"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            >
+
+            <LinearLayout
+                android:id="@+id/walkthroughButtonContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <com.ashysystem.mbhq.view.ButtonRaleWay
+                    android:id="@+id/mbhqOverViewBtn"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginEnd="40dp"
+                    android:layout_marginStart="40dp"
+                    android:background="@drawable/capsule_green"
+                    android:text="EFC Overview"
+                    android:textSize="@dimen/fab_sixteen"
+                    android:textAllCaps="false"
+                    android:textColor="@color/white"
+                    android:textStyle="bold" />
+                <com.ashysystem.mbhq.view.ButtonRaleWay
+                    android:id="@+id/eqjournal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginEnd="40dp"
+                    android:layout_marginStart="40dp"
+                    android:background="@drawable/capsule_green"
+                    android:text="Eq Journal"
+                    android:textAllCaps="false"
+                    android:textSize="@dimen/fab_sixteen"
+                    android:textColor="@color/white"
+                    android:textStyle="bold" />
+
+                <com.ashysystem.mbhq.view.ButtonRaleWay
+                    android:id="@+id/gratitudeBtn"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginEnd="40dp"
+                    android:layout_marginStart="40dp"
+                    android:background="@drawable/capsule_green"
+                    android:text="EQ"
+                    android:textAllCaps="false"
+                    android:textSize="@dimen/fab_sixteen"
+                    android:textColor="@color/white"
+                    android:textStyle="bold" />
+
+                <com.ashysystem.mbhq.view.ButtonRaleWay
+                    android:id="@+id/growthBtn"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginEnd="40dp"
+                    android:layout_marginStart="40dp"
+                    android:background="@drawable/capsule_green"
+                    android:text="Growth"
+                    android:visibility="gone"
+                    android:textAllCaps="false"
+                    android:textSize="@dimen/fab_sixteen"
+                    android:textColor="@color/white"
+                    android:textStyle="bold" />
+
+                <com.ashysystem.mbhq.view.ButtonRaleWay
+                    android:id="@+id/meditationBtn"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginEnd="40dp"
+                    android:layout_marginStart="40dp"
+                    android:background="@drawable/capsule_green"
+                    android:text="Meditation"
+                    android:textAllCaps="false"
+                    android:textSize="@dimen/fab_sixteen"
+                    android:textColor="@color/white"
+                    android:textStyle="bold" />
+
+                <com.ashysystem.mbhq.view.ButtonRaleWay
+                    android:id="@+id/meditation2Btn"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginEnd="40dp"
+                    android:layout_marginStart="40dp"
+                    android:background="@drawable/capsule_green"
+                    android:text="Meditation 2"
+                    android:textAllCaps="false"
+                    android:textSize="@dimen/fab_sixteen"
+                    android:textColor="@color/white"
+                    android:textStyle="bold" />
+
+                <com.ashysystem.mbhq.view.ButtonRaleWay
+                    android:id="@+id/habitsBtn"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginEnd="40dp"
+                    android:layout_marginStart="40dp"
+                    android:background="@drawable/capsule_green"
+                    android:text="Habits"
+                    android:textAllCaps="false"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/fab_sixteen"
+                    android:textStyle="bold" />
+
+                <com.ashysystem.mbhq.view.ButtonRaleWay
+                    android:id="@+id/bucketListBtn"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginEnd="40dp"
+                    android:layout_marginStart="40dp"
+                    android:background="@drawable/capsule_green"
+                    android:text="Bucket List"
+                    android:textAllCaps="false"
+                    android:visibility="gone"
+                    android:textSize="@dimen/fab_sixteen"
+                    android:textColor="@color/white"
+                    android:textStyle="bold" />
+
+                <com.ashysystem.mbhq.view.ButtonRaleWay
+                    android:id="@+id/programBtn"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginEnd="40dp"
+                    android:layout_marginStart="40dp"
+                    android:background="@drawable/capsule_green"
+                    android:text="Courses"
+                    android:textAllCaps="false"
+                    android:textSize="@dimen/fab_sixteen"
+                    android:textColor="@color/white"
+                    android:textStyle="bold" />
+
+                <com.ashysystem.mbhq.view.ButtonRaleWay
+                    android:id="@+id/testsBtn"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginEnd="40dp"
+                    android:layout_marginStart="40dp"
+                    android:background="@drawable/capsule_green"
+                    android:text="Tests"
+                    android:textAllCaps="false"
+                    android:textSize="@dimen/fab_sixteen"
+                    android:textColor="@color/white"
+                    android:textStyle="bold" />
+
+                <com.ashysystem.mbhq.view.ButtonRaleWay
+                    android:id="@+id/forumBtn"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginEnd="40dp"
+                    android:layout_marginStart="40dp"
+                    android:background="@drawable/capsule_green"
+                    android:text="Forum"
+                    android:textAllCaps="false"
+                    android:textSize="@dimen/fab_sixteen"
+                    android:textColor="@color/white"
+                    android:textStyle="bold" />
+
+                <com.ashysystem.mbhq.view.ButtonRaleWay
+                    android:id="@+id/aeroplaneModeBtn"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginBottom="20dp"
+                    android:layout_marginEnd="40dp"
+                    android:layout_marginStart="40dp"
+                    android:background="@drawable/capsule_green"
+                    android:text="Aeroplane Mode"
+                    android:textAllCaps="false"
+                    android:textSize="@dimen/fab_sixteen"
+                    android:textColor="@color/white"
+                    android:textStyle="bold" />
+
+
+            </LinearLayout>
+
+        </androidx.core.widget.NestedScrollView>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

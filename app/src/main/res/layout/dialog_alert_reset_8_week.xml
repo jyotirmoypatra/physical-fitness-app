@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#B3000000">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@color/white"
+        android:layout_margin="10dp"
+        android:paddingBottom="10dp"
+        android:layout_centerInParent="true">
+        <com.ashysystem.mbhq.view.TextViewBold
+            android:id="@+id/tvTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/spacing_6dp"
+            android:text="Alert"
+            android:textSize="@dimen/fab_eighteen"
+            android:textColor="@color/colorPrimary"
+            android:gravity="center"/>
+        <com.ashysystem.mbhq.view.TextViewRaleWay
+            android:id="@+id/txtDesc"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/fab_margin"
+            android:textSize="@dimen/fab_sixteen"
+            android:gravity="center"
+            android:text="This is the RESET challenge button. If you reset your challenge all the tasks you have done will be cleared. Do you want to start the challenge again and have you history erased?"/>
+        <com.ashysystem.mbhq.view.ButtonOswaldMedium
+            android:id="@+id/btnYes"
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:text="YES, erase my history I am starting the challenge from the start"
+            android:layout_marginTop="20dp"
+            android:textSize="@dimen/fab_sixteen"
+            android:textColor="@color/white"
+            android:padding="@dimen/mcam_content_inset_less"
+            android:gravity="center_vertical"
+            android:background="@color/colorAccent"/>
+        <com.ashysystem.mbhq.view.ButtonOswaldMedium
+            android:id="@+id/btnNo"
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:text="NO, i want to keep going on my current challenge"
+            android:layout_marginTop="20dp"
+            android:textSize="@dimen/fab_sixteen"
+            android:textColor="@color/white"
+            android:padding="@dimen/mcam_content_inset_less"
+            android:gravity="center_vertical"
+            android:background="@color/colorAccent"/>
+    </LinearLayout>
+</RelativeLayout>
