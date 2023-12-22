@@ -1,0 +1,800 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#B3000000">
+
+    <LinearLayout
+        android:id="@+id/llTop"
+        android:layout_width="match_parent"
+        android:layout_height="400dp"
+        android:layout_above="@+id/rlCancel"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/rounded_corner_white"
+        android:orientation="vertical">
+
+        <com.ashysystem.mbhq.view.TextViewRaleWay
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:background="@color/white"
+            android:gravity="center"
+            android:text="Select"
+            android:textColor="@color/black"
+            android:textSize="@dimen/fab_sixteen" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/ashseparator"></View>
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:id="@+id/llGrateful"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <com.ashysystem.mbhq.view.TextViewRaleWay
+                        android:id="@+id/txtIamGratefulFor"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:layout_weight="1"
+                        android:background="@color/white"
+                        android:gravity="center_vertical"
+                        android:paddingLeft="10dp"
+                        android:text="I'm Grateful For"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/fab_sixteen" />
+
+                    <ImageView
+                        android:id="@+id/checkGrateful_image"
+                        android:layout_width="40dp"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center_vertical"
+                        android:padding="8dp"
+                        android:src="@drawable/heart" />
+
+                    <ImageView
+                        android:id="@+id/checkGrateful"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginRight="5dp"
+                        android:padding="8dp"
+                        android:src="@drawable/mbhq_checked_active" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/ashseparator"></View>
+
+                <LinearLayout
+                    android:id="@+id/llJournal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <com.ashysystem.mbhq.view.TextViewRaleWay
+                        android:id="@+id/txtJournalEntry"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:layout_weight="1"
+                        android:background="@color/white"
+                        android:gravity="center_vertical"
+                        android:paddingLeft="10dp"
+                        android:text="Journal Entry"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/fab_sixteen" />
+
+                    <ImageView
+                        android:id="@+id/checkJournal"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginRight="5dp"
+                        android:padding="8dp"
+                        android:src="@drawable/mbhq_circle_green" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/ashseparator"></View>
+
+                <LinearLayout
+                    android:id="@+id/llPromptOfTheDay"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <com.ashysystem.mbhq.view.TextViewRaleWay
+                        android:id="@+id/txtPromptofTheDay"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:layout_weight="1"
+                        android:background="@color/white"
+                        android:gravity="center_vertical"
+                        android:paddingLeft="10dp"
+                        android:text="Prompt of the Day"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/fab_sixteen" />
+                    <ImageView
+                        android:id="@+id/checkPromptofTheDay_image"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_gravity="center_vertical"
+                        android:padding="8dp"
+                        android:src="@drawable/star" />
+
+                    <ImageView
+                        android:id="@+id/checkPromptofTheDay"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginRight="5dp"
+                        android:padding="8dp"
+                        android:src="@drawable/mbhq_circle_green" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="25dp"
+                    android:background="@color/ashseparator"></View>
+
+                <LinearLayout
+                    android:id="@+id/llTodayImFelling"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <com.ashysystem.mbhq.view.TextViewRaleWay
+                        android:id="@+id/txtTodayImFelling"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:layout_weight="1"
+                        android:background="@color/white"
+                        android:gravity="center_vertical"
+                        android:paddingLeft="10dp"
+                        android:text="Today I'm Feeling"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/fab_sixteen" />
+                    <ImageView
+                        android:id="@+id/checkTodayImFelling_image"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_gravity="center_vertical"
+                        android:padding="8dp"
+                        android:src="@drawable/eq_final" />
+
+                    <ImageView
+                        android:id="@+id/checkTodayImFelling"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginRight="5dp"
+                        android:padding="8dp"
+                        android:src="@drawable/mbhq_circle_green" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/ashseparator"></View>
+                <LinearLayout
+                    android:id="@+id/llProudOf"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                <com.ashysystem.mbhq.view.TextViewRaleWay
+                    android:id="@+id/txtProudOf"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:background="@color/white"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="10dp"
+                    android:text="I am proud of"
+                    android:textColor="@color/black"
+                    android:layout_weight="1"
+                    android:textSize="@dimen/fab_sixteen" />
+
+                    <ImageView
+                        android:id="@+id/checkProudOf"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginRight="5dp"
+                        android:padding="8dp"
+                        android:src="@drawable/mbhq_circle_green" />
+                </LinearLayout>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/ashseparator"></View>
+                <LinearLayout
+                    android:id="@+id/llIchoose"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <com.ashysystem.mbhq.view.TextViewRaleWay
+                        android:id="@+id/txtIchoose"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:background="@color/white"
+                        android:gravity="center_vertical"
+                        android:paddingLeft="10dp"
+                        android:text="I Choose to Know"
+                        android:textColor="@color/black"
+                        android:layout_weight="1"
+                        android:textSize="@dimen/fab_sixteen" />
+
+                    <ImageView
+                        android:id="@+id/checkIchoose"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginRight="5dp"
+                        android:padding="8dp"
+                        android:src="@drawable/mbhq_circle_green" />
+                </LinearLayout>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/ashseparator"></View>
+                <LinearLayout
+                    android:id="@+id/llAccomplish"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                <com.ashysystem.mbhq.view.TextViewRaleWay
+                    android:id="@+id/txtAccomplish"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:background="@color/white"
+                    android:gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:paddingLeft="10dp"
+                    android:text="I've accomplished"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/fab_sixteen" />
+                 <ImageView
+                     android:id="@+id/checkAccomplish"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginRight="5dp"
+                        android:padding="8dp"
+                        android:src="@drawable/mbhq_circle_green" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/ashseparator"></View>
+                <LinearLayout
+                    android:id="@+id/llToward"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                <com.ashysystem.mbhq.view.TextViewRaleWay
+                    android:id="@+id/txtToward"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:background="@color/white"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="10dp"
+                    android:text="I'm working towards"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/fab_sixteen" />
+                 <ImageView
+                     android:id="@+id/checkToward"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginRight="5dp"
+                        android:padding="8dp"
+                        android:src="@drawable/mbhq_circle_green" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/ashseparator"></View>
+            <LinearLayout
+                android:id="@+id/llFeelGrowth"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <com.ashysystem.mbhq.view.TextViewRaleWay
+                    android:id="@+id/txtFeelGrowth"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:background="@color/white"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="10dp"
+                    android:text="I'm feeling growth in"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/fab_sixteen" />
+                   <ImageView
+                       android:id="@+id/checkFeelGrowth"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginRight="5dp"
+                        android:padding="8dp"
+                        android:src="@drawable/mbhq_circle_green" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/ashseparator"></View>
+            <LinearLayout
+                android:id="@+id/llCommitting"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <com.ashysystem.mbhq.view.TextViewRaleWay
+                    android:id="@+id/txtCommitting"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:background="@color/white"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="10dp"
+                    android:text="I’m committing to"
+                    android:layout_weight="1"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/fab_sixteen" />
+                <ImageView
+                    android:id="@+id/checkCommitting"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginRight="5dp"
+                        android:padding="8dp"
+                        android:src="@drawable/mbhq_circle_green" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/ashseparator"></View>
+            <LinearLayout
+                android:id="@+id/llCelebrate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <com.ashysystem.mbhq.view.TextViewRaleWay
+                    android:id="@+id/txtCelebrate"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:background="@color/white"
+                    android:gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:paddingLeft="10dp"
+                    android:text="A small win I'm celebrating is"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/fab_sixteen" />
+                <ImageView
+                    android:id="@+id/checkCelebrate"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginRight="5dp"
+                        android:padding="8dp"
+                        android:src="@drawable/mbhq_circle_green" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/ashseparator"></View>
+            <LinearLayout
+                android:id="@+id/llFoundGift"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <com.ashysystem.mbhq.view.TextViewRaleWay
+                    android:id="@+id/txtFoundGift"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_weight="1"
+                    android:background="@color/white"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="10dp"
+                    android:text="I've found the gift in"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/fab_sixteen" />
+                  <ImageView
+                      android:id="@+id/checkFoundGift"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginRight="5dp"
+                        android:padding="8dp"
+                        android:src="@drawable/mbhq_circle_green" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/ashseparator"></View>
+            <LinearLayout
+                android:id="@+id/llHappy"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <com.ashysystem.mbhq.view.TextViewRaleWay
+                    android:id="@+id/txtHappy"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:background="@color/white"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="10dp"
+                    android:layout_weight="1"
+                    android:text="I felt happy today because"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/fab_sixteen" />
+                 <ImageView
+                     android:id="@+id/checkHappy"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginRight="5dp"
+                        android:padding="8dp"
+                        android:src="@drawable/mbhq_circle_green" />
+                </LinearLayout>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/ashseparator"></View>
+                <LinearLayout
+                    android:id="@+id/llOnething"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <com.ashysystem.mbhq.view.TextViewRaleWay
+                        android:id="@+id/txtOnething"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:background="@color/white"
+                        android:gravity="center_vertical"
+                        android:paddingLeft="10dp"
+                        android:layout_weight="1"
+                        android:text="One thing I appreciate about you today is"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/fab_sixteen" />
+                    <ImageView
+                        android:id="@+id/checkOnething"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginRight="5dp"
+                        android:padding="8dp"
+                        android:src="@drawable/mbhq_circle_green" />
+                </LinearLayout>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="25dp"
+                    android:background="@color/ashseparator"></View>
+            <LinearLayout
+                android:id="@+id/llTheStoryAdd"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <com.ashysystem.mbhq.view.TextViewRaleWay
+                    android:id="@+id/txtTheStoryAdd"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_weight="1"
+                    android:background="@color/white"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="10dp"
+                    android:text="The story I've told myself is"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/fab_sixteen" />
+                <ImageView
+                    android:id="@+id/checkTheStoryAdd"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginRight="5dp"
+                        android:padding="8dp"
+                        android:src="@drawable/mbhq_circle_green" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/ashseparator"></View>
+            <LinearLayout
+                android:id="@+id/llChallenged"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <com.ashysystem.mbhq.view.TextViewRaleWay
+                    android:id="@+id/txtChallenged"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:background="@color/white"
+                    android:gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:paddingLeft="10dp"
+                    android:text="I've been challenged by"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/fab_sixteen" />
+                  <ImageView
+                      android:id="@+id/checkChallenged"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginRight="5dp"
+                        android:padding="8dp"
+                        android:src="@drawable/mbhq_circle_green" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/ashseparator"></View>
+            <LinearLayout
+                android:id="@+id/llObserved"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <com.ashysystem.mbhq.view.TextViewRaleWay
+                    android:id="@+id/txtObserved"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_weight="1"
+                    android:background="@color/white"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="10dp"
+                    android:text="I've observed"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/fab_sixteen" />
+                <ImageView
+                    android:id="@+id/checkObserved"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginRight="5dp"
+                        android:padding="8dp"
+                        android:src="@drawable/mbhq_circle_green" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/ashseparator"></View>
+            <LinearLayout
+                android:id="@+id/llLearned"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <com.ashysystem.mbhq.view.TextViewRaleWay
+                    android:id="@+id/txtLearned"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:background="@color/white"
+                    android:gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:paddingLeft="10dp"
+                    android:text="I've learned"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/fab_sixteen" />
+                 <ImageView
+                     android:id="@+id/checkLearned"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginRight="5dp"
+                        android:padding="8dp"
+                        android:src="@drawable/mbhq_circle_green" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/ashseparator"></View>
+            <LinearLayout
+                android:id="@+id/llAcknowledge"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <com.ashysystem.mbhq.view.TextViewRaleWay
+                    android:id="@+id/txtAcknowledge"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:background="@color/white"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="10dp"
+                    android:text="I acknowledge"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/fab_sixteen" />
+                <ImageView
+                    android:id="@+id/checkAcknowledge"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginRight="5dp"
+                        android:padding="8dp"
+                        android:src="@drawable/mbhq_circle_green" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/ashseparator"></View>
+            <LinearLayout
+                android:id="@+id/llLaughed"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <com.ashysystem.mbhq.view.TextViewRaleWay
+                    android:id="@+id/txtLaughed"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_weight="1"
+                    android:background="@color/white"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="10dp"
+                    android:text="I laughed"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/fab_sixteen" />
+                 <ImageView
+                     android:id="@+id/checkLaughed"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginRight="5dp"
+                        android:padding="8dp"
+                        android:src="@drawable/mbhq_circle_green" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/ashseparator"></View>
+            <LinearLayout
+                android:id="@+id/llPraised"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <com.ashysystem.mbhq.view.TextViewRaleWay
+                    android:id="@+id/txtPraised"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_weight="1"
+                    android:background="@color/white"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="10dp"
+                    android:text="I've praised"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/fab_sixteen" />
+                 <ImageView
+                     android:id="@+id/checkPraised"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginRight="5dp"
+                        android:padding="8dp"
+                        android:src="@drawable/mbhq_circle_green" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/ashseparator"></View>
+            <LinearLayout
+                android:id="@+id/llTodayLetOf"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <com.ashysystem.mbhq.view.TextViewRaleWay
+                    android:id="@+id/txtTodayLetOf"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:background="@color/white"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="10dp"
+                    android:text="I've let go of"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/fab_sixteen" />
+                  <ImageView
+                      android:id="@+id/checkTodayLetOf"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginRight="5dp"
+                        android:padding="8dp"
+                        android:src="@drawable/mbhq_circle_green" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/ashseparator"></View>
+            <LinearLayout
+                android:id="@+id/llIDreamtOf"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <com.ashysystem.mbhq.view.TextViewRaleWay
+                    android:id="@+id/txtIDreamtOf"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_weight="1"
+                    android:background="@color/white"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="10dp"
+                    android:text="I dreamt of"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/fab_sixteen" />
+                 <ImageView
+                     android:id="@+id/checkIDreamtOf"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginRight="5dp"
+                        android:padding="8dp"
+                        android:src="@drawable/mbhq_circle_green" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/ashseparator"></View>
+            </LinearLayout>
+        </ScrollView>
+    </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/rlCancel"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/action_bar_height"
+        android:layout_alignParentBottom="true"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/rounded_corner_mbhq_filled">
+
+        <com.ashysystem.mbhq.view.TextViewRaleWay
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="cancel"
+            android:textAllCaps="true"
+            android:textColor="@color/white"
+            android:textSize="@dimen/fab_sixteen" />
+    </RelativeLayout>
+</RelativeLayout>

@@ -49,9 +49,9 @@ import com.ashysystem.mbhq.activity.MainActivity;
 
 import com.ashysystem.mbhq.adapter.AvailableCourseAdapter;
 import com.ashysystem.mbhq.fragment.LearnFragment;
-import com.ashysystem.mbhq.fragment.MyAchievementsFragment;
 import com.ashysystem.mbhq.fragment.TrainFragment;
 import com.ashysystem.mbhq.fragment.WelcomeScrenCheckLIstFragment;
+import com.ashysystem.mbhq.fragment.achievement.MyAchievementsFragment;
 import com.ashysystem.mbhq.fragment.meditation.MeditationFragment;
 import com.ashysystem.mbhq.model.AvailableCourseModel;
 import com.ashysystem.mbhq.model.CourseDataViewModel;

@@ -38,7 +38,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.ashysystem.mbhq.Service.impl.FinisherServiceImpl;
 import com.ashysystem.mbhq.activity.MainActivity;
 
-import com.ashysystem.mbhq.fragment.MyAchievementsFragment;
+import com.ashysystem.mbhq.fragment.achievement.MyAchievementsFragment;
 import com.ashysystem.mbhq.model.livechat.Chat;
 import com.ashysystem.mbhq.model.livechat.GetMbhqLiveChatTagsResponse;
 import com.ashysystem.mbhq.model.livechat.SearchMbhqLiveChatByTagResponse;

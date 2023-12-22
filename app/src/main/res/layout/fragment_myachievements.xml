@@ -1,0 +1,388 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/ll_total"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:layout_above="@+id/loadImageJournal1"
+        android:layout_marginBottom="10dp"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:id="@+id/rlTop"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#F427AB"
+            android:visibility="gone">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:orientation="horizontal"
+                android:weightSum="9">
+
+                <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="3">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:orientation="vertical">
+
+                        <com.ashysystem.mbhq.view.TextViewRaleWay
+                            android:id="@+id/txtGoalValue1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:ellipsize="end"
+                            android:singleLine="true"
+                            android:text="FINANCES"
+                            android:textColor="#FFFFFF"
+                            android:textSize="@dimen/fab_fourteen" />
+
+                        <com.ashysystem.mbhq.view.TextViewRaleWay
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginTop="5dp"
+                            android:text="1"
+                            android:textColor="#FFFFFF"
+                            android:textSize="@dimen/fab_sixteen" />
+                    </LinearLayout>
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="3">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:orientation="vertical">
+
+                        <com.ashysystem.mbhq.view.TextViewRaleWay
+                            android:id="@+id/txtGoalValue2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:ellipsize="end"
+                            android:singleLine="true"
+                            android:text="FAMILY"
+                            android:textColor="#FFFFFF"
+                            android:textSize="@dimen/fab_fourteen" />
+
+                        <com.ashysystem.mbhq.view.TextViewRaleWay
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginTop="5dp"
+                            android:text="2"
+                            android:textColor="#FFFFFF"
+                            android:textSize="@dimen/fab_sixteen" />
+                    </LinearLayout>
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="3">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:orientation="vertical">
+
+                        <com.ashysystem.mbhq.view.TextViewRaleWay
+                            android:id="@+id/txtGoalValue3"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:ellipsize="end"
+                            android:singleLine="true"
+                            android:text="HEALTH"
+                            android:textColor="#FFFFFF"
+                            android:textSize="@dimen/fab_fourteen" />
+
+                        <com.ashysystem.mbhq.view.TextViewRaleWay
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginTop="5dp"
+                            android:text="3"
+                            android:textColor="#FFFFFF"
+                            android:textSize="@dimen/fab_sixteen" />
+                    </LinearLayout>
+                </RelativeLayout>
+            </LinearLayout>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:id="@+id/rlMyGratitudes"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/action_bar_height"
+                android:background="#F427AB"
+                android:visibility="gone">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="10dp"
+                    android:orientation="vertical">
+
+                    <com.ashysystem.mbhq.view.TextViewRaleWay
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="My Achievements"
+                        android:textColor="#FFFFFF"
+                        android:textSize="@dimen/fab_eighteen" />
+
+                    <com.ashysystem.mbhq.view.TextViewRaleWay
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Things I have already achieved or am proud of"
+                        android:textColor="#FFFFFF"
+                        android:textSize="@dimen/fab_ten" />
+                </LinearLayout>
+
+                <ImageView
+                    android:id="@+id/imgQuestionMark"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="10dp"
+                    android:background="@drawable/ic_question_mark"
+                    android:padding="10dp"
+                    android:visibility="gone" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/rlTopFilterPrint"
+                android:layout_width="match_parent"
+
+                android:layout_height="@dimen/action_bar_height">
+
+                <ImageView
+                    android:id="@+id/imgAchieveAdd"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="12dp"
+                    android:padding="10dp"
+                    android:src="@drawable/ic_add_green" />
+
+
+                <RelativeLayout
+                    android:id="@+id/rlSearch"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginBottom="5dp"
+                    android:layout_toLeftOf="@+id/llFilterPrint"
+                    android:background="@drawable/round_corner_black"
+                    android:visibility="gone">
+
+                    <com.ashysystem.mbhq.view.EditTextOswaldRegular
+                        android:id="@+id/edtSearch"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@null"
+                        android:gravity="center"
+                        android:hint="Search for growth"
+                        android:imeOptions="actionSearch"
+                        android:inputType="text"
+                        android:maxLines="1"
+                        android:paddingLeft="5dp" />
+                </RelativeLayout>
+
+
+                <LinearLayout
+                    android:id="@+id/llFilterPrint"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="15dp">
+
+                    <ImageView
+                        android:id="@+id/imgSearchAchieve"
+                        android:layout_width="35dp"
+                        android:layout_height="35dp"
+                        android:layout_gravity="center_vertical"
+                        android:padding="5dp"
+                        android:src="@drawable/ic_mbhq_search"
+                        android:visibility="gone" />
+
+                    <ImageView
+                        android:id="@+id/imgEQ"
+                        android:layout_width="35dp"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginRight="6dp"
+                        android:padding="3dp"
+                        android:src="@drawable/eq"
+                        android:visibility="visible" />
+
+                    <ImageView
+                        android:id="@+id/imgPrintAchieve"
+                        android:layout_width="35dp"
+                        android:layout_height="35dp"
+                        android:layout_gravity="center_vertical"
+                        android:padding="5dp"
+                        android:src="@drawable/mbhq_printer"
+                        android:visibility="gone" />
+
+                    <ImageView
+                        android:id="@+id/imgFilterAchieve"
+                        android:layout_width="35dp"
+                        android:layout_height="35dp"
+                        android:layout_marginLeft="6dp"
+                        android:padding="3dp"
+                        android:src="@drawable/mbhq_filter_green" />
+                </LinearLayout>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/rlLoadingNoDataFound"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@+id/rlTopFilterPrint">
+
+                <com.ashysystem.mbhq.view.TextViewRaleWay
+                    android:id="@+id/txtLoading"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="20dp"
+                    android:text="loading..."
+                    android:visibility="gone"
+                    android:textAllCaps="true"
+                    android:textColor="@color/mbhq_base_color"
+                    android:textSize="@dimen/fab_sixteen" />
+
+                <com.ashysystem.mbhq.view.TextViewRaleWay
+                    android:id="@+id/txtLoadFailed"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="60dp"
+                    android:gravity="center"
+                    android:text="Authentication Required!!!\nPlease Swipe down for reload!"
+                    android:textAllCaps="true"
+                    android:textColor="@color/mbhq_base_color"
+                    android:textSize="@dimen/fab_eighteen"
+                    android:visibility="gone" />
+
+
+                <ImageView
+                    android:id="@+id/imgBigPlus"
+                    android:layout_width="200dp"
+                    android:layout_height="200dp"
+                    android:layout_centerInParent="true"
+                    android:src="@drawable/ic_add_mbhq_green_plus"
+                    android:visibility="gone" />
+            </RelativeLayout>
+
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@+id/rlTopFilterPrint">
+
+                <VideoView
+                    android:id="@+id/video_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="250dp"
+                    android:visibility="gone" />
+
+                <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+                    android:id="@+id/swipeLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+                    <!--                <android.support.v4.widget.NestedScrollView-->
+                    <!--                    android:id="@+id/idNestedSV"-->
+                    <!--                    android:layout_width="match_parent"-->
+                    <!--                    android:layout_height="match_parent">-->
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/recyclerGratitudes"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:nestedScrollingEnabled="false">
+
+                    </androidx.recyclerview.widget.RecyclerView>
+                    <!--                </android.support.v4.widget.NestedScrollView>-->
+                </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+                <LinearLayout
+                    android:id="@+id/llAddNew"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/action_bar_height"
+                    android:orientation="horizontal"
+                    android:visibility="gone">
+
+                    <RelativeLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight=".15">
+
+                        <ImageView
+                            android:id="@+id/imgAdd"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true"
+                            android:background="@drawable/ic_add" />
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight=".85">
+
+                        <com.ashysystem.mbhq.view.TextViewRalewayMedium
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_weight=".85"
+                            android:text="Add new..."
+                            android:textColor="#cdcdcd"
+                            android:textSize="@dimen/fab_sixteen" />
+                    </RelativeLayout>
+                </LinearLayout>
+            </RelativeLayout>
+        </RelativeLayout>
+    </LinearLayout>
+    <ImageView
+        android:id="@+id/img_notaccess"
+        android:layout_width="match_parent"
+        android:visibility="gone"
+        android:layout_height="match_parent"
+        android:src="@drawable/meditation_access">
+
+    </ImageView>
+    <ProgressBar
+        android:id="@+id/loadImageJournal1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:visibility="gone" />
+
+</FrameLayout>

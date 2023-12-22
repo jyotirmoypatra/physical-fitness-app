@@ -225,7 +225,7 @@ public class Util {
     public static final String TAG_CROSS= "tag_cross";
     public static final String TAG_ALLCHECKED="tag_allchecked";
 
-
+    public static ArrayList<MyAchievementsListInnerModel> lstShowAll_db_nointernate = new ArrayList<MyAchievementsListInnerModel>();
 
     ///////BOOLEAN FOR MAIN PAGE RELOADING//////////////
     public static boolean isNetworkAvailable = false;
