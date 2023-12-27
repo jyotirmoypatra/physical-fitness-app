@@ -51,6 +51,7 @@ import com.ashysystem.mbhq.model.livechat.Chat;
 import com.ashysystem.mbhq.model.livechat.Meditations;
 import com.ashysystem.mbhq.model.response.MyAchievementsListInnerModel;
 import com.ashysystem.mbhq.video.DemoApplication;
+import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -85,6 +86,7 @@ import retrofit2.Response;
  */
 
 public class Util {
+    public static SimpleExoPlayer globalExoplayer;
 
     public static long downloadFile(Context context, String fileUrl, String fileName, String wibiner) {
         DownloadManager.Request request = new DownloadManager.Request(Uri.parse(fileUrl));

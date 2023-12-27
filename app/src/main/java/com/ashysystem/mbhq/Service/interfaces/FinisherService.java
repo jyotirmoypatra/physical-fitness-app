@@ -4,6 +4,9 @@ import com.ashysystem.mbhq.model.AddUpdateGratitudeModel;
 import com.ashysystem.mbhq.model.AvailableCourseModel;
 import com.ashysystem.mbhq.model.BucketListModel;
 import com.ashysystem.mbhq.model.CourseDetailModel;
+import com.ashysystem.mbhq.model.CreateAttemptModel;
+import com.ashysystem.mbhq.model.GetArticleDetail;
+import com.ashysystem.mbhq.model.GetCohenModel;
 import com.ashysystem.mbhq.model.GetGratitudeCacheExpiryTimeResponse;
 import com.ashysystem.mbhq.model.GetMeditationCacheExpiryTimeResponse;
 import com.ashysystem.mbhq.model.GetPrompt;
@@ -12,6 +15,7 @@ import com.ashysystem.mbhq.model.GetTaskStatusForDateResponse;
 import com.ashysystem.mbhq.model.GetUserPaidStatusModel;
 
 
+import com.ashysystem.mbhq.model.GetUserQuestionnaireAttemptListModel;
 import com.ashysystem.mbhq.model.GetWinTheWeekStatsResponse;
 import com.ashysystem.mbhq.model.IndividualAchievementModel;
 import com.ashysystem.mbhq.model.IndividualBucketListModel;
@@ -21,6 +25,8 @@ import com.ashysystem.mbhq.model.MeditationTagResponse;
 import com.ashysystem.mbhq.model.MyAchievementsListModel;
 import com.ashysystem.mbhq.model.MyValueListResponse;
 import com.ashysystem.mbhq.model.ProgressCourseResponse;
+import com.ashysystem.mbhq.model.QuestionMain;
+import com.ashysystem.mbhq.model.ReadUnreadResponse;
 import com.ashysystem.mbhq.model.TodayPage.GetAppHomePageValuesResponseModel;
 import com.ashysystem.mbhq.model.UpdateBadgeShownResponse;
 import com.ashysystem.mbhq.model.eqfolder.Eqfolder;
@@ -245,6 +251,32 @@ public interface FinisherService {
 
     @POST("api/eqjournal/MoveEqJournalToFolder")
     Call<JsonObject> moveeqname(@Body HashMap<String, Object> modelHashMap);
+
+
+    @POST("api/MbhqCourse/UnReadArticle")
+    Call<ReadUnreadResponse> unreadArticle(@Body HashMap<String, Object> modelHashMap);
+    @POST("api/MbhqCourse/ArticleRead")
+    Call<ReadUnreadResponse> articleRead(@Body HashMap<String, Object> modelHashMap);
+    @POST("api/MbhqCourse/GetMbhqArticleDetail")
+    Call<GetArticleDetail> getArticleDetail(@Body HashMap<String, Object> modelHashMap);
+    @POST("api/MbhqCourse/UpdateMbhqTask")
+    Call<ReadUnreadResponse> updateTask(@Body HashMap<String, Object> modelHashMap);
+    @POST("api/Questionnaire/GetUserQuestionnaireAttemptListMixedType")
+    Call<QuestionMain> getUserQuestionnaireAttemptListMixedType(@Body HashMap<String, Object> modelHashMap);
+    @POST("api/Questionnaire/AddUpdateUserQuestionnaireAttemptDetails")
+    Call<CreateAttemptModel> addUpdateAttempt(@Body HashMap<String, Object> modelHashMap);
+    @POST("api/Questionnaire/AddDAS21Answers")
+    Call<JsonObject> saveDas(@Body HashMap<String, Object> modelHashMap);
+    @POST("/api/Questionnaire/GetUserQuestionnaireAttemptDetails")
+    Call<GetCohenModel> getCohenModel(@Body HashMap<String, Object> modelHashMap);
+    @POST("api/Questionnaire/GetUserQuestionnaireAttemptList")
+    Call<GetUserQuestionnaireAttemptListModel> getUserQuestionnaireAttemptList(@Body HashMap<String, Object> modelHashMap);
+    @POST("api/Questionnaire/DeleteUserQuestionnaire")
+    Call<JsonObject> deleteQuestion(@Body HashMap<String, Object> modelHashMap);
+    @POST("api/Questionnaire/AddUpdateUserQuestionnaireHappinessAnswerList")
+    Call<JsonObject> saveHappyQuestion(@Body HashMap<String, Object> modelHashMap);
+    @POST("api/Questionnaire/AddUpdateUserQuestionnaireCohenStressScaleAnswerList")
+    Call<JsonObject> saveCohen(@Body HashMap<String, Object> modelHashMap);
 
 }
 
