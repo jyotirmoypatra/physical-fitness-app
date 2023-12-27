@@ -94,16 +94,7 @@ public class ExpandableCircuitListAdapter extends RecyclerView.Adapter<RecyclerV
                 ListHeaderViewHolder header = new ListHeaderViewHolder(view);
                 return header;
             case CHILD:
-                // Log.e("tail","123");
-                /*TextView itemTextView = new TextView(context);
-                itemTextView.setPadding(subItemPaddingLeft, subItemPaddingTopAndBottom, 0, subItemPaddingTopAndBottom);
-                itemTextView.setTextColor(0x88000000);
-                itemTextView.setLayoutParams(
-                        new ViewGroup.LayoutParams(
-                                ViewGroup.LayoutParams.MATCH_PARENT,
-                                ViewGroup.LayoutParams.WRAP_CONTENT));
-                                return new RecyclerView.ViewHolder(itemTextView) {
-                };*/
+
                 LayoutInflater inflaterChild = (LayoutInflater) parent.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 view = inflaterChild.inflate(R.layout.layout_circuit_details, parent, false);
                 ListItemViewHolder child = new ListItemViewHolder(view);
@@ -133,12 +124,7 @@ public class ExpandableCircuitListAdapter extends RecyclerView.Adapter<RecyclerV
                 {
 
                 }
-                /*if(item.RestUnitText!=null)
-                {
-                    itemController.txtReps.setText(item.RepGoal+" "+item.RestUnitText);
-                }else {
-                    itemController.txtReps.setText(item.RepGoal+" "+item.RepsUnitText);
-                }*/
+
 
                 if(item.flowId==5||item.flowId==6)
                 {
@@ -148,15 +134,6 @@ public class ExpandableCircuitListAdapter extends RecyclerView.Adapter<RecyclerV
                     itemController.txtReps.setText(item.RepGoal+" "+item.RepsUnitText+" X "+item.setCount+" sets");
 
 
-                //  itemController.txtDummy.setText(item.headerNo+"");
-                /*if (item.setCount > 0) {
-                    itemController.txtReps.setText(item.setCount+"  Sets");
-                }*//*
-                if(item.restComment != null && !TextUtils.isEmpty(item.restComment)){
-                    itemController.txtReps.setText(item.RestUnitText+"  "+item.restComment);
-                }*/
-                // itemController.txtIndex.setText(item.index);
-                ////////Super Set////////////
                 if(item.isSuperSet>=1)
                 {
                     if(item.SuperSetPosition==-1){
@@ -232,88 +209,13 @@ public class ExpandableCircuitListAdapter extends RecyclerView.Adapter<RecyclerV
 
                 }else {
                     itemController.imgBr.setVisibility(View.INVISIBLE);
-                    //itemController.txtSet.setVisibility(View.VISIBLE);
-                    //itemController.txtSet.setText("x "+item.setCount+" Sets");
                 }
-                ////////Super Set////////////
-                // Log.e("parent","123");
-               /* itemController.llRoot.setOnTouchListener(new View.OnTouchListener() {
-                    @Override
-                    public boolean onTouch(View view, MotionEvent motionEvent) {
-                        switch (motionEvent.getAction() & MotionEvent.ACTION_MASK)
-                        {
-                            case MotionEvent.ACTION_DOWN:
-                                shouldClick = false;
-                                if(lstExercisePicker==null)
-                                {
-                                    getExerciseList(item.lstEquipment,item.lstSubstituteExercise,item.lstAltBodyWeightExercise);
-                                }
-
-                                else
-                                    // showPicker(lstExercisePicker);
-                                    openReplaceDialog();
-                                break;
-                            case MotionEvent.ACTION_UP:
-                                if (shouldClick)
-                                    view.performClick();
-                                break;
-                            case MotionEvent.ACTION_POINTER_DOWN:
-                                break;
-                            case MotionEvent.ACTION_POINTER_UP:
-                                break;
-                            case MotionEvent.ACTION_MOVE:
-                                //Do your stuff
-                                shouldClick = false;
-
-
-                        }
-                        itemController.llRoot.invalidate();
-                        return true;
-                    }
-                });*/
                 itemController.llRoot.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         Log.e("print video url change--",item.VideoPublicUrl+"--");
                         openDetailsDialog(item.VideoPublicUrl,item.lstEquipment,item.lstSubstituteExercise,item.lstAltBodyWeightExercise);
-                      /*  if(videoGlobalView!=null)
-                        {
-                            videoGlobalView.stopPlayback();
-                        }
 
-                        if (item.invisibleChildren == null) {
-                            item.invisibleChildren = new ArrayList<Item>();
-                            int count = 0;
-                            int pos = data.indexOf(itemController.refferalItem);
-                            while (data.size() > pos + 1 && data.get(pos + 1).type == CHILD) {
-                                item.invisibleChildren.add(data.remove(pos + 1));
-                                count++;
-                            }
-                            notifyItemRangeRemoved(pos + 1, count);
-                        }
-                        else
-                        {
-                            if(preItem!=null)
-                            {
-                                closePreviousAccordian(preItem, itemControllerPre);
-                            }
-                            int pos = data.indexOf(itemController.refferalItem);
-                            int index = pos + 1;
-                            for (Item i : item.invisibleChildren)
-                            {
-                                data.add(index, i);
-                                index++;
-                            }
-                            notifyItemRangeInserted(pos + 1, index - pos - 1);
-
-                            item.invisibleChildren = null;
-                            /////////
-                            isAlreadyOPen=true;
-                            preItem=item;
-                            itemControllerPre=itemController;
-                            /////
-
-                        }*/
 
 
                     }
@@ -423,12 +325,6 @@ public class ExpandableCircuitListAdapter extends RecyclerView.Adapter<RecyclerV
                 {
                     e.printStackTrace();
                 }
-                 /*childController.txtEquipmentAns.setText((String)item.lstEquipment.get(0));
-                if(item.lstEquipment.size()>1)
-                 childController.txtEquipmentBasedAns.setText((String)item.lstEquipment.get(1));
-                if(item.lstEquipment.size()>2)
-                 childController.txtEquipmentWeightAns.setText((String)item.lstEquipment.get(2));*/
-                /////////////////////
                 if(item.lstImage.size()>0)
                 {
                     Glide.with(context).load(item.lstImage.get(0))
@@ -442,7 +338,6 @@ public class ExpandableCircuitListAdapter extends RecyclerView.Adapter<RecyclerV
 
                 }
 
-                ///////////////////////
                 childController.rlRightBack.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -467,69 +362,14 @@ public class ExpandableCircuitListAdapter extends RecyclerView.Adapter<RecyclerV
                     }
                 });
 
-                //loadAdapter(childController.rvCircuitList);
         }
     }
 
-    private void getExerciseList(List<String> lstEquipment, List<SessionOverViewModel.SubstituteExercise> lstSubstituteExercise, List<SessionOverViewModel.AltBodyWeightExercise> lstAltBodyWeightExercise) {
-        if(Connection.checkConnection(context))
-        {
-            final ProgressDialog  progressDialog= ProgressDialog.show(context, "", "Please wait...");
-            /////////////////Edit Session Api//////////////
-            HashMap<String,Object> hmModel=new HashMap<String, Object>();
 
-            hmModel.put("Key", Util.KEY_ABBBC);
-            //hmModel.put("UserSessionID",108);
-            hmModel.put("UserSessionID",sharedPreference.read("ABBBCOnlineUserSessionId",""));
 
-            SessionServiceImpl serviceSessionMain=new SessionServiceImpl(context);
-            Call<ExerciseRequestModel> sessionCall=serviceSessionMain.getExerciseList(hmModel);
-            sessionCall.enqueue(new Callback<ExerciseRequestModel>()
-            {
-                @Override
-                public void onResponse(Call<ExerciseRequestModel> call, Response<ExerciseRequestModel> response)
-                {
-                    Log.e("print response-->",response.toString()+"?");
-                    lstExercisePicker = response.body().getExercises();
-                    progressDialog.dismiss();
-                    setAllExercise(lstExercisePicker);
-                    setEquipExercise(lstEquipment);
-                    setBodyWeightAlt(lstAltBodyWeightExercise);
-                    //openReplaceDialog();
-                    // showPicker(lstExercisePicker);
-                }
 
-                @Override
-                public void onFailure(Call<ExerciseRequestModel> call, Throwable t) {
-                    t.printStackTrace();
-                    Log.e("print fail-->","14"+"?");
-                    progressDialog.dismiss();
 
-                }
-            });
-        }else
-        {
-            Util.showToast(context,Util.networkMsg);
-        }
-    }
 
-    private void setBodyWeightAlt(List<SessionOverViewModel.AltBodyWeightExercise> lstAltBodyWeightExercise) {
-        for(int g=0;g<lstAltBodyWeightExercise.size();g++)
-        {
-            SubTitle allExerciseSubtitle=new SubTitle( lstAltBodyWeightExercise.get(g).getBodyWeightAltExerciseName(),lstAltBodyWeightExercise.get(g).getBodyWeightAltExerciseId(),"","","",null,null);
-            _allAlt.add(allExerciseSubtitle);
-        }
-    }
-
-    private void setEquipExercise(List<String> lstEquipment) {
-
-        for(int g=0;g<lstEquipment.size();g++)
-        {
-            Log.e("Log","Loop here");
-            SubTitle allExerciseSubtitle=new SubTitle(lstEquipment.get(g),g,"","","",null,null);
-            _allEquip.add(allExerciseSubtitle);
-        }
-    }
 
     private void showIndividualVideo(Integer exerciseId) {
 
@@ -761,54 +601,10 @@ public class ExpandableCircuitListAdapter extends RecyclerView.Adapter<RecyclerV
 
 
     }
-    /////////////////////One Accordian will open at a time Start//////////
-    private void closePreviousAccordian(Item preItem, ListHeaderViewHolder itemControllerPre)
-    {
-        if (preItem.invisibleChildren == null)
-        {
-            Log.e("hide","00");
-            preItem.invisibleChildren = new ArrayList<Item>();
-            int count = 0;
-            int pos = data.indexOf(itemControllerPre.refferalItem);
-            while (data.size() > pos + 1 && data.get(pos + 1).type == CHILD)
-            {
-                preItem.invisibleChildren.add(data.remove(pos + 1));
-                count++;
-            }
-            notifyItemRangeRemoved(pos + 1, count);
 
-        }
-    }
-    ////////////////////////One Accordian will open at a time End//////////
     private void playVideo(String fileName, final VideoView vidExercise)
     {
-        /*File file = new File(Environment.getExternalStoragePublicDirectory( Environment.DIRECTORY_PICTURES), ".Squad"+File.separator+fileName+".mp4");
-        Log.e("full",file.getAbsoluteFile()+"?");
-        if(file.exists())
-        {
-            Log.e("exist true",fileName);
-            String videoName = "vida";
-            Uri video = Uri.parse("android.resource://com.ashysystem.mbhq/raw/" + videoName);
-            vidExercise.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-                @Override
-                public void onPrepared(MediaPlayer mediaPlayer) {
-                    mediaPlayer.setLooping(true);
-                }
-            });
 
-            //vidExercise.setVideoURI(video);
-            //vidExercise.setVideoPath(Environment.getExternalStorageDirectory()+"/"+ex_name+".mp4");
-            // vidExercise.setVideoPath(Environment.getExternalStoragePublicDirectory( Environment.DIRECTORY_PICTURES)+"/Squad/"+fileName+".mp4");
-            //vidExercise.setVideoPath(Environment.getExternalStoragePublicDirectory( Environment.DIRECTORY_PICTURES)+File.separator+".Squad"+File.separator+fileName+".mp4");
-            vidExercise.setVideoPath(file.getAbsolutePath());
-            vidExercise.start();
-        }
-//Do something
-        else
-        {
-            Log.e("exist false",fileName);
-
-        }*/
 // Do something else.
         ProgressDialog progressDialog=new ProgressDialog(context);
         progressDialog.setMessage("Please wait...");
@@ -1009,170 +805,12 @@ public class ExpandableCircuitListAdapter extends RecyclerView.Adapter<RecyclerV
         {
             e.printStackTrace();
         }
-        /////////////////////
 
 
     }
-    //////////////////////////////////////////
-    ///////////////////Replace Exercise////////////
-    public void getExerciseList(List<SessionOverViewModel.Circuit> lstCircuitExercise, int i) {
-
-        if(Connection.checkConnection(context))
-        {
-            final ProgressDialog  progressDialog= ProgressDialog.show(context, "", "Please wait...");
-            /////////////////Edit Session Api//////////////
-            HashMap<String,Object> hmModel=new HashMap<String, Object>();
-
-            hmModel.put("Key", Util.KEY_ABBBC);
-            //hmModel.put("UserSessionID",108);
-            hmModel.put("UserSessionID",sharedPreference.read("ABBBCOnlineUserSessionId",""));
-
-            SessionServiceImpl serviceSessionMain=new SessionServiceImpl(context);
-            Call<ExerciseRequestModel> sessionCall=serviceSessionMain.getExerciseList(hmModel);
-            sessionCall.enqueue(new Callback<ExerciseRequestModel>()
-            {
-                @Override
-                public void onResponse(Call<ExerciseRequestModel> call, Response<ExerciseRequestModel> response)
-                {
-                    Log.e("print response-->",response.toString()+"?");
-                    lstExercisePicker = response.body().getExercises();
-                    progressDialog.dismiss();
-                    setAllExercise(lstExercisePicker);
-                    setEquipExercise(lstCircuitExercise,i);
-                    setBodyWeightAlt(lstCircuitExercise,i);
-                    openReplaceDialog();
-                    // showPicker(lstExercisePicker);
-                }
-
-                @Override
-                public void onFailure(Call<ExerciseRequestModel> call, Throwable t) {
-                    t.printStackTrace();
-                    Log.e("print fail-->","14"+"?");
-                    progressDialog.dismiss();
-
-                }
-            });
-        }else
-        {
-            Util.showToast(context,Util.networkMsg);
-        }
-        ////////////////Edit Session Api//////////////
-    }
-    private void setBodyWeightAlt(List<SessionOverViewModel.Circuit> lstCircuitExercise, int i) {
-        for(int g=0;g<lstCircuitExercise.get(i).getAltBodyWeightExercises().size();g++)
-        {
-            SubTitle allExerciseSubtitle=new SubTitle( lstExercisePicker.get(g).getExerciseName(),lstExercisePicker.get(g).getExerciseId(),"","","",null,null);
-            _allAlt.add(allExerciseSubtitle);
-        }
-    }
-
-    private void setEquipExercise(List<SessionOverViewModel.Circuit> lstCircuitExercise, int i) {
-        for(int g=0;g<lstCircuitExercise.get(i).getEquipments().size();g++)
-        {
-            Log.e("Log","Loop here");
-            SubTitle allExerciseSubtitle=new SubTitle( lstCircuitExercise.get(i).getEquipments().get(g),g,"","","",null,null);
-            _allEquip.add(allExerciseSubtitle);
-        }
-    }
-
-    private void setAllExercise(List<ExerciseRequestModel.Exercise> lstExercisePicker) {
-        for(int g=0;g<lstExercisePicker.size();g++)
-        {
-            SubTitle allExerciseSubtitle=new SubTitle( lstExercisePicker.get(g).getExerciseName(),lstExercisePicker.get(g).getExerciseId(),"","","",null,null);
-            _allExercise.add(allExerciseSubtitle);
-        }
-    }
-
-    private void openReplaceDialog()
-    {
-        List list = getList();
-        Dialog replaceDialog=new Dialog(context,R.style.DialogTheme);
-        replaceDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        replaceDialog.setContentView(R.layout.dialog_replace_exercise);
-        RecyclerView rvExercise=(RecyclerView )replaceDialog.findViewById(R.id.rvExercise);
-        RelativeLayout rlHeader=(RelativeLayout )replaceDialog.findViewById(R.id.rlHeader);
-        ImageView imgBack=(ImageView )replaceDialog.findViewById(R.id.imgBack);
-        rlHeader.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                replaceDialog.dismiss();
-            }
-        });
-       /* imgBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                replaceDialog.dismiss();
-            }
-        });*/
-        rvExercise.setLayoutManager(new LinearLayoutManager(context));
-      /*  ReplaceExerciseListAdapter replaceExerciseListAdapter=new ReplaceExerciseListAdapter(list,context, _allTargetUpper, _allTargetLower, _allTargetCore);
-        rvExercise.setAdapter(replaceExerciseListAdapter);
-        replaceDialog.show();*/
 
 
 
-    }
-    private List getList() {
-        List <Title>list = new ArrayList<>();
-        for (int i = 0; i < strCategory.length; i++) {
-            List subTitles = new ArrayList<>();
-            if(i==0)
-            {
-                /*if(_album!=null)
-                for (int j = 0; j< _album.size(); j++){
-                    SubTitle subTitle = new SubTitle(_album.get(j),0);
-                    subTitles.add(subTitle);
-                }*/
-                Log.e("equip size",_allEquip.size()+"?");
-                subTitles=_allEquip;
-            }
-            else if(i==1)
-            {
-              /*  if(_artist!=null)
-                for (int j = 0; j< _artist.size(); j++){
-                    SubTitle subTitle = new SubTitle(_artist.get(j),0);
-                    subTitles.add(subTitle);
-                }*/
-                Log.e("alt size",_allEquip.size()+"?");
-                subTitles=_allAlt;
-            }
-            else if(i==2)
-            {
-              /*  if(_genres!=null)
-                for (int j = 0; j< _genres.size(); j++){
-                    SubTitle subTitle = new SubTitle(_genres.get(j),0);
-                    subTitles.add(subTitle);
-                }*/
-                Log.e("sub size",_allExercise+"?");
-                subTitles=_allExercise;
-            }
-            else if(i==3)
-            {
-                /*if(_playlist!=null)
-                for (int j = 0; j< _playlist.size(); j++){
-                    SubTitle subTitle = new SubTitle(_playlist.get(j),0);
-                    subTitles.add(subTitle);
-                }*/
-                subTitles=_allStandard;
-            }
-            else if(i==4)
-            {
-                /*if(_playlist!=null)
-                for (int j = 0; j< _playlist.size(); j++){
-                    SubTitle subTitle = new SubTitle(_playlist.get(j),0);
-                    subTitles.add(subTitle);
-                }*/
-                subTitles=_allExercise;
-                Log.e("total size",_allExercise+"?");
-            }
 
-           Log.e("Title list exp circuit adp",""+strCategory[i]);
-           Title model = new Title(strCategory[i],subTitles);
-           list.add(model); //commented by jyoti
-        }
-        return list;
-    }
-    ///////////////////Replace Exercise////////////
-    /////////////////////////////////////////
 
 }

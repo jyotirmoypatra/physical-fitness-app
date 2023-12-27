@@ -94,6 +94,7 @@ public class ProgramDetailsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        Log.e("fragment load check","programe details fragment");
 
         if (vi == null) {
             vi = inflater.inflate(R.layout.fragment_program_details, container, false);

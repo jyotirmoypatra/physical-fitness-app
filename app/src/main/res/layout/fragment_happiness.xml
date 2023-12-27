@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="#F2F2F2">
+    <RelativeLayout
+        android:id="@+id/rlBack"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="#F6F6F6">
+
+        <com.ashysystem.mbhq.view.TextViewSemiBold
+            android:id="@+id/txtBack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:text="Back"
+            android:textColor="@color/black"
+            android:textSize="@dimen/fab_sixteen" />
+
+    </RelativeLayout>
+    <RelativeLayout
+        android:id="@+id/rlHeader"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/rlBack"
+        android:background="@drawable/mbhq_bar">
+        <com.ashysystem.mbhq.view.TextViewSemiBold
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:textColor="@color/white"
+            android:padding="@dimen/fab_sixteen"
+            android:textSize="@dimen/fab_sixteen"
+            android:text="HAPPINESS TEST"/>
+    </RelativeLayout>
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/nestedScroll"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/rlHeader"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+        <RelativeLayout
+            android:id="@+id/rlUp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            >
+            <com.ashysystem.mbhq.view.TextViewSemiBold
+                android:id="@+id/txtYourGoal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"
+                android:layout_marginTop="20dp"
+                android:textSize="@dimen/fab_twelve"
+                android:layout_centerHorizontal="true"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:text="Your goal is to improve your happiness each time you complete the questionnaire!"
+                android:gravity="center_horizontal"/>
+            <com.ashysystem.mbhq.view.TextViewSemiBold
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorPrimary"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="20dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_centerHorizontal="true"
+                android:gravity="center_horizontal"
+                android:layout_below="@+id/txtYourGoal"
+                android:text="PLEASE MAKE YOUR SELECTION ON EACH POINT"/>
+        </RelativeLayout>
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvlList"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="15dp"
+                android:background="#F2F2F2"
+                android:layout_below="@+id/rlUp"></androidx.recyclerview.widget.RecyclerView>
+            <RelativeLayout
+                android:id="@+id/rlScore"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/rvlList"
+                android:background="@color/white">
+                <com.ashysystem.mbhq.view.TextViewSemiBold
+                    android:id="@+id/txtScoreLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:layout_centerHorizontal="true"
+                    android:textColor="@color/colorPrimary"
+                    android:text="YOUR SCORE"/>
+
+                <RelativeLayout
+                    android:layout_width="120dp"
+                    android:layout_height="30dp"
+                    android:layout_below="@+id/txtScoreLabel"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="10dp"
+                    android:background="@drawable/edittext_background_green">
+
+                    <com.ashysystem.mbhq.view.TextViewSemiBold
+                        android:id="@+id/txtScore"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:text="0.0"
+                        android:textColor="@color/colorPrimary" />
+
+                </RelativeLayout>
+
+            </RelativeLayout>
+            <RelativeLayout
+                android:id="@+id/rlSave"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_margin="10dp"
+                android:layout_below="@+id/rlScore"
+                android:background="@color/colorPrimary">
+                <com.ashysystem.mbhq.view.TextViewSemiBold
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:textColor="@color/white"
+                    android:text="SAVE SCORE"/>
+            </RelativeLayout>
+            <com.ashysystem.mbhq.view.TextViewSemiBold
+                android:id="@+id/txtHeader"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#FF45494A"
+                android:layout_margin="20dp"
+                android:layout_marginTop="20dp"
+                android:layout_below="@+id/rlSave"
+                android:text="@string/happiness_text"/>
+        </RelativeLayout>
+    </androidx.core.widget.NestedScrollView>
+
+
+
+
+
+</RelativeLayout>

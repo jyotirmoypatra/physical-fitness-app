@@ -9,6 +9,9 @@ import com.ashysystem.mbhq.model.AddUpdateGratitudeModel;
 import com.ashysystem.mbhq.model.AvailableCourseModel;
 import com.ashysystem.mbhq.model.BucketListModel;
 import com.ashysystem.mbhq.model.CourseDetailModel;
+import com.ashysystem.mbhq.model.CreateAttemptModel;
+import com.ashysystem.mbhq.model.GetArticleDetail;
+import com.ashysystem.mbhq.model.GetCohenModel;
 import com.ashysystem.mbhq.model.GetGratitudeCacheExpiryTimeResponse;
 import com.ashysystem.mbhq.model.GetMeditationCacheExpiryTimeResponse;
 import com.ashysystem.mbhq.model.GetPrompt;
@@ -16,6 +19,7 @@ import com.ashysystem.mbhq.model.GetStreakDataResponse;
 import com.ashysystem.mbhq.model.GetTaskStatusForDateResponse;
 import com.ashysystem.mbhq.model.GetUserPaidStatusModel;
 
+import com.ashysystem.mbhq.model.GetUserQuestionnaireAttemptListModel;
 import com.ashysystem.mbhq.model.GetWinTheWeekStatsResponse;
 import com.ashysystem.mbhq.model.IndividualAchievementModel;
 import com.ashysystem.mbhq.model.IndividualBucketListModel;
@@ -25,7 +29,8 @@ import com.ashysystem.mbhq.model.MeditationTagResponse;
 import com.ashysystem.mbhq.model.MyAchievementsListModel;
 import com.ashysystem.mbhq.model.MyValueListResponse;
 import com.ashysystem.mbhq.model.ProgressCourseResponse;
-import com.ashysystem.mbhq.model.SessionOverViewModel;
+import com.ashysystem.mbhq.model.QuestionMain;
+import com.ashysystem.mbhq.model.ReadUnreadResponse;
 import com.ashysystem.mbhq.model.TodayPage.GetAppHomePageValuesResponseModel;
 import com.ashysystem.mbhq.model.UpdateBadgeShownResponse;
 import com.ashysystem.mbhq.model.eqfolder.Eqfolder;
@@ -329,7 +334,52 @@ public class FinisherServiceImpl extends Service {
     }
 
 
-    public Call<JsonObject> checkUserProgramStep(HashMap<String, Object> modelHashMap) {
+
+    public Call<ReadUnreadResponse> unreadArticle(HashMap<String, Object> modelHashMap) {
+        return finisherService.unreadArticle(modelHashMap);
+    }
+    public Call<ReadUnreadResponse> articleRead(HashMap<String, Object> modelHashMap) {
+        return finisherService.articleRead(modelHashMap);
+    }
+    public Call<GetArticleDetail> getArticleDetail(HashMap<String, Object> modelHashMap) {
+        return finisherService.getArticleDetail(modelHashMap);
+    }
+    public Call<ReadUnreadResponse> updateTask(HashMap<String, Object> modelHashMap) {
+        return finisherService.updateTask(modelHashMap);
+    }
+
+    public Call<QuestionMain> getQuestionMain(HashMap<String, Object> modelHashMap) {
+        return finisherService.getUserQuestionnaireAttemptListMixedType(modelHashMap);
+
+    }
+    public Call<CreateAttemptModel> addUpdateAttempt(HashMap<String, Object> modelHashMap) {
+        return finisherService.addUpdateAttempt(modelHashMap);
+
+    }
+    public Call<JsonObject> saveDas(HashMap<String, Object> modelHashMap) {
+        return finisherService.saveDas(modelHashMap);
+
+    }
+    public Call<GetCohenModel> getCohenModel(HashMap<String, Object> modelHashMap) {
+        return finisherService.getCohenModel(modelHashMap);
+
+    }
+    public Call<GetUserQuestionnaireAttemptListModel> getUserQuestionnaireAttemptList(HashMap<String, Object> modelHashMap) {
+        return finisherService.getUserQuestionnaireAttemptList(modelHashMap);
+
+    }
+    public Call<JsonObject> deleteQuestion(HashMap<String, Object> modelHashMap) {
+        return finisherService.deleteQuestion(modelHashMap);
+    }
+    public Call<JsonObject> saveHappyQuestion(HashMap<String, Object> modelHashMap) {
+        return finisherService.saveHappyQuestion(modelHashMap);
+
+    }
+    public Call<JsonObject> saveCohen(HashMap<String, Object> modelHashMap) {
+        return finisherService.saveCohen(modelHashMap);
+
+    }
+public Call<JsonObject> checkUserProgramStep(HashMap<String, Object> modelHashMap) {
         return finisherService.checkUserProgramStep(modelHashMap);
     }
 }

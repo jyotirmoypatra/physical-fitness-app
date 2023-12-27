@@ -177,19 +177,9 @@ public class SessionOverviewFragment extends Fragment {
         this.lstExercise = lstExercise;
     }
 
-    public Integer getExerciseSessionId() {
-        return exerciseSessionId;
-    }
 
-    //private ArrayList<EditedCircuitList> arrEditedCircuitList=new ArrayList<>();
 
-    /*public ArrayList<EditedCircuitList> getArrEditedCircuitList() {
-        return arrEditedCircuitList;
-    }
 
-    public void setArrEditedCircuitList(EditedCircuitList editedCircuitList) {
-        this.arrEditedCircuitList .add(editedCircuitList);
-    }*/
 
     private ArrayList<QuickEditedCircuitList> arrQuickEditedCircuitList = new ArrayList<>();
 
@@ -197,21 +187,9 @@ public class SessionOverviewFragment extends Fragment {
         return arrQuickEditedCircuitList;
     }
 
-    public void setArrQuickEditedCircuitList(QuickEditedCircuitList quickEditedCircuitList) {
-        this.arrQuickEditedCircuitList.add(quickEditedCircuitList);
-    }
 
-    public String getExerciseId() {
-        return exerciseId;
-    }
 
-    public String getSessionTitle() {
-        return SessionTitle;
-    }
 
-    public boolean isPersonalised() {
-        return isPersonalised;
-    }
 
     private String[] arrCue = {"Click here for tools and tips to get the most out of the TRAIN section"};
     public Integer getFlowId() {
@@ -735,44 +713,6 @@ public class SessionOverviewFragment extends Fragment {
             }
         });
 
-//        rlWeight.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//
-//                if (sharedPreference.read("USEREMAIL", "").equals("")) {
-//                    (( MainActivity ) getActivity()).openDialogForRegisterUser(null, "");
-//                } else {
-//                    if (workoutType.equals("Weights")) {
-//                        Bundle bundle = new Bundle();
-//                        bundle.putString("ExId", exerciseId);
-//                        Gson gson = new Gson();
-//                        String jsonString = gson.toJson(lstExercise);
-//                        bundle.putString("data", jsonString);
-//                        bundle.putString("exerciseId", exerciseId);
-//                        bundle.putString("title", SessionTitle);
-//                        bundle.putInt("duration", duration);
-//                        bundle.putString("workouttype", workoutType);
-//                        bundle.putString("SessionDate", SessionDate);
-//                        bundle.putString("CalDate", CalDate);
-//                        bundle.putString("exerciseIdCustom", exerciseIdCustom);
-//                        //WeightSheetAddEditFragment weightSheetAddEditFragment=new WeightSheetAddEditFragment();
-//                        //weightSheetAddEditFragment.setArguments(bundle);
-//                        // ((MainActivity)getActivity()).loadFragment(weightSheetAddEditFragment,"Weight",null);
-//
-//
-//                        ///////////////////////
-//                        FragmentManager manager = getFragmentManager();
-//                        WeightSheetAddEditFragment mydialog = new WeightSheetAddEditFragment();
-//                        mydialog.setArguments(bundle);
-//                        mydialog.setTargetFragment(SessionOverviewFragment.this, REQUEST_CODE_WEIGHT);
-//                        mydialog.show(manager, "WeightSheetAddEditFragment");
-//                        ///////////////
-//
-//                    } else
-//                        Util.showToast(getActivity(), "PLease choose workout type weight");
-//                }
-//            }
-//        }); //commented by jyoti
         rlMusicTop.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -831,33 +771,9 @@ public class SessionOverviewFragment extends Fragment {
                 toggleFavApi(exerciseSessionId,imgFav,0);
             }
         });
-    /*    rlBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //((MainActivity)getActivity()).onBackPressed();
-                if(fromFragment.equals("SESSIONLIST"))
-                {
-                    ((MainActivity)getActivity()).loadFragment(new SessionListFragment(),"SessionList",null);
-                }else if(fromFragment.equals("ADDUPDATECUSTOMPROGRAM"))
-                {
-                    ((MainActivity)getActivity()).loadFragment(new AddUpdateCustomProgramFragment(),"AddUpdateCustomProgram",addUpdateCustomProgramBundle);
-                }else if(fromFragment.equals("CUSTOMPROGRAMFINISH"))
-                {
-                    ((MainActivity)getActivity()).loadFragment(new CustomProgramFinishFragment(),"CustomProgramFinish",customProgramFinishBundle);
-                }else
-                {
-                    ((MainActivity)getActivity()).loadFragment(new TrainOptionFragment(),"TrainOption",trainOptionBundle);
-                }
-            }
-        });*/
+
         rvSessionList.setOnTouchListener(touchFun);
-       /* textColorAnim = ObjectAnimator.ofInt(rlNext, "backgroundColor", Color.WHITE, Color.parseColor("#9CBFF7"),
-                Color.WHITE);
-        textColorAnim.setDuration(1000);
-        textColorAnim.setEvaluator(new ArgbEvaluator());
-        textColorAnim.setRepeatCount(ValueAnimator.INFINITE);
-        textColorAnim.setRepeatMode(ValueAnimator.REVERSE);
-        textColorAnim.start();*/
+
 
         final Animation animation = new AlphaAnimation(1, 0);
         animation.setDuration(500);
@@ -890,61 +806,9 @@ public class SessionOverviewFragment extends Fragment {
         Log.e("print s title--", SessionTitle + "??");
 
         scrollIndex = 0;
-        /*llBarbell.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                boolean lpBreak=false,lpBreakAgain=false;
-                for(int x=0;x<lstExercise.size();x++)
-                {
-
-                    for(int k=0;k<lstExercise.get(x).getCircuitExercises().size();k++)
-                    {
-                        for(int z=0;z<lstExercise.get(x).getCircuitExercises().get(k).getEquipments().size();z++)
-                        {
-                            if(lstExercise.get(x).getCircuitExercises().get(k).getEquipments().get(z).equals("Fitball"))
-                            {
-                                scrollIndex=x;
-                                lpBreak=true;
-                                String equip=lstExercise.get(x).getCircuitExercises().get(k).getEquipments().get(z);
-                                equip+=" ";
-                                lstExercise.get(x).getCircuitExercises().get(k).getEquipments().add(z,equip);
-                                //adapter.notifyDataSetChanged();
-                                break;
-                            }
-                        }
-                        if(lpBreak) {
-                            lpBreakAgain=true;
-                            break;
-                        }
-
-                    }
-                    if(lpBreakAgain)
-                        break;
-
-
-                }
-                Log.e("print final index",scrollIndex+"??");
-                //changescroll(scrollIndex);
 
 
 
-            }
-        });
-        llKetbell.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-            }
-        });
-
-*/
-       /*  smoothScroller = new
-                LinearSmoothScroller(getActivity()) {
-                    @Override protected int getVerticalSnapPreference() {
-                        return LinearSmoothScroller.SNAP_TO_START;
-                    }
-                };*/
-        // llmanager.startSmoothScroll(smoothScroller);
 
 
     }
@@ -1323,44 +1187,6 @@ public class SessionOverviewFragment extends Fragment {
     }
 
 
-
-
-
-
-
-    private void blinkeffect(LinearLayout linearLayout)
-    {
-        Handler blinkHandler = new Handler() {
-            @Override
-            public void handleMessage(Message msg) {
-                switch (msg.what) {
-                    case 0:
-                        linearLayout.setBackgroundColor(Color.RED);
-                        break;
-                    case 1:
-                        linearLayout.setBackgroundColor(Color.TRANSPARENT);
-                        break;
-
-                }
-                super.handleMessage(msg);
-            }
-        };
-
-
-        for (int i=0; i<6; i++)
-        {
-            Message msg = new Message();
-            if(i % 2 == 0){
-                msg.what = 0;
-            }
-            else{
-                msg.what=1;
-            }
-
-            blinkHandler.sendMessageDelayed(msg, i*300);
-        }
-    }
-
     private void setWorkoutImg() {
         if(wtype.equals("equip"))
         {
@@ -1385,49 +1211,7 @@ public class SessionOverviewFragment extends Fragment {
         }
     }
 
-    private void EditSessionDailyApi() {
-        progressDialog= ProgressDialog.show(getActivity(), "", "Please wait...");
-        /////////////////Edit Session Api//////////////
-        HashMap<String,Object> hmModel=new HashMap<String, Object>();
-        hmModel.put("UserId",16);
-        hmModel.put("SessionId",2);
-        hmModel.put("SessionTitle",SessionTitle);
-        hmModel.put("Duration",60);
-        hmModel.put("Date","1/11/2017 12:00:00 AM");
-        hmModel.put("EditedExercises",arrEsitedExerciseModel);
-        //hmModel.put("EditedCircuits",getArrEditedCircuitList());
-        hmModel.put("EditedCircuits",getArrQuickEditedCircuitList());
-        hmModel.put("Key", Util.KEY_ABBBC);
-        hmModel.put("UserSessionID",108);
-        hmModel.put("ExerciseSessionId",exerciseId);
-        //hmModel.put("ExerciseSessionId","3269");
-        SessionServiceImpl serviceSessionMain=new SessionServiceImpl(getActivity());
-        Call<EditDailySessionModel> sessionCall=serviceSessionMain.editSquadDailySession(hmModel);
-        sessionCall.enqueue(new Callback<EditDailySessionModel>()
-        {
-            @Override
-            public void onResponse(Call<EditDailySessionModel> call, Response<EditDailySessionModel> response)
-            {
-                Log.e("print response-->",response.toString()+"?");
-                progressDialog.dismiss();
-                ///////refersh sessionlist after edit///////
-                getSessionListFromApi(true);
-                ///////refersh sessionlist after edit///////
-            }
 
-
-
-            @Override
-            public void onFailure(Call<EditDailySessionModel> call, Throwable t) {
-                t.printStackTrace();
-                Log.e("print fail-->","14"+"?");
-                progressDialog.dismiss();
-
-            }
-        });
-
-        ////////////////Edit Session Api//////////////
-    }
     private void loadAdapter(List<SessionOverViewModel.Exercise> lstExercise)
     {
         List<ExpandableListAdapter.Item> data=new ArrayList<>();
@@ -1490,16 +1274,7 @@ public class SessionOverviewFragment extends Fragment {
         imgLeftBack.setVisibility(View.GONE);
         toolbar.setBackgroundColor(Color.parseColor("#FFFFFF"));
 
-        /*imgLogo.setOnClickListener(new View.OnClickListener() {             @Override             public void onClick(View v) { 		((MainActivity)getActivity()).showPromotionalDialogs();
 
-                if(new SharedPreference(getActivity()).read("compChk", "").equals("false"))
-                {
-                    ((MainActivity)getActivity()).loadFragment(new WelcomeScrenCheckLIstFragment(), "WelcomeScrenCheckLIstFragment", null);
-                }else {
-                    ((MainActivity)getActivity()).loadFragment(new HomeFragment(), "home", null);
-                }
-            }
-        });*/
 
         imgRightBack.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -1551,27 +1326,7 @@ public class SessionOverviewFragment extends Fragment {
 
                 if (event.getAction() == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_BACK){
 
-                    // handle back button
-                /*    if(fromFragment.equals("SESSIONLIST"))
-                    {
-                        if(!RECEIVESTRING.equals(""))
-                        {
-                            Bundle bundle = new Bundle();
-                            bundle.putString("RECEIVESTRING",RECEIVESTRING);
-                            ((MainActivity)getActivity()).loadFragment(new SessionListFragment(),"SessionList",bundle);
-                        }else {
-                            ((MainActivity)getActivity()).loadFragment(new SessionListFragment(),"SessionList",null);
-                        }
-                    }else if(fromFragment.equals("ADDUPDATECUSTOMPROGRAM"))
-                    {
-                        ((MainActivity)getActivity()).loadFragment(new AddUpdateCustomProgramFragment(),"AddUpdateCustomProgram",addUpdateCustomProgramBundle);
-                    }else if(fromFragment.equals("CUSTOMPROGRAMFINISH"))
-                    {
-                        ((MainActivity)getActivity()).loadFragment(new CustomProgramFinishFragment(),"CustomProgramFinish",customProgramFinishBundle);
-                    }else
-                    {
-                        ((MainActivity)getActivity()).loadFragment(new TrainOptionFragment(),"TrainOption",trainOptionBundle);
-                    }*/
+
                     if(getArguments()!=null&&getArguments().containsKey("workout"))
                     {
                        // ((MainActivity)getActivity()).loadFragment(new WorkoutFragment(),"WorkoutFragment",getArguments());//commented by jyoti
@@ -1705,191 +1460,8 @@ public class SessionOverviewFragment extends Fragment {
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleItemTouchCallback);
         itemTouchHelper.attachToRecyclerView(rvSessionList);
     }
-    ///////////////////////Swipe Recyclerview ////////////////
-/*
-    public void showPickerForCircuit(final List<CircuitListModel.ObjCircuit> arrCircuitList)
-    {
-        final Dialog pickerDialog=new Dialog(getActivity(),android.R.style.Theme_Light);
-        pickerDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        pickerDialog.setContentView(R.layout.dialog_picker);
-        final WheelPicker pickerExercise=(WheelPicker)pickerDialog.findViewById(R.id.pickerExercise);
-        pickerExercise.setSelectedItemTextColor(0xCCFFFFFF);
-        pickerExercise.setCyclic(false);
-        ImageView imgBack=(ImageView)pickerDialog.findViewById(R.id.imgBack);
-        ImageView imgFwd=(ImageView)pickerDialog.findViewById(R.id.imgFwd);
-        imgBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                pickerDialog.dismiss();
-            }
-        });
-        imgFwd.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //pickerExercise.getCurrentItemPosition()
-                Log.e("pos->",pickerExercise.getCurrentItemPosition()+"?");
-                        /////////////////
-                preHolder.txtExerciseName.setText(arrCircuitList.get(pickerExercise.getCurrentItemPosition()).getCircuitName());
-                */
-/*EditedExerciseModel editedExerciseModel=new EditedExerciseModel();
-                editedExerciseModel.setId(preHolder.refferalItem.id);
-                editedExerciseModel.setSequenceNo(preHolder.refferalItem.sequenceNo);
-                editedExerciseModel.setNewExerciseId(arrCircuitList.get(pickerExercise.getCurrentItemPosition()).getCircuitId());
-                arrEsitedExerciseModel.add(editedExerciseModel);*//*
- ///////////////CHANGE 31/1/17///////////////////////
-                ////////////////////
-                pickerDialog.dismiss();
-                SimpleDateFormat simpleDateFormat=new SimpleDateFormat("dd/MM/yyyy HH:mm:ss a");
-                HashMap<String,Object> hashMap=new HashMap<String, Object>();
-                hashMap.put("UserId",Integer.parseInt(sharedPreference.read("ABBBCOnlineUserId","")));
-                hashMap.put("ExerciseSessionId",(getExerciseSessionId()));
-                hashMap.put("SessionTitle",(getSessionTitle()));
-                hashMap.put("OldExerciseId",preHolder.refferalItem.id);
-                hashMap.put("NewExerciseId",arrCircuitList.get(pickerExercise.getCurrentItemPosition()).getCircuitId());
-                hashMap.put("Personalised",(isPersonalised()));
-                hashMap.put("Date",simpleDateFormat.format(new Date()));
-                hashMap.put("SequenceNumber",preHolder.refferalItem.sequenceNo);
-                hashMap.put("Key",Util.KEY_ABBBC);
-                hashMap.put("UserSessionID",Integer.parseInt(sharedPreference.read("ABBBCOnlineUserSessionId","")));
-
-                circuitEditApi(hashMap);
-
-            }
-        });
-        List<String> lstData=new ArrayList<>();
-
-        for(int i=0;i<arrCircuitList.size();i++)
-        {
-            lstData.add(arrCircuitList.get(i).getCircuitName());
-
-        }
-
-        pickerExercise.setData(lstData);
-
-*/
-/*
-        pickerExercise.setOnItemSelectedListener(new WheelPicker.OnItemSelectedListener()
-        {
-            @Override
-            public void onItemSelected(WheelPicker picker, Object data, int position)
-            {
-               // Toast.makeText(getActivity(),   String.valueOf(data)+">>>>"+position, Toast.LENGTH_SHORT).show();
-
-               *//*
-
-*/
-/* preHolder.txtExerciseName.setText(String.valueOf(data));
-                EditedExerciseModel editedExerciseModel=new EditedExerciseModel();
-                editedExerciseModel.setId(preHolder.refferalItem.id);
-                editedExerciseModel.setSequenceNo(preHolder.refferalItem.sequenceNo);
-                editedExerciseModel.setNewExerciseId(arrCircuitList.get(position).getCircuitId());
-                arrEsitedExerciseModel.add(editedExerciseModel);*//*
-*/
-/*
 
 
-
-
-            }
-        });
-*//*
-
-        pickerDialog.show();
-
-    }
-*/
-/*
-    public void showPickerForExercise(final List<ExerciseRequestModel.Exercise> arrExerciseList)
-    {
-        final Dialog pickerDialog=new Dialog(getActivity(),android.R.style.Theme_Light);
-        pickerDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        pickerDialog.setContentView(R.layout.dialog_picker);
-        final WheelPicker pickerExercise=(WheelPicker)pickerDialog.findViewById(R.id.pickerExercise);
-        pickerExercise.setSelectedItemTextColor(Color.WHITE);
-        pickerExercise.setCyclic(false);
-        ImageView imgBack=(ImageView)pickerDialog.findViewById(R.id.imgBack);
-        ImageView imgFwd=(ImageView)pickerDialog.findViewById(R.id.imgFwd);
-        imgBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                pickerDialog.dismiss();
-            }
-        });
-        imgFwd.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //pickerExercise.getCurrentItemPosition()
-                Log.e("pos->",pickerExercise.getCurrentItemPosition()+"?");
-                /////////////////
-                preHolder.txtExerciseName.setText(arrExerciseList.get(pickerExercise.getCurrentItemPosition()).getExerciseName());
-                */
-/*EditedExerciseModel editedExerciseModel=new EditedExerciseModel();
-                editedExerciseModel.setId(preHolder.refferalItem.id);
-                editedExerciseModel.setSequenceNo(preHolder.refferalItem.sequenceNo);
-                editedExerciseModel.setNewExerciseId(arrCircuitList.get(pickerExercise.getCurrentItemPosition()).getCircuitId());
-                arrEsitedExerciseModel.add(editedExerciseModel);*//*
- ///////////////CHANGE 31/1/17///////////////////////
-                ////////////////////
-                pickerDialog.dismiss();
-                SimpleDateFormat simpleDateFormat=new SimpleDateFormat("MM/dd/yyyy HH:mm:ss a");
-                HashMap<String,Object> hashMap=new HashMap<String, Object>();
-                hashMap.put("UserId",Integer.parseInt(sharedPreference.read("ABBBCOnlineUserId","")));
-                hashMap.put("ExerciseSessionId",(getExerciseSessionId()));
-                hashMap.put("SessionTitle",(getSessionTitle()));
-                hashMap.put("OldExerciseId",preHolder.refferalItem.id);
-                hashMap.put("NewExerciseId",arrExerciseList.get(pickerExercise.getCurrentItemPosition()).getExerciseId());
-                hashMap.put("Personalised",true);
-                hashMap.put("Date",simpleDateFormat.format(new Date()));
-                hashMap.put("SequenceNumber",preHolder.refferalItem.sequenceNo);
-                hashMap.put("Key",Util.KEY_ABBBC);
-                hashMap.put("UserSessionID",Integer.parseInt(sharedPreference.read("ABBBCOnlineUserSessionId","")));
-
-                circuitEditApi(hashMap);
-
-            }
-        });
-        List<String> lstData=new ArrayList<>();
-
-        for(int i=0;i<arrExerciseList.size();i++)
-        {
-            lstData.add(arrExerciseList.get(i).getExerciseName());
-
-        }
-
-        pickerExercise.setData(lstData);
-
-*/
-/*
-        pickerExercise.setOnItemSelectedListener(new WheelPicker.OnItemSelectedListener()
-        {
-            @Override
-            public void onItemSelected(WheelPicker picker, Object data, int position)
-            {
-                // Toast.makeText(getActivity(),   String.valueOf(data)+">>>>"+position, Toast.LENGTH_SHORT).show();
-
-               *//*
-
-*/
-/* preHolder.txtExerciseName.setText(String.valueOf(data));
-                EditedExerciseModel editedExerciseModel=new EditedExerciseModel();
-                editedExerciseModel.setId(preHolder.refferalItem.id);
-                editedExerciseModel.setSequenceNo(preHolder.refferalItem.sequenceNo);
-                editedExerciseModel.setNewExerciseId(arrCircuitList.get(position).getCircuitId());
-                arrEsitedExerciseModel.add(editedExerciseModel);*//*
-*/
-/*
-
-
-
-
-            }
-        });
-*//*
-
-        pickerDialog.show();
-
-    }
-*/
     View.OnTouchListener touchFun=new View.OnTouchListener() {
         @Override
         public boolean onTouch(View v, MotionEvent event) {
@@ -1960,38 +1532,7 @@ public class SessionOverviewFragment extends Fragment {
         ////////////////Edit Session Api//////////////
     }
 
-    private void getCircuitListFromApi() {
-        progressDialog=ProgressDialog.show(getActivity(), "", "Please wait...");
-        String url="api/values/GetCircuits/";
-        url+="16";
-        SessionServiceImpl serviceSessionMain=new SessionServiceImpl(getActivity());
-        Call<CircuitListModel> circuitCall=serviceSessionMain.getCircuitList(url);
-        circuitCall.enqueue(new Callback<CircuitListModel>()
-        {
-            @Override
-            public void onResponse(Call<CircuitListModel> call, Response<CircuitListModel> response)
-            {
-                // Log.e("print ex size-->",response.body().getObj()+"?");
-                List<CircuitListModel.ObjCircuit> arrCircuitList=new ArrayList<CircuitListModel.ObjCircuit>();
-                arrCircuitList=response.body().getObj();
 
-                Log.e("print ex size-->",arrCircuitList.size()+"?");
-
-                progressDialog.dismiss();
-               // showPickerForCircuit(arrCircuitList);
-
-
-            }
-
-            @Override
-            public void onFailure(Call<CircuitListModel> call, Throwable t) {
-                t.printStackTrace();
-                Log.e("print fail-->","12"+"?");
-                progressDialog.dismiss();
-
-            }
-        });
-    }
 
     /////////////File Download///////////////////
     private void getUserPermission() {
@@ -2065,67 +1606,10 @@ public class SessionOverviewFragment extends Fragment {
             }
         }
 
-        //insertSessionDataIntoLocalDatabase(arrFileName);
+
 
     }
 
-/*
-    private void insertSessionDataIntoLocalDatabase(ArrayList<String> lstExerciseFIles) {
-
-        ExerciseDetails exerciseDetails = new ExerciseDetails();
-        exerciseDetails.setUserId(Integer.parseInt(sharedPreference.read("ABBBCOnlineUserId","")));
-        Gson gson = new Gson();
-        exerciseDetails.setExerciseDetailsJson(gson.toJson(globalSesiionOverViewModel));
-        exerciseDetails.setExerciseSessionId(globalSesiionOverViewModel.getObj().getExerciseSessionId());
-        if(customMode)
-        {
-            exerciseDetails.setIsCustom(1);
-        }else {
-            exerciseDetails.setIsCustom(0);
-        }
-        try {
-            exerciseDetails.setSessionCompleteId(Integer.parseInt(completeid));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        exerciseDetails.setWeekStartDate(CalDate);
-        exerciseDetails.setSessionDate(SessionDate);
-
-        String exercisenames = "";
-        for(int i=0 ; i<lstExerciseFIles.size(); i++)
-        {
-            if(i!=lstExerciseFIles.size()-1)
-            {
-                exercisenames = exercisenames + lstExerciseFIles.get(i) + ",";
-            }else {
-                exercisenames = exercisenames + lstExerciseFIles.get(i);
-            }
-        }
-
-        exerciseDetails.setExerciseNames(exercisenames);
-        exerciseDetails.setIsSync(0);
-        exerciseDetails.setLastUpdate("");
-        try {
-            exerciseDetails.setExerciseId(Integer.parseInt(exerciseId));
-        } catch (NumberFormatException e) {
-            e.printStackTrace();
-        }
-        exerciseDetails.setTitle(title);
-        try {
-            exerciseDetails.setExerciseCustomId(Integer.parseInt(exerciseIdCustom));
-        } catch (NumberFormatException e) {
-            e.printStackTrace();
-        }
-        exerciseDetails.setCalDate(CalDate);
-        exerciseDetails.setSelectedDate(SelectedDate);
-        exerciseDetails.setWorkoutType(wtype);
-        exerciseDetails.setDayToday(dayToday);
-
-        databaseHelper.insertExerciseDetails(exerciseDetails);
-
-    }
-*/
 
     private void downloadFromUrl(final ArrayList<String> arrFileName, final ProgressDialog progressDialog){
 
@@ -2164,95 +1648,9 @@ public class SessionOverviewFragment extends Fragment {
                 }
             }
         }
-        /*if(alreadyHave) {
-            if(lstExercise!=null) {
-                if(progressDialog != null && progressDialog.isShowing())
-                    progressDialog.dismiss();
-                playCircuitInVideoPage();
-            }
-        }*/
+
     }
 
-//   private void downloadAudioFile(final ArrayList<String> arrFileName) {
-//       Log.e("audio dowload","123");
-//
-//        if(fileCountAudio<arrFileName.size()) {
-//            File mp3file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), ".Squad" + File.separator + arrFileName.get(fileCountAudio) + ".mp3");
-//
-//            if (!mp3file.exists()) {
-//                File wavfile = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), ".Squad" + File.separator + arrFileName.get(fileCountAudio) + ".wav");
-//
-//                if (!wavfile.exists())
-//                {
-//                   FileExistence fileExistence=new FileExistence();
-//                    fileExistence.setOnFileExistenceListener(new FileExistence.OnFileExistenceListener() {
-//                        @Override
-//                        public void onFileExistence(boolean present) {
-//                            if(present)
-//                            {
-//                                Log.e("wav pre","123");
-//                                new DownloadFileFromURL(getActivity(), arrFileName.get(fileCountAudio),"Audio", false, ".wav",new DownloadFileFromURL.AsynResponse() {
-//                                    @Override
-//                                    public void processFinish(Boolean output) {
-//                                        if (fileCountAudio == arrFileName.size() - 1) {
-//                                            // START NEW TASK HERE
-//                                            //alreadyHave = false;
-//                                            if(progressDialog != null && progressDialog.isShowing())
-//                                                progressDialog.dismiss();
-//                                           //playCircuitInVideoPage();
-//                                          //  downloadAudioFile(arrFileName);
-//                                        } else {
-//                                            Log.e("next audio","2");
-//                                            fileCountAudio++;
-//                                            downloadAudioFile(arrFileName);
-//                                        }
-//                                    }
-//                                });
-//                            }
-//                            else
-//                            {
-//                                Log.e("mp3 pre","123");
-//                                new DownloadFileFromURL(getActivity(), arrFileName.get(fileCountAudio),"Audio", false, ".mp3",new DownloadFileFromURL.AsynResponse() {
-//                                    @Override
-//                                    public void processFinish(Boolean output) {
-//                                        if (fileCountAudio == arrFileName.size() - 1) {
-//                                            // START NEW TASK HERE
-//                                            //alreadyHave = false;
-//                                            if(progressDialog != null && progressDialog.isShowing())
-//                                                progressDialog.dismiss();
-//                                            //playCircuitInVideoPage();
-//                                            //downloadAudioFile(arrFileName);
-//                                        } else {
-//                                            fileCountAudio++;
-//                                            downloadAudioFile(arrFileName);
-//                                        }
-//                                    }
-//                                });
-//                            }
-//
-//                        }
-//                    });
-//                    String url=Util.AUDIOWNLOADBASEURL+arrFileName.get(fileCountAudio)+".wav";
-//
-//                    fileExistence.execute(url);
-//
-//                }
-//
-//
-//            } else {
-//                if (fileCountAudio < arrFileName.size() - 1) {
-//                    Log.e("next audio","1");
-//                    fileCountAudio++;
-//                    downloadAudioFile(arrFileName);
-//                }else{
-//                    if(progressDialog != null && progressDialog.isShowing())
-//                        progressDialog.dismiss();
-//                    //playCircuitInVideoPage();
-//                }
-//            }
-//        }
-//
-//    }//commented by jyoti
     private void downloadAudioFileNew(final ArrayList<String> arrFileName) {
         Log.e("audio dowload","123");
 
@@ -2364,30 +1762,7 @@ public class SessionOverviewFragment extends Fragment {
         }
     }
     /////////////////////////////////
-    private void circuitEditApi(HashMap<String,Object> hashMapReq) {
-        if(Connection.checkConnection(getActivity()))
-        {
-            final ProgressDialog  progressDialog= ProgressDialog.show(getActivity(), "", "Please wait...");
-            SessionServiceImpl serviceSessionMain=new SessionServiceImpl(getActivity());
-            Call<QuickEditCircuitResponseModel> sessionCall=serviceSessionMain.getQuickEditList(hashMapReq);
-            sessionCall.enqueue(new Callback<QuickEditCircuitResponseModel>() {
-                @Override
-                public void onResponse(Call<QuickEditCircuitResponseModel> call, Response<QuickEditCircuitResponseModel> response) {
-                    progressDialog.dismiss();
-                    newExerciseSessionId=String.valueOf(response.body().getExerciseSessionId());
-                    getSessionListFromApi(false);
-                }
 
-                @Override
-                public void onFailure(Call<QuickEditCircuitResponseModel> call, Throwable t) {
-                    progressDialog.dismiss();
-                }
-            });
-        }else
-        {
-            Util.showToast(getActivity(),Util.networkMsg);
-        }
-    }
 
     private boolean hasGalleryPermission()
     {
@@ -2542,32 +1917,7 @@ public class SessionOverviewFragment extends Fragment {
         }
 
 
-           // Log.e("print equpment--",equipment+"???"+arrEquipment.get(b));
 
-        /*    if(b==0)
-            {
-                llBarbell.setVisibility(View.VISIBLE);
-                txtBarbell.setText(arrEquipment.get(b));
-                llWeightA.setVisibility(View.VISIBLE);
-            }
-
-            else if(b==1) {
-                llKetbell.setVisibility(View.VISIBLE);
-                txtKbell.setText(arrEquipment.get(b));
-                llWeightA.setVisibility(View.VISIBLE);
-            }
-            else if(b==2) {
-                llLegPress.setVisibility(View.VISIBLE);
-                klpress.setText(arrEquipment.get(b));
-                llWeightB.setVisibility(View.VISIBLE);
-            }
-            else if(b==3) {
-                llDumbell.setVisibility(View.VISIBLE);
-                dumbell.setText(arrEquipment.get(b));
-                llWeightB.setVisibility(View.VISIBLE);
-            }
-
-        }*/
         if(arrEquipment.size()<=0)
         {
             equipment="No Equipment Required";
@@ -2576,38 +1926,6 @@ public class SessionOverviewFragment extends Fragment {
         total+=equipment;
        // txtEquipment.setText(total);
     }
-
-
-//    private void toolTipSetUp() {
-//      //  arrAllView.add(imgPause);
-//        if(countTool<arrCue.length)
-//        {
-//            View eachView=arrAllView.get(countTool);
-//            if(eachView instanceof ImageView)
-//            {
-//                Tooltip.make(getActivity(),
-//                        new Tooltip.Builder(countTool)
-//                                .anchor(arrAllView.get(countTool++), Tooltip.Gravity.BOTTOM)
-//                                .closePolicy(new Tooltip.ClosePolicy()
-//                                        .insidePolicy(true, false)
-//                                        .outsidePolicy(true, false), 3000)
-//                                .showDelay(300)
-//                                .text(arrCue[countCue++])
-//                                .maxWidth(500)
-//                                .withArrow(true)
-//                                .withOverlay(true)
-//                                .floatingAnimation(Tooltip.AnimationBuilder.DEFAULT)
-//                                .withStyleId(R.style.ToolTipLayoutCustomStyle)
-//                                .build()
-//                ).show();
-//            }
-//        }
-//        else
-//        {
-//            countTool++;
-//          // rlNext.performClick();
-//        }
-//    } //commented by jyoti
 
 
 
@@ -2708,11 +2026,6 @@ public class SessionOverviewFragment extends Fragment {
 
     }
 
-//    private void callFireBaseEvent(String sessionTitle) {
-//        Bundle bundle=new Bundle();
-//        bundle.putString("name_of_workout_selected", sessionTitle);
-//        ((MainActivity)getActivity()).postFireBaseEvent(FirebaseAnalytics.Event.SELECT_CONTENT,bundle);
-//    } //commented by jyoti
     private void toggleFavApi(Integer sessionId, final ImageView imgFav,final int position) {
 
 

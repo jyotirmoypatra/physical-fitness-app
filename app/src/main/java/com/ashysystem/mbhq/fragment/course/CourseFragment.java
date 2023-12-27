@@ -222,7 +222,7 @@ public class CourseFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
 
-
+        Log.e("fragment load check","course fragment");
 
         Course_access=sharedPreference.read("CourseAccess","");
         medi_access=sharedPreference.read("MeditationAccess","");

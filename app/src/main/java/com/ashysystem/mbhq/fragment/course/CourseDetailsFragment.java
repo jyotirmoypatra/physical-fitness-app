@@ -123,6 +123,7 @@ public class CourseDetailsFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+       Log.e("fragment load check","course deatils fragment");
         View view = inflater.inflate(R.layout.fragment_course_detail, container, false);
         sharedPreference = new SharedPreference(getActivity());
         //((MainActivity) getActivity()).funDrawer();
@@ -528,7 +529,7 @@ public class CourseDetailsFragment extends Fragment {
             data.add(new ExpandableCourseListNew.Item(ExpandableCourseListNew.HEADER, key + "", type, null, key, runBy, 0, false, "", hmThemeKey.get(key)));
             for (int p = 0; p < hmData.get(key).size(); p++) {
                 /*commented by sahenita temporary*/
-               // data.add(new ExpandableCourseListNew.Item(ExpandableListAdapter.CHILD, hmData.get(key).get(p).getArticleTitle(), type, hmData.get(key).get(p), key, runBy, (p + 1), hmData.get(key).get(p).getAvailable(), hmData.get(key).get(p).getReleaseDate(), ""));
+               data.add(new ExpandableCourseListNew.Item(ExpandableListAdapter.CHILD, hmData.get(key).get(p).getArticleTitle(), type, hmData.get(key).get(p), key, runBy, (p + 1), hmData.get(key).get(p).getAvailable(), hmData.get(key).get(p).getReleaseDate(), ""));
             }
 
 
@@ -540,6 +541,7 @@ public class CourseDetailsFragment extends Fragment {
     private void loadAdapterAnother(HashMap<Integer, List<CourseDetailModel.ArticleFeedDetail>> hmData) {
         rvCourseDetail.setAdapter(null);
         List<ExpandableCourseListNew.Item> data = new ArrayList<>();
+        Log.e("course list adapter call","adapter course load");
         for (int i = 0; i < hmData.size(); i++) {
             data.add(new ExpandableCourseListNew.Item(ExpandableCourseListNew.HEADER, arrWeekNumbers.get(i) + "", type, null, i, runBy, 0, false, "", ""));
             for (int p = 0; p < hmData.get(arrWeekNumbers.get(i)).size(); p++) {

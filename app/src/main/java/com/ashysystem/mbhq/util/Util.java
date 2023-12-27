@@ -41,6 +41,7 @@ import android.widget.Toast;
 import androidx.fragment.app.Fragment;
 import androidx.multidex.BuildConfig;
 
+import com.ashysystem.mbhq.R;
 import com.ashysystem.mbhq.Service.impl.SessionServiceImpl;
 import com.ashysystem.mbhq.model.AddRewardModel;
 
@@ -51,6 +52,8 @@ import com.ashysystem.mbhq.model.livechat.Chat;
 import com.ashysystem.mbhq.model.livechat.Meditations;
 import com.ashysystem.mbhq.model.response.MyAchievementsListInnerModel;
 import com.ashysystem.mbhq.video.DemoApplication;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -86,6 +89,7 @@ import retrofit2.Response;
  */
 
 public class Util {
+  //  public static SimpleExoPlayer globalExoplayer;
 
     public static long downloadFile(Context context, String fileUrl, String fileName, String wibiner) {
         DownloadManager.Request request = new DownloadManager.Request(Uri.parse(fileUrl));
@@ -528,14 +532,14 @@ public class Util {
     }
 
     public static void downloadphotowithGlide(Context context, ImageView imageView, String imgUrl) {
-//        Glide.with(context).load(imgUrl)
-//                .thumbnail(0.5f)
-//                .diskCacheStrategy(DiskCacheStrategy.ALL)
-//                .placeholder(R.drawable.empty_image_old)
-//                .error(R.drawable.empty_image_old)
-//                .dontTransform()
-//                .dontAnimate()
-//                .into(imageView);//need to check
+        Glide.with(context).load(imgUrl)
+                .thumbnail(0.5f)
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .placeholder(R.drawable.empty_image_old)
+                .error(R.drawable.empty_image_old)
+                .dontTransform()
+                .dontAnimate()
+                .into(imageView);
     }
 
     public static boolean checkConnection(Context ctx) {

@@ -22,7 +22,7 @@ import com.ashysystem.mbhq.R;
 import com.ashysystem.mbhq.Service.impl.FinisherServiceImpl;
 import com.ashysystem.mbhq.activity.MainActivity;
 import com.ashysystem.mbhq.adapter.mbhq_today.TodayViewPagerAdapter;
-import com.ashysystem.mbhq.fragment.QuestionariesFragment;
+import com.ashysystem.mbhq.fragment.test.QuestionariesFragment;
 import com.ashysystem.mbhq.fragment.course.CourseFragment;
 import com.ashysystem.mbhq.fragment.achievement.MyAchievementsFragment;
 import com.ashysystem.mbhq.fragment.live_chat.LiveChatFragment;

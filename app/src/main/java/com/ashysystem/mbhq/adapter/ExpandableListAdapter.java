@@ -735,6 +735,7 @@ public class ExpandableListAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     }
     private void loadAdapter(RecyclerView rvCircuitList, List<SessionOverViewModel.Circuit> circuitExercises, Item item, int adapterPosition)
     {
+        Log.e("course list adapter call","adapter course load 4");
         List<ExpandableCircuitListAdapter.Item> data = new ArrayList<>();
         char alphabet = 'a';
         for(int p=0;p<circuitExercises.size();p++,alphabet++)
@@ -746,6 +747,7 @@ public class ExpandableListAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
 
         }
+        Log.e("course list adapter call","adapter course load 3");
         rvCircuitList.setAdapter(new ExpandableCircuitListAdapter(data,context));
         /*if(item.isCircuit) {
             initSwipe();
@@ -840,6 +842,7 @@ public class ExpandableListAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                         RectF icon_dest = new RectF(background.left-5 ,background.top-5,background.right-5,background.bottom-5);
                         c.drawBitmap(icon,null,icon_dest,paint);
                         canvasBkp=c;
+                        Log.e("course list adapter call","adapter course load 2");
                         preHolder= (ExpandableCircuitListAdapter.ListHeaderViewHolder) viewHolder;
                         itemNo=preHolder.getAdapterPosition();
                         headNo=preHolder.refferalItem.headerNo;
@@ -861,6 +864,7 @@ public class ExpandableListAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             @Override
             public int getSwipeDirs(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
                 Log.e("print item index--",viewHolder.getAdapterPosition()+"?");
+                Log.e("course list adapter call","adapter course load 1");
                 if (viewHolder instanceof ExpandableCircuitListAdapter.ListItemViewHolder) return 0;
                 return super.getSwipeDirs(recyclerView, viewHolder);
             }
@@ -868,160 +872,6 @@ public class ExpandableListAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleItemTouchCallback);
         itemTouchHelper.attachToRecyclerView(currentRecyclerview);
     }
-
-
-    ///////////////////////Swipe Recyclerview ////////////////
-
-
-/*
-    public void showPicker(final List<ExerciseRequestModel.Exercise> lstExercisePicker)
-    {
-        final Dialog pickerDialog=new Dialog(context,android.R.style.Theme_Light);
-        pickerDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        pickerDialog.setContentView(R.layout.dialog_picker);
-        final WheelPicker pickerExercise=(WheelPicker)pickerDialog.findViewById(R.id.pickerExercise);
-        ImageView imgBack=(ImageView)pickerDialog.findViewById(R.id.imgBack);
-        ImageView imgFwd=(ImageView)pickerDialog.findViewById(R.id.imgFwd);
-        imgBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                pickerDialog.dismiss();
-            }
-        });
-
-        pickerExercise.setSelectedItemTextColor(0xCCFFFFFF);
-
-        imgFwd.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //pickerExercise.getCurrentItemPosition()
-                // Log.e("pos->",pickerExercise.getCurrentItemPosition()+"?");
-                // headerIndex--;
-                Log.e("get hno",headNo+"?");
-                Log.e("get item",itemNo+"?");
-                int indexOut=Integer.parseInt(preHolder.txtDummy.getText().toString());
-                if(indexOut<parentFragment.getLstExercise().size())
-                {
-                    if(itemNo<parentFragment.getLstExercise().get(indexOut).getCircuitExercises().size())
-                    {
-                        Log.e("before-->",indexOut+"?"+itemNo+"?"+"before"+itemNo+parentFragment.getLstExercise().get(indexOut).getCircuitExercises().get(itemNo).getExerciseName()+"?"+parentFragment.getLstExercise().get(indexOut).getCircuitExercises().get(itemNo).getExerciseId());
-                        /////////////////
-
-                        preHolder.txtExerciseName.setText(lstExercisePicker.get(pickerExercise.getCurrentItemPosition()).getExerciseName().toUpperCase());
-                        parentFragment.getLstExercise().get(indexOut).getCircuitExercises().get(itemNo).setExerciseName(lstExercisePicker.get(pickerExercise.getCurrentItemPosition()).getExerciseName());
-                        parentFragment.getLstExercise().get(indexOut).getCircuitExercises().get(itemNo).setExerciseId(lstExercisePicker.get(pickerExercise.getCurrentItemPosition()).getExerciseId());
-                        Log.e("after-->",indexOut+"?"+itemNo+"?"+"after"+itemNo+parentFragment.getLstExercise().get(indexOut).getCircuitExercises().get(itemNo).getExerciseName()+"?"+parentFragment.getLstExercise().get(indexOut).getCircuitExercises().get(itemNo).getExerciseId());
-                    }
-
-                }
-
-
-
-                */
-/*EditedCircuitList editedCircuitList=new EditedCircuitList();
-                editedCircuitList.setSequenceNo(preHolder.refferalItem.sequenceNo);
-                editedCircuitList.setId(preHolder.refferalItem.id);
-                editedCircuitList.setRestComment(preHolder.refferalItem.restComment);
-                editedCircuitList.setNewCircuitId(lstExercisePicker.get(pickerExercise.getCurrentItemPosition()).getExerciseId());
-                ((SessionOverviewFragment) parentFragment).setArrEditedCircuitList(editedCircuitList);*//*
-     ////Change 27/1/17 ////////////////
-
-                */
-/*QuickEditedCircuitList quickEditedCircuitList=new QuickEditedCircuitList();
-                quickEditedCircuitList.setUserId(Integer.parseInt(sharedPreference.read("ABBBCOnlineUserId","")));
-                quickEditedCircuitList.setExerciseSessionId(Integer.parseInt(sharedPreference.read("ABBBCOnlineUserSessionId","")));
-                quickEditedCircuitList.setSessionTitle(((SessionOverviewFragment) parentFragment).getSessionTitle());
-                quickEditedCircuitList.setOldExerciseId(preHolder.refferalItem.id);
-                quickEditedCircuitList.setNewExerciseId(lstExercisePicker.get(pickerExercise.getCurrentItemPosition()).getExerciseId());
-                quickEditedCircuitList.setPersonalised(((SessionOverviewFragment) parentFragment).isPersonalised());
-                quickEditedCircuitList.setDate(simpleDateFormat.format(new Date()));
-                quickEditedCircuitList.setSequenceNumber(preHolder.refferalItem.sequenceNo);
-                quickEditedCircuitList.setKey(Util.KEY_ABBBC);*//*
-
-                pickerDialog.dismiss();
-                //SimpleDateFormat simpleDateFormat=new SimpleDateFormat("dd/MM/yyyy HH:mm:ss a");
-               */
-/* SimpleDateFormat simpleDateFormat=new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-                HashMap<String,Object> hashMap=new HashMap<String, Object>();
-                hashMap.put("UserId",Integer.parseInt(sharedPreference.read("ABBBCOnlineUserId","")));
-                hashMap.put("ExerciseSessionId",((SessionOverviewFragment) parentFragment).getExerciseSessionId());
-                hashMap.put("SessionTitle",((SessionOverviewFragment) parentFragment).getSessionTitle());
-                hashMap.put("OldExerciseId",preHolder.refferalItem.id);
-                Log.e("OldExerciseId",preHolder.refferalItem.id+">>>>>>>>.");
-                hashMap.put("NewExerciseId",lstExercisePicker.get(pickerExercise.getCurrentItemPosition()).getExerciseId());
-                Log.e("NewExerciseId",lstExercisePicker.get(pickerExercise.getCurrentItemPosition()).getExerciseId()+">>>>>>>>.");
-                //hashMap.put("Personalised",((SessionOverviewFragment) parentFragment).isPersonalised());
-                hashMap.put("Personalised",false);
-                hashMap.put("Date",simpleDateFormat.format(new Date()));
-                hashMap.put("SequenceNumber",preHolder.refferalItem.sequenceNo);
-                hashMap.put("Key",Util.KEY_ABBBC);
-                hashMap.put("UserSessionID",Integer.parseInt(sharedPreference.read("ABBBCOnlineUserSessionId","")));*//*
-
-
-                //circuitEditApi(hashMap);
-
-                //((SessionOverviewFragment) parentFragment).setArrQuickEditedCircuitList(quickEditedCircuitList);
-
-
-                ////////////////////
-            }
-        });
-        List<String> lstData=new ArrayList<>();
-        for(int i=0;i<lstExercisePicker.size();i++)
-        {
-            lstData.add(lstExercisePicker.get(i).getExerciseName());
-        }
-
-        pickerExercise.setData(lstData);
-        pickerExercise.setOnItemSelectedListener(new WheelPicker.OnItemSelectedListener()
-        {
-            @Override
-            public void onItemSelected(WheelPicker picker, Object data, int position)
-            {
-                // Toast.makeText(getActivity(),   String.valueOf(data)+">>>>"+position, Toast.LENGTH_SHORT).show();
-               */
-/* preHolder.txtExerciseName.setText(String.valueOf(data));
-                EditedCircuitList editedCircuitList=new EditedCircuitList();
-                editedCircuitList.setSequenceNo(preHolder.refferalItem.sequenceNo);
-                editedCircuitList.setId(preHolder.refferalItem.id);
-                editedCircuitList.setRestComment(preHolder.refferalItem.restComment);
-                editedCircuitList.setNewCircuitId(lstExercisePicker.get(position).getExerciseId());
-                ((SessionOverviewFragment) parentFragment).setArrEditedCircuitList(editedCircuitList);*//*
-
-
-
-            }
-        });
-        pickerDialog.show();
-
-    }
-*/
-
-    private void circuitEditApi(HashMap<String,Object> hashMapReq) {
-
-        if(Connection.checkConnection(context))
-        {
-            final ProgressDialog  progressDialog= ProgressDialog.show(context, "", "Please wait...");
-            SessionServiceImpl serviceSessionMain=new SessionServiceImpl(context);
-            Call<QuickEditCircuitResponseModel> sessionCall=serviceSessionMain.getQuickEditList(hashMapReq);
-            sessionCall.enqueue(new Callback<QuickEditCircuitResponseModel>() {
-                @Override
-                public void onResponse(Call<QuickEditCircuitResponseModel> call, Response<QuickEditCircuitResponseModel> response) {
-                    progressDialog.dismiss();
-                    ((SessionOverviewFragment)parentFragment).getSessionListFromApi(true);
-                }
-
-                @Override
-                public void onFailure(Call<QuickEditCircuitResponseModel> call, Throwable t) {
-                    progressDialog.dismiss();
-                }
-            });
-        }else
-        {
-            Util.showToast(context,Util.networkMsg);
-        }
-    }//commented by jyoti
-
 
     View.OnTouchListener touchFun=new View.OnTouchListener() {
         @Override
