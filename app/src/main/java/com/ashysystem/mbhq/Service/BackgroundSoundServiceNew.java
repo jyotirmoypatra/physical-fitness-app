@@ -414,6 +414,7 @@ public class BackgroundSoundServiceNew extends Service{
 
         try {
             if (mediaPlayer != null) {
+                Log.e("player is playing",""+mediaPlayer.isPlaying());
                 return mediaPlayer.isPlaying();
             }
         } catch (Exception e) {
@@ -1421,19 +1422,35 @@ public class BackgroundSoundServiceNew extends Service{
         stackBuilder.addNextIntentWithParentStack(meditationPlayIntent);
 
 
-        PendingIntent pendingIntent = stackBuilder.getPendingIntent(0,
-                PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+//        PendingIntent pendingIntent = stackBuilder.getPendingIntent(0,
+//                PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+        PendingIntent pendingIntent = null;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+
+             pendingIntent = stackBuilder.getPendingIntent(0,
+                 PendingIntent.FLAG_IMMUTABLE);
+
+        } else {
+
+            pendingIntent = stackBuilder.getPendingIntent(0,
+                    PendingIntent.FLAG_CANCEL_CURRENT);
+        }
+        PendingIntent pendingIntentPlay=null;
+try {
+    Intent intentPlay = new Intent(getApplicationContext(), NotificationActionService.class)
+            .setAction(ACTION_PLAY);
 
 
-
-
-        Intent intentPlay=new Intent(getApplicationContext(), NotificationActionService.class)
-                .setAction(ACTION_PLAY);
-        PendingIntent pendingIntentPlay=PendingIntent.getBroadcast(getApplicationContext(),0,
-                intentPlay,PendingIntent.FLAG_UPDATE_CURRENT);
-
-
-
+    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.S) {
+        pendingIntentPlay = PendingIntent.getBroadcast(getApplicationContext(), 0,
+                intentPlay, PendingIntent.FLAG_IMMUTABLE);
+    } else {
+        pendingIntentPlay = PendingIntent.getBroadcast(getApplicationContext(), 0,
+                intentPlay, PendingIntent.FLAG_UPDATE_CURRENT);
+    }
+}catch (Exception e){
+    e.printStackTrace();
+}
         @SuppressLint({"NewApi", "LocalSuppress"}) Notification.Builder builder = (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) ?
                 new Notification.Builder(getApplicationContext(), notificationChannelId) : new Notification.Builder(getApplicationContext());
 

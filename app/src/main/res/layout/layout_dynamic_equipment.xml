@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent">
+
+
+    <LinearLayout
+        android:id="@+id/llRoot"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/colorPrimary"
+        android:orientation="horizontal"
+   >
+
+        <LinearLayout
+            android:id="@+id/llEquipmentRow"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight=".75">
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight=".4"
+                android:visibility="gone">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:layout_margin="5dp"
+                    android:visibility="gone"
+                    android:src="@drawable/weight_icon" />
+            </RelativeLayout>
+
+            <com.ashysystem.mbhq.view.TextViewOswaldLight
+                android:id="@+id/txtEquip"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="10dp"
+                android:layout_weight="1"
+                android:textColor="@color/white"></com.ashysystem.mbhq.view.TextViewOswaldLight>
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="2dp"
+                android:layout_marginRight="5dp"
+                android:background="@color/white"></View>
+        </LinearLayout>
+
+        <RelativeLayout
+            android:id="@+id/rlEdit"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight=".25"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:src="@drawable/tick_train" />
+
+            <com.ashysystem.mbhq.view.TextViewOswaldLight
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text=""
+                android:textSize="@dimen/fab_twelve"
+                android:visibility="gone"
+                android:textColor="@color/white" />
+        </RelativeLayout>
+
+    </LinearLayout>
+
+</RelativeLayout>

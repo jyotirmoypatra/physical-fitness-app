@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_margin="5dp"
+        android:background="@drawable/edittext_background_pink">
+        <com.ashysystem.mbhq.view.TextViewOswaldRegular
+            android:id="@+id/txtSession"
+            android:layout_width="match_parent"
+            android:layout_centerVertical="true"
+            android:padding="10dp"
+            android:textColor="#58595b"
+            android:layout_height="wrap_content" />
+    </RelativeLayout>
+
+</RelativeLayout>

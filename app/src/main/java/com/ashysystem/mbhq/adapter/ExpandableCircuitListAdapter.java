@@ -7,7 +7,8 @@ import android.graphics.Color;
 import android.icu.text.CaseMap;
 import android.media.MediaPlayer;
 import android.net.Uri;
-
+import com.ashysystem.mbhq.model.SubTitle;
+import com.ashysystem.mbhq.model.Title;
 import android.text.SpannableString;
 import android.text.style.UnderlineSpan;
 import android.util.Log;
@@ -23,6 +24,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.VideoView;
 
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.ashysystem.mbhq.R;
@@ -86,13 +88,13 @@ public class ExpandableCircuitListAdapter extends RecyclerView.Adapter<RecyclerV
         int subItemPaddingTopAndBottom = (int) (5 * dp);
         switch (type) {
             case HEADER:
-              //  Log.e("head","123");
+                //  Log.e("head","123");
                 LayoutInflater inflater = (LayoutInflater) parent.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 view = inflater.inflate(R.layout.adapter_circuit_list, parent, false);
                 ListHeaderViewHolder header = new ListHeaderViewHolder(view);
                 return header;
             case CHILD:
-               // Log.e("tail","123");
+                // Log.e("tail","123");
                 /*TextView itemTextView = new TextView(context);
                 itemTextView.setPadding(subItemPaddingLeft, subItemPaddingTopAndBottom, 0, subItemPaddingTopAndBottom);
                 itemTextView.setTextColor(0x88000000);
@@ -146,14 +148,14 @@ public class ExpandableCircuitListAdapter extends RecyclerView.Adapter<RecyclerV
                     itemController.txtReps.setText(item.RepGoal+" "+item.RepsUnitText+" X "+item.setCount+" sets");
 
 
-              //  itemController.txtDummy.setText(item.headerNo+"");
+                //  itemController.txtDummy.setText(item.headerNo+"");
                 /*if (item.setCount > 0) {
                     itemController.txtReps.setText(item.setCount+"  Sets");
                 }*//*
                 if(item.restComment != null && !TextUtils.isEmpty(item.restComment)){
                     itemController.txtReps.setText(item.RestUnitText+"  "+item.restComment);
                 }*/
-               // itemController.txtIndex.setText(item.index);
+                // itemController.txtIndex.setText(item.index);
                 ////////Super Set////////////
                 if(item.isSuperSet>=1)
                 {
@@ -161,7 +163,7 @@ public class ExpandableCircuitListAdapter extends RecyclerView.Adapter<RecyclerV
                         itemController.imgBr.setImageResource(0);
                         itemController.imgBr.setImageResource(R.drawable.thired_first_half_pink);
                         itemController.txtSet.setVisibility(View.VISIBLE);
-                       // itemController.viewTwo.setVisibility(View.GONE);
+                        // itemController.viewTwo.setVisibility(View.GONE);
                         if(item.middle!=null && item.middle.equals("m"))
                         {
                             if(item.flowId==5||item.flowId==6)
@@ -176,7 +178,7 @@ public class ExpandableCircuitListAdapter extends RecyclerView.Adapter<RecyclerV
                             }
 
                         }
-                         // itemController.txtSet.setText("x "+item.setCount+" Sets");
+                        // itemController.txtSet.setText("x "+item.setCount+" Sets");
                     }
                     else if(item.SuperSetPosition==0)
                     {
@@ -200,14 +202,14 @@ public class ExpandableCircuitListAdapter extends RecyclerView.Adapter<RecyclerV
                             }
 
                         }
-                           // itemController.txtSet.setText("x "+item.setCount+" Sets");
+                        // itemController.txtSet.setText("x "+item.setCount+" Sets");
                     }
                     else if(item.SuperSetPosition==1)
                     {
                         itemController.imgBr.setImageResource(0);
                         itemController.imgBr.setImageResource(R.drawable.thired_last_half_pink);
                         itemController.txtSet.setVisibility(View.VISIBLE);
-                       // itemController.viewTwo.setVisibility(View.GONE);
+                        // itemController.viewTwo.setVisibility(View.GONE);
                        /* if(item.middle!=null && item.middle.equals("m"))
                             itemController.txtSet.setText("x "+item.setCount+" Sets");*/
                         if(item.middle!=null && item.middle.equals("m"))
@@ -234,7 +236,7 @@ public class ExpandableCircuitListAdapter extends RecyclerView.Adapter<RecyclerV
                     //itemController.txtSet.setText("x "+item.setCount+" Sets");
                 }
                 ////////Super Set////////////
-               // Log.e("parent","123");
+                // Log.e("parent","123");
                /* itemController.llRoot.setOnTouchListener(new View.OnTouchListener() {
                     @Override
                     public boolean onTouch(View view, MotionEvent motionEvent) {
@@ -325,11 +327,11 @@ public class ExpandableCircuitListAdapter extends RecyclerView.Adapter<RecyclerV
                 /*TextView itemTextView = (TextView) holder.itemView;
                 itemTextView.setText(data.get(position).text);
                 break;*/
-              //  Log.e("chld","123");
+                //  Log.e("chld","123");
                 final ListItemViewHolder childController = (ListItemViewHolder) holder;
                 childController.refferalItem = item;
                 videoGlobalView=childController.vidExercise;
-              if(item.VideoPublicUrl==null||item.VideoPublicUrl.equals("")||!Util.chkIsUrl(item.VideoPublicUrl))
+                if(item.VideoPublicUrl==null||item.VideoPublicUrl.equals("")||!Util.chkIsUrl(item.VideoPublicUrl))
                     childController.rlRightBack.setVisibility(View.INVISIBLE);
                 else
                     childController.rlRightBack.setVisibility(View.VISIBLE);
@@ -469,7 +471,6 @@ public class ExpandableCircuitListAdapter extends RecyclerView.Adapter<RecyclerV
         }
     }
 
-/*
     private void getExerciseList(List<String> lstEquipment, List<SessionOverViewModel.SubstituteExercise> lstSubstituteExercise, List<SessionOverViewModel.AltBodyWeightExercise> lstAltBodyWeightExercise) {
         if(Connection.checkConnection(context))
         {
@@ -511,7 +512,6 @@ public class ExpandableCircuitListAdapter extends RecyclerView.Adapter<RecyclerV
             Util.showToast(context,Util.networkMsg);
         }
     }
-*/
 
     private void setBodyWeightAlt(List<SessionOverViewModel.AltBodyWeightExercise> lstAltBodyWeightExercise) {
         for(int g=0;g<lstAltBodyWeightExercise.size();g++)
@@ -658,7 +658,7 @@ public class ExpandableCircuitListAdapter extends RecyclerView.Adapter<RecyclerV
 
 
     public int getItemCount() {
-       // Log.e("print sizeeee",data.size()+"?");
+        // Log.e("print sizeeee",data.size()+"?");
         return data.size();
     }
 
@@ -667,7 +667,7 @@ public class ExpandableCircuitListAdapter extends RecyclerView.Adapter<RecyclerV
         public Item refferalItem;
         public RelativeLayout llRoot;
         public ImageView imgBr,imgExercise;
-      //  public View viewOne,viewTwo;
+        //  public View viewOne,viewTwo;
 
 
         public ListHeaderViewHolder(View itemView) {
@@ -680,7 +680,7 @@ public class ExpandableCircuitListAdapter extends RecyclerView.Adapter<RecyclerV
             imgBr=(ImageView) itemView.findViewById(R.id.imgBr);
             //viewOne=(View)itemView.findViewById(R.id.viewTwo);
             //viewTwo=(View)itemView.findViewById(R.id.viewTwo);
-           txtDummy=(TextView)itemView.findViewById(R.id.txtDummy);
+            txtDummy=(TextView)itemView.findViewById(R.id.txtDummy);
             imgExercise=(ImageView)itemView.findViewById(R.id.imgExercise);
         }
     }
@@ -688,7 +688,7 @@ public class ExpandableCircuitListAdapter extends RecyclerView.Adapter<RecyclerV
         public TextView txtEquipmentAns,txtEquipmentBasedAns,txtEquipmentWeightAns;
         public ImageView imgExercise;
         public Item refferalItem;
-         public RecyclerView rvCircuitList;
+        public RecyclerView rvCircuitList;
         public VideoView vidExercise;
         public RelativeLayout rlLeftBack,rlRightBack,rlVideo;
         public LinearLayout llEquipment,llDynamicEquipment,llEquipmentAlt,llDynamicEquipmentAlt,llBodyWeight,llDynamicBodyWeight;
@@ -732,11 +732,11 @@ public class ExpandableCircuitListAdapter extends RecyclerView.Adapter<RecyclerV
         private int flowId=0;
 
 
-        public Item(int header, String index, SessionOverViewModel.Circuit circuitExercises) {
+        public Item(int header, String index, SessionOverViewModel.Circuit circuitExercises, int headerIndex, Integer flowId) {
             this.type = header;
             this.exerciseName = circuitExercises.getExerciseName();
             this.index=index;
-           // this.headerNo=headerIndex;
+            this.headerNo=headerIndex;
             this.repsCount=circuitExercises.getRepsUnit()+"";
             this.isSuperSet=circuitExercises.getIsSuperSet();
             this.SuperSetPosition=circuitExercises.getSuperSetPosition();
@@ -753,7 +753,7 @@ public class ExpandableCircuitListAdapter extends RecyclerView.Adapter<RecyclerV
             RestUnitText=circuitExercises.getRestUnitText();
             VideoUrl=(String)circuitExercises.getVideoUrl();
             VideoPublicUrl=circuitExercises.getVideoPublicUrl();
-           // Log.e("print vid url",VideoPublicUrl+"?");
+            // Log.e("print vid url",VideoPublicUrl+"?");
             lstSubstituteExercise=circuitExercises.getSubstituteExercises();
             this.middle=circuitExercises.getMiddle();
             this.flowId=flowId;
@@ -849,8 +849,8 @@ public class ExpandableCircuitListAdapter extends RecyclerView.Adapter<RecyclerV
             Toast.makeText(context,"Video cannot be played",Toast.LENGTH_SHORT).show();
         }
 
-        
-        
+
+
 
     }
 
@@ -922,8 +922,8 @@ public class ExpandableCircuitListAdapter extends RecyclerView.Adapter<RecyclerV
         try {
             if(lstEquipment!=null &&lstEquipment.size()>0)
             {
-               llEquipment.setVisibility(View.VISIBLE);
-               llDynamicEquipment.removeAllViews();
+                llEquipment.setVisibility(View.VISIBLE);
+                llDynamicEquipment.removeAllViews();
                 for (int i=0;i<lstEquipment.size();i++)
                 {
                     View dynamicEqpView=layoutInflater.inflate(R.layout.dynamic_tips_instruction_session,null);
@@ -975,7 +975,7 @@ public class ExpandableCircuitListAdapter extends RecyclerView.Adapter<RecyclerV
             if(lstAltBodyWeightExercise!=null && lstAltBodyWeightExercise.size()>0)
             {
                 llBodyWeight.setVisibility(View.VISIBLE);
-               llDynamicBodyWeight.removeAllViews();
+                llDynamicBodyWeight.removeAllViews();
                 for (int i=0;i<lstAltBodyWeightExercise.size();i++)
                 {
                     View dynamicEqpView=layoutInflater.inflate(R.layout.dynamic_tips_instruction_session,null);
@@ -1015,7 +1015,6 @@ public class ExpandableCircuitListAdapter extends RecyclerView.Adapter<RecyclerV
     }
     //////////////////////////////////////////
     ///////////////////Replace Exercise////////////
-/*
     public void getExerciseList(List<SessionOverViewModel.Circuit> lstCircuitExercise, int i) {
 
         if(Connection.checkConnection(context))
@@ -1059,7 +1058,6 @@ public class ExpandableCircuitListAdapter extends RecyclerView.Adapter<RecyclerV
         }
         ////////////////Edit Session Api//////////////
     }
-*/
     private void setBodyWeightAlt(List<SessionOverViewModel.Circuit> lstCircuitExercise, int i) {
         for(int g=0;g<lstCircuitExercise.get(i).getAltBodyWeightExercises().size();g++)
         {
@@ -1085,7 +1083,6 @@ public class ExpandableCircuitListAdapter extends RecyclerView.Adapter<RecyclerV
         }
     }
 
-/*
     private void openReplaceDialog()
     {
         List list = getList();
@@ -1101,97 +1098,80 @@ public class ExpandableCircuitListAdapter extends RecyclerView.Adapter<RecyclerV
                 replaceDialog.dismiss();
             }
         });
-       */
-/* imgBack.setOnClickListener(new View.OnClickListener() {
+       /* imgBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 replaceDialog.dismiss();
             }
-        });*//*
-
+        });*/
         rvExercise.setLayoutManager(new LinearLayoutManager(context));
-      */
-/*  ReplaceExerciseListAdapter replaceExerciseListAdapter=new ReplaceExerciseListAdapter(list,context, _allTargetUpper, _allTargetLower, _allTargetCore);
+      /*  ReplaceExerciseListAdapter replaceExerciseListAdapter=new ReplaceExerciseListAdapter(list,context, _allTargetUpper, _allTargetLower, _allTargetCore);
         rvExercise.setAdapter(replaceExerciseListAdapter);
-        replaceDialog.show();*//*
-
+        replaceDialog.show();*/
 
 
 
     }
-*/
-/*
     private List getList() {
         List <Title>list = new ArrayList<>();
         for (int i = 0; i < strCategory.length; i++) {
             List subTitles = new ArrayList<>();
             if(i==0)
             {
-                */
-/*if(_album!=null)
+                /*if(_album!=null)
                 for (int j = 0; j< _album.size(); j++){
                     SubTitle subTitle = new SubTitle(_album.get(j),0);
                     subTitles.add(subTitle);
-                }*//*
-
+                }*/
                 Log.e("equip size",_allEquip.size()+"?");
                 subTitles=_allEquip;
             }
             else if(i==1)
             {
-              */
-/*  if(_artist!=null)
+              /*  if(_artist!=null)
                 for (int j = 0; j< _artist.size(); j++){
                     SubTitle subTitle = new SubTitle(_artist.get(j),0);
                     subTitles.add(subTitle);
-                }*//*
-
+                }*/
                 Log.e("alt size",_allEquip.size()+"?");
                 subTitles=_allAlt;
             }
             else if(i==2)
             {
-              */
-/*  if(_genres!=null)
+              /*  if(_genres!=null)
                 for (int j = 0; j< _genres.size(); j++){
                     SubTitle subTitle = new SubTitle(_genres.get(j),0);
                     subTitles.add(subTitle);
-                }*//*
-
+                }*/
                 Log.e("sub size",_allExercise+"?");
                 subTitles=_allExercise;
             }
             else if(i==3)
             {
-                */
-/*if(_playlist!=null)
+                /*if(_playlist!=null)
                 for (int j = 0; j< _playlist.size(); j++){
                     SubTitle subTitle = new SubTitle(_playlist.get(j),0);
                     subTitles.add(subTitle);
-                }*//*
-
+                }*/
                 subTitles=_allStandard;
             }
             else if(i==4)
             {
-                */
-/*if(_playlist!=null)
+                /*if(_playlist!=null)
                 for (int j = 0; j< _playlist.size(); j++){
                     SubTitle subTitle = new SubTitle(_playlist.get(j),0);
                     subTitles.add(subTitle);
-                }*//*
-
+                }*/
                 subTitles=_allExercise;
                 Log.e("total size",_allExercise+"?");
             }
 
-
-            CaseMap.Title model = new CaseMap.Title(strCategory[i],subTitles);
-            list.add(model);
+           Log.e("Title list exp circuit adp",""+strCategory[i]);
+           Title model = new Title(strCategory[i],subTitles);
+           list.add(model); //commented by jyoti
         }
         return list;
     }
-*/
     ///////////////////Replace Exercise////////////
     /////////////////////////////////////////
 

@@ -1,0 +1,569 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <RelativeLayout
+        android:id="@+id/rlHeader"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="@color/colorPrimary">
+
+        <com.ashysystem.mbhq.view.TextViewOswaldLight
+            android:id="@+id/txtTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="Let's Train"
+            android:textColor="@color/white"
+            android:textSize="@dimen/fab_eighteen"></com.ashysystem.mbhq.view.TextViewOswaldLight>
+
+
+    </RelativeLayout>
+
+    <ScrollView
+        android:id="@+id/nsv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/rlHeader">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:layout_margin="5dp"
+                android:orientation="horizontal">
+                <RelativeLayout
+                    android:id="@+id/rlTodayText"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight=".9"
+                    android:background="@drawable/edittext_background_pink"
+                    >
+                    <com.ashysystem.mbhq.view.TextViewOswaldRegular
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/colorPrimary"
+                        android:layout_centerInParent="true"
+                        android:textSize="@dimen/fab_sixteen"
+                        android:text="ADD IN TODAY'S CUSTOM PLAN"/>
+                </RelativeLayout>
+                <RelativeLayout
+                    android:id="@+id/rlDropdown"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight=".1"
+                    android:layout_marginLeft="5dp"
+                    android:background="@drawable/edittext_background_pink"
+                    >
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                       />
+                </RelativeLayout>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginLeft="5dp">
+                <ImageView
+                    android:id="@+id/imgClock"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    android:background="@drawable/clock_icon"/>
+                <com.ashysystem.mbhq.view.TextViewOswaldRegular
+                    android:id="@+id/txtTimer"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:visibility="gone"
+                    android:textColor="@color/colorPrimary"
+                    />
+            </LinearLayout>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:id="@+id/llInfo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:orientation="vertical">
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <com.ashysystem.mbhq.view.EyeTextView
+                                android:id="@+id/txtDayOfWk"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Monday"
+                                android:textColor="@color/colorPrimary"
+                                android:textSize="@dimen/fav_fifty" />
+
+                        </LinearLayout>
+
+                        <com.ashysystem.mbhq.view.TextViewOswaldRegular
+                            android:id="@+id/txtSessionType"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginTop="10dp"
+                            android:text="LOWER BODY"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/fab_sixteen"></com.ashysystem.mbhq.view.TextViewOswaldRegular>
+
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginTop="5dp"
+                            android:background="@drawable/dumble_1" />
+
+                        <com.ashysystem.mbhq.view.TextViewOswaldRegular
+                            android:id="@+id/txtBodyArea"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginTop="5dp"
+                            android:text="LOWER BODY"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/fab_sixteen"></com.ashysystem.mbhq.view.TextViewOswaldRegular>
+                    </LinearLayout>
+
+
+                </LinearLayout>
+                <ImageView
+                    android:id="@+id/imgFav"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginRight="20dp"/>
+            </RelativeLayout>
+
+            <LinearLayout
+                android:id="@+id/llReady"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:orientation="horizontal">
+
+                <RelativeLayout
+                    android:id="@+id/rlMusicTop"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight=".33">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:background="@drawable/mymusic" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/rlNext"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_weight=".33"
+                    >
+
+                    <LinearLayout
+                        android:layout_width="120dp"
+                        android:layout_height="120dp"
+                        android:orientation="vertical"
+                        android:layout_centerHorizontal="true"
+                        android:gravity="center"
+                        android:background="@drawable/circle_ok" >
+                    <com.ashysystem.mbhq.view.TextViewOswaldRegular
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/fab_eighteen"
+                        android:text="START NOW"></com.ashysystem.mbhq.view.TextViewOswaldRegular>
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                          />
+                    </LinearLayout>
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/rlWeight"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight=".33"
+                    android:visibility="gone">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:background="@drawable/my_weight" />
+                </RelativeLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/llGymHome"
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:layout_below="@+id/llReady"
+                android:background="@color/colorPrimary"
+                android:orientation="horizontal"
+                android:visibility="gone">
+
+                <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight=".5"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginRight="15dp"
+                        android:gravity="center_vertical">
+
+                        <ImageView
+                            android:id="@+id/imgGymState"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="5dp"
+                            />
+
+                        <com.ashysystem.mbhq.view.TextViewOswaldRegular
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="5dp"
+                            android:gravity="center_vertical"
+                            android:text="At Gym"
+                            android:textColor="@color/white" />
+
+                    </LinearLayout>
+                </RelativeLayout>
+
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent"
+                    android:background="@color/white"></View>
+
+                <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="15dp"
+                    android:layout_weight=".5"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:gravity="center_vertical">
+
+                        <com.ashysystem.mbhq.view.TextViewOswaldRegular
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="5dp"
+                            android:gravity="center_vertical"
+                            android:text="At Home"
+                            android:textColor="@color/white" />
+
+                        <ImageView
+                            android:id="@+id/imgHomeState"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="5dp"
+                            android:background="@drawable/unchecked" />
+
+                    </LinearLayout>
+                </RelativeLayout>
+            </LinearLayout>
+
+            <com.ashysystem.mbhq.view.TextViewOswaldRegular
+                android:id="@+id/txtTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/llGymHome"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                android:gravity="center_horizontal"
+                android:text="60 Minutes"
+
+                android:textColor="@color/black" />
+
+            <com.ashysystem.mbhq.view.TextViewOswaldRegular
+                android:id="@+id/txtEdit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/txtTime"
+                android:layout_gravity="center"
+                android:layout_marginTop="2dp"
+                android:text="@string/edit_workout_time"
+                android:textColor="@color/colorPrimary"
+                android:visibility="gone" />
+
+            <View
+                android:id="@+id/vwEdit"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_below="@+id/txtEdit"
+                android:layout_marginTop="10dp"
+                android:background="@color/black"></View>
+
+            <com.ashysystem.mbhq.view.TextViewOswaldRegular
+                android:id="@+id/txtNeed"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="5dp"
+                android:text="YOU'LL NEED "
+                android:textColor="#606263" />
+
+            <LinearLayout
+                android:id="@+id/llEquipment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/txtNeed"
+                android:layout_marginTop="5dp"
+                android:orientation="vertical">
+
+
+            </LinearLayout>
+
+            <View
+                android:id="@+id/vwWorkout"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_below="@+id/llEquipment"
+                android:layout_marginTop="10dp"
+                android:background="@color/black"></View>
+
+            <com.ashysystem.mbhq.view.TextViewOswaldRegular
+                android:id="@+id/txtWorkout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/vwWorkout"
+                android:layout_gravity="center"
+                android:layout_marginTop="5dp"
+                android:textStyle="bold"
+                android:text="THE WORKOUT"
+                android:textColor="#030000" />
+            <RelativeLayout
+                android:id="@+id/rlOverView"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginLeft="50dp"
+                android:layout_marginRight="50dp"
+                android:layout_marginTop="10dp"
+                android:layout_below="@+id/txtWorkout"
+
+                android:background="@drawable/rectangle_pink">
+                <com.ashysystem.mbhq.view.TextViewOswaldRegular
+                    android:id="@+id/txtOverView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:layout_marginTop="5dp"
+                    android:textSize="@dimen/fab_eighteen"
+                    android:text="SESSION OVERVIEW"
+
+                    android:textColor="@color/colorPrimary" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/rlEditSession"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/rlOverView"
+                android:layout_margin="10dp"
+                android:orientation="vertical"
+                android:visibility="visible">
+
+                <com.ashysystem.mbhq.view.TextViewOswaldRegular
+                    android:id="@+id/tVEdit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:text="EDIT SESSION"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="@dimen/fab_sixteen" />
+
+                <View
+                    android:layout_width="wrap_content"
+                    android:layout_height="1dp"
+                    android:layout_alignLeft="@+id/tVEdit"
+                    android:layout_alignRight="@+id/tVEdit"
+                    android:layout_below="@+id/tVEdit"
+                    android:background="@color/colorPrimary"></View>
+
+            </RelativeLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvSessionList"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@+id/rlEditSession"
+                android:layout_marginTop="10dp" />
+
+            <View
+                android:id="@+id/vwTip"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_below="@+id/rvSessionList"
+                android:layout_marginTop="10dp"
+                android:background="@color/black"></View>
+
+            <LinearLayout
+                android:id="@+id/llTip"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/vwTip"
+                android:orientation="vertical">
+
+                <com.ashysystem.mbhq.view.TextViewOswaldLight
+                    android:id="@+id/txtTopTips"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="5dp"
+                    android:text="@string/top_tips"
+                    android:textColor="#606263"
+                    android:textSize="@dimen/fab_eighteen"
+                    android:textStyle="bold" />
+
+                <com.ashysystem.mbhq.view.TextViewOswaldLight
+                    android:id="@+id/txtTips1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="5dp"
+                    android:text="1. SWIPE LEFT ON EXERCISE TO CHANGE"
+                    android:textColor="#606263" />
+
+                <com.ashysystem.mbhq.view.TextViewOswaldLight
+                    android:id="@+id/txtTips2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="5dp"
+                    android:text="2. CLICK ON EXERCISE TO VIEW VIDEO"
+                    android:textColor="#606263" />
+
+                <com.ashysystem.mbhq.view.TextViewOswaldLight
+                    android:id="@+id/txtTips3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="5dp"
+                    android:text="@string/strWeight"
+                    android:textColor="#606263" />
+
+                <com.ashysystem.mbhq.view.TextViewOswaldLight
+                    android:id="@+id/txtTips4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="5dp"
+                    android:text="@string/strclick"
+                    android:textColor="#606263" />
+            </LinearLayout>
+
+            <View
+                android:id="@+id/vwTipEnd"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_below="@+id/llTip"
+                android:layout_marginTop="10dp"
+                android:background="@color/black"></View>
+
+            <LinearLayout
+                android:id="@+id/llReadyEnd"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:orientation="horizontal">
+
+                <RelativeLayout
+                    android:id="@+id/rlMusicBelow"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight=".33">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:src="@drawable/mymusic" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/rlReadyBelow"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_weight=".33">
+
+                    <LinearLayout
+                        android:layout_width="120dp"
+                        android:layout_height="120dp"
+                        android:orientation="vertical"
+                        android:layout_centerHorizontal="true"
+                        android:gravity="center"
+                        android:background="@drawable/circle_ok" >
+                        <com.ashysystem.mbhq.view.TextViewOswaldRegular
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/fab_eighteen"
+                            android:text="START NOW"></com.ashysystem.mbhq.view.TextViewOswaldRegular>
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                      />
+                    </LinearLayout>
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/rlWeightBelow"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight=".33">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:src="@drawable/my_weight" />
+                </RelativeLayout>
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+
+</RelativeLayout>

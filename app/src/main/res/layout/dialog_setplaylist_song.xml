@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:background="@color/colorPrimary">
+        <com.ashysystem.mbhq.view.ButtonOswaldRegular
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            android:layout_gravity="center_horizontal"
+            android:layout_margin="10dp"
+            android:textSize="@dimen/fab_twenty_two"
+            android:layout_centerInParent="true"
+            android:textStyle="bold"
+            android:text="Set Playlist"/>
+        </RelativeLayout>
+        <com.ashysystem.mbhq.view.TextViewOswaldRegular
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/fab_twenty"
+            android:textColor="#0D0D0D"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="5dp"
+            android:text="Do you want to set a playlist?"
+            />
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#dddddd"
+            android:layout_marginTop="10dp">
+
+        </View>
+        <RelativeLayout
+            android:id="@+id/rlYes"
+            android:layout_width="match_parent"
+            android:layout_height="45dp">
+            <com.ashysystem.mbhq.view.TextViewOswaldLight
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#999999"
+                android:textSize="@dimen/fab_sixteen"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="5dp"
+                android:text="Yes"/>
+        </RelativeLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#dddddd">
+
+        </View>
+        <RelativeLayout
+            android:id="@+id/rlSameAsLastSession"
+            android:layout_width="match_parent"
+            android:layout_height="45dp">
+            <com.ashysystem.mbhq.view.TextViewOswaldLight
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#999999"
+                android:textSize="@dimen/fab_sixteen"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="5dp"
+                android:text="Same as last session"/>
+        </RelativeLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#dddddd">
+
+        </View>
+        <RelativeLayout
+            android:id="@+id/rlNoMusic"
+            android:layout_width="match_parent"
+            android:layout_height="45dp">
+            <com.ashysystem.mbhq.view.TextViewOswaldLight
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#999999"
+                android:textSize="@dimen/fab_sixteen"
+                android:text="No Music"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="5dp"/>
+        </RelativeLayout>
+    </LinearLayout>
+</RelativeLayout>

@@ -35,11 +35,14 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.ashysystem.mbhq.R;
 import com.ashysystem.mbhq.Service.impl.SessionServiceImpl;
 
+import com.ashysystem.mbhq.fragment.SessionOverviewFragment;
 import com.ashysystem.mbhq.model.ExerciseRequestModel;
+import com.ashysystem.mbhq.model.QuickEditCircuitResponseModel;
 import com.ashysystem.mbhq.model.SessionOverViewModel;
 import com.ashysystem.mbhq.model.ShowIndividualVideoModel;
 import com.ashysystem.mbhq.model.SubTitle;
 import com.ashysystem.mbhq.model.TargetExerciseModel;
+import com.ashysystem.mbhq.model.Title;
 import com.ashysystem.mbhq.util.SharedPreference;
 import com.ashysystem.mbhq.util.Util;
 import com.bumptech.glide.Glide;
@@ -54,6 +57,14 @@ import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+
+import android.view.animation.Animation;
+import android.view.animation.RotateAnimation;
+import com.ashysystem.mbhq.util.Connection;
+import com.thoughtbot.expandablerecyclerview.ExpandableRecyclerViewAdapter;
+import com.thoughtbot.expandablerecyclerview.models.ExpandableGroup;
+import com.thoughtbot.expandablerecyclerview.viewholders.ChildViewHolder;
+import com.thoughtbot.expandablerecyclerview.viewholders.GroupViewHolder;
 
 /**
  * Created by anandbose on 09/06/15.
@@ -80,7 +91,7 @@ public class ExpandableListAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     private RecyclerView previousRecyclerview=null;
     private VideoView previousVideo=null;
     private VideoView currentVideo=null;
-   // SessionOverviewFragment parentFragment;
+    SessionOverviewFragment parentFragment;
     LayoutInflater layoutInflater;
     //boolean[] arrShowInfo;
     SharedPreference sharedPreference;
@@ -103,6 +114,16 @@ public class ExpandableListAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     //////////
 
 
+    public ExpandableListAdapter(List<Item> data, Context context, List<SessionOverViewModel.Exercise> lstExercise, SessionOverviewFragment sessionOverviewFragment) {
+        this.data = data;
+        this.context=context;
+        this.lstExercise=lstExercise;
+        this.parentFragment=sessionOverviewFragment;
+        layoutInflater=(LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        sharedPreference=new SharedPreference(context);
+      //  Log.e("print flow id--",parentFragment.getFlowId()+"???");
+
+    }
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int type) {
@@ -151,11 +172,11 @@ public class ExpandableListAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                     {
 
                         if(item.SuperSetPosition==-1){
-                           /* itemController.imgBr.setImageResource(0);
+                            itemController.imgBr.setImageResource(0);
                             itemController.imgBr.setImageResource(R.drawable.thired_first_half);
                             itemController.txtSet.setVisibility(View.VISIBLE);
-                           *//* if(item.middle!=null&&item.middle.equals("m"))
-                                itemController.txtSet.setText("x "+String.valueOf(item.setCount)+" Sets");*//*
+                           /* if(item.middle!=null&&item.middle.equals("m"))
+                                itemController.txtSet.setText("x "+String.valueOf(item.setCount)+" Sets");*/
                             if(item.middle!=null&&item.middle.equals("m"))
                             {
                                 if(parentFragment.getFlowId()==5||parentFragment.getFlowId()==6)
@@ -169,7 +190,7 @@ public class ExpandableListAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                                     itemController.txtSet.setText("x "+String.valueOf(item.setCount)+" Sets");
                                 }
                             }
-*/
+
 
 
                         }
@@ -181,7 +202,7 @@ public class ExpandableListAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                            /* if(item.middle!=null&&item.middle.equals("m"))
                                 itemController.txtSet.setText("x "+String.valueOf(item.setCount)+" Sets");*/
                             if(item.middle!=null&&item.middle.equals("m")) {
-                               /* if(parentFragment.getFlowId()==5||parentFragment.getFlowId()==6)
+                                if(parentFragment.getFlowId()==5||parentFragment.getFlowId()==6)
                                 {
                                     Log.e("alpha set","33");
                                     itemController.txtSet.setText("x "+context.getString(R.string.infinity)+" Sets");
@@ -189,7 +210,7 @@ public class ExpandableListAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                                 else {
                                     Log.e("alpha not set","44");
                                     itemController.txtSet.setText("x " + String.valueOf(item.setCount) + " Sets");
-                                }*/
+                                }
                             }
                         }
                         else if(item.SuperSetPosition==1)
@@ -201,7 +222,7 @@ public class ExpandableListAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                                 itemController.txtSet.setText("x "+String.valueOf(item.setCount)+" Sets");*/
                             if(item.middle!=null&&item.middle.equals("m"))
                             {
-                              /*  if(parentFragment.getFlowId()==5||parentFragment.getFlowId()==6)
+                                if(parentFragment.getFlowId()==5||parentFragment.getFlowId()==6)
                                 {
                                     Log.e("alpha set","55");
                                     itemController.txtSet.setText("x "+context.getString(R.string.infinity)+" Sets");
@@ -209,7 +230,7 @@ public class ExpandableListAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                                 else {
                                     Log.e("alpha not set","66");
                                     itemController.txtSet.setText("x " + String.valueOf(item.setCount) + " Sets");
-                                }*/
+                                }
                             }
 
                         }/*else
@@ -226,10 +247,10 @@ public class ExpandableListAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
                 }else
                 {
-                   if( item.lstTips!=null && item.lstTips.size()>0 || item.lstInstruction!=null && item.lstInstruction.size()>0)
-                    itemController.rlInformation.setVisibility(View.VISIBLE);
-                   else
-                       itemController.rlInformation.setVisibility(View.INVISIBLE);
+                    if( item.lstTips!=null && item.lstTips.size()>0 || item.lstInstruction!=null && item.lstInstruction.size()>0)
+                        itemController.rlInformation.setVisibility(View.VISIBLE);
+                    else
+                        itemController.rlInformation.setVisibility(View.INVISIBLE);
 
                     itemController.imgBr.setVisibility(View.INVISIBLE);
                     itemController.txtSet.setVisibility(View.INVISIBLE);
@@ -246,7 +267,7 @@ public class ExpandableListAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                 {
                     Log.e("open", "13"+"---"+position);
                     //itemController.imgArrow.setImageResource(R.drawable.rt_arrow);
-                   // itemController.imgArrow.setImageResource(R.drawable.down_arrow);
+                    // itemController.imgArrow.setImageResource(R.drawable.down_arrow);
                 }
                 itemController.rlInformation.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -323,7 +344,7 @@ public class ExpandableListAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                         {
                             Log.e("hide","12");
                             //itemController.imgArrow.setImageResource(R.drawable.rt_arrow);
-                          //  itemController.imgArrow.setImageResource(R.drawable.down_arrow);
+                            //  itemController.imgArrow.setImageResource(R.drawable.down_arrow);
                             item.invisibleChildren = new ArrayList<Item>();
                             int count = 0;
                             int pos = data.indexOf(itemController.refferalItem);
@@ -395,7 +416,7 @@ public class ExpandableListAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                     {
                         currentRecyclerview=childController.rvCircuitList;
                         funForTouch(childController.rvCircuitList,item.lstCircuitExercise,Integer.parseInt(item.index),item.exerciseName);
-                       // childController.rvCircuitList.setOnTouchListener(touchFun);
+                        // childController.rvCircuitList.setOnTouchListener(touchFun);
                         loadAdapter(childController.rvCircuitList, item.lstCircuitExercise,item,Integer.parseInt(item.index));
 
                     }
@@ -565,12 +586,13 @@ public class ExpandableListAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                                 Log.e("print touch","123");
                                 if(lstExercisePicker==null)
                                 {
-                                   // getExerciseList(lstCircuitExercise,i,exerciseName);
+                                    getExerciseList(lstCircuitExercise,i,exerciseName);
                                 }
 
-//                                else
-//                                   // showPicker(lstExercisePicker);
-//                                    openReplaceDialog();
+                                else {
+                                    // showPicker(lstExercisePicker);
+                                    openReplaceDialog(); //commented by jyoti
+                                }
                             }
                             else
                             {
@@ -717,9 +739,9 @@ public class ExpandableListAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         char alphabet = 'a';
         for(int p=0;p<circuitExercises.size();p++,alphabet++)
         {
-            ExpandableCircuitListAdapter.Item places=new ExpandableCircuitListAdapter.Item(ExpandableListAdapter.HEADER,alphabet+".",circuitExercises.get(p));
+            ExpandableCircuitListAdapter.Item places=new ExpandableCircuitListAdapter.Item(ExpandableListAdapter.HEADER,alphabet+".",circuitExercises.get(p),adapterPosition,parentFragment.getFlowId());
             places.invisibleChildren = new ArrayList<>();
-            places.invisibleChildren.add(new ExpandableCircuitListAdapter.Item(ExpandableListAdapter.CHILD,alphabet+".",circuitExercises.get(p)));
+            places.invisibleChildren.add(new ExpandableCircuitListAdapter.Item(ExpandableListAdapter.CHILD,alphabet+".",circuitExercises.get(p),adapterPosition, parentFragment.getFlowId()));
             data.add(places);
 
 
@@ -822,7 +844,7 @@ public class ExpandableListAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                         itemNo=preHolder.getAdapterPosition();
                         headNo=preHolder.refferalItem.headerNo;
 
-          /*  Log.e("print name-->",preHolder.refferalItem.headerNo+"?"+preHolder.refferalItem.exerciseName+"?"+preHolder.refferalItem.index+"?"+itemNo+"?"+preHolder.txtDummy.getText().toString());*/
+                        /*  Log.e("print name-->",preHolder.refferalItem.headerNo+"?"+preHolder.refferalItem.exerciseName+"?"+preHolder.refferalItem.index+"?"+itemNo+"?"+preHolder.txtDummy.getText().toString());*/
 
             /*bitmapXPosition=(float) itemView.getRight() + dX/5;
             bitmapYPosition=(float) itemView.getTop();
@@ -975,7 +997,6 @@ public class ExpandableListAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     }
 */
 
-/*
     private void circuitEditApi(HashMap<String,Object> hashMapReq) {
 
         if(Connection.checkConnection(context))
@@ -999,8 +1020,7 @@ public class ExpandableListAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         {
             Util.showToast(context,Util.networkMsg);
         }
-    }
-*/
+    }//commented by jyoti
 
 
     View.OnTouchListener touchFun=new View.OnTouchListener() {
@@ -1027,7 +1047,7 @@ public class ExpandableListAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                             else{
 
                             }
-                             //   showPicker(lstExercisePicker);
+                            //   showPicker(lstExercisePicker);
                         }
                         else
                         {
@@ -1218,7 +1238,6 @@ public class ExpandableListAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         });
     }
     ///////////////////Replace Exercise////////////
-/*
     public void getExerciseList(List<SessionOverViewModel.Circuit> lstCircuitExercise, int i, String exerciseName) {
 
         if(Connection.checkConnection(context))
@@ -1242,8 +1261,8 @@ public class ExpandableListAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                     lstExercisePicker = response.body().getExercises();
                     progressDialog.dismiss();
                     setAllExercise(lstExercisePicker);
-                   // setEquipExercise(lstCircuitExercise,i);
-                   // setBodyWeightAlt(lstCircuitExercise,i);
+                    // setEquipExercise(lstCircuitExercise,i);
+                    // setBodyWeightAlt(lstCircuitExercise,i);
                     getTargetExerciseApi();
                     //openReplaceDialog();
                     // showPicker(lstExercisePicker);
@@ -1263,8 +1282,6 @@ public class ExpandableListAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         }
         ////////////////Edit Session Api//////////////
     }
-*/
-/*
     private void getTargetExerciseApi()
     {
         if(Connection.checkConnection(context))
@@ -1286,7 +1303,7 @@ public class ExpandableListAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                     setTargetExercise(lstTargetExercise);
                     // setEquipExercise(lstCircuitExercise,i);
                     // setBodyWeightAlt(lstCircuitExercise,i);
-                    openReplaceDialog();
+                  //  openReplaceDialog();
                     // showPicker(lstExercisePicker);
                 }
 
@@ -1294,7 +1311,7 @@ public class ExpandableListAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                 public void onFailure(Call<TargetExerciseModel> call, Throwable t) {
                     t.printStackTrace();
                     Log.e("print fail-->","14"+"?");
-                    openReplaceDialog();
+                    openReplaceDialog(); //commented by jyoti
                     progressDialog.dismiss();
 
                 }
@@ -1304,24 +1321,23 @@ public class ExpandableListAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             Util.showToast(context,Util.networkMsg);
         }
     }
-*/
     private void setBodyWeightAlt(List<SessionOverViewModel.Circuit> lstCircuitExercise, int i) {
         if(lstCircuitExercise.get(i).getAltBodyWeightExercises()!=null)
-        for(int g=0;g<lstCircuitExercise.get(i).getAltBodyWeightExercises().size();g++)
-        {
-            SubTitle allExerciseSubtitle=new SubTitle ( lstCircuitExercise.get(i).getAltBodyWeightExercises().get(g).getBodyWeightAltExerciseName(),g,"","","",null,null);
-            _allAlt.add(allExerciseSubtitle);
-        }
+            for(int g=0;g<lstCircuitExercise.get(i).getAltBodyWeightExercises().size();g++)
+            {
+                SubTitle allExerciseSubtitle=new SubTitle ( lstCircuitExercise.get(i).getAltBodyWeightExercises().get(g).getBodyWeightAltExerciseName(),g,"","","",null,null);
+                _allAlt.add(allExerciseSubtitle);
+            }
     }
 
     private void setEquipExercise(List<SessionOverViewModel.Circuit> lstCircuitExercise, int i) {
         if(lstCircuitExercise.get(i).getEquipments()!=null)
-        for(int g=0;g<lstCircuitExercise.get(i).getEquipments().size();g++)
-        {
-            Log.e("Log","Loop here");
-            SubTitle allExerciseSubtitle=new SubTitle( lstCircuitExercise.get(i).getEquipments().get(g),g,"","","",null,null);
-            _allEquip.add(allExerciseSubtitle);
-        }
+            for(int g=0;g<lstCircuitExercise.get(i).getEquipments().size();g++)
+            {
+                Log.e("Log","Loop here");
+                SubTitle allExerciseSubtitle=new SubTitle( lstCircuitExercise.get(i).getEquipments().get(g),g,"","","",null,null);
+                _allEquip.add(allExerciseSubtitle);
+            }
     }
 
     private void setAllExercise(List<ExerciseRequestModel.Exercise> lstExercisePicker) {
@@ -1364,38 +1380,38 @@ public class ExpandableListAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             List<SessionOverViewModel.AltBodyWeightExercise> tmpAlt=new ArrayList<>();
             ////////////Changes/////////
 
-           for(int in=0;in<lstExercisePicker.size();in++)
-           {
-               if(lstExercisePicker.get(in).getExerciseId()==lstExercisePicker.get(g).getExerciseId())
-               {
-                   List<String> tmpPhoto = lstExercisePicker.get(g).getPhotos();
+            for(int in=0;in<lstExercisePicker.size();in++)
+            {
+                if(lstExercisePicker.get(in).getExerciseId()==lstExercisePicker.get(g).getExerciseId())
+                {
+                    List<String> tmpPhoto = lstExercisePicker.get(g).getPhotos();
 
-                   if(tmpPhoto!=null&&tmpPhoto.size()>0) {
-                       imgPath = tmpPhoto.get(0);
-                   }
-                   videoUrl=lstExercisePicker.get(g).getPublicUrl();
-                   List<String> tmpEquip=lstExercisePicker.get(g).getEquipments();
-                   if(tmpEquip!=null)
-                   {
+                    if(tmpPhoto!=null&&tmpPhoto.size()>0) {
+                        imgPath = tmpPhoto.get(0);
+                    }
+                    videoUrl=lstExercisePicker.get(g).getPublicUrl();
+                    List<String> tmpEquip=lstExercisePicker.get(g).getEquipments();
+                    if(tmpEquip!=null)
+                    {
 
-                       for(int x=0;x<tmpEquip.size();x++)
-                       {
-                           equipment+= tmpEquip.get(x);
-                           equipment+=",";
+                        for(int x=0;x<tmpEquip.size();x++)
+                        {
+                            equipment+= tmpEquip.get(x);
+                            equipment+=",";
 
-                       }
+                        }
 
-                   }
+                    }
                     tmpSub=lstExercisePicker.get(g).getSubstituteExercises();
 
                     tmpAlt=lstExercisePicker.get(g).getAltBodyWeightExercises();
 
-                   Log.e("print image path-*",imgPath+"???");
+                    Log.e("print image path-*",imgPath+"???");
 
-                   break;
-               }
+                    break;
+                }
 
-           }
+            }
 
 
             ////////////Changes///////////
@@ -1457,7 +1473,6 @@ public class ExpandableListAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
 
     }
-/*
     private void openReplaceDialog()
     {
         List list = getList();
@@ -1485,7 +1500,7 @@ public class ExpandableListAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         int indexOut=Integer.parseInt(preHolder.txtDummy.getText().toString());
         txtHeader.setText("REPLACE "+parentFragment.getLstExercise().get(indexOut).getCircuitExercises().get(itemNo).getExerciseName().toUpperCase());
         txtSelectedText.setText(parentFragment.getLstExercise().get(indexOut).getCircuitExercises().get(itemNo).getExerciseName().toUpperCase());
-       // rvExercise.setNestedScrollingEnabled(true);
+        // rvExercise.setNestedScrollingEnabled(true);
         rvExercise.setLayoutManager(new LinearLayoutManager(context));
         ReplaceExerciseListAdapter replaceExerciseListAdapter=new ReplaceExerciseListAdapter(list,context,_allTargetUpper,_allTargetLower,_allTargetCore);
         rvExercise.setAdapter(replaceExerciseListAdapter);
@@ -1495,97 +1510,81 @@ public class ExpandableListAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
 
     }
-*/
-
-/*
+//commented by jyoti
     private List getList() {
         List <Title>list = new ArrayList<>();
         for (int i = 0; i < strCategory.length; i++) {
             List subTitles = new ArrayList<>();
             if(i==0)
             {
-                */
-/*if(_album!=null)
+                /*if(_album!=null)
                 for (int j = 0; j< _album.size(); j++){
                     SubTitle subTitle = new SubTitle(_album.get(j),0);
                     subTitles.add(subTitle);
-                }*//*
-
+                }*/
                 Log.e("equip size",_allEquip.size()+"?");
                 subTitles=_allEquip;
             }
             else if(i==1)
             {
-              */
-/*  if(_artist!=null)
+              /*  if(_artist!=null)
                 for (int j = 0; j< _artist.size(); j++){
                     SubTitle subTitle = new SubTitle(_artist.get(j),0);
                     subTitles.add(subTitle);
-                }*//*
-
+                }*/
                 Log.e("alt size",_allEquip.size()+"?");
                 subTitles=_allAlt;
             }
             else if(i==2)
             {
-              */
-/*  if(_genres!=null)
+              /*  if(_genres!=null)
                 for (int j = 0; j< _genres.size(); j++){
                     SubTitle subTitle = new SubTitle(_genres.get(j),0);
                     subTitles.add(subTitle);
-                }*//*
-
+                }*/
                 Log.e("sub size",_allEquip.size()+"?");
                 subTitles=_allTarget;
                 //subTitles=_allExercise;
             }
             else if(i==3)
             {
-                */
-/*if(_playlist!=null)
+                /*if(_playlist!=null)
                 for (int j = 0; j< _playlist.size(); j++){
                     SubTitle subTitle = new SubTitle(_playlist.get(j),0);
                     subTitles.add(subTitle);
-                }*//*
-
+                }*/
                 Log.e("standard size",_allTStandard.size()+"?");
                 subTitles=_allTStandard;
             }
             else if(i==4)
             {
-                */
-/*if(_playlist!=null)
+                /*if(_playlist!=null)
                 for (int j = 0; j< _playlist.size(); j++){
                     SubTitle subTitle = new SubTitle(_playlist.get(j),0);
                     subTitles.add(subTitle);
-                }*//*
-
+                }*/
                 Log.e("all size",_allExercise.size()+"?");
                 subTitles=_allExercise;
             }
 
-
-            Title model = new Title(strCategory[i],subTitles);
-            list.add(model);
+            Log.e("Title list explist adapter",""+strCategory[i]);
+          Title model = new Title(strCategory[i],subTitles);
+          list.add(model); //commented by jyoti
         }
         return list;
     }
-*/
     ///////////////////Replace Exercise////////////
     //////////////////Outer Adapter Replace///////////////
-/*
     public class ReplaceExerciseListAdapter extends ExpandableRecyclerViewAdapter<ReplaceExerciseListAdapter.TitleViewHolder,ReplaceExerciseListAdapter.SubTitleViewHolder>
     {
-       // private final RecyclerView.RecycledViewPool viewPool;
+        // private final RecyclerView.RecycledViewPool viewPool;
         private Context context;
         private LinearLayout preExLayout;
         private TextView preExText;
-        */
-/* String[] parents = new String[]{"Fruits",
+        /* String[] parents = new String[]{"Fruits",
                  "Nice Fruits", "Cool Fruits",
                  "Perfect Fruits", "Frozen Fruits",
-                 "Warm Fruits"};*//*
-
+                 "Warm Fruits"};*/
         String[] parents = new String[]{"LowerBody",
                 "UpperBody", "Core"
         };
@@ -1604,7 +1603,7 @@ public class ExpandableListAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             this._allTargetUpper=_allTargetUpper;
             this._allTargetLower=_allTargetLower;
             this._allTargetCore=_allTargetCore;
-           // viewPool = new RecyclerView.RecycledViewPool();
+            // viewPool = new RecyclerView.RecycledViewPool();
         }
         @Override
         public void onGroupExpanded(int positionStart, int itemCount) {
@@ -1619,10 +1618,10 @@ public class ExpandableListAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                 Toast.makeText(context,"No exercise found",Toast.LENGTH_LONG).show();
             }
 
-           // listData.addAll(listDataBkp);
+            // listData.addAll(listDataBkp);
             //ReplaceExerciseListAdapter.this.notifyItemChanged(positionStart);
             if(positionStart!=3)
-            ReplaceExerciseListAdapter.this.notifyItemRangeInserted(positionStart, itemCount);
+                ReplaceExerciseListAdapter.this.notifyItemRangeInserted(positionStart, itemCount);
         }
         @Override
         public void onGroupCollapsed(int positionStart, int itemCount) {
@@ -1637,7 +1636,7 @@ public class ExpandableListAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                 Toast.makeText(context,"No exercise found",Toast.LENGTH_LONG).show();
             }
             if(positionStart!=3)
-            ReplaceExerciseListAdapter.this.notifyItemRangeRemoved(positionStart,itemCount);
+                ReplaceExerciseListAdapter.this.notifyItemRangeRemoved(positionStart,itemCount);
         }
 
 
@@ -1660,8 +1659,8 @@ public class ExpandableListAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         public void onBindChildViewHolder(SubTitleViewHolder holder, int flatPosition, ExpandableGroup group, int childIndex) {
 
             Log.e("child onbind view","123");
-                final SubTitle subTitle = ( SubTitle ) group.getItems().get(childIndex);
-                holder.tvPlayListName.setText(subTitle.getName());
+            final SubTitle subTitle = ( SubTitle ) group.getItems().get(childIndex);
+            holder.tvPlayListName.setText(subTitle.getName());
 
             holder.llExercise.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -1713,7 +1712,7 @@ public class ExpandableListAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                     holder.rvInner.setAdapter(null);
                 }
 
-                   // holder.rvInner.setVisibility(View.GONE);
+                // holder.rvInner.setVisibility(View.GONE);
 
                 /////////
             }
@@ -1734,12 +1733,10 @@ public class ExpandableListAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                         break;
 
 
-                  */
-/*  case MotionEvent.ACTION_UP:
+                  /*  case MotionEvent.ACTION_UP:
                         Log.e("finger lift","123");
                         rv.getParent().requestDisallowInterceptTouchEvent(false);
-                        break;*//*
-
+                        break;*/
 
                 }
                 return false;
@@ -1784,7 +1781,7 @@ public class ExpandableListAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
             @Override
             public void collapse() {
-               // arrow.setBackgroundResource(R.drawable.down_arrow);
+                // arrow.setBackgroundResource(R.drawable.down_arrow);
 
                 // animateCollapse();
             }
@@ -1804,7 +1801,7 @@ public class ExpandableListAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                 rotate.setDuration(300);
                 rotate.setFillAfter(true);
                 arrow.setAnimation(rotate);
-              //  arrow.setBackgroundResource(R.drawable.down_arrow);
+                //  arrow.setBackgroundResource(R.drawable.down_arrow);
             }
         }
 /////////////////////////Header View Holder End//////////
@@ -1858,10 +1855,8 @@ public class ExpandableListAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             }
             return list;
         }
-    }
-*/
+    } //commented by jyoti
 
-/*
     private void setValue(SubTitle subTitle) {
         int indexOut=Integer.parseInt(preHolder.txtDummy.getText().toString());
         if(indexOut<parentFragment.getLstExercise().size())
@@ -1888,7 +1883,7 @@ public class ExpandableListAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                     String tmpEquip=subTitle.getEquipment();
                     String[] arrEquip=tmpEquip.split(",");
                     if(arrEquip!=null&&arrEquip.length>0)
-                      lstEquip = Arrays.asList(arrEquip);
+                        lstEquip = Arrays.asList(arrEquip);
                 }
 
                 parentFragment.getLstExercise().get(indexOut).getCircuitExercises().get(itemNo).setEquipments(lstEquip);
@@ -1903,22 +1898,18 @@ public class ExpandableListAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
         }
     }
-*/
 
     ///////////////////Outer Adapter Replace//////////////////
     ///////////Inner Adapter Replace////////////
-/*
     public class ReplaceInnerAdapter extends ExpandableRecyclerViewAdapter<ReplaceInnerAdapter.TitleViewHolder,ReplaceInnerAdapter.SubTitleViewHolder>
     {
         private Context context;
         private LinearLayout preExLayout;
         private TextView preExText;
-        */
-/* String[] parents = new String[]{"Fruits",
+        /* String[] parents = new String[]{"Fruits",
                  "Nice Fruits", "Cool Fruits",
                  "Perfect Fruits", "Frozen Fruits",
-                 "Warm Fruits"};*//*
-
+                 "Warm Fruits"};*/
 
         private int counter=0;
         List<SubTitle> _allTargetUpper,_allTargetLower,_allTargetCore;
@@ -1946,7 +1937,7 @@ public class ExpandableListAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             Log.e("Group child collapse","1234"+">>"+itemCount);
             if(itemCount==0)
             {
-               // Toast.makeText(context,"No exercise found",Toast.LENGTH_LONG).show();
+                // Toast.makeText(context,"No exercise found",Toast.LENGTH_LONG).show();
             }
             ReplaceInnerAdapter.this.notifyItemRangeRemoved(positionStart,itemCount);
         }
@@ -2026,7 +2017,7 @@ public class ExpandableListAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
             @Override
             public void collapse() {
-               // arrow.setBackgroundResource(R.drawable.down_arrow);
+                // arrow.setBackgroundResource(R.drawable.down_arrow);
 
                 // animateCollapse();
             }
@@ -2053,8 +2044,7 @@ public class ExpandableListAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
 //////////Child View Holder//////////
 
-     */
-/*   public class SubTitleViewHolder extends ChildViewHolder {
+        public class SubTitleViewHolder extends ChildViewHolder {
 
             private TextView tvPlayListName;
             private LinearLayout llExercise;
@@ -2070,13 +2060,12 @@ public class ExpandableListAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             public void setSubTitletName(String name) {
                 tvPlayListName.setText(name);
             }
-        }*//*
-
+        }
 //////////Child View Holder End//////////
 
 
     }
-*/
+    //commented by jyoti
 
 
     ////////////////Inner Adapter Replace/////////////

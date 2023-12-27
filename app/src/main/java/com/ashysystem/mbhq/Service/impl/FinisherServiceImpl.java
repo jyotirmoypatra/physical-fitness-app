@@ -25,6 +25,7 @@ import com.ashysystem.mbhq.model.MeditationTagResponse;
 import com.ashysystem.mbhq.model.MyAchievementsListModel;
 import com.ashysystem.mbhq.model.MyValueListResponse;
 import com.ashysystem.mbhq.model.ProgressCourseResponse;
+import com.ashysystem.mbhq.model.SessionOverViewModel;
 import com.ashysystem.mbhq.model.TodayPage.GetAppHomePageValuesResponseModel;
 import com.ashysystem.mbhq.model.UpdateBadgeShownResponse;
 import com.ashysystem.mbhq.model.eqfolder.Eqfolder;
@@ -327,4 +328,8 @@ public class FinisherServiceImpl extends Service {
         return finisherService.refreshCourse(modelHashMap);
     }
 
+
+    public Call<JsonObject> checkUserProgramStep(HashMap<String, Object> modelHashMap) {
+        return finisherService.checkUserProgramStep(modelHashMap);
+    }
 }

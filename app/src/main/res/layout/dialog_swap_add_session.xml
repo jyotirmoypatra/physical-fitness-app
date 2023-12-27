@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+    <com.ashysystem.mbhq.view.TextViewOswaldRegular
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/ashseparator"
+        android:layout_margin="20dp"
+        android:gravity="center"
+        android:text="You already have two sessions in your plan for this day.Please click one of the two below to swap with session"/>
+    <LinearLayout
+        android:id="@+id/llDynamic"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:orientation="vertical"></LinearLayout>
+</LinearLayout>

@@ -51,6 +51,7 @@ import com.ashysystem.mbhq.model.livechat.Chat;
 import com.ashysystem.mbhq.model.livechat.Meditations;
 import com.ashysystem.mbhq.model.response.MyAchievementsListInnerModel;
 import com.ashysystem.mbhq.video.DemoApplication;
+import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -232,7 +233,7 @@ public class Util {
     public static boolean isLocalUploadGrowthGratitideCalled = false;
     public static String COMMUNITY_SERVERURL = "https://forum.mindbodyhq.com/";
 
-
+    public static SimpleExoPlayer globalExoplayer;
     ////////////////////////////////////////////////////
 
     // public static String BASE_URL = "http://devthelife.com/";

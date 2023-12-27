@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent"    android:background="#B3000000"
+
+    >
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="50dp"
+        android:background="@color/white">
+
+        <com.ashysystem.mbhq.view.TextViewOswaldRegular
+            android:id="@+id/txtInfo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/fab_twenty"
+            android:layout_centerHorizontal="true"
+            android:textColor="#213ECC"
+            android:text="Info"/>
+    <com.ashysystem.mbhq.view.TextViewOswaldRegular
+        android:id="@+id/txtMsg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/fab_sixteen"
+        android:layout_centerHorizontal="true"
+        android:textColor="@color/colorPrimary"
+        android:layout_below="@+id/txtInfo"
+        android:layout_margin="20dp"
+        android:text="This is a custom weights session and has been designed to get get you results based on your goals, available equipment and time.
+
+The sessions will be similar for 4-6 weeks in a row so you can IMPROVE. These are called training blocks.
+
+Don't forget to click 'my weights' and record your reps and weights so you can remember your progress and make it harder each week by lifting more or doing a few more reps"/>
+    <RelativeLayout
+        android:id="@+id/rlGotIt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/txtMsg"
+        android:layout_marginTop="20dp"
+        android:layout_centerHorizontal="true">
+        <com.ashysystem.mbhq.view.TextViewOswaldRegular
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/fab_twenty"
+            android:layout_centerHorizontal="true"
+            android:textColor="#213ECC"
+            android:text="GOT IT"/>
+    </RelativeLayout>
+    <RelativeLayout
+        android:id="@+id/rlCancel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/rlGotIt"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp"
+        android:layout_centerHorizontal="true">
+        <com.ashysystem.mbhq.view.TextViewOswaldRegular
+            android:id="@+id/txtGotIt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/fab_twenty"
+            android:layout_centerHorizontal="true"
+            android:textColor="#213ECC"
+            android:text="Dont show me again"/>
+    </RelativeLayout>
+    </RelativeLayout>
+
+
+</RelativeLayout>

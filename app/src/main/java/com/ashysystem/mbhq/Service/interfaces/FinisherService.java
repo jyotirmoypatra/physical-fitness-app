@@ -21,6 +21,7 @@ import com.ashysystem.mbhq.model.MeditationTagResponse;
 import com.ashysystem.mbhq.model.MyAchievementsListModel;
 import com.ashysystem.mbhq.model.MyValueListResponse;
 import com.ashysystem.mbhq.model.ProgressCourseResponse;
+import com.ashysystem.mbhq.model.SessionOverViewModel;
 import com.ashysystem.mbhq.model.TodayPage.GetAppHomePageValuesResponseModel;
 import com.ashysystem.mbhq.model.UpdateBadgeShownResponse;
 import com.ashysystem.mbhq.model.eqfolder.Eqfolder;
@@ -40,6 +41,7 @@ import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
@@ -245,6 +247,9 @@ public interface FinisherService {
 
     @POST("api/eqjournal/MoveEqJournalToFolder")
     Call<JsonObject> moveeqname(@Body HashMap<String, Object> modelHashMap);
+
+    @POST("api/CheckUserProgramStep")
+    Call<JsonObject> checkUserProgramStep(@Body HashMap<String, Object> modelHashMap);
 
 }
 
