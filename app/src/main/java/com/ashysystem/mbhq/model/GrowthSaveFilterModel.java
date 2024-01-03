@@ -13,6 +13,7 @@ public class GrowthSaveFilterModel {
     private Boolean bool_proud_of = false;
     private Boolean bool_accomplished = false;
     private Boolean bool_observed = false;
+    private Boolean bool_needTowork= false;
     private Boolean bool_learned = false;
     private Boolean bool_showimage = true;
     private Boolean bool_praised = false;
@@ -33,6 +34,14 @@ public class GrowthSaveFilterModel {
     private Boolean bool_laughed = false;
     private Boolean bool_Today_I_M_Feeling = false;
     private Integer selected_date_range_filter_value = 0;
+
+    public Boolean getBool_needTowork() {
+        return bool_needTowork;
+    }
+
+    public void setBool_needTowork(Boolean bool_needTowork) {
+        this.bool_needTowork = bool_needTowork;
+    }
 
     public String getUserid() {
         return userid;

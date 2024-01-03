@@ -106,7 +106,16 @@ public class SharedPreference {
     }
 
 
-
+    public void clearSharedPreferences(Context context, String preferenceFileName) {
+        if (context != null && preferenceFileName != null) {
+            SharedPreferences sharedPreferences = context.getSharedPreferences(preferenceFileName, Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.clear(); // Clear all data from the SharedPreferences
+            editor.apply(); // Apply changes
+        } else {
+            Log.e("SHAREDPREFERENCE", "CONTEXT OR FILE NAME IS NULL");
+        }
+    }
 
     public void saveLocalFilters(Context context, String preferenceFileName, String serializedObjectKey, HashMap<String, ArrayList<String>> localFilters) {
 

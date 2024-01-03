@@ -2,6 +2,7 @@ package com.ashysystem.mbhq.fragment.meditation;
 
 import android.Manifest;
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -37,6 +38,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.MediaController;
@@ -51,7 +53,9 @@ import com.ashysystem.mbhq.Service.impl.FinisherServiceImpl;
 import com.ashysystem.mbhq.activity.MainActivity;
 import com.ashysystem.mbhq.adapter.MeditationCourseAdapter;
 import com.ashysystem.mbhq.fragment.habit_hacker.MbhqTodayMainFragment;
+import com.ashysystem.mbhq.fragment.habit_hacker.MbhqTodayTwoFragment;
 import com.ashysystem.mbhq.model.GetMeditationCacheExpiryTimeResponse;
+import com.ashysystem.mbhq.model.GetUserPaidStatusModel;
 import com.ashysystem.mbhq.model.MeditationCourseModel;
 
 import com.ashysystem.mbhq.model.MeditationDataViewModel;
@@ -86,6 +90,7 @@ import java.util.Locale;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.schedulers.Schedulers;
+import kotlin.reflect.KFunction;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -164,8 +169,10 @@ public class MeditationFragment extends Fragment {
     List<MeditationCourseModel.Webinar> lstTotalDataM_ = new ArrayList<>();
 
     ImageView img_notaccess;
+    FrameLayout frm_notaccess;
+    Button txt_notaccess;
     ArrayList<Tag> tagArrayList = new ArrayList<>();
-
+     ProgressDialog progressDialog=null;
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -180,7 +187,7 @@ public class MeditationFragment extends Fragment {
         Live_access=sharedPreference.read("LiveChatAccess","");
         Test_acess=sharedPreference.read("TestsAccess","");
         Course_access=sharedPreference.read("CourseAccess","");
-/*if("3".equalsIgnoreCase(accesstype)){
+if("3".equalsIgnoreCase(accesstype)){
     if("false".equalsIgnoreCase(medi_access)){
 
     }else{
@@ -198,7 +205,7 @@ public class MeditationFragment extends Fragment {
 
         }
     }
-}else{*/
+}else{
         Util.sourcepage="meditation";
         Log.i(TAG, "onCreate");
         Util.clearMeditation_onpause="yes";
@@ -212,48 +219,18 @@ public class MeditationFragment extends Fragment {
             getArguments().remove("BACKBUTTONCLICKED");
 
         }
-//}
-
-
-
-
+ }
 
     }
 
+
+
+    @Nullable
     @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        Log.i(TAG, "onActivityCreated");
+        Log.i(TAG, "onCreateView");
 
-        sharedPreference = new SharedPreference(getActivity());
-        medi_access=sharedPreference.read("MeditationAccess","");
-//        medi_access="false";
-        accesstype=sharedPreference.read("accesstype","");
-//        accesstype="3";
-        habit_access=sharedPreference.read("HabitAccess","");
-        eq_access=sharedPreference.read("EqJournalAccess","");
-        forum_access=sharedPreference.read("ForumAccess","");
-        Live_access=sharedPreference.read("LiveChatAccess","");
-        Test_acess=sharedPreference.read("TestsAccess","");
-        Course_access=sharedPreference.read("CourseAccess","");
-
-/*if("3".equalsIgnoreCase(accesstype)){
-    if("false".equalsIgnoreCase(medi_access)){
-
-    }else{
-        factoryForMeditation = Injection.provideViewModelFactoryMeditation(getContext());
-        meditationViewModel = ViewModelProviders.of(requireActivity(), factoryForMeditation).get(MeditationViewModel.class);
-        testViewModel = ViewModelProviders.of(requireActivity()).get(MeditationDataViewModel.class);
-
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (!Settings.System.canWrite(getActivity())) {
-                requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.RECORD_AUDIO}, 289);
-            }
-        }
-    }
-}else{*/
         factoryForMeditation = Injection.provideViewModelFactoryMeditation(getContext());
 //        meditationViewModel = ViewModelProviders.of(requireActivity(), factoryForMeditation).get(MeditationViewModel.class);
         meditationViewModel = new ViewModelProvider(requireActivity(), factoryForMeditation).get(MeditationViewModel.class);
@@ -267,17 +244,7 @@ public class MeditationFragment extends Fragment {
                 requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.RECORD_AUDIO}, 289);
             }
         }
-//}
 
-
-
-    }
-
-    @Nullable
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-
-        Log.i(TAG, "onCreateView");
         sharedPreference = new SharedPreference(getActivity());
         medi_access=sharedPreference.read("MeditationAccess","");
 //        medi_access="false";
@@ -289,7 +256,8 @@ public class MeditationFragment extends Fragment {
         Live_access=sharedPreference.read("LiveChatAccess","");
         Test_acess=sharedPreference.read("TestsAccess","");
         Course_access=sharedPreference.read("CourseAccess","");
-        /*if("3".equalsIgnoreCase(accesstype)){
+
+        if("3".equalsIgnoreCase(accesstype)){
 
             if("false".equalsIgnoreCase(medi_access)){
                 vi = inflater.inflate(R.layout.fragment_meditation, container, false);
@@ -297,7 +265,11 @@ public class MeditationFragment extends Fragment {
                 llLandingOptions = vi.findViewById(R.id.llLandingOptions);
                 llLandingOptions.setVisibility(View.GONE);
                 img_notaccess = vi.findViewById(R.id.img_notaccess_meditation);
+                frm_notaccess = vi.findViewById(R.id.frm_notaccess_meditation);
+                txt_notaccess = vi.findViewById(R.id.txt_notaccess_meditation);
                 img_notaccess.setVisibility(View.VISIBLE);
+                frm_notaccess.setVisibility(View.VISIBLE);
+                txt_notaccess.setVisibility(View.VISIBLE);
                 rlMainBlock.setVisibility(View.GONE);
                 img_notaccess.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -307,23 +279,39 @@ public class MeditationFragment extends Fragment {
                         startActivity(intent);
                     }
                 });
+
+                txt_notaccess.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        getUserPaidStatusApiCall();
+                    }
+                });
+
                 return vi;
             }else{
                 vi = inflater.inflate(R.layout.fragment_meditation, container, false);
                 rlMainBlock = vi.findViewById(R.id.rlMainBlock);
                 img_notaccess = vi.findViewById(R.id.img_notaccess_meditation);
+                frm_notaccess = vi.findViewById(R.id.frm_notaccess_meditation);
+                txt_notaccess = vi.findViewById(R.id.txt_notaccess_meditation);
                 img_notaccess.setVisibility(View.GONE);
+                frm_notaccess.setVisibility(View.GONE);
+                txt_notaccess.setVisibility(View.GONE);
                 rlMainBlock.setVisibility(View.GONE);
                 return vi;
             }
-        }else{*/
+        }else{
         vi = inflater.inflate(R.layout.fragment_meditation, container, false);
         rlMainBlock = vi.findViewById(R.id.rlMainBlock);
         img_notaccess = vi.findViewById(R.id.img_notaccess_meditation);
-        img_notaccess.setVisibility(View.GONE);
+            frm_notaccess = vi.findViewById(R.id.frm_notaccess_meditation);
+            txt_notaccess = vi.findViewById(R.id.txt_notaccess_meditation);
+            img_notaccess.setVisibility(View.GONE);
+            frm_notaccess.setVisibility(View.GONE);
+            txt_notaccess.setVisibility(View.GONE);
         rlMainBlock.setVisibility(View.GONE);
         return vi;
-        // }
+        }
 
 
 
@@ -334,1364 +322,18 @@ public class MeditationFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         Log.i(TAG, "onViewCreated");
 
-        /*if("3".equalsIgnoreCase(accesstype)){
+        if("3".equalsIgnoreCase(accesstype)){
             if("false".equalsIgnoreCase(medi_access)){
 
             }else{
-                Log.i("strMeditationDetailsForBackground",Util.strMeditationDetailsForBackground);
-                if (Util.boolBackGroundServiceRunningMeditation && !Util.strMeditationDetailsForBackground.equals("") && !fromDetailsPage) {
-                    Log.i(TAG, "UTILVALUEEEEEE" + Util.strMeditationDetailsForBackground + ">>>>>");
-                    Util.backto="";
-                    ((MainActivity) requireActivity()).clearCacheForParticularFragment(new MeditationDetailsNew());
-                    MeditationDetailsNew meditationDetails = new MeditationDetailsNew();
-                    Bundle bundle = new Bundle();
-                    bundle.putString("data", Util.strMeditationDetailsForBackground);
-                    meditationDetails.setArguments(bundle);
-                    ((MainActivity) requireActivity()).loadFragment(meditationDetails, "MeditationDetailsNew", null);
-                } else {
-                    // fromDetailsPage = false;
-                }
-
-
-                rlHealingsleep= view.findViewById(R.id.rlHealingsleep);
-                rvCourseM = view.findViewById(R.id.rvCourseM);
-                rvCourseM_main=view.findViewById(R.id.rvCourseM_main);
-                rvCourseM_nointernate=view.findViewById(R.id.rvCourseM_nointernate);
-                rlMindfulness=view.findViewById(R.id.rlMindfulness);
-                sharedPreference = new SharedPreference(getActivity());
-                mLayoutManager = new LinearLayoutManager(getActivity());
-                rvCourseM.setLayoutManager(mLayoutManager);
-                mLayoutManager_main = new LinearLayoutManager(getActivity());
-                rvCourseM_main.setLayoutManager(mLayoutManager_main);
-                mLayoutManager_nointernate = new LinearLayoutManager(getActivity());
-                rvCourseM_nointernate.setLayoutManager(mLayoutManager_nointernate);
-
-                rlFilter = view.findViewById(R.id.rlFilter);
-                imgFilter = view.findViewById(R.id.imgFilter);
-                imgInfoMeditation = view.findViewById(R.id.imgInfoMeditation);
-                edtSearch = view.findViewById(R.id.edtSearch);
-                rlBreath = view.findViewById(R.id.rlBreath);
-                rlMorning = view.findViewById(R.id.rlMorning);
-                rlPowerNap = view.findViewById(R.id.rlPowerNap);
-                rlHealing = view.findViewById(R.id.rlHealing);
-                imgFab = view.findViewById(R.id.imgFab);
-                llLandingOptions = view.findViewById(R.id.llLandingOptions);
-
-                rlBack = view.findViewById(R.id.rlBack);
-                rlBreathTimeBack = view.findViewById(R.id.rlBreathTimeBack);
-                rlNapTimeBack = view.findViewById(R.id.rlNapTimeBack);
-                rlHealingBack = view.findViewById(R.id.rlHealingBack);
-                llTimeTagFilter = view.findViewById(R.id.llTimeTagFilter);
-                llNapTimeTagFilter = view.findViewById(R.id.llNapTimeTagFilter);
-                llHealingTagFilter = view.findViewById(R.id.llHealingTagFilter);
-                rl5Min = view.findViewById(R.id.rl5Min);
-                rl10Min = view.findViewById(R.id.rl10Min);
-                rl20Min = view.findViewById(R.id.rl20Min);
-                rl30Min = view.findViewById(R.id.rl30Min);
-                rlNapTime20Min = view.findViewById(R.id.rlNapTime20Min);
-                rlNapTime90Min = view.findViewById(R.id.rlNapTime90Min);
-                rlPowerUp = view.findViewById(R.id.rlPowerUp);
-                rlHealingMeditations = view.findViewById(R.id.rlHealingMeditations);
-                rlGuidedMeditations = view.findViewById(R.id.rlGuidedMeditations);
-                rlVisualisations = view.findViewById(R.id.rlVisualisations);
-                rlNoMeditationDownload = view.findViewById(R.id.rlNoMeditationDownload);
-                txtBackDownload = view.findViewById(R.id.txtBackDownload);
-                txtNoDataFound = view.findViewById(R.id.txtNoDataFound);
-                clNoFavouriteFound = view.findViewById(R.id.clNoFavouriteFound);
-                txtFavSuggestion = view.findViewById(R.id.txtFavSuggestion);
-                rlMainBlock.setVisibility(View.GONE);
-                btnFindMyLevel = vi.findViewById(R.id.btnFindMyLevel);
-                swipeLayout = vi.findViewById(R.id.swipeLayout);
-
-                ImageSpan imageSpan = new ImageSpan(requireContext(), R.drawable.mbhq_heart_active_m);
-                SpannableString spannableString = new SpannableString("Click the [heart icon pic] next to the meditations you love most and they will appear here.");
-
-                spannableString.setSpan(imageSpan, 10, 26, 0);
-                txtFavSuggestion.setText(spannableString);
-
-                sharedPreference = new SharedPreference(getActivity());
-                if (sharedPreference.read("dtPos", "").equals("") || Integer.parseInt(sharedPreference.read("dtPos", "")) == 1) {
-                    imgFilter.setBackgroundResource(R.drawable.mbhq_filter);
-                } else {
-                    imgFilter.setBackgroundResource(R.drawable.mbhq_filter_green);
-                }
-
-                rlBack.setOnClickListener(v -> {
-
-                    ConnectivityManager connectivityManager = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
-                    NetworkInfo activeNetwork = connectivityManager.getActiveNetworkInfo();
-                    boolean isConnected = activeNetwork != null && activeNetwork.isConnectedOrConnecting();
-                    if (!isConnected) {
-
-                    }else{
-
-                        sharedPreference.clear("med");
-                        sharedPreference.clear("medT");
-                        if (Connection.checkConnection(requireContext())) {
-//                rlMainBlock.setVisibility(View.GONE);
-//                llLandingOptions.setVisibility(View.VISIBLE);
-
-                            if(backto.equalsIgnoreCase("")){
-                                backto="";
-                                edtSearch.setText("");
-                                // Util.str_withfilterlist_afterbackfrommeditationdetails="";
-                                rlMainBlock.setVisibility(View.GONE);
-                                llLandingOptions.setVisibility(View.VISIBLE);
-                            }else if("llTimeTagFilter".equalsIgnoreCase(backto)){
-                                backto="";
-                                edtSearch.setText("");
-                                rlMainBlock.setVisibility(View.GONE);
-                                llLandingOptions.setVisibility(View.GONE);
-                                llTimeTagFilter.setVisibility(View.VISIBLE);
-                            }else if("llNapTimeTagFilter".equalsIgnoreCase(backto)){
-                                backto="";
-                                edtSearch.setText("");
-                                rlMainBlock.setVisibility(View.GONE);
-                                llLandingOptions.setVisibility(View.GONE);
-                                llNapTimeTagFilter.setVisibility(View.VISIBLE);
-                            }else if("llHealingTagFilter".equalsIgnoreCase(backto)){
-                                backto="";
-                                edtSearch.setText("");
-                                rlMainBlock.setVisibility(View.GONE);
-                                llLandingOptions.setVisibility(View.GONE);
-                                llHealingTagFilter.setVisibility(View.VISIBLE);
-                            }else{
-                                backto="";
-                                edtSearch.setText("");
-                                rlMainBlock.setVisibility(View.GONE);
-                                rlMainBlock.setVisibility(View.GONE);
-                                //  llLandingOptions.setVisibility(View.VISIBLE);
-                            }
-
-
-
-
-                        } else {
-
-                            backto="";
-                            edtSearch.setText("");
-                            rlMainBlock.setVisibility(View.GONE);
-                            rlMainBlock.setVisibility(View.GONE);
-                            //llLandingOptions.setVisibility(View.VISIBLE);
-
-//                ((MainActivity) requireActivity()).clearCacheForParticularFragment(new MbhqTodayMainFragment());
-//                ((MainActivity) requireActivity()).loadFragment(new MbhqTodayMainFragment(), "MbhqTodayMain", null);
-                        }
-                    }
-
-                });
-                rlBreathTimeBack.setOnClickListener(v -> {
-                    sharedPreference.clear("med");
-                    sharedPreference.clear("medT");
-                    llLandingOptions.setVisibility(View.VISIBLE);
-                    llTimeTagFilter.setVisibility(View.GONE);
-                });
-                rlNapTimeBack.setOnClickListener(v -> {
-                    sharedPreference.clear("med");
-                    sharedPreference.clear("medT");
-                    llLandingOptions.setVisibility(View.VISIBLE);
-                    llNapTimeTagFilter.setVisibility(View.GONE);
-                });
-                rlHealingBack.setOnClickListener(v -> {
-                    sharedPreference.clear("med");
-                    sharedPreference.clear("medT");
-                    llLandingOptions.setVisibility(View.VISIBLE);
-                    llHealingTagFilter.setVisibility(View.GONE);
-                });
-                rl5Min.setOnClickListener(v -> {
-                    backto="llTimeTagFilter";
-
-                    sharedPreference.write("medT", "", 5 + "");
-                    imgFilter.setBackgroundResource(R.drawable.mbhq_filter_green);
-                    arrSelectedDuration.clear();
-                    arrSelectedDuration.add("5 Min");
-                    arrDurationChoice.add(5);
-                    funSortdatabyTimeOutside(5);
-
-                });
-                rl10Min.setOnClickListener(v -> {
-                    backto="llTimeTagFilter";
-                    sharedPreference.write("medT", "", 10 + "");
-                    imgFilter.setBackgroundResource(R.drawable.mbhq_filter_green);
-                    arrSelectedDuration.clear();
-                    arrSelectedDuration.add("10 Min");
-                    arrDurationChoice.add(10);
-                    funSortdatabyTimeOutside(10);
-
-                });
-                rl20Min.setOnClickListener(v -> {
-                    backto="llTimeTagFilter";
-                    sharedPreference.write("medT", "", 20 + "");
-                    imgFilter.setBackgroundResource(R.drawable.mbhq_filter_green);
-                    arrSelectedDuration.clear();
-                    arrSelectedDuration.add("20 Min");
-                    arrDurationChoice.add(20);
-                    funSortdatabyTimeOutside(20);
-
-                });
-                rl30Min.setOnClickListener(v -> {
-                    backto="llTimeTagFilter";
-                    sharedPreference.write("medT", "", 30 + "");
-                    imgFilter.setBackgroundResource(R.drawable.mbhq_filter_green);
-                    arrSelectedDuration.clear();
-                    arrSelectedDuration.add("30 Min");
-                    arrDurationChoice.add(30);
-                    funSortdatabyTimeOutside(30);
-
-                });
-
-                rlMorning.setOnClickListener(v -> {
-
-                    backto="llNapTimeTagFilter";
-                    sharedPreference.write("med", "", 2 + "");
-                    if (testViewModel.arrJson != null) {
-                        if (lstFilterTagDataMorning.size() == 0) {
-                            for (int k = 0; k < testViewModel.arrJson.length(); k++) {
-                                try {
-                                    JSONObject innerJson = testViewModel.arrJson.getJSONObject(k);
-                                    String tagName = innerJson.getString("Description");
-                                    for (int p = 0; p < testViewModel.lstTotalDataM.size(); p++) {
-                                        for (int s = 0; s < testViewModel.lstTotalDataM.get(p).getTags().size(); s++) {
-                                            if (testViewModel.lstTotalDataM.get(p).getTags().get(s).equalsIgnoreCase(tagName)) {
-
-                                                if (tagName.equalsIgnoreCase("Morning Routine")) {
-                                                    lstFilterTagDataMorning.add(testViewModel.lstTotalDataM.get(p));
-                                                    arrTagChoice.add("Morning Routine");
-                                                }
-
-                                            }
-                                        }
-                                    }
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
-                                }
-                            }
-
-                        }
-                        arrSelectedTag.clear();
-                        arrSelectedTag.add("Morning Routine");
-                        llLandingOptions.setVisibility(View.GONE);
-                        rlMainBlock.setVisibility(View.VISIBLE);
-                        rvCourseM.setAdapter(null);
-                        llNapTimeTagFilter.setVisibility(View.GONE);
-                        if(0==Util.withfilterlist_afterbackfrommeditationdetails.size()){
-                            Util.withfilterlist_afterbackfrommeditationdetails.addAll(lstFilterTagDataMorning);
-                            Util.str_withfilterlist_afterbackfrommeditationdetails=edtSearch.getText().toString().trim();
-                        }else{
-                            Util.withfilterlist_afterbackfrommeditationdetails.clear();
-                            Util.withfilterlist_afterbackfrommeditationdetails.addAll(lstFilterTagDataMorning);
-                            Util.str_withfilterlist_afterbackfrommeditationdetails=edtSearch.getText().toString().trim();
-                        }
-                        loadAvailableAdapterM(lstFilterTagDataMorning, lstFilterTagDataMorning.size(),1);
-
-                    }
-
-
-                });
-
-                rlNapTime20Min.setOnClickListener(v -> {
-                    backto="llNapTimeTagFilter";
-                    sharedPreference.write("medT", "", 20 + "");
-                    imgFilter.setBackgroundResource(R.drawable.mbhq_filter_green);
-                    arrSelectedDuration.clear();
-                    arrSelectedDuration.add("20 Min");
-                    arrDurationChoice.add(20);
-                    sortPowerNapDataByTimeOutside(20);
-                });
-                rlNapTime90Min.setOnClickListener(v -> {
-                    backto="llNapTimeTagFilter";
-                    sharedPreference.write("medT", "", 90 + "");
-                    imgFilter.setBackgroundResource(R.drawable.mbhq_filter_green);
-                    arrSelectedDuration.clear();
-                    arrSelectedDuration.add("90 Min");
-                    arrDurationChoice.add(90);
-                    sortPowerNapDataByTimeOutside(90);
-                });
-                rlPowerUp.setOnClickListener(v -> {
-                    edtSearch.setText("");
-                    backto="llNapTimeTagFilter";
-                    //sharedPreference.write("medT", "", 90 + "");
-                    imgFilter.setBackgroundResource(R.drawable.mbhq_filter_green);
-                    //arrSelectedDuration.clear();
-                    //arrSelectedDuration.add("90 Min");
-                    //arrDurationChoice.add(90);
-                    sortPowerNapDataByTimeOutside();
-                });
-                rlGuidedMeditations.setOnClickListener(v -> {
-                    backto="llHealingTagFilter";
-                    imgFilter.setBackgroundResource(R.drawable.mbhq_filter_green);
-                    sharedPreference.write("med", "", 7 + "");
-                    sortHealingDataByTag("Guided Meditation");
-                });
-                rlVisualisations.setOnClickListener(v -> {
-                    backto="llHealingTagFilter";
-                    imgFilter.setBackgroundResource(R.drawable.mbhq_filter_green);
-                    sharedPreference.write("med", "", 6 + "");
-                    sortHealingDataByTag("Visualisations");
-                });
-                rlHealingMeditations.setOnClickListener(v -> {
-                    backto="llHealingTagFilter";
-                    imgFilter.setBackgroundResource(R.drawable.mbhq_filter_green);
-                    sharedPreference.write("med", "", 5 + "");
-                    sortHealingDataByTag("Healing Meditations");
-                });
-                rlHealingsleep.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        backto="llHealingTagFilter";
-                        lstFilterTagDataMorning.clear();
-                        if (lstFilterTagDataMorning.size() == 0) {
-                            for (int p = 0; p < testViewModel.lstTotalDataM.size(); p++) {
-                                if(testViewModel.lstTotalDataM.get(p).getTags().size()>1){
-                                    for (int s = 0; s < testViewModel.lstTotalDataM.get(p).getTags().size(); s++) {
-                                        if (testViewModel.lstTotalDataM.get(p).getTags().get(s).equalsIgnoreCase("Sleep")) {
-                                            lstFilterTagDataMorning.add(testViewModel.lstTotalDataM.get(p));
-                                            arrTagChoice.add("Sleep");
-                                        }
-                                    }
-                                }
-                            }
-
-                            arrSelectedTag.clear();
-                            arrSelectedTag.add("Sleep");
-                            llLandingOptions.setVisibility(View.GONE);
-                            rlMainBlock.setVisibility(View.VISIBLE);
-                            rvCourseM.setAdapter(null);
-                            llNapTimeTagFilter.setVisibility(View.GONE);
-                            llHealingTagFilter.setVisibility(View.GONE);
-                            if(0==Util.withfilterlist_afterbackfrommeditationdetails.size()){
-                                Util.withfilterlist_afterbackfrommeditationdetails.addAll(lstFilterTagDataMorning);
-                                Util.str_withfilterlist_afterbackfrommeditationdetails=edtSearch.getText().toString().trim();
-                            }else{
-                                Util.withfilterlist_afterbackfrommeditationdetails.clear();
-                                Util.withfilterlist_afterbackfrommeditationdetails.addAll(lstFilterTagDataMorning);
-                                Util.str_withfilterlist_afterbackfrommeditationdetails=edtSearch.getText().toString().trim();
-                            }
-                            loadAvailableAdapterM(lstFilterTagDataMorning, lstFilterTagDataMorning.size(),1);
-                        }
-                    }
-                });
-
-                imgFab.setOnClickListener(v -> {
-                    edtSearch.setText("");
-                    backto="";
-                    imgFilter.setBackgroundResource(R.drawable.mbhq_filter_green);
-                    favChk = true;
-                    List<MeditationCourseModel.Webinar> lstFavModel = new ArrayList<>();
-                    for (int x = 0; x < testViewModel.lstTotalDataM.size(); x++) {
-
-                        if(null==testViewModel.lstTotalDataM.get(x).getLikes()){
-
-                        }else{
-                            if (testViewModel.lstTotalDataM.get(x).getLikes()) {
-                                lstFavModel.add(testViewModel.lstTotalDataM.get(x));
-                            }
-                        }
-
-                    }
-                    llLandingOptions.setVisibility(View.GONE);
-                    llTimeTagFilter.setVisibility(View.GONE);
-                    rlMainBlock.setVisibility(View.VISIBLE);
-                    rvCourseM.setAdapter(null);
-                    loadAvailableAdapterM(lstFavModel, lstFavModel.size(), true);
-
-                });
-                rlBreath.setOnClickListener(v -> {
-                    edtSearch.setText("");
-                    if (testViewModel.arrJson != null) {
-                        sharedPreference.write("med", "", 1 + "");
-                        arrSelectedTag.clear();
-                        arrSelectedTag.add("Breath Control");
-                        arrTagChoice.add("Breath Control");
-                        sharedPreference.write("med", "", 1 + "");
-                        hideAllChoiceContainers();
-                        llTimeTagFilter.setVisibility(View.VISIBLE);
-                        if (lstFilterTagDataBreath.size() == 0) {
-                            for (int k = 0; k < testViewModel.arrJson.length(); k++) {
-                                try {
-                                    JSONObject innerJson = testViewModel.arrJson.getJSONObject(k);
-                                    String tagName = innerJson.getString("Description");
-                                    for (int p = 0; p < testViewModel.lstTotalDataM.size(); p++) {
-                                        for (int s = 0; s < testViewModel.lstTotalDataM.get(p).getTags().size(); s++) {
-                                            if (testViewModel.lstTotalDataM.get(p).getTags().get(s).equalsIgnoreCase(tagName)) {
-                                                if (tagName.equalsIgnoreCase("Breath Control"))
-                                                    lstFilterTagDataBreath.add(testViewModel.lstTotalDataM.get(p));
-
-                                            }
-                                        }
-                                    }
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
-                                }
-                            }
-                        }
-
-                    }
-
-                });
-
-                rlMindfulness.setOnClickListener(new View.OnClickListener() {
-
-                    @Override
-                    public void onClick(View view) {
-                        edtSearch.setText("");
-                        backto="";
-                        lstFilterTagDataMorning.clear();
-                        if (lstFilterTagDataMorning.size() == 0) {
-                            for (int p = 0; p < testViewModel.lstTotalDataM.size(); p++) {
-                                if(testViewModel.lstTotalDataM.get(p).getTags().size()>1){
-                                    for (int s = 0; s < testViewModel.lstTotalDataM.get(p).getTags().size(); s++) {
-                                        if (testViewModel.lstTotalDataM.get(p).getTags().get(s).equalsIgnoreCase("Mindfulness")) {
-                                            lstFilterTagDataMorning.add(testViewModel.lstTotalDataM.get(p));
-                                            arrTagChoice.add("Mindfulness");
-                                        }
-                                    }
-                                }
-
-                            }
-                            arrSelectedTag.clear();
-                            arrSelectedTag.add("Mindfulness");
-                            llLandingOptions.setVisibility(View.GONE);
-                            rlMainBlock.setVisibility(View.VISIBLE);
-                            rvCourseM.setAdapter(null);
-                            llNapTimeTagFilter.setVisibility(View.GONE);
-                            if(0==Util.withfilterlist_afterbackfrommeditationdetails.size()){
-                                Util.withfilterlist_afterbackfrommeditationdetails.addAll(lstFilterTagDataMorning);
-                                Util.str_withfilterlist_afterbackfrommeditationdetails=edtSearch.getText().toString().trim();
-                            }else{
-                                Util.withfilterlist_afterbackfrommeditationdetails.clear();
-                                Util.withfilterlist_afterbackfrommeditationdetails.addAll(lstFilterTagDataMorning);
-                                Util.str_withfilterlist_afterbackfrommeditationdetails=edtSearch.getText().toString().trim();
-                            }
-                            loadAvailableAdapterM(lstFilterTagDataMorning, lstFilterTagDataMorning.size(),1);
-                        }
-                    }
-                });
-                rlPowerNap.setOnClickListener(v -> {
-                    edtSearch.setText("");
-                    sharedPreference.write("med", "", 3 + "");
-                    if (testViewModel.arrJson != null) {
-                        if (lstFilterTagDataPower.size() == 0) {
-                            for (int k = 0; k < testViewModel.arrJson.length(); k++) {
-                                try {
-                                    JSONObject innerJson = testViewModel.arrJson.getJSONObject(k);
-                                    String tagName = innerJson.getString("Description");
-                                    for (int p = 0; p < testViewModel.lstTotalDataM.size(); p++) {
-                                        for (int s = 0; s < testViewModel.lstTotalDataM.get(p).getTags().size(); s++) {
-                                            if (testViewModel.lstTotalDataM.get(p).getTags().get(s).equalsIgnoreCase(tagName)) {
-
-                                                if (tagName.equalsIgnoreCase("Power Naps")) {
-                                                    lstFilterTagDataPower.add(testViewModel.lstTotalDataM.get(p));
-                                                    arrTagChoice.add("Power Naps");
-                                                }
-                                            }
-                                        }
-                                    }
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
-                                }
-                            }
-                        }
-                        arrSelectedTag.clear();
-                        arrSelectedTag.add("Power Naps");
-                        hideAllChoiceContainers();
-                        llNapTimeTagFilter.setVisibility(View.VISIBLE);
-
-                    }
-
-                });
-
-                rlHealing.setOnClickListener(v -> {
-                    edtSearch.setText("");
-                    sharedPreference.write("med", "", 4 + "");
-                    if (testViewModel.arrJson != null) {
-                        if (lstFilterTagDataHealing.size() == 0) {
-                            for (int k = 0; k < testViewModel.arrJson.length(); k++) {
-                                try {
-                                    JSONObject innerJson = testViewModel.arrJson.getJSONObject(k);
-                                    String tagName = innerJson.getString("Description");
-                                    for (int p = 0; p < testViewModel.lstTotalDataM.size(); p++) {
-                                        for (int s = 0; s < testViewModel.lstTotalDataM.get(p).getTags().size(); s++) {
-                                            if (testViewModel.lstTotalDataM.get(p).getTags().get(s).equalsIgnoreCase(tagName)) {
-
-                                                if (tagName.equalsIgnoreCase("Healing Meditations") || tagName.equalsIgnoreCase("Visualisations") || tagName.equalsIgnoreCase("Guided Meditation")) {
-                                                    lstFilterTagDataHealing.add(testViewModel.lstTotalDataM.get(p));
-                                                    arrTagChoice.add("Healing Meditations");
-                                                }
-                                            }
-                                        }
-                                    }
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
-                                }
-                            }
-                        }
-                        arrSelectedDuration.clear();
-                        arrDurationChoice.clear();
-                        hideAllChoiceContainers();
-                        llHealingTagFilter.setVisibility(View.VISIBLE);
-                    }
-
-                });
-
-                rlFilter.setOnClickListener(v -> {
-                    if (testViewModel.arrJson != null)
-                        openFilterDialog(true, false);
-
-                });
-
-                imgInfoMeditation.setOnClickListener(v -> {
-                    //String meditationInfoMediaUrl = "https://player.vimeo.com/external/391432653.sd.mp4?s=1405198804056d0157af37e37ae4b9d3bc032db2&profile_id=165";
-                    //openFullscreenVideoDialog(meditationInfoMediaUrl);
-                    ((MainActivity) requireActivity()).funTabBarforReward(false);
-                });
-
-                txtBackDownload.setOnClickListener(v -> ((MainActivity) requireActivity()).loadFragment(new MbhqTodayMainFragment(), "MbhqTodayMain", null));
-
-
-
-                swipeLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-                    @Override
-                    public void onRefresh() {
-
-                        getMeditation();
-
-                        swipeLayout.setRefreshing(false);
-                    }
-                });
-
-                btnFindMyLevel.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        SharedPreference sharedPreference = new SharedPreference(getContext());
-                        String URL = "https://meditate.mindbodyhq.com/members?token=" + sharedPreference.read("MEDITATION_TEST_NOW_TOKEN", "");
-                        Uri uri = Uri.parse(URL);
-                        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-                        intent.setPackage("com.android.chrome");
-                        requireActivity().startActivity(intent);
-                    }
-                });
-                edtSearch.addTextChangedListener(new TextWatcher() {
-
-                    @Override
-                    public void afterTextChanged(Editable s) {
-
-
-
-                    }
-
-                    @Override
-                    public void beforeTextChanged(CharSequence s, int start,
-                                                  int count, int after) {
-
-               *//* withfilterlist.clear();
-                withfilterlist= ((MeditationCourseAdapter) rvCourseM.getAdapter()).getArrayList();
-*//*
-                    }
-
-                    @Override
-                    public void onTextChanged(CharSequence s, int start,
-                                              int before, int count) {
-
-
-                        if(s.toString().length()>0){
-                            List<MeditationCourseModel.Webinar> avaiavlelist1 = new ArrayList<>();
-                            ConnectivityManager connectivityManager = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
-                            NetworkInfo activeNetwork = connectivityManager.getActiveNetworkInfo();
-                            boolean isConnected = activeNetwork != null && activeNetwork.isConnectedOrConnecting();
-                            if (!isConnected) {
-                                rlMainBlock.setVisibility(View.VISIBLE);
-                                rvCourseM.setVisibility(View.VISIBLE);
-                                rlNoMeditationDownload.setVisibility(View.GONE);
-                                rvCourseM_main.setVisibility(View.GONE);
-                                rvCourseM_nointernate.setVisibility(View.GONE);
-                                if(0==Util.withfilterlist_afterbackfrommeditationdetails.size()){
-                                    Util.withfilterlist_afterbackfrommeditationdetails.addAll(avaiavlelist1);
-                                    Util.str_withfilterlist_afterbackfrommeditationdetails=edtSearch.getText().toString().trim();
-                                }else{
-                                    Util.withfilterlist_afterbackfrommeditationdetails.clear();
-                                    Util.withfilterlist_afterbackfrommeditationdetails.addAll(avaiavlelist1);
-                                    Util.str_withfilterlist_afterbackfrommeditationdetails=edtSearch.getText().toString().trim();
-                                }
-                                loadAvailableAdapterM(avaiavlelist1, avaiavlelist1.size(),0);
-                                if (rvCourseM != null && rvCourseM.getAdapter() != null) {
-                                    ((MeditationCourseAdapter) rvCourseM.getAdapter()).search(s.toString());
-
-                                }
-                            }else{
-                                Log.i("m_called","1");
-                                SharedPreferences preferences = getActivity().getSharedPreferences("MyAppPrefs1", Context.MODE_PRIVATE);
-                                String jsonData = preferences.getString("my_total_medicine", "");
-                                List<MeditationCourseModel.Webinar> avaiavlelist = new ArrayList<>();
-                                avaiavlelist = new Gson().fromJson(jsonData, new TypeToken<List<MeditationCourseModel.Webinar>>() {}.getType());
-                                Log.i("concatinatelist2",String.valueOf(avaiavlelist.size()));
-
-                                rlMainBlock.setVisibility(View.VISIBLE);
-                                rvCourseM.setVisibility(View.VISIBLE);
-                                rlNoMeditationDownload.setVisibility(View.GONE);
-                                rvCourseM_main.setVisibility(View.GONE);
-                                rvCourseM_nointernate.setVisibility(View.GONE);
-                                if(0==Util.withfilterlist_afterbackfrommeditationdetails.size()){
-                                    Log.i("m_called","2");
-                                    Util.withfilterlist_afterbackfrommeditationdetails.addAll(avaiavlelist);
-                                    Util.str_withfilterlist_afterbackfrommeditationdetails=edtSearch.getText().toString().trim();
-                                }else{
-                                    Log.i("m_called","3");
-                                    Util.withfilterlist_afterbackfrommeditationdetails.clear();
-                                    Util.withfilterlist_afterbackfrommeditationdetails.addAll(avaiavlelist);
-                                    Util.str_withfilterlist_afterbackfrommeditationdetails=edtSearch.getText().toString().trim();
-                                }
-                                loadAvailableAdapterM(avaiavlelist, avaiavlelist.size(),0);
-                                if (rvCourseM != null && rvCourseM.getAdapter() != null) {
-                                    ((MeditationCourseAdapter) rvCourseM.getAdapter()).search(s.toString());
-
-                                }
-                            }
-
-                        }else if(s.toString().length()==0){
-                            Log.i("m_called","4");
-                            // Log.i("withfilterlist1","called");
-
-                            rlMainBlock.setVisibility(View.VISIBLE);
-                            rvCourseM.setVisibility(View.VISIBLE);
-
-                            rlNoMeditationDownload.setVisibility(View.GONE);
-                            rvCourseM_main.setVisibility(View.GONE);
-                            rvCourseM_nointernate.setVisibility(View.GONE);
-
-
-                            if(!"TRUE".equalsIgnoreCase(fromDetailsPage1)){
-
-                                Log.i("m_called","5");
-                                loadAvailableAdapterM(withfilterlist, withfilterlist.size(),0);
-                                if (rvCourseM != null && rvCourseM.getAdapter() != null) {
-                                    ((MeditationCourseAdapter) rvCourseM.getAdapter()).search(s.toString());
-
-
-                                }
-                            }else{
-                                Log.i("m_called","6");
-                                loadAvailableAdapterM( Util.withfilterlist,  Util.withfilterlist.size(),0);
-                                if (rvCourseM != null && rvCourseM.getAdapter() != null) {
-                                    ((MeditationCourseAdapter) rvCourseM.getAdapter()).search(s.toString());
-
-
-                                }
-                            }
-
-
-
-                        }
-
-                    }
-                });
+                init(view);
             }
-        }else{*/
-        Log.i("strMeditationDetailsForBackground",Util.strMeditationDetailsForBackground);
-        if (Util.boolBackGroundServiceRunningMeditation && !Util.strMeditationDetailsForBackground.equals("") && !fromDetailsPage) {
-            Log.i(TAG, "UTILVALUEEEEEE" + Util.strMeditationDetailsForBackground + ">>>>>");
-            Util.backto="";
-            ((MainActivity) requireActivity()).clearCacheForParticularFragment(new MeditationDetailsNew());
-            MeditationDetailsNew meditationDetails = new MeditationDetailsNew();
-            Bundle bundle = new Bundle();
-            bundle.putString("data", Util.strMeditationDetailsForBackground);
-            meditationDetails.setArguments(bundle);
-            ((MainActivity) requireActivity()).loadFragment(meditationDetails, "MeditationDetailsNew", null);
-        } else {
-            // fromDetailsPage = false;
-        }
-
-
-        rlHealingsleep= view.findViewById(R.id.rlHealingsleep);
-        rvCourseM = view.findViewById(R.id.rvCourseM);
-        rvCourseM_main=view.findViewById(R.id.rvCourseM_main);
-        rvCourseM_nointernate=view.findViewById(R.id.rvCourseM_nointernate);
-        rlMindfulness=view.findViewById(R.id.rlMindfulness);
-        sharedPreference = new SharedPreference(getActivity());
-        mLayoutManager = new LinearLayoutManager(getActivity());
-        rvCourseM.setLayoutManager(mLayoutManager);
-        mLayoutManager_main = new LinearLayoutManager(getActivity());
-        rvCourseM_main.setLayoutManager(mLayoutManager_main);
-        mLayoutManager_nointernate = new LinearLayoutManager(getActivity());
-        rvCourseM_nointernate.setLayoutManager(mLayoutManager_nointernate);
-
-        rlFilter = view.findViewById(R.id.rlFilter);
-        imgFilter = view.findViewById(R.id.imgFilter);
-        imgInfoMeditation = view.findViewById(R.id.imgInfoMeditation);
-        edtSearch = view.findViewById(R.id.edtSearch);
-        rlBreath = view.findViewById(R.id.rlBreath);
-        rlMorning = view.findViewById(R.id.rlMorning);
-        rlPowerNap = view.findViewById(R.id.rlPowerNap);
-        rlHealing = view.findViewById(R.id.rlHealing);
-        imgFab = view.findViewById(R.id.imgFab);
-        llLandingOptions = view.findViewById(R.id.llLandingOptions);
-
-        rlBack = view.findViewById(R.id.rlBack);
-        rlBreathTimeBack = view.findViewById(R.id.rlBreathTimeBack);
-        rlNapTimeBack = view.findViewById(R.id.rlNapTimeBack);
-        rlHealingBack = view.findViewById(R.id.rlHealingBack);
-        llTimeTagFilter = view.findViewById(R.id.llTimeTagFilter);
-        llNapTimeTagFilter = view.findViewById(R.id.llNapTimeTagFilter);
-        llHealingTagFilter = view.findViewById(R.id.llHealingTagFilter);
-        rl5Min = view.findViewById(R.id.rl5Min);
-        rl10Min = view.findViewById(R.id.rl10Min);
-        rl20Min = view.findViewById(R.id.rl20Min);
-        rl30Min = view.findViewById(R.id.rl30Min);
-        rlNapTime20Min = view.findViewById(R.id.rlNapTime20Min);
-        rlNapTime90Min = view.findViewById(R.id.rlNapTime90Min);
-        rlPowerUp = view.findViewById(R.id.rlPowerUp);
-        rlHealingMeditations = view.findViewById(R.id.rlHealingMeditations);
-        rlGuidedMeditations = view.findViewById(R.id.rlGuidedMeditations);
-        rlVisualisations = view.findViewById(R.id.rlVisualisations);
-        rlNoMeditationDownload = view.findViewById(R.id.rlNoMeditationDownload);
-        txtBackDownload = view.findViewById(R.id.txtBackDownload);
-        txtNoDataFound = view.findViewById(R.id.txtNoDataFound);
-        clNoFavouriteFound = view.findViewById(R.id.clNoFavouriteFound);
-        txtFavSuggestion = view.findViewById(R.id.txtFavSuggestion);
-        rlMainBlock.setVisibility(View.GONE);
-        btnFindMyLevel = vi.findViewById(R.id.btnFindMyLevel);
-        swipeLayout = vi.findViewById(R.id.swipeLayout);
-
-        ImageSpan imageSpan = new ImageSpan(requireContext(), R.drawable.mbhq_heart_active_m);
-        SpannableString spannableString = new SpannableString("Click the [heart icon pic] next to the meditations you love most and they will appear here.");
-
-        spannableString.setSpan(imageSpan, 10, 26, 0);
-        txtFavSuggestion.setText(spannableString);
-
-        sharedPreference = new SharedPreference(getActivity());
-        if (sharedPreference.read("dtPos", "").equals("") || Integer.parseInt(sharedPreference.read("dtPos", "")) == 1) {
-            imgFilter.setBackgroundResource(R.drawable.mbhq_filter);
-        } else {
-            imgFilter.setBackgroundResource(R.drawable.mbhq_filter_green);
-        }
-
-        rlBack.setOnClickListener(v -> {
-
-            ConnectivityManager connectivityManager = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
-            NetworkInfo activeNetwork = connectivityManager.getActiveNetworkInfo();
-            boolean isConnected = activeNetwork != null && activeNetwork.isConnectedOrConnecting();
-            if (!isConnected) {
-
-            }else{
-
-                sharedPreference.clear("med");
-                sharedPreference.clear("medT");
-                if (Connection.checkConnection(requireContext())) {
-//                rlMainBlock.setVisibility(View.GONE);
-//                llLandingOptions.setVisibility(View.VISIBLE);
-
-                    if(backto.equalsIgnoreCase("")){
-                        backto="";
-                        edtSearch.setText("");
-                        // Util.str_withfilterlist_afterbackfrommeditationdetails="";
-                        rlMainBlock.setVisibility(View.GONE);
-                        llLandingOptions.setVisibility(View.VISIBLE);
-                    }else if("llTimeTagFilter".equalsIgnoreCase(backto)){
-                        backto="";
-                        edtSearch.setText("");
-                        rlMainBlock.setVisibility(View.GONE);
-                        llLandingOptions.setVisibility(View.GONE);
-                        llTimeTagFilter.setVisibility(View.VISIBLE);
-                    }else if("llNapTimeTagFilter".equalsIgnoreCase(backto)){
-                        backto="";
-                        edtSearch.setText("");
-                        rlMainBlock.setVisibility(View.GONE);
-                        llLandingOptions.setVisibility(View.GONE);
-                        llNapTimeTagFilter.setVisibility(View.VISIBLE);
-                    }else if("llHealingTagFilter".equalsIgnoreCase(backto)){
-                        backto="";
-                        edtSearch.setText("");
-                        rlMainBlock.setVisibility(View.GONE);
-                        llLandingOptions.setVisibility(View.GONE);
-                        llHealingTagFilter.setVisibility(View.VISIBLE);
-                    }else{
-                        backto="";
-                        edtSearch.setText("");
-                        rlMainBlock.setVisibility(View.GONE);
-                        rlMainBlock.setVisibility(View.GONE);
-                        //  llLandingOptions.setVisibility(View.VISIBLE);
-                    }
-
-
-
-
-                } else {
-
-                    backto="";
-                    edtSearch.setText("");
-                    rlMainBlock.setVisibility(View.GONE);
-                    rlMainBlock.setVisibility(View.GONE);
-                    //llLandingOptions.setVisibility(View.VISIBLE);
-
-//                ((MainActivity) requireActivity()).clearCacheForParticularFragment(new MbhqTodayMainFragment());
-//                ((MainActivity) requireActivity()).loadFragment(new MbhqTodayMainFragment(), "MbhqTodayMain", null);
-                }
-            }
-
-        });
-        rlBreathTimeBack.setOnClickListener(v -> {
-            sharedPreference.clear("med");
-            sharedPreference.clear("medT");
-            llLandingOptions.setVisibility(View.VISIBLE);
-            llTimeTagFilter.setVisibility(View.GONE);
-        });
-        rlNapTimeBack.setOnClickListener(v -> {
-            sharedPreference.clear("med");
-            sharedPreference.clear("medT");
-            llLandingOptions.setVisibility(View.VISIBLE);
-            llNapTimeTagFilter.setVisibility(View.GONE);
-        });
-        rlHealingBack.setOnClickListener(v -> {
-            sharedPreference.clear("med");
-            sharedPreference.clear("medT");
-            llLandingOptions.setVisibility(View.VISIBLE);
-            llHealingTagFilter.setVisibility(View.GONE);
-        });
-        rl5Min.setOnClickListener(v -> {
-            backto="llTimeTagFilter";
-
-            sharedPreference.write("medT", "", 5 + "");
-            imgFilter.setBackgroundResource(R.drawable.mbhq_filter_green);
-            arrSelectedDuration.clear();
-            arrSelectedDuration.add("5 Min");
-            arrDurationChoice.add(5);
-            funSortdatabyTimeOutside(5);
-
-        });
-        rl10Min.setOnClickListener(v -> {
-            backto="llTimeTagFilter";
-            sharedPreference.write("medT", "", 10 + "");
-            imgFilter.setBackgroundResource(R.drawable.mbhq_filter_green);
-            arrSelectedDuration.clear();
-            arrSelectedDuration.add("10 Min");
-            arrDurationChoice.add(10);
-            funSortdatabyTimeOutside(10);
-
-        });
-        rl20Min.setOnClickListener(v -> {
-            backto="llTimeTagFilter";
-            sharedPreference.write("medT", "", 20 + "");
-            imgFilter.setBackgroundResource(R.drawable.mbhq_filter_green);
-            arrSelectedDuration.clear();
-            arrSelectedDuration.add("20 Min");
-            arrDurationChoice.add(20);
-            funSortdatabyTimeOutside(20);
-
-        });
-        rl30Min.setOnClickListener(v -> {
-            backto="llTimeTagFilter";
-            sharedPreference.write("medT", "", 30 + "");
-            imgFilter.setBackgroundResource(R.drawable.mbhq_filter_green);
-            arrSelectedDuration.clear();
-            arrSelectedDuration.add("30 Min");
-            arrDurationChoice.add(30);
-            funSortdatabyTimeOutside(30);
-
-        });
-
-        rlMorning.setOnClickListener(v -> {
-
-            backto="llNapTimeTagFilter";
-            sharedPreference.write("med", "", 2 + "");
-            /*if(testViewModel.arrJson != null)*//*sahenita*/
-            if (testViewModel.arrJson .length()!=0) {
-                if (lstFilterTagDataMorning.size() == 0) {
-
-                    String jsonString = testViewModel.arrJson.toString();
-                    System.out.println("JSON String: " + jsonString);
-                    try{
-                        JSONArray outerArray = new JSONArray(jsonString);
-                        // Assuming testViewModel.arrJson is at index 0 of the outerArray
-                        JSONArray innerArray = outerArray.getJSONArray(0);
-
-                        for (int k = 0; k < innerArray.length(); k++) {
-                            try {
-                                JSONObject innerJson = innerArray.getJSONObject(k);
-                                String tagName = innerJson.getString("Description");
-                                for (int p = 0; p < testViewModel.lstTotalDataM.size(); p++) {
-                                    for (int s = 0; s < testViewModel.lstTotalDataM.get(p).getTags().size(); s++) {
-                                        if (testViewModel.lstTotalDataM.get(p).getTags().get(s).equalsIgnoreCase(tagName)) {
-
-                                            if (tagName.equalsIgnoreCase("Morning Routine")) {
-                                                lstFilterTagDataMorning.add(testViewModel.lstTotalDataM.get(p));
-                                                arrTagChoice.add("Morning Routine");
-                                            }
-
-                                        }
-                                    }
-                                }
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
-                        }
-
-                    }catch (Exception e){
-
-                    }
-
-
-
-                }
-                arrSelectedTag.clear();
-                arrSelectedTag.add("Morning Routine");
-                llLandingOptions.setVisibility(View.GONE);
-                rlMainBlock.setVisibility(View.VISIBLE);
-                rvCourseM.setAdapter(null);
-                llNapTimeTagFilter.setVisibility(View.GONE);
-                if(0==Util.withfilterlist_afterbackfrommeditationdetails.size()){
-                    Util.withfilterlist_afterbackfrommeditationdetails.addAll(lstFilterTagDataMorning);
-                    Util.str_withfilterlist_afterbackfrommeditationdetails=edtSearch.getText().toString().trim();
-                }else{
-                    Util.withfilterlist_afterbackfrommeditationdetails.clear();
-                    Util.withfilterlist_afterbackfrommeditationdetails.addAll(lstFilterTagDataMorning);
-                    Util.str_withfilterlist_afterbackfrommeditationdetails=edtSearch.getText().toString().trim();
-                }
-                loadAvailableAdapterM(lstFilterTagDataMorning, lstFilterTagDataMorning.size(),1);
-
-            }
-
-
-        });
-
-        rlNapTime20Min.setOnClickListener(v -> {
-            backto="llNapTimeTagFilter";
-            sharedPreference.write("medT", "", 20 + "");
-            imgFilter.setBackgroundResource(R.drawable.mbhq_filter_green);
-            arrSelectedDuration.clear();
-            arrSelectedDuration.add("20 Min");
-            arrDurationChoice.add(20);
-            sortPowerNapDataByTimeOutside(20);
-        });
-        rlNapTime90Min.setOnClickListener(v -> {
-            backto="llNapTimeTagFilter";
-            sharedPreference.write("medT", "", 90 + "");
-            imgFilter.setBackgroundResource(R.drawable.mbhq_filter_green);
-            arrSelectedDuration.clear();
-            arrSelectedDuration.add("90 Min");
-            arrDurationChoice.add(90);
-            sortPowerNapDataByTimeOutside(90);
-        });
-        rlPowerUp.setOnClickListener(v -> {
-            edtSearch.setText("");
-            backto="llNapTimeTagFilter";
-            //sharedPreference.write("medT", "", 90 + "");
-            imgFilter.setBackgroundResource(R.drawable.mbhq_filter_green);
-            //arrSelectedDuration.clear();
-            //arrSelectedDuration.add("90 Min");
-            //arrDurationChoice.add(90);
-            sortPowerNapDataByTimeOutside();
-        });
-        rlGuidedMeditations.setOnClickListener(v -> {
-            backto="llHealingTagFilter";
-            imgFilter.setBackgroundResource(R.drawable.mbhq_filter_green);
-            sharedPreference.write("med", "", 7 + "");
-            sortHealingDataByTag("Guided Meditation");
-        });
-        rlVisualisations.setOnClickListener(v -> {
-            backto="llHealingTagFilter";
-            imgFilter.setBackgroundResource(R.drawable.mbhq_filter_green);
-            sharedPreference.write("med", "", 6 + "");
-            sortHealingDataByTag("Visualisations");
-        });
-        rlHealingMeditations.setOnClickListener(v -> {
-            backto="llHealingTagFilter";
-            imgFilter.setBackgroundResource(R.drawable.mbhq_filter_green);
-            sharedPreference.write("med", "", 5 + "");
-            sortHealingDataByTag("Healing Meditations");
-        });
-        rlHealingsleep.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                backto="llHealingTagFilter";
-                lstFilterTagDataMorning.clear();
-                if (lstFilterTagDataMorning.size() == 0) {
-                    for (int p = 0; p < testViewModel.lstTotalDataM.size(); p++) {
-                        if(testViewModel.lstTotalDataM.get(p).getTags().size()>1){
-                            for (int s = 0; s < testViewModel.lstTotalDataM.get(p).getTags().size(); s++) {
-                                if (testViewModel.lstTotalDataM.get(p).getTags().get(s).equalsIgnoreCase("Sleep")) {
-                                    lstFilterTagDataMorning.add(testViewModel.lstTotalDataM.get(p));
-                                    arrTagChoice.add("Sleep");
-                                }
-                            }
-                        }
-                    }
-
-                    arrSelectedTag.clear();
-                    arrSelectedTag.add("Sleep");
-                    llLandingOptions.setVisibility(View.GONE);
-                    rlMainBlock.setVisibility(View.VISIBLE);
-                    rvCourseM.setAdapter(null);
-                    llNapTimeTagFilter.setVisibility(View.GONE);
-                    llHealingTagFilter.setVisibility(View.GONE);
-                    if(0==Util.withfilterlist_afterbackfrommeditationdetails.size()){
-                        Util.withfilterlist_afterbackfrommeditationdetails.addAll(lstFilterTagDataMorning);
-                        Util.str_withfilterlist_afterbackfrommeditationdetails=edtSearch.getText().toString().trim();
-                    }else{
-                        Util.withfilterlist_afterbackfrommeditationdetails.clear();
-                        Util.withfilterlist_afterbackfrommeditationdetails.addAll(lstFilterTagDataMorning);
-                        Util.str_withfilterlist_afterbackfrommeditationdetails=edtSearch.getText().toString().trim();
-                    }
-                    loadAvailableAdapterM(lstFilterTagDataMorning, lstFilterTagDataMorning.size(),1);
-                }
-            }
-        });
-
-        imgFab.setOnClickListener(v -> {
-            edtSearch.setText("");
-            backto="";
-            imgFilter.setBackgroundResource(R.drawable.mbhq_filter_green);
-            favChk = true;
-            List<MeditationCourseModel.Webinar> lstFavModel = new ArrayList<>();
-            for (int x = 0; x < testViewModel.lstTotalDataM.size(); x++) {
-
-                if(null==testViewModel.lstTotalDataM.get(x).getLikes()){
-
-                }else{
-                    if (testViewModel.lstTotalDataM.get(x).getLikes()) {
-                        lstFavModel.add(testViewModel.lstTotalDataM.get(x));
-                    }
-                }
-
-            }
-            llLandingOptions.setVisibility(View.GONE);
-            llTimeTagFilter.setVisibility(View.GONE);
-            rlMainBlock.setVisibility(View.VISIBLE);
-            rvCourseM.setAdapter(null);
-            loadAvailableAdapterM(lstFavModel, lstFavModel.size(), true);
-
-        });
-        rlBreath.setOnClickListener(v -> {
-            edtSearch.setText("");
-            /*if(testViewModel.arrJson != null)*//*sahenita*/
-            if (testViewModel.arrJson .length()!=0) {
-                sharedPreference.write("med", "", 1 + "");
-                arrSelectedTag.clear();
-                arrSelectedTag.add("Breath Control");
-                arrTagChoice.add("Breath Control");
-                sharedPreference.write("med", "", 1 + "");
-                hideAllChoiceContainers();
-                llTimeTagFilter.setVisibility(View.VISIBLE);
-                if (lstFilterTagDataBreath.size() == 0) {
-                    String jsonString = testViewModel.arrJson.toString();
-                    System.out.println("JSON String: " + jsonString);
-                    try{
-                        JSONArray outerArray = new JSONArray(jsonString);
-                        // Assuming testViewModel.arrJson is at index 0 of the outerArray
-                        JSONArray innerArray = outerArray.getJSONArray(0);
-                        for (int k = 0; k < innerArray.length(); k++) {
-                            try {
-                                JSONObject innerJson = innerArray.getJSONObject(k);
-                                String tagName = innerJson.getString("Description");
-                                for (int p = 0; p < testViewModel.lstTotalDataM.size(); p++) {
-                                    for (int s = 0; s < testViewModel.lstTotalDataM.get(p).getTags().size(); s++) {
-                                        if (testViewModel.lstTotalDataM.get(p).getTags().get(s).equalsIgnoreCase(tagName)) {
-                                            if (tagName.equalsIgnoreCase("Breath Control"))
-                                                lstFilterTagDataBreath.add(testViewModel.lstTotalDataM.get(p));
-
-                                        }
-                                    }
-                                }
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
-                        }
-                    }catch (Exception e){
-                        e.printStackTrace();
-                    }
-
-                }
-
-            }
-
-        });
-
-        rlMindfulness.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View view) {
-                edtSearch.setText("");
-                backto="";
-                lstFilterTagDataMorning.clear();
-                if (lstFilterTagDataMorning.size() == 0) {
-                    for (int p = 0; p < testViewModel.lstTotalDataM.size(); p++) {
-                        if(testViewModel.lstTotalDataM.get(p).getTags().size()>1){
-                            for (int s = 0; s < testViewModel.lstTotalDataM.get(p).getTags().size(); s++) {
-                                if (testViewModel.lstTotalDataM.get(p).getTags().get(s).equalsIgnoreCase("Mindfulness")) {
-                                    lstFilterTagDataMorning.add(testViewModel.lstTotalDataM.get(p));
-                                    arrTagChoice.add("Mindfulness");
-                                }
-                            }
-                        }
-
-                    }
-                    arrSelectedTag.clear();
-                    arrSelectedTag.add("Mindfulness");
-                    llLandingOptions.setVisibility(View.GONE);
-                    rlMainBlock.setVisibility(View.VISIBLE);
-                    rvCourseM.setAdapter(null);
-                    llNapTimeTagFilter.setVisibility(View.GONE);
-                    if(0==Util.withfilterlist_afterbackfrommeditationdetails.size()){
-                        Util.withfilterlist_afterbackfrommeditationdetails.addAll(lstFilterTagDataMorning);
-                        Util.str_withfilterlist_afterbackfrommeditationdetails=edtSearch.getText().toString().trim();
-                    }else{
-                        Util.withfilterlist_afterbackfrommeditationdetails.clear();
-                        Util.withfilterlist_afterbackfrommeditationdetails.addAll(lstFilterTagDataMorning);
-                        Util.str_withfilterlist_afterbackfrommeditationdetails=edtSearch.getText().toString().trim();
-                    }
-                    loadAvailableAdapterM(lstFilterTagDataMorning, lstFilterTagDataMorning.size(),1);
-                }
-            }
-        });
-        rlPowerNap.setOnClickListener(v -> {
-            edtSearch.setText("");
-            sharedPreference.write("med", "", 3 + "");
-            /*if(testViewModel.arrJson != null)*//*sahenita*/
-            if (testViewModel.arrJson .length()!=0) {
-                if (lstFilterTagDataPower.size() == 0) {
-                    String jsonString = testViewModel.arrJson.toString();
-                    System.out.println("JSON String: " + jsonString);
-                    try{
-                        JSONArray outerArray = new JSONArray(jsonString);
-                        // Assuming testViewModel.arrJson is at index 0 of the outerArray
-                        JSONArray innerArray = outerArray.getJSONArray(0);
-                        for (int k = 0; k < innerArray.length(); k++) {
-                            try {
-                                JSONObject innerJson = innerArray.getJSONObject(k);
-                                String tagName = innerJson.getString("Description");
-                                for (int p = 0; p < testViewModel.lstTotalDataM.size(); p++) {
-                                    for (int s = 0; s < testViewModel.lstTotalDataM.get(p).getTags().size(); s++) {
-                                        if (testViewModel.lstTotalDataM.get(p).getTags().get(s).equalsIgnoreCase(tagName)) {
-
-                                            if (tagName.equalsIgnoreCase("Power Naps")) {
-                                                lstFilterTagDataPower.add(testViewModel.lstTotalDataM.get(p));
-                                                arrTagChoice.add("Power Naps");
-                                            }
-                                        }
-                                    }
-                                }
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
-                        }
-
-                    }catch (Exception e){
-
-                    }
-
-                }
-                arrSelectedTag.clear();
-                arrSelectedTag.add("Power Naps");
-                hideAllChoiceContainers();
-                llNapTimeTagFilter.setVisibility(View.VISIBLE);
-
-            }
-
-        });
-
-        rlHealing.setOnClickListener(v -> {
-            edtSearch.setText("");
-            sharedPreference.write("med", "", 4 + "");
-            /*if(testViewModel.arrJson != null)*//*sahenita*/
-            if (testViewModel.arrJson .length()!=0) {
-                if (lstFilterTagDataHealing.size() == 0) {
-
-                    String jsonString = testViewModel.arrJson.toString();
-                    System.out.println("JSON String: " + jsonString);
-                    try{
-                        JSONArray outerArray = new JSONArray(jsonString);
-                        // Assuming testViewModel.arrJson is at index 0 of the outerArray
-                        JSONArray innerArray = outerArray.getJSONArray(0);
-
-                        for (int k = 0; k < innerArray.length(); k++) {
-                            try {
-                                JSONObject innerJson = innerArray.getJSONObject(k);
-                                String tagName = innerJson.getString("Description");
-                                for (int p = 0; p < testViewModel.lstTotalDataM.size(); p++) {
-                                    for (int s = 0; s < testViewModel.lstTotalDataM.get(p).getTags().size(); s++) {
-                                        if (testViewModel.lstTotalDataM.get(p).getTags().get(s).equalsIgnoreCase(tagName)) {
-
-                                            if (tagName.equalsIgnoreCase("Healing Meditations") || tagName.equalsIgnoreCase("Visualisations") || tagName.equalsIgnoreCase("Guided Meditation")) {
-                                                lstFilterTagDataHealing.add(testViewModel.lstTotalDataM.get(p));
-                                                arrTagChoice.add("Healing Meditations");
-                                            }
-                                        }
-                                    }
-                                }
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
-                        }
-
-                    }catch (Exception e){
-
-                    }
-
-
-                }
-                arrSelectedDuration.clear();
-                arrDurationChoice.clear();
-                hideAllChoiceContainers();
-                llHealingTagFilter.setVisibility(View.VISIBLE);
-            }
-
-        });
-
-        rlFilter.setOnClickListener(v -> {
-            /*if(testViewModel.arrJson != null)*//*sahenita*/
-            if (testViewModel.arrJson .length()!=0)
-                openFilterDialog(true, false);
-
-        });
-
-        imgInfoMeditation.setOnClickListener(v -> {
-            /*commented by sahenita (temporary)*/
-           // ((MainActivity) requireActivity()).funTabBarforReward(false);
-        });
-
-        txtBackDownload.setOnClickListener(v -> ((MainActivity) requireActivity()).loadFragment(new MbhqTodayMainFragment(), "MbhqTodayMain", null));
-
-
-
-        swipeLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-
-                getMeditation();
-
-                swipeLayout.setRefreshing(false);
-            }
-        });
-
-        btnFindMyLevel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                SharedPreference sharedPreference = new SharedPreference(getContext());
-                String URL = "https://meditate.emotionalfitnessclub.com/members?token=" + sharedPreference.read("MEDITATION_TEST_NOW_TOKEN", "");
-                Uri uri = Uri.parse(URL);
-                Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-                intent.setPackage("com.android.chrome");
-                requireActivity().startActivity(intent);
-            }
-        });
-        edtSearch.addTextChangedListener(new TextWatcher() {
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-
-
-            }
-
-            @Override
-            public void beforeTextChanged(CharSequence s, int start,
-                                          int count, int after) {
-
-               /* withfilterlist.clear();
-                withfilterlist= ((MeditationCourseAdapter) rvCourseM.getAdapter()).getArrayList();
-*/
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start,
-                                      int before, int count) {
-
-
-                if(s.toString().length()>0){
-                    List<MeditationCourseModel.Webinar> avaiavlelist1 = new ArrayList<>();
-                    ConnectivityManager connectivityManager = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
-                    NetworkInfo activeNetwork = connectivityManager.getActiveNetworkInfo();
-                    boolean isConnected = activeNetwork != null && activeNetwork.isConnectedOrConnecting();
-                    if (!isConnected) {
-                        rlMainBlock.setVisibility(View.VISIBLE);
-                        rvCourseM.setVisibility(View.VISIBLE);
-                        rlNoMeditationDownload.setVisibility(View.GONE);
-                        rvCourseM_main.setVisibility(View.GONE);
-                        rvCourseM_nointernate.setVisibility(View.GONE);
-                        if(0==Util.withfilterlist_afterbackfrommeditationdetails.size()){
-                            Util.withfilterlist_afterbackfrommeditationdetails.addAll(avaiavlelist1);
-                            Util.str_withfilterlist_afterbackfrommeditationdetails=edtSearch.getText().toString().trim();
-                        }else{
-                            Util.withfilterlist_afterbackfrommeditationdetails.clear();
-                            Util.withfilterlist_afterbackfrommeditationdetails.addAll(avaiavlelist1);
-                            Util.str_withfilterlist_afterbackfrommeditationdetails=edtSearch.getText().toString().trim();
-                        }
-                        loadAvailableAdapterM(avaiavlelist1, avaiavlelist1.size(),0);
-                        if (rvCourseM != null && rvCourseM.getAdapter() != null) {
-                            ((MeditationCourseAdapter) rvCourseM.getAdapter()).search(s.toString());
-
-                        }
-                    }else{
-                        Log.i("m_called","1");
-                        SharedPreferences preferences = getActivity().getSharedPreferences("MyAppPrefs1", Context.MODE_PRIVATE);
-                        String jsonData = preferences.getString("my_total_medicine", "");
-                        List<MeditationCourseModel.Webinar> avaiavlelist = new ArrayList<>();
-                        avaiavlelist = new Gson().fromJson(jsonData, new TypeToken<List<MeditationCourseModel.Webinar>>() {}.getType());
-                        Log.i("concatinatelist2",String.valueOf(avaiavlelist.size()));
-
-                        rlMainBlock.setVisibility(View.VISIBLE);
-                        rvCourseM.setVisibility(View.VISIBLE);
-                        rlNoMeditationDownload.setVisibility(View.GONE);
-                        rvCourseM_main.setVisibility(View.GONE);
-                        rvCourseM_nointernate.setVisibility(View.GONE);
-                        if(0==Util.withfilterlist_afterbackfrommeditationdetails.size()){
-                            Log.i("m_called","2");
-                            Util.withfilterlist_afterbackfrommeditationdetails.addAll(avaiavlelist);
-                            Util.str_withfilterlist_afterbackfrommeditationdetails=edtSearch.getText().toString().trim();
-                        }else{
-                            Log.i("m_called","3");
-                            Util.withfilterlist_afterbackfrommeditationdetails.clear();
-                            Util.withfilterlist_afterbackfrommeditationdetails.addAll(avaiavlelist);
-                            Util.str_withfilterlist_afterbackfrommeditationdetails=edtSearch.getText().toString().trim();
-                        }
-                        loadAvailableAdapterM(avaiavlelist, avaiavlelist.size(),0);
-                        if (rvCourseM != null && rvCourseM.getAdapter() != null) {
-                            ((MeditationCourseAdapter) rvCourseM.getAdapter()).search(s.toString());
-
-                        }
-                    }
-
-                }else if(s.toString().length()==0){
-                    Log.i("m_called","4");
-                    // Log.i("withfilterlist1","called");
-
-                    rlMainBlock.setVisibility(View.VISIBLE);
-                    rvCourseM.setVisibility(View.VISIBLE);
-
-                    rlNoMeditationDownload.setVisibility(View.GONE);
-                    rvCourseM_main.setVisibility(View.GONE);
-                    rvCourseM_nointernate.setVisibility(View.GONE);
-
-
-                    if(!"TRUE".equalsIgnoreCase(fromDetailsPage1)){
-
-                        Log.i("m_called","5");
-                        loadAvailableAdapterM(withfilterlist, withfilterlist.size(),0);
-                        if (rvCourseM != null && rvCourseM.getAdapter() != null) {
-                            ((MeditationCourseAdapter) rvCourseM.getAdapter()).search(s.toString());
-
-
-                        }
-                    }else{
-                        Log.i("m_called","6");
-                        loadAvailableAdapterM( Util.withfilterlist,  Util.withfilterlist.size(),0);
-                        if (rvCourseM != null && rvCourseM.getAdapter() != null) {
-                            ((MeditationCourseAdapter) rvCourseM.getAdapter()).search(s.toString());
-
-
-                        }
-                    }
-
-
-
-                }
-
-            }
-        });
-        // }
-
-
-
+        }else{
+            init(view);
+      }
     }
+
+
     private void getMeditation() {
 
         if (Connection.checkConnection(requireContext())) {
@@ -2190,37 +832,6 @@ public class MeditationFragment extends Fragment {
             Util.showToast(getActivity(), "No data found");*/
     }
 
-    private void openFullscreenVideoDialog(String URL) {
-        final Dialog dialog = new Dialog(getActivity(), R.style.DialogTheme);
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setContentView(R.layout.dialog_meditation_video_info);
-        ImageView imgCross = (ImageView) dialog.findViewById(R.id.imgCross);
-        ProgressBar progress = (ProgressBar) dialog.findViewById(R.id.progress);
-        VideoView videoView = (VideoView) dialog.findViewById(R.id.video_view);
-        progress.setVisibility(View.VISIBLE);
-        imgCross.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                dialog.dismiss();
-            }
-        });
-        videoView.setVideoURI(Uri.parse(URL));
-        MediaController mediaController = new
-                MediaController(getContext());
-        mediaController.setAnchorView(videoView);
-        videoView.setMediaController(mediaController);
-        videoView.requestFocus();
-        videoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-            @Override
-            public void onPrepared(MediaPlayer mp) {
-                progress.setVisibility(View.GONE);
-                videoView.seekTo(0);
-                videoView.start();
-
-            }
-        });
-        dialog.show();
-    }
 
     private void sortPowerNapDataByTimeOutside(int time) {
         List<MeditationCourseModel.Webinar> lstDurationModel = new ArrayList<>();
@@ -2328,16 +939,7 @@ public class MeditationFragment extends Fragment {
                 @Override
                 public void onResponse(Call<MeditationTagResponse> call, Response<MeditationTagResponse> response) {
 
-                   /* if (response.isSuccessful()) {
-                        testViewModel.arrJson = (JSONArray) response.body().getTags();
 
-                        new SharedPreference(getActivity()).write("MEDITATION_TAGS", "", new Gson().toJson(response.body().getTags())
-                        );
-
-                        onGetEventTagsListSuccess();
-
-
-                    }*/
                     if (response.isSuccessful()) {
                         try{
                             Log.e("Tag list>>>>>>>>>>>>","meditation tag>>>>>>>>>>"+response.body().getTags());
@@ -2432,78 +1034,7 @@ public class MeditationFragment extends Fragment {
         }
 
     }
-//    private void populateTags() {
-//        try {
-//            if (Connection.checkConnection(requireContext())) {
-//                SharedPreference sharedPreference = new SharedPreference(getContext());
-//                JSONObject requestJson = new JSONObject();
-//                try {
-//                    requestJson.put("Key", Util.KEY);
-//                    requestJson.put("UserSessionID", sharedPreference.read("UserSessionID", ""));
-//                } catch (JSONException e) {
-//                    e.printStackTrace();
-//                }
-//
-//                genericAsynTaskTAG = new GenericAsynTask("Please wait...", getActivity(), Util.GETEVENTTAGSLIST, "POST", requestJson, "", "");
-//                genericAsynTaskTAG.progressTime = 2000;
-//                genericAsynTaskTAG.setOnTaskListener(new GenericAsynTask.TaskListener() {
-//                    @Override
-//                    public void onSuccess(String success) {
-//                        try {
-//
-//
-//                            testViewModel.arrJson = jsonObject.getJSONArray("Tags");
-//
-//                            new SharedPreference(getActivity()).write("MEDITATION_TAGS", "", success);
-//
-//                            onGetEventTagsListSuccess();
-//
-//                        } catch (Exception e) {
-//                            e.printStackTrace();
-//                        }
-//                    }
-//
-//                    @Override
-//                    public void onFailure(String error) {
-//
-//                    }
-//                });
-//
-//            } else {
-//                Toast.makeText(getActivity(), "Check your internet connection", Toast.LENGTH_LONG).show();
-//
-//                String strTagsjson = new SharedPreference(getActivity()).read("MEDITATION_TAGS", "");
-//               /* llLandingOptions.setVisibility(View.GONE);
-//                llTimeTagFilter.setVisibility(View.GONE);
-//                llNapTimeTagFilter.setVisibility(View.GONE);
-//                rlMainBlock.setVisibility(View.VISIBLE);*/
-//                try {
-//                    JSONObject jsonObject = new JSONObject(strTagsjson);
-//
-//                    testViewModel.arrJson = jsonObject.getJSONArray("Tags");
-//
-//                    String userPress = sharedPreference.read("med", "");
-//                    String userPressT = sharedPreference.read("medT", "");
-//                    Log.e("print user option--", userPress + "??");
-//                    int medChoice = -1;
-//                    int medChoiceT = -1;
-//                    if (!userPress.equals(""))
-//                        medChoice = Integer.parseInt(sharedPreference.read("med", ""));
-//                    if (!userPressT.equals(""))
-//                        medChoiceT = Integer.parseInt(sharedPreference.read("medT", ""));
-//                    Log.e("print med option--", medChoice + "??");
-//
-//                    openFilterDialog(false, true);
-//
-//                } catch (Exception e) {
-//                    e.printStackTrace();
-//                }
-//            }
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//
-//    }//commented by jyoti
+
 
     private void onGetEventTagsListSuccess() {
         Log.i("medi_tation","14");
@@ -2556,6 +1087,7 @@ public class MeditationFragment extends Fragment {
         Log.i(TAG, "print med option:" + medChoice);
         Log.i("medi_tation",String.valueOf(medChoice));
         Log.i("medi_tation",fromDetailsPage1);
+        progressDialog.dismiss();
         if (medChoice != -1 && "TRUE".equalsIgnoreCase(fromDetailsPage1)) {
             Log.i("medi_tation","yesssssssssss");
             rlMainBlock.setVisibility(View.VISIBLE);
@@ -2584,8 +1116,6 @@ public class MeditationFragment extends Fragment {
                 rlMainBlock.setVisibility(View.GONE);
                 llLandingOptions.setVisibility(View.VISIBLE);
             }
-
-
         }
 
         try{
@@ -2619,7 +1149,10 @@ public class MeditationFragment extends Fragment {
         }
 
     }
-/*commented by sahenita*/
+
+
+
+    /*commented by sahenita*/
 /*
     private void openTagDialog() {
         SharedPreference sharedPreference = new SharedPreference(getActivity());
@@ -2764,7 +1297,7 @@ public class MeditationFragment extends Fragment {
 */
 
     private void checkMeditationCacheExpiration() {
-
+          progressDialog = ProgressDialog.show(getActivity(), "", "Please wait...");
         if (Connection.checkConnection(getContext())) {
 
             HashMap<String, Object> hashReq = new HashMap<>();
@@ -2788,7 +1321,7 @@ public class MeditationFragment extends Fragment {
                                 Log.i("medi_tation","no000000000000");
                                 hideAllChoiceContainers();
                                 rlMainBlock.setVisibility(View.GONE);
-                                llLandingOptions.setVisibility(View.VISIBLE);
+//                                llLandingOptions.setVisibility(View.VISIBLE);
                             }
                             getMeditationsFromDB();/*sahenita*/
 //                             getMeditation();
@@ -2876,7 +1409,12 @@ public class MeditationFragment extends Fragment {
 
                                                 }
 
-
+                                                if(!"TRUE".equalsIgnoreCase(fromDetailsPage1)){
+                                                    Log.i("medi_tation","no000000000000");
+                                                    hideAllChoiceContainers();
+                                                    rlMainBlock.setVisibility(View.GONE);
+                                                    llLandingOptions.setVisibility(View.VISIBLE);
+                                                }
 
                                                 /*if(testViewModel.arrJson != null)*//*sahenita*/
                                                 if (testViewModel.arrJson .length()!=0) {
@@ -3050,7 +1588,7 @@ public class MeditationFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-/*if("3".equalsIgnoreCase(accesstype)){
+if("3".equalsIgnoreCase(accesstype)){
     if("false".equalsIgnoreCase(medi_access)){
 
     }else{
@@ -3078,7 +1616,7 @@ public class MeditationFragment extends Fragment {
         LinearLayout llTabView = (LinearLayout) getActivity().findViewById(R.id.llTabView);
         llTabView.setVisibility(View.GONE);
     }
-}else{*/
+}else{
         ((MainActivity) getActivity()).funDrawer1();
         Log.i(TAG, "onResume");
         ConnectivityManager connectivityManager = (ConnectivityManager)getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -3102,7 +1640,7 @@ public class MeditationFragment extends Fragment {
 
         LinearLayout llTabView = (LinearLayout) getActivity().findViewById(R.id.llTabView);
         llTabView.setVisibility(View.GONE);
-//}
+}
 
 
 
@@ -3177,7 +1715,7 @@ public class MeditationFragment extends Fragment {
     @Override
     public void onStop() {
         super.onStop();
-/*if("3".equalsIgnoreCase(accesstype)){
+if("3".equalsIgnoreCase(accesstype)){
     if("false".equalsIgnoreCase(medi_access)){
 
     }else{
@@ -3191,7 +1729,7 @@ public class MeditationFragment extends Fragment {
         mDisposable.clear();
         ((MainActivity) getActivity()).clearCacheForParticularFragment(new MeditationFragment());
     }
-}else{*/
+}else{
 
         testViewModel.lstTotalDataM.clear();
         rlMainBlock.setVisibility(View.GONE);
@@ -3201,7 +1739,7 @@ public class MeditationFragment extends Fragment {
         Log.i(TAG, "onStop");
         mDisposable.clear();
         ((MainActivity) getActivity()).clearCacheForParticularFragment(new MeditationFragment());
-//}
+}
 
 
 
@@ -3246,17 +1784,17 @@ public class MeditationFragment extends Fragment {
     public void onDestroy() {
         super.onDestroy();
 
-      /*  if("3".equalsIgnoreCase(accesstype)){
+        if("3".equalsIgnoreCase(accesstype)){
             if("false".equalsIgnoreCase(medi_access)){
 
             }else{
                 getActivity().unregisterReceiver(networkChangeReceiver3);
 
             }
-        }else{*/
+        }else{
         getActivity().unregisterReceiver(networkChangeReceiver3);
 
-//        }
+       }
 
     }
 
@@ -3316,5 +1854,788 @@ public class MeditationFragment extends Fragment {
             }
         }
     };
+void init(View view){
+    Log.i("strMeditationDetailsForBackground",Util.strMeditationDetailsForBackground);
+    if (Util.boolBackGroundServiceRunningMeditation && !Util.strMeditationDetailsForBackground.equals("") && !fromDetailsPage) {
+        Log.i(TAG, "UTILVALUEEEEEE" + Util.strMeditationDetailsForBackground + ">>>>>");
+        Util.backto="";
+        ((MainActivity) requireActivity()).clearCacheForParticularFragment(new MeditationDetailsNew());
+        MeditationDetailsNew meditationDetails = new MeditationDetailsNew();
+        Bundle bundle = new Bundle();
+        bundle.putString("data", Util.strMeditationDetailsForBackground);
+        meditationDetails.setArguments(bundle);
+        ((MainActivity) requireActivity()).loadFragment(meditationDetails, "MeditationDetailsNew", null);
+    } else {
+        // fromDetailsPage = false;
+    }
+
+
+    rlHealingsleep= view.findViewById(R.id.rlHealingsleep);
+    rvCourseM = view.findViewById(R.id.rvCourseM);
+    rvCourseM_main=view.findViewById(R.id.rvCourseM_main);
+    rvCourseM_nointernate=view.findViewById(R.id.rvCourseM_nointernate);
+    rlMindfulness=view.findViewById(R.id.rlMindfulness);
+    sharedPreference = new SharedPreference(getActivity());
+    mLayoutManager = new LinearLayoutManager(getActivity());
+    rvCourseM.setLayoutManager(mLayoutManager);
+    mLayoutManager_main = new LinearLayoutManager(getActivity());
+    rvCourseM_main.setLayoutManager(mLayoutManager_main);
+    mLayoutManager_nointernate = new LinearLayoutManager(getActivity());
+    rvCourseM_nointernate.setLayoutManager(mLayoutManager_nointernate);
+
+    rlFilter = view.findViewById(R.id.rlFilter);
+    imgFilter = view.findViewById(R.id.imgFilter);
+    imgInfoMeditation = view.findViewById(R.id.imgInfoMeditation);
+    edtSearch = view.findViewById(R.id.edtSearch);
+    rlBreath = view.findViewById(R.id.rlBreath);
+    rlMorning = view.findViewById(R.id.rlMorning);
+    rlPowerNap = view.findViewById(R.id.rlPowerNap);
+    rlHealing = view.findViewById(R.id.rlHealing);
+    imgFab = view.findViewById(R.id.imgFab);
+    llLandingOptions = view.findViewById(R.id.llLandingOptions);
+
+    rlBack = view.findViewById(R.id.rlBack);
+    rlBreathTimeBack = view.findViewById(R.id.rlBreathTimeBack);
+    rlNapTimeBack = view.findViewById(R.id.rlNapTimeBack);
+    rlHealingBack = view.findViewById(R.id.rlHealingBack);
+    llTimeTagFilter = view.findViewById(R.id.llTimeTagFilter);
+    llNapTimeTagFilter = view.findViewById(R.id.llNapTimeTagFilter);
+    llHealingTagFilter = view.findViewById(R.id.llHealingTagFilter);
+    rl5Min = view.findViewById(R.id.rl5Min);
+    rl10Min = view.findViewById(R.id.rl10Min);
+    rl20Min = view.findViewById(R.id.rl20Min);
+    rl30Min = view.findViewById(R.id.rl30Min);
+    rlNapTime20Min = view.findViewById(R.id.rlNapTime20Min);
+    rlNapTime90Min = view.findViewById(R.id.rlNapTime90Min);
+    rlPowerUp = view.findViewById(R.id.rlPowerUp);
+    rlHealingMeditations = view.findViewById(R.id.rlHealingMeditations);
+    rlGuidedMeditations = view.findViewById(R.id.rlGuidedMeditations);
+    rlVisualisations = view.findViewById(R.id.rlVisualisations);
+    rlNoMeditationDownload = view.findViewById(R.id.rlNoMeditationDownload);
+    txtBackDownload = view.findViewById(R.id.txtBackDownload);
+    txtNoDataFound = view.findViewById(R.id.txtNoDataFound);
+    clNoFavouriteFound = view.findViewById(R.id.clNoFavouriteFound);
+    txtFavSuggestion = view.findViewById(R.id.txtFavSuggestion);
+    rlMainBlock.setVisibility(View.GONE);
+    btnFindMyLevel = vi.findViewById(R.id.btnFindMyLevel);
+    swipeLayout = vi.findViewById(R.id.swipeLayout);
+
+    ImageSpan imageSpan = new ImageSpan(requireContext(), R.drawable.mbhq_heart_active_m);
+    SpannableString spannableString = new SpannableString("Click the [heart icon pic] next to the meditations you love most and they will appear here.");
+
+    spannableString.setSpan(imageSpan, 10, 26, 0);
+    txtFavSuggestion.setText(spannableString);
+
+    sharedPreference = new SharedPreference(getActivity());
+    if (sharedPreference.read("dtPos", "").equals("") || Integer.parseInt(sharedPreference.read("dtPos", "")) == 1) {
+        imgFilter.setBackgroundResource(R.drawable.mbhq_filter);
+    } else {
+        imgFilter.setBackgroundResource(R.drawable.mbhq_filter_green);
+    }
+
+    rlBack.setOnClickListener(v -> {
+
+        ConnectivityManager connectivityManager = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetwork = connectivityManager.getActiveNetworkInfo();
+        boolean isConnected = activeNetwork != null && activeNetwork.isConnectedOrConnecting();
+        if (!isConnected) {
+
+        }else{
+
+            sharedPreference.clear("med");
+            sharedPreference.clear("medT");
+            if (Connection.checkConnection(requireContext())) {
+//                rlMainBlock.setVisibility(View.GONE);
+
+                if(backto.equalsIgnoreCase("")){
+                    backto="";
+                    edtSearch.setText("");
+                    // Util.str_withfilterlist_afterbackfrommeditationdetails="";
+                    rlMainBlock.setVisibility(View.GONE);
+                    llLandingOptions.setVisibility(View.VISIBLE);
+                }else if("llTimeTagFilter".equalsIgnoreCase(backto)){
+                    backto="";
+                    edtSearch.setText("");
+                    rlMainBlock.setVisibility(View.GONE);
+                    llLandingOptions.setVisibility(View.GONE);
+                    llTimeTagFilter.setVisibility(View.VISIBLE);
+                }else if("llNapTimeTagFilter".equalsIgnoreCase(backto)){
+                    backto="";
+                    edtSearch.setText("");
+                    rlMainBlock.setVisibility(View.GONE);
+                    llLandingOptions.setVisibility(View.GONE);
+                    llNapTimeTagFilter.setVisibility(View.VISIBLE);
+                }else if("llHealingTagFilter".equalsIgnoreCase(backto)){
+                    backto="";
+                    edtSearch.setText("");
+                    rlMainBlock.setVisibility(View.GONE);
+                    llLandingOptions.setVisibility(View.GONE);
+                    llHealingTagFilter.setVisibility(View.VISIBLE);
+                }else{
+                    backto="";
+                    edtSearch.setText("");
+                    rlMainBlock.setVisibility(View.GONE);
+                    rlMainBlock.setVisibility(View.GONE);
+                }
+
+
+
+
+            } else {
+
+                backto="";
+                edtSearch.setText("");
+                rlMainBlock.setVisibility(View.GONE);
+                rlMainBlock.setVisibility(View.GONE);
+
+//                ((MainActivity) requireActivity()).clearCacheForParticularFragment(new MbhqTodayMainFragment());
+//                ((MainActivity) requireActivity()).loadFragment(new MbhqTodayMainFragment(), "MbhqTodayMain", null);
+            }
+        }
+
+    });
+    rlBreathTimeBack.setOnClickListener(v -> {
+        sharedPreference.clear("med");
+        sharedPreference.clear("medT");
+        llLandingOptions.setVisibility(View.VISIBLE);
+        llTimeTagFilter.setVisibility(View.GONE);
+    });
+    rlNapTimeBack.setOnClickListener(v -> {
+        sharedPreference.clear("med");
+        sharedPreference.clear("medT");
+        llLandingOptions.setVisibility(View.VISIBLE);
+        llNapTimeTagFilter.setVisibility(View.GONE);
+    });
+    rlHealingBack.setOnClickListener(v -> {
+        sharedPreference.clear("med");
+        sharedPreference.clear("medT");
+        llLandingOptions.setVisibility(View.VISIBLE);
+        llHealingTagFilter.setVisibility(View.GONE);
+    });
+
+    rl5Min.setOnClickListener(v -> {
+        backto="llTimeTagFilter";
+
+        sharedPreference.write("medT", "", 5 + "");
+        imgFilter.setBackgroundResource(R.drawable.mbhq_filter_green);
+        arrSelectedDuration.clear();
+        arrSelectedDuration.add("5 Min");
+        arrDurationChoice.add(5);
+        funSortdatabyTimeOutside(5);
+
+    });
+    rl10Min.setOnClickListener(v -> {
+        backto="llTimeTagFilter";
+        sharedPreference.write("medT", "", 10 + "");
+        imgFilter.setBackgroundResource(R.drawable.mbhq_filter_green);
+        arrSelectedDuration.clear();
+        arrSelectedDuration.add("10 Min");
+        arrDurationChoice.add(10);
+        funSortdatabyTimeOutside(10);
+
+    });
+    rl20Min.setOnClickListener(v -> {
+        backto="llTimeTagFilter";
+        sharedPreference.write("medT", "", 20 + "");
+        imgFilter.setBackgroundResource(R.drawable.mbhq_filter_green);
+        arrSelectedDuration.clear();
+        arrSelectedDuration.add("20 Min");
+        arrDurationChoice.add(20);
+        funSortdatabyTimeOutside(20);
+
+    });
+    rl30Min.setOnClickListener(v -> {
+        backto="llTimeTagFilter";
+        sharedPreference.write("medT", "", 30 + "");
+        imgFilter.setBackgroundResource(R.drawable.mbhq_filter_green);
+        arrSelectedDuration.clear();
+        arrSelectedDuration.add("30 Min");
+        arrDurationChoice.add(30);
+        funSortdatabyTimeOutside(30);
+
+    });
+
+    rlMorning.setOnClickListener(v -> {
+
+        backto="llNapTimeTagFilter";
+        sharedPreference.write("med", "", 2 + "");
+        /*if(testViewModel.arrJson != null)*//*sahenita*/
+        if (testViewModel.arrJson .length()!=0) {
+            if (lstFilterTagDataMorning.size() == 0) {
+
+                String jsonString = testViewModel.arrJson.toString();
+                System.out.println("JSON String: " + jsonString);
+                try{
+                    JSONArray outerArray = new JSONArray(jsonString);
+                    // Assuming testViewModel.arrJson is at index 0 of the outerArray
+                    JSONArray innerArray = outerArray.getJSONArray(0);
+
+                    for (int k = 0; k < innerArray.length(); k++) {
+                        try {
+                            JSONObject innerJson = innerArray.getJSONObject(k);
+                            String tagName = innerJson.getString("Description");
+                            for (int p = 0; p < testViewModel.lstTotalDataM.size(); p++) {
+                                for (int s = 0; s < testViewModel.lstTotalDataM.get(p).getTags().size(); s++) {
+                                    if (testViewModel.lstTotalDataM.get(p).getTags().get(s).equalsIgnoreCase(tagName)) {
+
+                                        if (tagName.equalsIgnoreCase("Morning Routine")) {
+                                            lstFilterTagDataMorning.add(testViewModel.lstTotalDataM.get(p));
+                                            arrTagChoice.add("Morning Routine");
+                                        }
+
+                                    }
+                                }
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                }catch (Exception e){
+
+                }
+
+
+
+            }
+            arrSelectedTag.clear();
+            arrSelectedTag.add("Morning Routine");
+            llLandingOptions.setVisibility(View.GONE);
+            rlMainBlock.setVisibility(View.VISIBLE);
+            rvCourseM.setAdapter(null);
+            llNapTimeTagFilter.setVisibility(View.GONE);
+            if(0==Util.withfilterlist_afterbackfrommeditationdetails.size()){
+                Util.withfilterlist_afterbackfrommeditationdetails.addAll(lstFilterTagDataMorning);
+                Util.str_withfilterlist_afterbackfrommeditationdetails=edtSearch.getText().toString().trim();
+            }else{
+                Util.withfilterlist_afterbackfrommeditationdetails.clear();
+                Util.withfilterlist_afterbackfrommeditationdetails.addAll(lstFilterTagDataMorning);
+                Util.str_withfilterlist_afterbackfrommeditationdetails=edtSearch.getText().toString().trim();
+            }
+            loadAvailableAdapterM(lstFilterTagDataMorning, lstFilterTagDataMorning.size(),1);
+
+        }
+
+
+    });
+
+    rlNapTime20Min.setOnClickListener(v -> {
+        backto="llNapTimeTagFilter";
+        sharedPreference.write("medT", "", 20 + "");
+        imgFilter.setBackgroundResource(R.drawable.mbhq_filter_green);
+        arrSelectedDuration.clear();
+        arrSelectedDuration.add("20 Min");
+        arrDurationChoice.add(20);
+        sortPowerNapDataByTimeOutside(20);
+    });
+    rlNapTime90Min.setOnClickListener(v -> {
+        backto="llNapTimeTagFilter";
+        sharedPreference.write("medT", "", 90 + "");
+        imgFilter.setBackgroundResource(R.drawable.mbhq_filter_green);
+        arrSelectedDuration.clear();
+        arrSelectedDuration.add("90 Min");
+        arrDurationChoice.add(90);
+        sortPowerNapDataByTimeOutside(90);
+    });
+    rlPowerUp.setOnClickListener(v -> {
+        edtSearch.setText("");
+        backto="llNapTimeTagFilter";
+        //sharedPreference.write("medT", "", 90 + "");
+        imgFilter.setBackgroundResource(R.drawable.mbhq_filter_green);
+        //arrSelectedDuration.clear();
+        //arrSelectedDuration.add("90 Min");
+        //arrDurationChoice.add(90);
+        sortPowerNapDataByTimeOutside();
+    });
+    rlGuidedMeditations.setOnClickListener(v -> {
+        backto="llHealingTagFilter";
+        imgFilter.setBackgroundResource(R.drawable.mbhq_filter_green);
+        sharedPreference.write("med", "", 7 + "");
+        sortHealingDataByTag("Guided Meditation");
+    });
+    rlVisualisations.setOnClickListener(v -> {
+        backto="llHealingTagFilter";
+        imgFilter.setBackgroundResource(R.drawable.mbhq_filter_green);
+        sharedPreference.write("med", "", 6 + "");
+        sortHealingDataByTag("Visualisations");
+    });
+    rlHealingMeditations.setOnClickListener(v -> {
+        backto="llHealingTagFilter";
+        imgFilter.setBackgroundResource(R.drawable.mbhq_filter_green);
+        sharedPreference.write("med", "", 5 + "");
+        sortHealingDataByTag("Healing Meditations");
+    });
+    rlHealingsleep.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            backto="llHealingTagFilter";
+            lstFilterTagDataMorning.clear();
+            if (lstFilterTagDataMorning.size() == 0) {
+                for (int p = 0; p < testViewModel.lstTotalDataM.size(); p++) {
+                    if(testViewModel.lstTotalDataM.get(p).getTags().size()>1){
+                        for (int s = 0; s < testViewModel.lstTotalDataM.get(p).getTags().size(); s++) {
+                            if (testViewModel.lstTotalDataM.get(p).getTags().get(s).equalsIgnoreCase("Sleep")) {
+                                lstFilterTagDataMorning.add(testViewModel.lstTotalDataM.get(p));
+                                arrTagChoice.add("Sleep");
+                            }
+                        }
+                    }
+                }
+
+                arrSelectedTag.clear();
+                arrSelectedTag.add("Sleep");
+                llLandingOptions.setVisibility(View.GONE);
+                rlMainBlock.setVisibility(View.VISIBLE);
+                rvCourseM.setAdapter(null);
+                llNapTimeTagFilter.setVisibility(View.GONE);
+                llHealingTagFilter.setVisibility(View.GONE);
+                if(0==Util.withfilterlist_afterbackfrommeditationdetails.size()){
+                    Util.withfilterlist_afterbackfrommeditationdetails.addAll(lstFilterTagDataMorning);
+                    Util.str_withfilterlist_afterbackfrommeditationdetails=edtSearch.getText().toString().trim();
+                }else{
+                    Util.withfilterlist_afterbackfrommeditationdetails.clear();
+                    Util.withfilterlist_afterbackfrommeditationdetails.addAll(lstFilterTagDataMorning);
+                    Util.str_withfilterlist_afterbackfrommeditationdetails=edtSearch.getText().toString().trim();
+                }
+                loadAvailableAdapterM(lstFilterTagDataMorning, lstFilterTagDataMorning.size(),1);
+            }
+        }
+    });
+
+    imgFab.setOnClickListener(v -> {
+        edtSearch.setText("");
+        backto="";
+        imgFilter.setBackgroundResource(R.drawable.mbhq_filter_green);
+        favChk = true;
+        List<MeditationCourseModel.Webinar> lstFavModel = new ArrayList<>();
+        for (int x = 0; x < testViewModel.lstTotalDataM.size(); x++) {
+
+            if(null==testViewModel.lstTotalDataM.get(x).getLikes()){
+
+            }else{
+                if (testViewModel.lstTotalDataM.get(x).getLikes()) {
+                    lstFavModel.add(testViewModel.lstTotalDataM.get(x));
+                }
+            }
+
+        }
+        llLandingOptions.setVisibility(View.GONE);
+        llTimeTagFilter.setVisibility(View.GONE);
+        rlMainBlock.setVisibility(View.VISIBLE);
+        rvCourseM.setAdapter(null);
+        loadAvailableAdapterM(lstFavModel, lstFavModel.size(), true);
+
+    });
+    rlBreath.setOnClickListener(v -> {
+        edtSearch.setText("");
+        /*if(testViewModel.arrJson != null)*//*sahenita*/
+        if (testViewModel.arrJson .length()!=0) {
+            sharedPreference.write("med", "", 1 + "");
+            arrSelectedTag.clear();
+            arrSelectedTag.add("Breath Control");
+            arrTagChoice.add("Breath Control");
+            sharedPreference.write("med", "", 1 + "");
+            hideAllChoiceContainers();
+            llTimeTagFilter.setVisibility(View.VISIBLE);
+            if (lstFilterTagDataBreath.size() == 0) {
+                String jsonString = testViewModel.arrJson.toString();
+                System.out.println("JSON String: " + jsonString);
+                try{
+                    JSONArray outerArray = new JSONArray(jsonString);
+                    // Assuming testViewModel.arrJson is at index 0 of the outerArray
+                    JSONArray innerArray = outerArray.getJSONArray(0);
+                    for (int k = 0; k < innerArray.length(); k++) {
+                        try {
+                            JSONObject innerJson = innerArray.getJSONObject(k);
+                            String tagName = innerJson.getString("Description");
+                            for (int p = 0; p < testViewModel.lstTotalDataM.size(); p++) {
+                                for (int s = 0; s < testViewModel.lstTotalDataM.get(p).getTags().size(); s++) {
+                                    if (testViewModel.lstTotalDataM.get(p).getTags().get(s).equalsIgnoreCase(tagName)) {
+                                        if (tagName.equalsIgnoreCase("Breath Control"))
+                                            lstFilterTagDataBreath.add(testViewModel.lstTotalDataM.get(p));
+
+                                    }
+                                }
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+
+            }
+
+        }
+
+    });
+
+    rlMindfulness.setOnClickListener(new View.OnClickListener() {
+
+        @Override
+        public void onClick(View view) {
+            edtSearch.setText("");
+            backto="";
+            lstFilterTagDataMorning.clear();
+            if (lstFilterTagDataMorning.size() == 0) {
+                for (int p = 0; p < testViewModel.lstTotalDataM.size(); p++) {
+                    if(testViewModel.lstTotalDataM.get(p).getTags().size()>1){
+                        for (int s = 0; s < testViewModel.lstTotalDataM.get(p).getTags().size(); s++) {
+                            if (testViewModel.lstTotalDataM.get(p).getTags().get(s).equalsIgnoreCase("Mindfulness")) {
+                                lstFilterTagDataMorning.add(testViewModel.lstTotalDataM.get(p));
+                                arrTagChoice.add("Mindfulness");
+                            }
+                        }
+                    }
+
+                }
+                arrSelectedTag.clear();
+                arrSelectedTag.add("Mindfulness");
+                llLandingOptions.setVisibility(View.GONE);
+                rlMainBlock.setVisibility(View.VISIBLE);
+                rvCourseM.setAdapter(null);
+                llNapTimeTagFilter.setVisibility(View.GONE);
+                if(0==Util.withfilterlist_afterbackfrommeditationdetails.size()){
+                    Util.withfilterlist_afterbackfrommeditationdetails.addAll(lstFilterTagDataMorning);
+                    Util.str_withfilterlist_afterbackfrommeditationdetails=edtSearch.getText().toString().trim();
+                }else{
+                    Util.withfilterlist_afterbackfrommeditationdetails.clear();
+                    Util.withfilterlist_afterbackfrommeditationdetails.addAll(lstFilterTagDataMorning);
+                    Util.str_withfilterlist_afterbackfrommeditationdetails=edtSearch.getText().toString().trim();
+                }
+                loadAvailableAdapterM(lstFilterTagDataMorning, lstFilterTagDataMorning.size(),1);
+            }
+        }
+    });
+    rlPowerNap.setOnClickListener(v -> {
+        edtSearch.setText("");
+        sharedPreference.write("med", "", 3 + "");
+        /*if(testViewModel.arrJson != null)*//*sahenita*/
+        if (testViewModel.arrJson .length()!=0) {
+            if (lstFilterTagDataPower.size() == 0) {
+                String jsonString = testViewModel.arrJson.toString();
+                System.out.println("JSON String: " + jsonString);
+                try{
+                    JSONArray outerArray = new JSONArray(jsonString);
+                    // Assuming testViewModel.arrJson is at index 0 of the outerArray
+                    JSONArray innerArray = outerArray.getJSONArray(0);
+                    for (int k = 0; k < innerArray.length(); k++) {
+                        try {
+                            JSONObject innerJson = innerArray.getJSONObject(k);
+                            String tagName = innerJson.getString("Description");
+                            for (int p = 0; p < testViewModel.lstTotalDataM.size(); p++) {
+                                for (int s = 0; s < testViewModel.lstTotalDataM.get(p).getTags().size(); s++) {
+                                    if (testViewModel.lstTotalDataM.get(p).getTags().get(s).equalsIgnoreCase(tagName)) {
+
+                                        if (tagName.equalsIgnoreCase("Power Naps")) {
+                                            lstFilterTagDataPower.add(testViewModel.lstTotalDataM.get(p));
+                                            arrTagChoice.add("Power Naps");
+                                        }
+                                    }
+                                }
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                }catch (Exception e){
+
+                }
+
+            }
+            arrSelectedTag.clear();
+            arrSelectedTag.add("Power Naps");
+            hideAllChoiceContainers();
+            llNapTimeTagFilter.setVisibility(View.VISIBLE);
+
+        }
+
+    });
+
+    rlHealing.setOnClickListener(v -> {
+        edtSearch.setText("");
+        sharedPreference.write("med", "", 4 + "");
+        /*if(testViewModel.arrJson != null)*//*sahenita*/
+        if (testViewModel.arrJson .length()!=0) {
+            if (lstFilterTagDataHealing.size() == 0) {
+
+                String jsonString = testViewModel.arrJson.toString();
+                System.out.println("JSON String: " + jsonString);
+                try{
+                    JSONArray outerArray = new JSONArray(jsonString);
+                    // Assuming testViewModel.arrJson is at index 0 of the outerArray
+                    JSONArray innerArray = outerArray.getJSONArray(0);
+
+                    for (int k = 0; k < innerArray.length(); k++) {
+                        try {
+                            JSONObject innerJson = innerArray.getJSONObject(k);
+                            String tagName = innerJson.getString("Description");
+                            for (int p = 0; p < testViewModel.lstTotalDataM.size(); p++) {
+                                for (int s = 0; s < testViewModel.lstTotalDataM.get(p).getTags().size(); s++) {
+                                    if (testViewModel.lstTotalDataM.get(p).getTags().get(s).equalsIgnoreCase(tagName)) {
+
+                                        if (tagName.equalsIgnoreCase("Healing Meditations") || tagName.equalsIgnoreCase("Visualisations") || tagName.equalsIgnoreCase("Guided Meditation")) {
+                                            lstFilterTagDataHealing.add(testViewModel.lstTotalDataM.get(p));
+                                            arrTagChoice.add("Healing Meditations");
+                                        }
+                                    }
+                                }
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                }catch (Exception e){
+
+                }
+
+
+            }
+            arrSelectedDuration.clear();
+            arrDurationChoice.clear();
+            hideAllChoiceContainers();
+            llHealingTagFilter.setVisibility(View.VISIBLE);
+        }
+
+    });
+
+    rlFilter.setOnClickListener(v -> {
+        /*if(testViewModel.arrJson != null)*//*sahenita*/
+        if (testViewModel.arrJson .length()!=0)
+            openFilterDialog(true, false);
+
+    });
+
+    imgInfoMeditation.setOnClickListener(v -> {
+        /*commented by sahenita (temporary)*/
+        // ((MainActivity) requireActivity()).funTabBarforReward(false);
+    });
+
+    txtBackDownload.setOnClickListener(v -> ((MainActivity) requireActivity()).loadFragment(new MbhqTodayMainFragment(), "MbhqTodayMain", null));
+
+
+
+    swipeLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+        @Override
+        public void onRefresh() {
+
+            getMeditation();
+
+            swipeLayout.setRefreshing(false);
+        }
+    });
+
+    btnFindMyLevel.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            SharedPreference sharedPreference = new SharedPreference(getContext());
+            String URL = "https://meditate.emotionalfitnessclub.com/members?token=" + sharedPreference.read("MEDITATION_TEST_NOW_TOKEN", "");
+            Uri uri = Uri.parse(URL);
+            Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+            intent.setPackage("com.android.chrome");
+            requireActivity().startActivity(intent);
+        }
+    });
+    edtSearch.addTextChangedListener(new TextWatcher() {
+
+        @Override
+        public void afterTextChanged(Editable s) {
+
+
+
+        }
+
+        @Override
+        public void beforeTextChanged(CharSequence s, int start,
+                                      int count, int after) {
+
+               /* withfilterlist.clear();
+                withfilterlist= ((MeditationCourseAdapter) rvCourseM.getAdapter()).getArrayList();
+*/
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start,
+                                  int before, int count) {
+
+
+            if(s.toString().length()>0){
+                List<MeditationCourseModel.Webinar> avaiavlelist1 = new ArrayList<>();
+                ConnectivityManager connectivityManager = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
+                NetworkInfo activeNetwork = connectivityManager.getActiveNetworkInfo();
+                boolean isConnected = activeNetwork != null && activeNetwork.isConnectedOrConnecting();
+                if (!isConnected) {
+                    rlMainBlock.setVisibility(View.VISIBLE);
+                    rvCourseM.setVisibility(View.VISIBLE);
+                    rlNoMeditationDownload.setVisibility(View.GONE);
+                    rvCourseM_main.setVisibility(View.GONE);
+                    rvCourseM_nointernate.setVisibility(View.GONE);
+                    if(0==Util.withfilterlist_afterbackfrommeditationdetails.size()){
+                        Util.withfilterlist_afterbackfrommeditationdetails.addAll(avaiavlelist1);
+                        Util.str_withfilterlist_afterbackfrommeditationdetails=edtSearch.getText().toString().trim();
+                    }else{
+                        Util.withfilterlist_afterbackfrommeditationdetails.clear();
+                        Util.withfilterlist_afterbackfrommeditationdetails.addAll(avaiavlelist1);
+                        Util.str_withfilterlist_afterbackfrommeditationdetails=edtSearch.getText().toString().trim();
+                    }
+                    loadAvailableAdapterM(avaiavlelist1, avaiavlelist1.size(),0);
+                    if (rvCourseM != null && rvCourseM.getAdapter() != null) {
+                        ((MeditationCourseAdapter) rvCourseM.getAdapter()).search(s.toString());
+
+                    }
+                }else{
+                    Log.i("m_called","1");
+                    SharedPreferences preferences = getActivity().getSharedPreferences("MyAppPrefs1", Context.MODE_PRIVATE);
+                    String jsonData = preferences.getString("my_total_medicine", "");
+                    List<MeditationCourseModel.Webinar> avaiavlelist = new ArrayList<>();
+                    avaiavlelist = new Gson().fromJson(jsonData, new TypeToken<List<MeditationCourseModel.Webinar>>() {}.getType());
+                    Log.i("concatinatelist2",String.valueOf(avaiavlelist.size()));
+
+                    rlMainBlock.setVisibility(View.VISIBLE);
+                    rvCourseM.setVisibility(View.VISIBLE);
+                    rlNoMeditationDownload.setVisibility(View.GONE);
+                    rvCourseM_main.setVisibility(View.GONE);
+                    rvCourseM_nointernate.setVisibility(View.GONE);
+                    if(0==Util.withfilterlist_afterbackfrommeditationdetails.size()){
+                        Log.i("m_called","2");
+                        Util.withfilterlist_afterbackfrommeditationdetails.addAll(avaiavlelist);
+                        Util.str_withfilterlist_afterbackfrommeditationdetails=edtSearch.getText().toString().trim();
+                    }else{
+                        Log.i("m_called","3");
+                        Util.withfilterlist_afterbackfrommeditationdetails.clear();
+                        Util.withfilterlist_afterbackfrommeditationdetails.addAll(avaiavlelist);
+                        Util.str_withfilterlist_afterbackfrommeditationdetails=edtSearch.getText().toString().trim();
+                    }
+                    loadAvailableAdapterM(avaiavlelist, avaiavlelist.size(),0);
+                    if (rvCourseM != null && rvCourseM.getAdapter() != null) {
+                        ((MeditationCourseAdapter) rvCourseM.getAdapter()).search(s.toString());
+
+                    }
+                }
+
+            }else if(s.toString().length()==0){
+                Log.i("m_called","4");
+                // Log.i("withfilterlist1","called");
+
+                rlMainBlock.setVisibility(View.VISIBLE);
+                rvCourseM.setVisibility(View.VISIBLE);
+
+                rlNoMeditationDownload.setVisibility(View.GONE);
+                rvCourseM_main.setVisibility(View.GONE);
+                rvCourseM_nointernate.setVisibility(View.GONE);
+
+
+                if(!"TRUE".equalsIgnoreCase(fromDetailsPage1)){
+
+                    Log.i("m_called","5");
+                    loadAvailableAdapterM(withfilterlist, withfilterlist.size(),0);
+                    if (rvCourseM != null && rvCourseM.getAdapter() != null) {
+                        ((MeditationCourseAdapter) rvCourseM.getAdapter()).search(s.toString());
+
+
+                    }
+                }else{
+                    Log.i("m_called","6");
+                    loadAvailableAdapterM( Util.withfilterlist,  Util.withfilterlist.size(),0);
+                    if (rvCourseM != null && rvCourseM.getAdapter() != null) {
+                        ((MeditationCourseAdapter) rvCourseM.getAdapter()).search(s.toString());
+
+
+                    }
+                }
+
+
+
+            }
+
+        }
+    });
+}
+
+    private void getUserPaidStatusApiCall() {
+
+        if (Connection.checkConnection(getActivity())) {
+            final ProgressDialog progressDialog = ProgressDialog.show(getActivity(), "", "Please wait...");
+
+            HashMap<String, Object> hashReq = new HashMap<>();
+            hashReq.put("Email", sharedPreference.read("USEREMAIL", ""));
+            FinisherServiceImpl finisherService = new FinisherServiceImpl(getActivity());
+            Call<GetUserPaidStatusModel> paidStatusModelCall = finisherService.getUserPaidStatusApi(hashReq);
+            paidStatusModelCall.enqueue(new Callback<GetUserPaidStatusModel>() {
+                @Override
+                public void onResponse(Call<GetUserPaidStatusModel> call, Response<GetUserPaidStatusModel> response) {
+                    progressDialog.dismiss();
+
+                    if (response.body() != null && response.body().getSuccessFlag()) {
+
+                        Integer accesstype=response.body().getMbhqAccessType();
+                        Log.i("printttttttttttttttttttttttttttttt",String.valueOf(accesstype));
+                        Log.i("111111",String.valueOf(accesstype));
+                        Boolean HabitAccess=response.body().getHabitAccess();
+                        Log.i("111111",String.valueOf(HabitAccess));
+                        Boolean EqJournalAccess=response.body().getEqJournalAccess();
+                        Log.i("111111",String.valueOf(EqJournalAccess));
+                        Boolean MeditationAccess=response.body().getMeditationAccess();
+                        Log.i("111111",String.valueOf(MeditationAccess));
+                        Boolean ForumAccess=response.body().getForumAccess();
+                        Log.i("111111",String.valueOf(ForumAccess));
+                        Boolean LiveChatAccess=response.body().getLiveChatAccess();
+                        Log.i("111111",String.valueOf(LiveChatAccess));
+                        Boolean TestsAccess=response.body().getTestsAccess();
+                        Log.i("111111",String.valueOf(TestsAccess));
+                        Boolean CourseAccess=response.body().getCourseAccess();
+                        Log.i("111111",String.valueOf(CourseAccess));
+                        sharedPreference.write("accesstype", "", String.valueOf(accesstype));
+                        sharedPreference.write("HabitAccess", "", String.valueOf(HabitAccess));
+                        sharedPreference.write("EqJournalAccess", "", String.valueOf(EqJournalAccess));
+                        sharedPreference.write("MeditationAccess", "", String.valueOf(MeditationAccess));
+                        sharedPreference.write("ForumAccess", "", String.valueOf(ForumAccess));
+                        sharedPreference.write("LiveChatAccess", "", String.valueOf(LiveChatAccess));
+                        sharedPreference.write("TestsAccess", "", String.valueOf(TestsAccess));
+                        sharedPreference.write("CourseAccess", "", String.valueOf(CourseAccess));
+                        String accesstype1=sharedPreference.read("accesstype","");
+                        String habit_access=sharedPreference.read("HabitAccess","");
+                        String eq_access=sharedPreference.read("EqJournalAccess","");
+                        String medi_access=sharedPreference.read("MeditationAccess","");
+                        String forum_access=sharedPreference.read("ForumAccess","");
+                        String Live_access=sharedPreference.read("LiveChatAccess","");
+                        String Test_acess=sharedPreference.read("TestsAccess","");
+                        String Course_access=sharedPreference.read("CourseAccess","");
+
+                        Log.i("1111111100",eq_access);
+                        Log.i("2222222200",medi_access);
+                        Log.i("3333333300",accesstype1);
+                        Log.i("4444444400",habit_access);
+                        Log.i("5555555500",forum_access);
+                        Log.i("6666666600",Live_access);
+                        Log.i("7777777700",Test_acess);
+                        Log.i("8888888800",Course_access);
+
+                        if(null!=getActivity()){
+                            ((MainActivity) getActivity()).clearCacheForParticularFragment(new MeditationFragment());
+                            ((MainActivity) getActivity()).loadFragment(new MeditationFragment(), "MeditationFragment", null);
+                        }
+
+
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<GetUserPaidStatusModel> call, Throwable t) {
+                    progressDialog.dismiss();
+                }
+            });
+
+        } else {
+            Util.showToast(getActivity(), Util.networkMsg);
+        }
+
+    }
+
+
+
 
 }

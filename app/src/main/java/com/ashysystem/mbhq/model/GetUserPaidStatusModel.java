@@ -20,6 +20,96 @@ public class GetUserPaidStatusModel {
     @Expose
     private Boolean successFlag;
 
+    @SerializedName("MbhqAccessType")
+    @Expose
+    private Integer MbhqAccessType;
+    @SerializedName("HabitAccess")
+    @Expose
+    private Boolean HabitAccess;
+    @SerializedName("EqJournalAccess")
+    @Expose
+    private Boolean EqJournalAccess;
+    @SerializedName("MeditationAccess")
+    @Expose
+    private Boolean MeditationAccess;
+    @SerializedName("ForumAccess")
+    @Expose
+    private Boolean ForumAccess;
+    @SerializedName("LiveChatAccess")
+    @Expose
+    private Boolean LiveChatAccess;
+    @SerializedName("TestsAccess")
+    @Expose
+    private Boolean TestsAccess;
+    @SerializedName("CourseAccess")
+    @Expose
+    private Boolean CourseAccess;
+
+
+    public Integer getMbhqAccessType() {
+        return MbhqAccessType;
+    }
+
+    public void setMbhqAccessType(Integer mbhqAccessType) {
+        MbhqAccessType = mbhqAccessType;
+    }
+
+    public Boolean getHabitAccess() {
+        return HabitAccess;
+    }
+
+    public void setHabitAccess(Boolean habitAccess) {
+        HabitAccess = habitAccess;
+    }
+
+    public Boolean getEqJournalAccess() {
+        return EqJournalAccess;
+    }
+
+    public void setEqJournalAccess(Boolean eqJournalAccess) {
+        EqJournalAccess = eqJournalAccess;
+    }
+
+    public Boolean getMeditationAccess() {
+        return MeditationAccess;
+    }
+
+    public void setMeditationAccess(Boolean meditationAccess) {
+        MeditationAccess = meditationAccess;
+    }
+
+    public Boolean getForumAccess() {
+        return ForumAccess;
+    }
+
+    public void setForumAccess(Boolean forumAccess) {
+        ForumAccess = forumAccess;
+    }
+
+    public Boolean getLiveChatAccess() {
+        return LiveChatAccess;
+    }
+
+    public void setLiveChatAccess(Boolean liveChatAccess) {
+        LiveChatAccess = liveChatAccess;
+    }
+
+    public Boolean getTestsAccess() {
+        return TestsAccess;
+    }
+
+    public void setTestsAccess(Boolean testsAccess) {
+        TestsAccess = testsAccess;
+    }
+
+    public Boolean getCourseAccess() {
+        return CourseAccess;
+    }
+
+    public void setCourseAccess(Boolean courseAccess) {
+        CourseAccess = courseAccess;
+    }
+
     public Boolean getSquadMember() {
         return IsSquadMember;
     }

@@ -501,13 +501,19 @@
             android:visibility="gone"></include>
     </LinearLayout>
 
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+    </LinearLayout>
+
     <androidx.drawerlayout.widget.DrawerLayout
         android:id="@+id/drawer_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/llContainerBottom"
         android:layout_below="@+id/llTabView"
-        android:background="@drawable/sidemenubackground"
         tools:openDrawer="start">
 
         <include
@@ -519,516 +525,528 @@
         <LinearLayout
             android:id="@+id/navigation_layout"
             android:layout_width="270dp"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_gravity="start"
             android:background="@color/ashseparator1"
             android:orientation="vertical">
+<ScrollView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="250dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="10dp"
+            android:background="@drawable/capsule_grey1"
+            android:orientation="vertical"
+            android:paddingTop="14dp"
+           >
 
             <LinearLayout
+                android:id="@+id/menu_button1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginRight="10dp"
-                android:background="@drawable/capsule_grey1"
-                android:orientation="vertical"
-                android:paddingTop="14dp"
-                android:paddingBottom="14dp">
+                android:orientation="horizontal"
+                android:weightSum="2">
 
-                <LinearLayout
-                    android:id="@+id/menu_button1"
-                    android:layout_width="match_parent"
+
+                <RelativeLayout
+                    android:id="@+id/rlGameContainer"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:weightSum="2">
+                    android:layout_weight=".6">
 
 
-                    <RelativeLayout
-                        android:id="@+id/rlGameContainer"
-                        android:layout_width="0dp"
+                    <com.ashysystem.mbhq.view.TextViewOswaldMedium
+                        android:id="@+id/txtGamificationCountPopUp1"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight=".6">
+                        android:layout_centerInParent="true"
+                        android:background="@drawable/mbhq_circle"
+                        android:gravity="center"
+                        android:padding="@dimen/spacing_12dp"
+                        android:text="100"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/fab_twelve" />
+                </RelativeLayout>
 
 
-                        <com.ashysystem.mbhq.view.TextViewOswaldMedium
-                            android:id="@+id/txtGamificationCountPopUp1"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_centerInParent="true"
-                            android:background="@drawable/mbhq_circle"
-                            android:gravity="center"
-                            android:padding="@dimen/spacing_12dp"
-                            android:text="100"
-                            android:textColor="@color/white"
-                            android:textSize="@dimen/fab_twelve" />
-                    </RelativeLayout>
+                <com.ashysystem.mbhq.view.TextViewOswaldExtraLight
 
-
-                    <com.ashysystem.mbhq.view.TextViewOswaldExtraLight
-
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1.4"
-                        android:text="Streaks"
-                        android:textColor="@color/black"
-                        android:textSize="17sp" />
-
-
-                </LinearLayout>
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1sp"
-                    android:layout_marginTop="@dimen/dimen_8dp"
-                    android:background="@color/ashseparator">
-
-                </View>
-
-                <LinearLayout
-                    android:id="@+id/menu_test"
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="11dp"
-                    android:orientation="horizontal"
-                    android:weightSum="2">
-
-                    <ImageView
-                        android:layout_width="0dp"
-                        android:layout_height="7dp"
-                        android:layout_gravity="center"
-                        android:layout_weight=".5"
-                        android:src="@drawable/ima0">
-
-                    </ImageView>
-
-
-                    <com.ashysystem.mbhq.view.TextViewOswaldExtraLight
-
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1.5"
-                        android:text="Test"
-                        android:textColor="@color/black"
-                        android:textSize="17sp" />
-
-                </LinearLayout>
-
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1sp"
-                    android:layout_marginTop="@dimen/dimen_8dp"
-                    android:background="@color/ashseparator">
-
-                </View>
-
-                <LinearLayout
-                    android:id="@+id/menu_item5"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:orientation="horizontal"
-                    android:weightSum="2">
-
-                    <ImageView
-                        android:layout_width="0dp"
-                        android:layout_height="8dp"
-                        android:layout_gravity="center"
-                        android:layout_weight=".5"
-                        android:src="@drawable/ima0">
-
-                    </ImageView>
-
-
-                    <com.ashysystem.mbhq.view.TextViewOswaldExtraLight
-
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1.5"
-                        android:text="Live Chats"
-                        android:textColor="@color/black"
-                        android:textSize="17sp" />
-
-                </LinearLayout>
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1sp"
-                    android:layout_marginTop="8dp"
-                    android:background="@color/ashseparator">
-
-                </View>
-
-                <LinearLayout
-                    android:id="@+id/menu_forum"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:orientation="horizontal"
-                    android:weightSum="2">
-
-                    <ImageView
-                        android:layout_width="0dp"
-                        android:layout_height="8dp"
-                        android:layout_gravity="center"
-                        android:layout_weight=".5"
-                        android:src="@drawable/ima0"></ImageView>
-
-                    <com.ashysystem.mbhq.view.TextViewOswaldExtraLight
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1.5"
-                        android:text="Forum"
-                        android:textColor="@color/black"
-                        android:textSize="17sp" />
-                </LinearLayout>
-
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1sp"
-                    android:layout_marginTop="@dimen/dimen_8dp"
-                    android:background="@color/ashseparator">
-
-                </View>
-
-                <LinearLayout
-                    android:id="@+id/menu_bucketlist"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:orientation="horizontal"
-                    android:weightSum="2">
-
-                    <ImageView
-                        android:layout_width="0dp"
-                        android:layout_height="8dp"
-                        android:layout_gravity="center"
-                        android:layout_weight=".5"
-                        android:src="@drawable/ima0"></ImageView>
-
-                    <com.ashysystem.mbhq.view.TextViewOswaldExtraLight
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1.5"
-                        android:text="Bucket List"
-                        android:textColor="@color/black"
-                        android:textSize="17sp" />
-                </LinearLayout>
+                    android:layout_weight="1.4"
+                    android:text="Streaks"
+                    android:textColor="@color/black"
+                    android:textSize="17sp" />
 
 
             </LinearLayout>
 
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1sp"
+                android:layout_marginTop="@dimen/dimen_8dp"
+                android:background="@color/ashseparator">
+
+            </View>
+
             <LinearLayout
-                android:id="@+id/ll_prompt"
+                android:id="@+id/menu_test"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginRight="10dp"
-                android:background="@drawable/capsule_grey1"
-                android:orientation="vertical"
-                android:paddingTop="7dp"
-                android:paddingBottom="7dp">
+                android:layout_marginTop="11dp"
+                android:orientation="horizontal"
+                android:weightSum="2">
+
+                <ImageView
+                    android:layout_width="0dp"
+                    android:layout_height="7dp"
+                    android:layout_gravity="center"
+                    android:layout_weight=".5"
+                    android:src="@drawable/ima0">
+
+                </ImageView>
 
 
-                <LinearLayout
-                    android:layout_width="match_parent"
+                <com.ashysystem.mbhq.view.TextViewOswaldExtraLight
+
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:weightSum="2">
-
-
-                    <com.ashysystem.mbhq.view.TextViewOswaldExtraLight
-
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_weight="2"
-                        android:gravity="center"
-                        android:text="Prompt of the day"
-                        android:textColor="@color/black"
-                        android:textSize="17sp" />
-
-                </LinearLayout>
-
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1sp"
-                    android:layout_marginTop="@dimen/dimen_8dp"
-                    android:background="@color/ashseparator">
-
-                </View>
-
-                <LinearLayout
-
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/dimen_8dp"
-                    android:orientation="horizontal">
-
-
-                    <com.ashysystem.mbhq.view.TextViewOswaldLight
-                        android:id="@+id/txt_prompt"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginLeft="4dp"
-                        android:layout_marginRight="4dp"
-                        android:gravity="center"
-                        android:text=""
-                        android:textColor="@color/colorPrimary"
-                        android:textSize="13sp" />
-
-                </LinearLayout>
+                    android:layout_weight="1.5"
+                    android:text="Test"
+                    android:textColor="@color/black"
+                    android:textSize="17sp" />
 
             </LinearLayout>
 
 
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1sp"
+                android:layout_marginTop="@dimen/dimen_8dp"
+                android:background="@color/ashseparator">
+
+            </View>
+
+            <LinearLayout
+                android:id="@+id/menu_item5"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal"
+                android:weightSum="2">
+
+                <ImageView
+                    android:layout_width="0dp"
+                    android:layout_height="8dp"
+                    android:layout_gravity="center"
+                    android:layout_weight=".5"
+                    android:src="@drawable/ima0">
+
+                </ImageView>
+
+
+                <com.ashysystem.mbhq.view.TextViewOswaldExtraLight
+
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.5"
+                    android:text="Live Chats"
+                    android:textColor="@color/black"
+                    android:textSize="17sp" />
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1sp"
+                android:layout_marginTop="8dp"
+                android:background="@color/ashseparator">
+
+            </View>
+
+            <LinearLayout
+                android:id="@+id/menu_forum"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal"
+                android:weightSum="2">
+
+                <ImageView
+                    android:layout_width="0dp"
+                    android:layout_height="8dp"
+                    android:layout_gravity="center"
+                    android:layout_weight=".5"
+                    android:src="@drawable/ima0"></ImageView>
+
+                <com.ashysystem.mbhq.view.TextViewOswaldExtraLight
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.5"
+                    android:text="Forum"
+                    android:textColor="@color/black"
+                    android:textSize="17sp" />
+            </LinearLayout>
+
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1sp"
+                android:layout_marginTop="@dimen/dimen_8dp"
+                android:background="@color/ashseparator">
+
+            </View>
+
+            <LinearLayout
+                android:id="@+id/menu_bucketlist"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal"
+                android:weightSum="2">
+
+                <ImageView
+                    android:layout_width="0dp"
+                    android:layout_height="8dp"
+                    android:layout_gravity="center"
+                    android:layout_weight=".5"
+                    android:src="@drawable/ima0"></ImageView>
+
+                <com.ashysystem.mbhq.view.TextViewOswaldExtraLight
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.5"
+                    android:text="Bucket List"
+                    android:textColor="@color/black"
+                    android:textSize="17sp" />
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_prompt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="10dp"
+            android:background="@drawable/capsule_grey1"
+            android:orientation="vertical"
+            android:paddingTop="7dp"
+            android:paddingBottom="7dp">
+
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginRight="10dp"
-                android:background="@drawable/capsule_grey1"
-                android:orientation="vertical"
-                android:paddingTop="10dp"
-                android:paddingBottom="10dp">
+                android:orientation="horizontal"
+                android:weightSum="2">
 
 
-                <LinearLayout
-                    android:id="@+id/menu_item2"
-                    android:layout_width="match_parent"
+                <com.ashysystem.mbhq.view.TextViewOswaldExtraLight
+
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:weightSum="2">
+                    android:layout_gravity="center"
+                    android:layout_weight="2"
+                    android:gravity="center"
+                    android:text="Prompt of the day"
+                    android:textColor="@color/black"
+                    android:textSize="17sp" />
 
-                    <ImageView
-                        android:layout_width="0dp"
-                        android:layout_height="8dp"
-                        android:layout_gravity="center"
-                        android:layout_weight=".5"
-                        android:src="@drawable/ima0">
-
-                    </ImageView>
+            </LinearLayout>
 
 
-                    <com.ashysystem.mbhq.view.TextViewOswaldExtraLight
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1sp"
+                android:layout_marginTop="@dimen/dimen_8dp"
+                android:background="@color/ashseparator">
 
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1.5"
-                        android:text="Help"
-                        android:textColor="@color/black"
-                        android:textSize="17sp" />
+            </View>
 
-                </LinearLayout>
+            <LinearLayout
 
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen_8dp"
+                android:orientation="horizontal">
 
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1sp"
-                    android:layout_marginTop="@dimen/dimen_8dp"
-                    android:background="@color/ashseparator">
-
-                </View>
-
-                <LinearLayout
-                    android:id="@+id/menu_item2_folders"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_marginTop="3dp"
-                    android:weightSum="2">
-
-                    <ImageView
-                        android:layout_width="0dp"
-                        android:layout_height="8dp"
-                        android:layout_gravity="center"
-                        android:layout_weight=".5"
-                        android:src="@drawable/ima0">
-
-                    </ImageView>
-
-
-                    <com.ashysystem.mbhq.view.TextViewOswaldExtraLight
-
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1.5"
-                        android:text="Folders"
-                        android:textColor="@color/black"
-                        android:textSize="17sp" />
-
-                </LinearLayout>
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1sp"
-                    android:layout_marginTop="@dimen/dimen_8dp"
-                    android:background="@color/ashseparator">
-
-                </View>
-
-                <LinearLayout
-                    android:id="@+id/menu_itemtharapiest"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/dimen_8dp"
-                    android:orientation="horizontal"
-                    android:weightSum="2">
-
-                    <ImageView
-                        android:layout_width="0dp"
-                        android:layout_height="8dp"
-                        android:layout_gravity="center"
-                        android:layout_weight=".5"
-                        android:src="@drawable/ima0">
-
-                    </ImageView>
-
-
-                    <com.ashysystem.mbhq.view.TextViewOswaldExtraLight
-
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1.5"
-                        android:text="Find a Therapist"
-                        android:textColor="@color/black"
-                        android:textSize="17sp" />
-
-                </LinearLayout>
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1sp"
-                    android:layout_marginTop="@dimen/dimen_8dp"
-                    android:background="@color/ashseparator">
-
-                </View>
-
-
-
-                <LinearLayout
-                    android:id="@+id/menu_item4"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/dimen_8dp"
-                    android:orientation="horizontal"
-                    android:weightSum="2">
-
-                    <ImageView
-                        android:layout_width="0dp"
-                        android:layout_height="8dp"
-                        android:layout_gravity="center"
-                        android:layout_weight=".5"
-                        android:src="@drawable/ima0">
-
-                    </ImageView>
-
-
-                    <com.ashysystem.mbhq.view.TextViewOswaldExtraLight
-
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1.5"
-                        android:text="Coach"
-                        android:textColor="@color/black"
-                        android:textSize="17sp" />
-
-                </LinearLayout>
-
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1sp"
-                    android:layout_marginTop="@dimen/dimen_8dp"
-                    android:background="@color/ashseparator">
-
-                </View>
-
-                <LinearLayout
-                    android:id="@+id/menu_item6"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/dimen_8dp"
-                    android:orientation="horizontal"
-                    android:weightSum="2">
-
-                    <ImageView
-                        android:layout_width="0dp"
-                        android:layout_height="8dp"
-                        android:layout_gravity="center"
-                        android:layout_weight=".5"
-                        android:src="@drawable/ima0"></ImageView>
-
-                    <com.ashysystem.mbhq.view.TextViewOswaldExtraLight
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1.5"
-                        android:text="Contact"
-                        android:textColor="@color/black"
-                        android:textSize="17sp" />
-                </LinearLayout>
 
                 <com.ashysystem.mbhq.view.TextViewOswaldLight
-                    android:id="@+id/txtContactLink"
+                    android:id="@+id/txt_prompt"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_marginLeft="2dp"
-                    android:layout_marginTop="@dimen/dimen_8dp"
-                    android:layout_marginRight="2dp"
-                    android:autoLink="all"
+                    android:layout_marginLeft="4dp"
+                    android:layout_marginRight="4dp"
                     android:gravity="center"
-                    android:text="@string/customer_support_email"
+                    android:text=""
                     android:textColor="@color/colorPrimary"
-                    android:textColorLink="@color/colorPrimary"
-                    android:textSize="14sp"
-                    android:visibility="visible" />
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1sp"
-                    android:layout_marginTop="@dimen/dimen_8dp"
-                    android:background="@color/ashseparator">
-
-                </View>
-
-                <LinearLayout
-                    android:id="@+id/menu_button2"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/dimen_8dp"
-                    android:orientation="horizontal"
-                    android:weightSum="2">
-
-                    <ImageView
-                        android:layout_width="0dp"
-                        android:layout_height="8dp"
-                        android:layout_gravity="center"
-                        android:layout_weight=".5"
-                        android:src="@drawable/ima0">
-
-                    </ImageView>
-
-
-                    <com.ashysystem.mbhq.view.TextViewOswaldExtraLight
-
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1.5"
-                        android:text="Log out"
-                        android:textColor="@color/black"
-                        android:textSize="18sp" />
-
-                </LinearLayout>
-
+                    android:textSize="13sp" />
 
             </LinearLayout>
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="10dp"
+            android:background="@drawable/capsule_grey1"
+            android:orientation="vertical"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp">
+
+
+            <LinearLayout
+                android:id="@+id/menu_item2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="2">
+
+                <ImageView
+                    android:layout_width="0dp"
+                    android:layout_height="8dp"
+                    android:layout_gravity="center"
+                    android:layout_weight=".5"
+                    android:src="@drawable/ima0">
+
+                </ImageView>
+
+
+                <com.ashysystem.mbhq.view.TextViewOswaldExtraLight
+
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.5"
+                    android:text="Help"
+                    android:textColor="@color/black"
+                    android:textSize="17sp" />
+
+            </LinearLayout>
+
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1sp"
+                android:layout_marginTop="@dimen/dimen_8dp"
+                android:background="@color/ashseparator">
+
+            </View>
+
+            <LinearLayout
+                android:id="@+id/menu_item2_folders"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="3dp"
+                android:weightSum="2">
+
+                <ImageView
+                    android:layout_width="0dp"
+                    android:layout_height="8dp"
+                    android:layout_gravity="center"
+                    android:layout_weight=".5"
+                    android:src="@drawable/ima0">
+
+                </ImageView>
+
+
+                <com.ashysystem.mbhq.view.TextViewOswaldExtraLight
+
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.5"
+                    android:text="Folders"
+                    android:textColor="@color/black"
+                    android:textSize="17sp" />
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1sp"
+                android:layout_marginTop="@dimen/dimen_8dp"
+                android:background="@color/ashseparator">
+
+            </View>
+
+            <LinearLayout
+                android:id="@+id/menu_itemtharapiest"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen_8dp"
+                android:orientation="horizontal"
+                android:weightSum="2">
+
+                <ImageView
+                    android:layout_width="0dp"
+                    android:layout_height="8dp"
+                    android:layout_gravity="center"
+                    android:layout_weight=".5"
+                    android:src="@drawable/ima0">
+
+                </ImageView>
+
+
+                <com.ashysystem.mbhq.view.TextViewOswaldExtraLight
+
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.5"
+                    android:text="Find a Therapist"
+                    android:textColor="@color/black"
+                    android:textSize="17sp" />
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1sp"
+                android:layout_marginTop="@dimen/dimen_8dp"
+                android:background="@color/ashseparator">
+
+            </View>
+
+
+
+            <LinearLayout
+                android:id="@+id/menu_item4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen_8dp"
+                android:orientation="horizontal"
+                android:weightSum="2">
+
+                <ImageView
+                    android:layout_width="0dp"
+                    android:layout_height="8dp"
+                    android:layout_gravity="center"
+                    android:layout_weight=".5"
+                    android:src="@drawable/ima0">
+
+                </ImageView>
+
+
+                <com.ashysystem.mbhq.view.TextViewOswaldExtraLight
+
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.5"
+                    android:text="Coach"
+                    android:textColor="@color/black"
+                    android:textSize="17sp" />
+
+            </LinearLayout>
+
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1sp"
+                android:layout_marginTop="@dimen/dimen_8dp"
+                android:background="@color/ashseparator">
+
+            </View>
+
+            <LinearLayout
+                android:id="@+id/menu_item6"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen_8dp"
+                android:orientation="horizontal"
+                android:weightSum="2">
+
+                <ImageView
+                    android:layout_width="0dp"
+                    android:layout_height="8dp"
+                    android:layout_gravity="center"
+                    android:layout_weight=".5"
+                    android:src="@drawable/ima0"></ImageView>
+
+                <com.ashysystem.mbhq.view.TextViewOswaldExtraLight
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.5"
+                    android:text="Contact"
+                    android:textColor="@color/black"
+                    android:textSize="17sp" />
+            </LinearLayout>
+
+            <com.ashysystem.mbhq.view.TextViewOswaldLight
+                android:id="@+id/txtContactLink"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="2dp"
+                android:layout_marginTop="@dimen/dimen_8dp"
+                android:layout_marginRight="2dp"
+                android:autoLink="all"
+                android:gravity="center"
+                android:text="@string/customer_support_email"
+                android:textColor="@color/colorPrimary"
+                android:textColorLink="@color/colorPrimary"
+                android:textSize="14sp"
+                android:visibility="visible" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1sp"
+                android:layout_marginTop="@dimen/dimen_8dp"
+                android:background="@color/ashseparator">
+
+            </View>
+
+            <LinearLayout
+                android:id="@+id/menu_button2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen_8dp"
+                android:orientation="horizontal"
+                android:weightSum="2">
+
+                <ImageView
+                    android:layout_width="0dp"
+                    android:layout_height="8dp"
+                    android:layout_gravity="center"
+                    android:layout_weight=".5"
+                    android:src="@drawable/ima0">
+
+                </ImageView>
+
+
+                <com.ashysystem.mbhq.view.TextViewOswaldExtraLight
+
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.5"
+                    android:text="Log out"
+                    android:textColor="@color/black"
+                    android:textSize="18sp" />
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</ScrollView>
+
+
 
         </LinearLayout>
         <!-- Custom Navigation Drawer End -->

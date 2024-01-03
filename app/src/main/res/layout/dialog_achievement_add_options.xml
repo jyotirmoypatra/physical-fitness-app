@@ -558,7 +558,40 @@
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:background="@color/ashseparator"></View>
-            <LinearLayout
+
+                <LinearLayout
+                    android:id="@+id/llneedtowork"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <com.ashysystem.mbhq.view.TextViewRaleWay
+                        android:id="@+id/txtneedtowork"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:layout_weight="1"
+                        android:background="@color/white"
+                        android:gravity="center_vertical"
+                        android:paddingLeft="10dp"
+                        android:text="I need to work on/clear"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/fab_sixteen" />
+                    <ImageView
+                        android:id="@+id/checkneedtowork"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginRight="5dp"
+                        android:padding="8dp"
+                        android:src="@drawable/mbhq_circle_green" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/ashseparator"></View>
+
+                <LinearLayout
                 android:id="@+id/llObserved"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

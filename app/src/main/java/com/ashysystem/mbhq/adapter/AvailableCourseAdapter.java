@@ -25,6 +25,7 @@ import com.ashysystem.mbhq.fragment.course.CourseArticleDetailsNewFragment;
 import com.ashysystem.mbhq.fragment.course.CourseDetailsFragment;
 import com.ashysystem.mbhq.fragment.course.ProgramDetailsFragment;
 import com.ashysystem.mbhq.model.AvailableCourseModel;
+import com.ashysystem.mbhq.model.MeditationCourseModel;
 import com.ashysystem.mbhq.model.response.AddCourseResponseModel;
 import com.ashysystem.mbhq.util.AlertDialogCustom;
 import com.ashysystem.mbhq.util.Connection;
@@ -37,6 +38,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -52,6 +54,8 @@ import retrofit2.Response;
 
 public class AvailableCourseAdapter extends RecyclerView.Adapter<AvailableCourseAdapter.ViewHolder> {
     List<AvailableCourseModel.Course> lstData;
+    ArrayList<AvailableCourseModel.Course> fullData = new ArrayList<AvailableCourseModel.Course>();
+
     Context context;
     private String origin = "";
     String PLAY_EPISODE_ONE = "";
@@ -75,6 +79,7 @@ public class AvailableCourseAdapter extends RecyclerView.Adapter<AvailableCourse
         this.lstData = lstData;
         this.context = context;
         this.origin = origin;
+        this.fullData.addAll(lstData);
         this.dynamicSize = dynamicSize;
         this.PLAY_EPISODE_ONE = PLAY_EPISODE_ONE;
         this.FROMSETPROGRAM = FROMSETPROGRAM;
@@ -529,9 +534,9 @@ public class AvailableCourseAdapter extends RecyclerView.Adapter<AvailableCourse
     @Override
     public int getItemCount() {
         try {
-            //return lstData.size();
-            Log.e("print dynamic size--", lstData.size() + "??");
-            return dynamicSize;
+            return lstData.size();
+//            Log.e("print dynamic size--", lstData.size() + "??");
+//            return dynamicSize;
         } catch (Exception e) {
             e.printStackTrace();
             return 0;
@@ -643,4 +648,48 @@ public class AvailableCourseAdapter extends RecyclerView.Adapter<AvailableCourse
             Util.showToast(context, Util.networkMsg);
         }
     }
+
+
+    public void search(String searchString) {
+        lstData.clear();
+        dynamicSize = 0;
+        String searchLower = searchString.toLowerCase();
+        String searchUpper = searchString.toUpperCase();
+        if (searchString.equals("")) {
+            lstData.addAll(fullData);
+        } else {
+            for (int x = 0; x < fullData.size(); x++) {
+                Log.i("med_tag","1");
+                Log.i("med_tag",searchLower);
+                Log.i("med_tag",searchUpper);
+                if(fullData.get(x).getTags().size()>1){
+                    Log.i("med_tag","2");
+                    if (fullData.get(x).getCourseName().toLowerCase().contains(searchString.toLowerCase()) ||fullData.get(x).getTags().contains(searchLower)||fullData.get(x).getTags().contains(searchUpper)||
+                            fullData.get(x).getAuthorName().toLowerCase().contains(searchString.toLowerCase())||
+                            fullData.get(x).getTags().get(0).toLowerCase().contains(searchLower)||
+                            fullData.get(x).getTags().get(1).toLowerCase().contains(searchLower)
+                    ) {
+
+                        lstData.add(fullData.get(x));
+                    }
+                }else{
+                    Log.i("med_tag","3");
+                    if (fullData.get(x).getCourseName().toLowerCase().contains(searchString.toLowerCase()) ||fullData.get(x).getTags().contains(searchLower)||fullData.get(x).getTags().contains(searchUpper)||
+                            fullData.get(x).getAuthorName().toLowerCase().contains(searchString.toLowerCase())||
+                            fullData.get(x).getTags().get(0).toLowerCase().contains(searchLower)
+                    ) {
+
+                        lstData.add(fullData.get(x));
+                    }
+                }
+
+
+            }
+        }
+        dynamicSize = lstData.size();
+        notifyDataSetChanged();
+    }
+
+
+
 }

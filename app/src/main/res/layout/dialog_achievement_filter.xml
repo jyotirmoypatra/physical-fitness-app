@@ -550,6 +550,30 @@
                             </RelativeLayout>
 
                             <RelativeLayout
+                                android:id="@+id/rlIneedtowork"
+                                android:layout_width="match_parent"
+                                android:layout_height="45dp">
+                                <ImageView
+                                    android:id="@+id/imgIneedtowork"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_centerVertical="true"
+                                    android:layout_marginLeft="25dp"
+                                    android:background="@drawable/mbhq_ic_untick" />
+                                <com.ashysystem.mbhq.view.TextViewRalewayMedium
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_centerVertical="true"
+                                    android:layout_marginLeft="15dp"
+                                    android:layout_toRightOf="@+id/imgIneedtowork"
+                                    android:text="I need to work on/clear"
+                                    android:textAllCaps="true"
+                                    android:textColor="@color/black"
+                                    android:textSize="@dimen/fab_fourteen" />
+                            </RelativeLayout>
+
+
+                            <RelativeLayout
                                 android:id="@+id/rlIHvObserve"
                                 android:layout_width="match_parent"
                                 android:layout_height="45dp">
@@ -954,6 +978,24 @@
                                     android:textColor="@color/black"
                                     android:textSize="@dimen/fab_fourteen" />
                             </RelativeLayout>
+                            <View
+                                android:layout_width="match_parent"
+                                android:layout_height="1dp"
+                                android:layout_marginTop="10dp"
+                                android:layout_marginBottom="10dp"
+                                android:background="@color/ashseparator" />
+
+                            <com.ashysystem.mbhq.view.TextViewBold
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="15dp"
+                                android:layout_marginTop="10dp"
+                                android:text="FOLDERS"
+                                android:textAllCaps="true"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/fab_sixteen" />
+
+
                             <androidx.recyclerview.widget.RecyclerView
                                 android:id="@+id/rl_F"
                                 android:layout_width="match_parent"

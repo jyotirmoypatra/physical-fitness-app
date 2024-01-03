@@ -12,12 +12,14 @@ public class CourseDataViewModel extends ViewModel {
 
 
     public List<AvailableCourseModel.Course> lstTotalDataM = new ArrayList<>();
+    public List<AvailableCourseModel.Course> lstTotalDataM_filter = new ArrayList<>();
 
     /////////////////////////////////////////
     public List<AvailableCourseModel.Course> myInProgressPrograms = new ArrayList<>();
     public List<AvailableCourseModel.Course> myPausedPrograms = new ArrayList<>();
     public List<AvailableCourseModel.Course> myCompletedPrograms = new ArrayList<>();
     public List<AvailableCourseModel.Course> myAllPrograms = new ArrayList<>();
+    public List<AvailableCourseModel.Course> myAllPrograms_filter = new ArrayList<>();
     public List<AvailableCourseModel.Course> myVirginPrograms = new ArrayList<>();
 
     /////////////////////////////////////////
@@ -25,10 +27,12 @@ public class CourseDataViewModel extends ViewModel {
     public List<AvailableCourseModel.Course> pausedMemberPrograms = new ArrayList<>();
     public List<AvailableCourseModel.Course> completedMemberPrograms = new ArrayList<>();
     public List<AvailableCourseModel.Course> allMemberPrograms = new ArrayList<>();
+    public List<AvailableCourseModel.Course> allMemberPrograms_filter = new ArrayList<>();
     public List<AvailableCourseModel.Course> virginMemberPrograms = new ArrayList<>();
 
     ///////////////////////////////////////////////
     public List<AvailableCourseModel.Course> allLivePrograms = new ArrayList<>();
+    public List<AvailableCourseModel.Course> allLivePrograms_filter = new ArrayList<>();
     public List<AvailableCourseModel.Course> pausedLivePrograms = new ArrayList<>();
     public List<AvailableCourseModel.Course> inProgressLivePrograms = new ArrayList<>();
     public List<AvailableCourseModel.Course> completedLivePrograms = new ArrayList<>();
@@ -36,6 +40,7 @@ public class CourseDataViewModel extends ViewModel {
 
     ///////////////////////////////////////////////////
     public List<AvailableCourseModel.Course> allPaidPrograms = new ArrayList<>();
+    public List<AvailableCourseModel.Course> allPaidPrograms_filter = new ArrayList<>();
     public List<AvailableCourseModel.Course> pausedPaidPrograms = new ArrayList<>();
     public List<AvailableCourseModel.Course> inProgressPaidPrograms = new ArrayList<>();
     public List<AvailableCourseModel.Course> completedPaidPrograms = new ArrayList<>();
@@ -43,6 +48,7 @@ public class CourseDataViewModel extends ViewModel {
 
     ///////////////////////////////////////////////////
     public List<AvailableCourseModel.Course> allMaterclassPrograms = new ArrayList<>();
+    public List<AvailableCourseModel.Course> allMaterclassPrograms_filter = new ArrayList<>();
     public List<AvailableCourseModel.Course> pausedMaterclassPrograms = new ArrayList<>();
     public List<AvailableCourseModel.Course> inProgressMaterclassPrograms = new ArrayList<>();
     public List<AvailableCourseModel.Course> completedMaterclassPrograms = new ArrayList<>();
@@ -50,11 +56,12 @@ public class CourseDataViewModel extends ViewModel {
 
     ///////////////////////////////////////////////////
     public List<AvailableCourseModel.Course> allPaidMaterclassPrograms = new ArrayList<>();
+    public List<AvailableCourseModel.Course> allPaidMaterclassPrograms_filter = new ArrayList<>();
     public List<AvailableCourseModel.Course> pausedPaidMaterclassPrograms = new ArrayList<>();
     public List<AvailableCourseModel.Course> inProgressPaidMaterclassPrograms = new ArrayList<>();
     public List<AvailableCourseModel.Course> completedPaidMaterclassPrograms = new ArrayList<>();
     public List<AvailableCourseModel.Course> virginPaidMaterclassPrograms = new ArrayList<>();
-
+    public List<AvailableCourseModel.Course> allPodcastPrograms_filter = new ArrayList<>();
     //////////////////////////////////////////
 
     public List<AvailableCourseModel.Course> allPodcastPrograms = new ArrayList<AvailableCourseModel.Course>(){{

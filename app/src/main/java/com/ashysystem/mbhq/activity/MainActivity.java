@@ -1337,6 +1337,7 @@ public class MainActivity extends AppCompatActivity implements OnLoadFragmentReq
 
             }
         });
+
         menu_button_stack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -1470,6 +1471,7 @@ public class MainActivity extends AppCompatActivity implements OnLoadFragmentReq
                 Util.session="";
                 Util.withfilterlist_afterbackfrommeditationdetails.clear();
                 Util.refresh_gratitude="yes";
+                sharedPreference.clearSharedPreferences(MainActivity.this,"Coursefilterfile");
                 sharedPreference.clear("SAVED_HABIT_FILTER_VALUES");
                 sharedPreference.clear("my_list");
                 sharedPreference.clear("selectall_habit");

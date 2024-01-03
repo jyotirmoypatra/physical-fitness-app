@@ -109,8 +109,10 @@ import com.ashysystem.mbhq.fragment.CustomReminderDialog;
 import com.ashysystem.mbhq.fragment.CustomReminderDialogForEdit;
 import com.ashysystem.mbhq.fragment.MyAchievementsListAddEditFragment;
 import com.ashysystem.mbhq.fragment.habit_hacker.MbhqTodayMainFragment;
+import com.ashysystem.mbhq.fragment.meditation.MeditationFragment;
 import com.ashysystem.mbhq.model.GetGratitudeCacheExpiryTimeResponse;
 import com.ashysystem.mbhq.model.GetPrompt;
+import com.ashysystem.mbhq.model.GetUserPaidStatusModel;
 import com.ashysystem.mbhq.model.GrowthSaveFilterModel;
 import com.ashysystem.mbhq.model.IndividualAchievementModel;
 import com.ashysystem.mbhq.model.MeditationCourseModel;
@@ -224,7 +226,7 @@ public class MyAchievementsFragment extends Fragment {
     ImageView imgSixMonthCheck;
     ImageView imgOneYearCheck;
     ImageView imgAmProudOf;
-    ImageView imgIHvAccomplish;
+    ImageView imgIHvAccomplish,imgIneedtowork;
     ImageView imgIHvObserve;
     ImageView imgIHvLearned;
     ImageView imgChooseTo;
@@ -251,10 +253,6 @@ public class MyAchievementsFragment extends Fragment {
     ImageView imgOneThingIappreciate;
     ImageView imgOnlyPicture;
     boolean boolShowImg = false;
-
-
-
-
     private String strDialogSelectionType = "";
     ImageView imgBackgroundPicTOP;
     CardView cardViewBackgroundPicTOP;
@@ -285,7 +283,7 @@ public class MyAchievementsFragment extends Fragment {
 
 
     boolean boolDateSelected = false, boolToday = false, boolThisMonth = false, boolSixMonth = false, boolOneYear = false, boolPicture = false;
-    boolean boolProudOf = false, boolAccomplished = false, boolObserved = false, boolLearned = false, boolPraised = false, boolLetGoOf = false, boolPromptOfTheDay = false,
+    boolean boolProudOf = false, boolAccomplished = false,boolNeedToWork = false, boolObserved = false, boolLearned = false, boolPraised = false, boolLetGoOf = false, boolPromptOfTheDay = false,
             boolShowAll = true, boolDreamtOf = false, boolJournalEntry = false, boolTheStory = false, boolChallenged = false, boolCelebrating = false, boolLaughed = false,
             boolTodayImFeeling = false, boolShowPicture = false, boolGratefulFor = false, boolWorkingTowards = false, boolFeelingGrowth = false, boolCommittingTo = false;
     boolean boolFoundGift = false, boolIAcknowledge = false;
@@ -315,7 +313,7 @@ public class MyAchievementsFragment extends Fragment {
     //added by jyotirmoy patra 28.09.22
     private static int CODE_AUTHENTICATION_VERIFICATION = 241;
     public static boolean FIRST_KEYGUARD_CHECK = false;
-    ImageView checkGrateful_image, checkPromptofTheDay_image, checkTodayImFelling_image,checkOnething, checkGrateful, checkJournal, checkPromptofTheDay, checkTodayImFelling, checkProudOf, checkAccomplish, checkToward, checkFeelGrowth, checkCommitting, checkCelebrate, checkFoundGift, checkHappy;
+    ImageView checkneedtowork,checkGrateful_image, checkPromptofTheDay_image, checkTodayImFelling_image,checkOnething, checkGrateful, checkJournal, checkPromptofTheDay, checkTodayImFelling, checkProudOf, checkAccomplish, checkToward, checkFeelGrowth, checkCommitting, checkCelebrate, checkFoundGift, checkHappy;
     ImageView checkTheStoryAdd, checkChallenged, checkObserved, checkLearned, checkAcknowledge, checkLaughed, checkPraised, checkTodayLetOf, checkIDreamtOf,checkIchoose;
     public boolean promptOfTheDayClick = false, boolFeltHappyToday = false;
     public boolean clickGratitudeEntry = false, jornalImgAdd = false;
@@ -339,6 +337,8 @@ public class MyAchievementsFragment extends Fragment {
     private NestedScrollView nestedSV;
     private long mLastClickTime = 0;
     ImageView img_notaccess;
+    FrameLayout frm_notaccess;
+    Button txt_notaccess;
     LinearLayout ll_total;
 
 
@@ -615,47 +615,9 @@ public class MyAchievementsFragment extends Fragment {
         Log.i("printtttttttttttttttttttttttttt",Test_acess);
         if("3".equalsIgnoreCase(accesstype)){
             if("false".equalsIgnoreCase(eq_access)){
-            /*  AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-              builder.setMessage("User don't have access to use Eq") .setTitle("Efc");
 
-              builder.setCancelable(false)
-
-                      .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                          public void onClick(DialogInterface dialog, int id) {
-
-if("habit".equalsIgnoreCase(Util.sourcepage)){
-    ((MainActivity) getActivity()).funHabits_();
-    ((MainActivity) getActivity()).clearCacheForParticularFragment(new MbhqTodayTwoFragment());
-    ((MainActivity) getActivity()).loadFragment(new MbhqTodayTwoFragment(), "MbhqTodayTwo", null);
-}else if("meditation".equalsIgnoreCase(Util.sourcepage)){
-    Util.refresh_meditation="yes";
-    Util.refresh_gratitude="yes";
-    ((MainActivity) getActivity()).toolbar.setVisibility(View.VISIBLE);
-    ((MainActivity) getActivity()).funMeditation();
-    Util.refresh_gratitude="yes";
-}else if("course".equalsIgnoreCase(Util.sourcepage)){
-    ((MainActivity) getActivity()).funDrawer1();
-    Util.refresh_gratitude="yes";
-    ((MainActivity) getActivity()).toolbar.setVisibility(View.VISIBLE);
-    ((MainActivity) getActivity()).funCourse();
-}else if("test".equalsIgnoreCase(Util.sourcepage)){
-    ((MainActivity) getActivity()).funDrawer1();
-
-    ((MainActivity)getActivity()).clearCacheForParticularFragment(new QuestionariesFragment());
-    ((MainActivity)getActivity()).loadFragment(new QuestionariesFragment(),"Question",null);
-
-}else if("Live".equalsIgnoreCase(Util.sourcepage)){
-    ((MainActivity) getActivity()).loadFragment(LiveChatFragment.newInstance(), "LiveChat", null);
-
-}
-
-                          }
-                      });
-
-              AlertDialog alert = builder.create();
-              alert.setCanceledOnTouchOutside(false);
-              alert.show();*/
             }else{
+                init();
                 Util.sourcepage="Eq";
                 IntentFilter filter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
                 getActivity().registerReceiver(networkChangeReceiver1, filter);
@@ -672,6 +634,7 @@ if("habit".equalsIgnoreCase(Util.sourcepage)){
                 }
             }
         }else{
+            init();
             Util.sourcepage="Eq";
             IntentFilter filter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
             getActivity().registerReceiver(networkChangeReceiver1, filter);
@@ -690,287 +653,7 @@ if("habit".equalsIgnoreCase(Util.sourcepage)){
 
     }
 
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        Log.e("state","onActivityCreated");
-        Log.e("state11111111111","onActivityCreated");
-        Log.e("state11111111111",accesstype);
-        if("3".equalsIgnoreCase(accesstype)){
-            if("false".equalsIgnoreCase(eq_access)){
-                // ((MainActivity) getActivity()).loadFragment(new MbhqTodayTwoFragment(), "MbhqTodayTwo", null);
-            }else{
-                Log.e("state11111111111","onActivityCreated");
-                ////////////////////////////////////////////// Added by mugdho///////////////////////////////////////////
-                factoryForGratitude1 = Injection.provideViewModelFactoryGratitude(getActivity());
-                gratitudeViewModel1 = new ViewModelProvider(this, factoryForGratitude1).get(GratitudeViewModel.class);
-                //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-                if("yes".equalsIgnoreCase(Util.opengratitudeforfirstuser)){
-                    Log.e("state11111111111","onActivityCreated");
-                    Log.i("check_eq","23");
-                    Util.opengratitudeforfirstuser="";
-                    Log.e("state","onActivityCreated1");
-                    pagenation_from_api=true;
-                    getAchievementsList_firstcall(Page);
-                }
-                Util.opengratitudeforfirstuser="";
-                factoryForGratitude = Injection.provideViewModelFactoryGrowth(getActivity());
-                gratitudeViewModel = new ViewModelProvider(this, factoryForGratitude).get(GrowthViewModel.class);
-
-                ConnectivityManager connectivityManager = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
-                NetworkInfo activeNetwork = connectivityManager.getActiveNetworkInfo();
-                boolean isConnected = activeNetwork != null && activeNetwork.isConnectedOrConnecting();
-                if (!isConnected) {
-                    Log.i("check_eq","32");
-                    // Internet connection is lost
-                    Log.e("state11111111111","onActivityCreated");
-                    pagenation_from_api=false;
-                    calldatabase_nointernate(position, count);
-                }else{
-                    Log.e("state11111111111","onActivityCreated");
-                    Log.i("check_eq","26");
-                    if (getArguments() != null && getArguments().containsKey("NOTIFICATIONID")) {
-                        Log.i("check_eq","27");
-                        ((MainActivity) getActivity()).clearCacheForParticularFragment(new MyAchievementsFragment());
-                        getSelectedAchievement(getArguments().getInt("NOTIFICATIONID"), "", false);
-                    } else {
-                        Log.i("check_eq","28");
-                        if (getArguments() != null && getArguments().containsKey("ADD_GROWTH_FROM_TODAY")) {
-                            Log.i("check_eq","29");
-                        } else if (getArguments() != null && getArguments().containsKey("openaddpopup")) {
-                            Log.i("check_eq","30");
-                            Log.e("state11111111111","onActivityCreated");
-                            checkGratitudeCacheExpiration();
-                            arrAchieveOptions.add("I'm Grateful For:");
-                            arrAchieveOptions.add("Journal Entry:");
-
-                            arrAchieveOptions.add(Util.prompt1 );
-
-                            arrAchieveOptions.add("Today I'm Feeling:");
-                            arrAchieveOptions.add("I am proud of:");
-                            arrAchieveOptions.add("I've accomplished:");
-                            arrAchieveOptions.add("I'm working towards:");
-                            arrAchieveOptions.add("I'm feeling growth in:");
-                            arrAchieveOptions.add("I’m committing to:");
-                            arrAchieveOptions.add("A small win I'm celebrating is:");
-                            arrAchieveOptions.add("I've found the gift in:");
-                            arrAchieveOptions.add("I felt happy today because:");
-
-                            arrAchieveOptions.add("The story I've told myself is:");
-                            arrAchieveOptions.add("I've been challenged by:");
-                            arrAchieveOptions.add("I've observed:");
-                            arrAchieveOptions.add("I've learned:");
-                            arrAchieveOptions.add("I acknowledge:");
-                            arrAchieveOptions.add("I laughed:");
-                            arrAchieveOptions.add("I've praised:");
-                            arrAchieveOptions.add("I've let go of:");
-                            arrAchieveOptions.add("I dreamt of:");
-                            arrAchieveOptions.add("One thing I appreciate about you today is:");
-                            arrAchieveOptions.add("I Choose to Know:");
-                            openDialogForAchieveAdd();
-
-                        } else if (getArguments() != null && getArguments().containsKey("openprompt")) {
-                            Log.e("state11111111111","--------5");
-                            Log.i("check_eq","30");
-                            checkGratitudeCacheExpiration();
-
-                            // GetJounalPromptofDay();
-
-                            ConnectivityManager connectivityManager1 = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
-                            NetworkInfo activeNetwork1 = connectivityManager1.getActiveNetworkInfo();
-                            boolean isConnected1 = activeNetwork1!= null && activeNetwork1.isConnectedOrConnecting();
-                            if (!isConnected1) {
-                                // Internet connection is lost
-                                showpopup4();
-                            }else{
-                                sharedPreference.write("click_option", "", "click_promptoftheday");
-
-                                arrAchieveOptions.add("I'm Grateful For:");
-                                arrAchieveOptions.add("Journal Entry:");
-
-                                arrAchieveOptions.add(Util.prompt1 );
-
-                                arrAchieveOptions.add("Today I'm Feeling:");
-                                arrAchieveOptions.add("I am proud of:");
-                                arrAchieveOptions.add("I've accomplished:");
-                                arrAchieveOptions.add("I'm working towards:");
-                                arrAchieveOptions.add("I'm feeling growth in:");
-                                arrAchieveOptions.add("I’m committing to:");
-                                arrAchieveOptions.add("A small win I'm celebrating is:");
-                                arrAchieveOptions.add("I've found the gift in:");
-                                arrAchieveOptions.add("I felt happy today because:");
-
-                                arrAchieveOptions.add("The story I've told myself is:");
-                                arrAchieveOptions.add("I've been challenged by:");
-                                arrAchieveOptions.add("I've observed:");
-                                arrAchieveOptions.add("I've learned:");
-                                arrAchieveOptions.add("I acknowledge:");
-                                arrAchieveOptions.add("I laughed:");
-                                arrAchieveOptions.add("I've praised:");
-                                arrAchieveOptions.add("I've let go of:");
-                                arrAchieveOptions.add("I dreamt of:");
-                                arrAchieveOptions.add("One thing I appreciate about you today is:");
-                                arrAchieveOptions.add("I Choose to Know:");
-                                openDialogForAchieveAddWithOption(2);
-
-                            }
-
-                        }else if (getArguments() != null && getArguments().containsKey("calledapi")) {
-                            Log.i("check_eq","31");
-                            Log.e("state11111111111","onActivityCreated");
-                            checkGratitudeCacheExpiration();
-
-                        } else {
-                            Log.i("check_eq","122");
-                            Log.e("state11111111111","onActivityCreated");
-                            checkGratitudeCacheExpiration();
-
-
-                        }
-                    }
-                }
-            }
-        }else{
-            Log.e("state11111111111","onActivityCreated-----");
-            ////////////////////////////////////////////// Added by mugdho///////////////////////////////////////////
-            factoryForGratitude1 = Injection.provideViewModelFactoryGratitude(getActivity());
-            gratitudeViewModel1 = new ViewModelProvider(this, factoryForGratitude1).get(GratitudeViewModel.class);
-            //////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-            if("yes".equalsIgnoreCase(Util.opengratitudeforfirstuser)){
-                Log.e("state11111111111","onActivityCreated-----");
-                Log.i("check_eq","23");
-                Util.opengratitudeforfirstuser="";
-                Log.e("state","onActivityCreated1");
-                pagenation_from_api=true;
-                getAchievementsList_firstcall(Page);
-            }
-            Util.opengratitudeforfirstuser="";
-            //  Util.refresh_gratitude="no";
-            factoryForGratitude = Injection.provideViewModelFactoryGrowth(getActivity());
-            gratitudeViewModel = new ViewModelProvider(this, factoryForGratitude).get(GrowthViewModel.class);
-
-            ConnectivityManager connectivityManager = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
-            NetworkInfo activeNetwork = connectivityManager.getActiveNetworkInfo();
-            boolean isConnected = activeNetwork != null && activeNetwork.isConnectedOrConnecting();
-            if (!isConnected) {
-                Log.e("state11111111111","--------");
-                Log.i("check_eq","32");
-                // Internet connection is lost
-                pagenation_from_api=false;
-                calldatabase_nointernate(position, count);
-            }else{
-                Log.e("state11111111111","--------1");
-                Log.i("check_eq","26");
-                if (getArguments() != null && getArguments().containsKey("NOTIFICATIONID")) {
-                    Log.i("check_eq","27");
-                    Log.e("state11111111111","--------2");
-                    ((MainActivity) getActivity()).clearCacheForParticularFragment(new MyAchievementsFragment());
-                    getSelectedAchievement(getArguments().getInt("NOTIFICATIONID"), "", false);
-                } else {
-                    Log.e("state11111111111","--------3");
-                    Log.i("check_eq","28");
-                    if (getArguments() != null && getArguments().containsKey("ADD_GROWTH_FROM_TODAY")) {
-                        Log.e("state11111111111","--------4");
-                        Log.i("check_eq","29");
-                    } else if (getArguments() != null && getArguments().containsKey("openaddpopup")) {
-                        Log.e("state11111111111","--------5");
-                        Log.i("check_eq","30");
-                        checkGratitudeCacheExpiration();
-                        arrAchieveOptions.add("I'm Grateful For:");
-                        arrAchieveOptions.add("Journal Entry:");
-
-                        arrAchieveOptions.add(Util.prompt1 );
-
-                        arrAchieveOptions.add("Today I'm Feeling:");
-                        arrAchieveOptions.add("I am proud of:");
-                        arrAchieveOptions.add("I've accomplished:");
-                        arrAchieveOptions.add("I'm working towards:");
-                        arrAchieveOptions.add("I'm feeling growth in:");
-                        arrAchieveOptions.add("I’m committing to:");
-                        arrAchieveOptions.add("A small win I'm celebrating is:");
-                        arrAchieveOptions.add("I've found the gift in:");
-                        arrAchieveOptions.add("I felt happy today because:");
-
-                        arrAchieveOptions.add("The story I've told myself is:");
-                        arrAchieveOptions.add("I've been challenged by:");
-                        arrAchieveOptions.add("I've observed:");
-                        arrAchieveOptions.add("I've learned:");
-                        arrAchieveOptions.add("I acknowledge:");
-                        arrAchieveOptions.add("I laughed:");
-                        arrAchieveOptions.add("I've praised:");
-                        arrAchieveOptions.add("I've let go of:");
-                        arrAchieveOptions.add("I dreamt of:");
-                        arrAchieveOptions.add("One thing I appreciate about you today is:");
-                        arrAchieveOptions.add("I Choose to Know:");
-                        openDialogForAchieveAdd();
-
-                    }else if (getArguments() != null && getArguments().containsKey("openprompt")) {
-                        Log.e("state11111111111","--------5");
-                        Log.i("check_eq","30");
-                        checkGratitudeCacheExpiration();
-
-                        // GetJounalPromptofDay();
-
-                        ConnectivityManager connectivityManager1 = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
-                        NetworkInfo activeNetwork1 = connectivityManager1.getActiveNetworkInfo();
-                        boolean isConnected1 = activeNetwork1!= null && activeNetwork1.isConnectedOrConnecting();
-                        if (!isConnected1) {
-                            // Internet connection is lost
-                            showpopup4();
-                        }else{
-                            sharedPreference.write("click_option", "", "click_promptoftheday");
-                            arrAchieveOptions.add("I'm Grateful For:");
-                            arrAchieveOptions.add("Journal Entry:");
-
-                            arrAchieveOptions.add(Util.prompt1 );
-
-                            arrAchieveOptions.add("Today I'm Feeling:");
-                            arrAchieveOptions.add("I am proud of:");
-                            arrAchieveOptions.add("I've accomplished:");
-                            arrAchieveOptions.add("I'm working towards:");
-                            arrAchieveOptions.add("I'm feeling growth in:");
-                            arrAchieveOptions.add("I’m committing to:");
-                            arrAchieveOptions.add("A small win I'm celebrating is:");
-                            arrAchieveOptions.add("I've found the gift in:");
-                            arrAchieveOptions.add("I felt happy today because:");
-
-                            arrAchieveOptions.add("The story I've told myself is:");
-                            arrAchieveOptions.add("I've been challenged by:");
-                            arrAchieveOptions.add("I've observed:");
-                            arrAchieveOptions.add("I've learned:");
-                            arrAchieveOptions.add("I acknowledge:");
-                            arrAchieveOptions.add("I laughed:");
-                            arrAchieveOptions.add("I've praised:");
-                            arrAchieveOptions.add("I've let go of:");
-                            arrAchieveOptions.add("I dreamt of:");
-                            arrAchieveOptions.add("One thing I appreciate about you today is:");
-                            arrAchieveOptions.add("I Choose to Know:");
-                            openDialogForAchieveAddWithOption(2);
-
-                        }
-
-                    } else if (getArguments() != null && getArguments().containsKey("calledapi")) {
-                        Log.e("state11111111111","--------6");
-                        Log.i("check_eq","31");
-                        checkGratitudeCacheExpiration();
-
-                    } else {
-                        Log.e("state11111111111","--------7");
-                        Log.i("check_eq","12");
-                        checkGratitudeCacheExpiration();
-//                pagenation_from_api = true;
-//                new MyAsyncTask().execute();
-//                getAchievementsList(Page);
-
-
-                    }
-                }
-            }
-        }
-
-    }
 
     @Nullable
     @Override
@@ -1003,9 +686,13 @@ if("habit".equalsIgnoreCase(Util.sourcepage)){
                     Log.e("state","oncreateview");
                     globalView = inflater.inflate(R.layout.fragment_myachievements, null);
                     img_notaccess= globalView.findViewById(R.id.img_notaccess);
+                    frm_notaccess= globalView.findViewById(R.id.frm_notaccess);
+                    txt_notaccess= globalView.findViewById(R.id.txt_notaccess);
                     ll_total= globalView.findViewById(R.id.ll_total);
                     ll_total.setVisibility(View.GONE);
                     img_notaccess.setVisibility(View.VISIBLE);
+                    frm_notaccess.setVisibility(View.VISIBLE);
+                    txt_notaccess.setVisibility(View.VISIBLE);
                     img_notaccess.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
@@ -1014,12 +701,23 @@ if("habit".equalsIgnoreCase(Util.sourcepage)){
                             startActivity(intent);
                         }
                     });
+                    txt_notaccess.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            getUserPaidStatusApiCall();
+                        }
+                    });
+
                     return globalView;
                 }else{
                     ll_total= globalView.findViewById(R.id.ll_total);
                     ll_total.setVisibility(View.GONE);
                     img_notaccess= globalView.findViewById(R.id.img_notaccess);
+                    frm_notaccess= globalView.findViewById(R.id.frm_notaccess);
+                    txt_notaccess= globalView.findViewById(R.id.txt_notaccess);
                     img_notaccess.setVisibility(View.VISIBLE);
+                    frm_notaccess.setVisibility(View.VISIBLE);
+                    txt_notaccess.setVisibility(View.VISIBLE);
                     img_notaccess.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
@@ -1028,404 +726,36 @@ if("habit".equalsIgnoreCase(Util.sourcepage)){
                             startActivity(intent);
                         }
                     });
+                   txt_notaccess.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            getUserPaidStatusApiCall();
+                        }
+                    });
+
                     return globalView;
                 }
 
 
                 // ((MainActivity) getActivity()).loadFragment(new MbhqTodayTwoFragment(), "MbhqTodayTwo", null);
             } else{
+
                 if (globalView == null) {
                     Log.e("state","oncreateview");
                     globalView = inflater.inflate(R.layout.fragment_myachievements, null);
                     ll_total= globalView.findViewById(R.id.ll_total);
                     ll_total.setVisibility(View.VISIBLE);
                     img_notaccess= globalView.findViewById(R.id.img_notaccess);
+                    frm_notaccess= globalView.findViewById(R.id.frm_notaccess);
+                    txt_notaccess= globalView.findViewById(R.id.txt_notaccess);
                     img_notaccess.setVisibility(View.GONE);
-                    swipeLayout = globalView.findViewById(R.id.swipeLayout);
-                    Log.i("called meditation","called meditation");
-                    funToolBar();
-                    sharedPreference = new SharedPreference(getActivity());
-                    finisherService = new FinisherServiceImpl(getActivity(),sharedPreference.read("jwt", ""));
-
-
-                    txtFromDate = globalView.findViewById(R.id.txtFromDate);
-                    txtToDate = globalView.findViewById(R.id.txtToDate);
-                    loadImageJournal = globalView.findViewById(R.id.loadImageJournal1);
-
-                    txtGoalValue1 = (TextView) globalView.findViewById(R.id.txtGoalValue1);
-                    txtGoalValue2 = (TextView) globalView.findViewById(R.id.txtGoalValue2);
-                    txtGoalValue3 = (TextView) globalView.findViewById(R.id.txtGoalValue3);
-                    recyclerGratitudes = (RecyclerView) globalView.findViewById(R.id.recyclerGratitudes);
-
-                    imgQuestionMark = (ImageView) globalView.findViewById(R.id.imgQuestionMark);
-                    video_view = (VideoView) globalView.findViewById(R.id.video_view);
-                    llAddNew = (LinearLayout) globalView.findViewById(R.id.llAddNew);
-
-                    imgAchieveAdd = globalView.findViewById(R.id.imgAchieveAdd);
-                    imgEQ = globalView.findViewById(R.id.imgEQ);
-                    imgFilterAchieve = globalView.findViewById(R.id.imgFilterAchieve);
-
-          /*  if(null==sharedPreference.read("achivementfilter", "") || "".equalsIgnoreCase(sharedPreference.read("achivementfilter", ""))){
-               imgFilterAchieve.setImageResource(R.drawable.mbhq_filter);
-
-               }else{
-                 imgFilterAchieve.setImageResource(R.drawable.mbhq_filter_green);
-
-            }*/
-
-                    rlSearch = globalView.findViewById(R.id.rlSearch);
-                    rlLoadingNoDataFound = globalView.findViewById(R.id.rlLoadingNoDataFound);
-                    imgSearchAchieve = globalView.findViewById(R.id.imgSearchAchieve);
-                    imgPrintAchieve = globalView.findViewById(R.id.imgPrintAchieve);
-                    txtLoading = globalView.findViewById(R.id.txtLoading);
-                    txtLoadFailed = globalView.findViewById(R.id.txtLoadFailed);
-                    edtSearch = globalView.findViewById(R.id.edtSearch);
-                    imgBigPlus = globalView.findViewById(R.id.imgBigPlus);
-                    lstAll = new ArrayList<>();
-                    lstShowAll = new ArrayList<>();
-                    lstShowAll_db = new ArrayList<>();
-                    lstPicture = new ArrayList<>();
-                    lstToday = new ArrayList<>();
-                    lstThisMonth = new ArrayList<>();
-                    lstThreeMonthsAgo = new ArrayList<>();
-                    lstOneYearAgo = new ArrayList<>();
-
-                    lstProudOf = new ArrayList<>();
-                    lstAccomplish = new ArrayList<>();
-                    lstObserved = new ArrayList<>();
-                    lstLearned = new ArrayList<>();
-                    lstPraised = new ArrayList<>();
-                    lstTodayletGoOf = new ArrayList<>();
-                    lstDreamtOf = new ArrayList<>();
-                    lstJournalEntry = new ArrayList<>();
-                    lstTheStory = new ArrayList<>();
-                    lstChallengedBy = new ArrayList<>();
-                    lstCelebrating = new ArrayList<>();
-                    lstLaughed = new ArrayList<>();
-                    lstImFeeling = new ArrayList<>();
-
-
-                    setimage();
-
-
-                    String isInserted = sharedPreference.read("isInserted", "");
-                    Log.e(TAG, "onCreateView: " + isInserted);
-                    if ("no".equals(isInserted)) {
-
-                    } else {
-                        sharedPreference.write("isInserted", "", "yes");
-                    }
-
-
-                    swipeLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-                        @Override
-                        public void onRefresh() {
-                            ConnectivityManager connectivityManager = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
-                            NetworkInfo activeNetwork = connectivityManager.getActiveNetworkInfo();
-                            boolean isConnected = activeNetwork != null && activeNetwork.isConnectedOrConnecting();
-                            if (!isConnected) {
-                                Log.e("print","nointernate2");
-                                // Internet connection is lost
-                                pagenation_from_api=false;
-                                //  calldatabase_nointernate(position, count);
-                                ((MainActivity) getActivity()).refershGamePoint(getActivity());
-                                ((MainActivity) getActivity()).clearCacheForParticularFragment(new MyAchievementsFragment());
-                                Util.isReloadTodayMainPage = true;
-                                ((MainActivity) getActivity()).loadFragment(new MyAchievementsFragment(), "GratitudeMyList", null);
-
-                            }else{
-                                try {
-                                    swipeLayout.setRefreshing(false);
-                                    new MyAsyncTask3().execute();
-                                } catch (Exception e) {
-                                    Log.e("block", "5");
-                                    e.printStackTrace();
-                                }
-
-                            }
-
-
-
-                        }
-                    });
-
-
-                    // passing array list to our adapter class.
-                    myAchievementsListAdapter = new MyAchievementsListAdapter(getActivity(), this);
-
-                    // setting layout manager to our recycler view.
-//            recyclerGratitudes.setLayoutManager(new LinearLayoutManager(getActivity()));
-
-                    // setting adapter to our recycler view.
-                    recyclerGratitudes.setAdapter(myAchievementsListAdapter);
-
-
-
-                    // setting layout manager to our recycler view.
-                    //  recyclerGratitudes.setLayoutManager(new LinearLayoutManager(this));
-                    // setting adapter to our recycler view.
-
-                    LinearLayoutManager layoutManager_all = new LinearLayoutManager(getActivity()) {
-
-                        @Override
-                        public boolean canScrollVertically() {
-                            return true;
-                        }
-                    };
-                    recyclerGratitudes.setLayoutManager(layoutManager_all);
-                    /*added by sahenita*/
-                    if (!"".equalsIgnoreCase(sharedPreference.read("total_result_db", ""))) {
-                        total_result_db = Integer.parseInt(sharedPreference.read("total_result_db", ""));
-                        remaining_db = Integer.parseInt(sharedPreference.read("remaining_db", ""));
-                        total_page_db = Integer.parseInt(sharedPreference.read("total_page_db", ""));
-                        CurrentPage_db = Integer.parseInt(sharedPreference.read("CurrentPage_db", ""));
-                        Log.e(TAG, "total_result_db0: " + total_result_db);
-
-                    }
-
-
-                    Log.e(TAG, "pagenation:" + pagenation_from_api);
-                    scrollListener = new EndlessRecyclerViewScrollListener(layoutManager_all) {
-                        @Override
-                        public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
-                            Log.e(TAG, "total_result_db2: " + total_result_db);
-                            Log.e(TAG, "current_page_db: " + CurrentPage_db); ///
-                            Log.e(TAG, "pagenation_from_api: " + pagenation_from_api);
-                            Log.e(TAG, "total_page_db: " + total_page_db);
-
-                            if (pagenation_from_api) {
-                                Page = CurrentPage + 1;
-                                Log.e(TAG, "onScrollChange: " + Page);
-                                // loadingPB.setVisibility(View.VISIBLE);
-                                getAchievementsList_loadmore(Page);
-
-                            } else {
-                                Log.e(TAG, "total_result_db1: " + total_result_db);
-
-                                CurrentPage_db = CurrentPage_db + 1;//1
-                                if (CurrentPage_db < total_page_db) {
-                                    position = position + count;//0>50>100
-                                    Log.e(TAG, "total_result_db2: " + total_result_db);
-                                    Log.e(TAG, "position_db2: " + position);
-                                    Log.e(TAG, "current_page_db: " + CurrentPage_db); ///
-                                    int remaining = total_result_db - position;
-                                    Log.e(TAG, "remaining_db2:: " + remaining);
-                                    if (remaining > 0) {
-                                        getAchievementsList_loadmore_for_db(position, count);
-                                    }
-                                }
-                            }
-
-                        }
-                    };
-
-                    recyclerGratitudes.addOnScrollListener(scrollListener);
-                    recyclerGratitudes.setAdapter(myAchievementsListAdapter);
-
-
-               /* if (SharedPreference.getSavedObjectFromPreference(getActivity(), "GROWTH_FILTER_SAVE_FILE", "GROWTH_FILTER_SAVE_KEY", GrowthSaveFilterModel.class) == null) {
-                    Log.e("SAVE_FILTER", "NULLLLLLLLLLLL");
-                    imgFilterAchieve.setImageResource(R.drawable.mbhq_filter_green);
-                    GrowthSaveFilterModel growthSaveFilterModel = new GrowthSaveFilterModel();
-                    SharedPreference.saveObjectToSharedPreference(getActivity(), "GROWTH_FILTER_SAVE_FILE", "GROWTH_FILTER_SAVE_KEY", growthSaveFilterModel);
-                } else {
-                    Log.e("SAVE_FILTER", "NOTTTTTTTT_NULLLLLLLLLLL");
-                    GrowthSaveFilterModel growthSaveFilterModel = SharedPreference.getSavedObjectFromPreference(getActivity(), "GROWTH_FILTER_SAVE_FILE", "GROWTH_FILTER_SAVE_KEY", GrowthSaveFilterModel.class);
-                    if (!growthSaveFilterModel.getBool_proud_of() && !growthSaveFilterModel.getBool_accomplished() && !growthSaveFilterModel.getBool_observed() && !growthSaveFilterModel.getBool_learned() && !growthSaveFilterModel.getBool_praised() && !growthSaveFilterModel.getBool_let_go_of() && !growthSaveFilterModel.getBool_dreamt_of() && !growthSaveFilterModel.getBool_journal_entry() && !growthSaveFilterModel.getBool_the_story() && !growthSaveFilterModel.getBool_challenged() && !growthSaveFilterModel.getBool_celebrating() && !growthSaveFilterModel.getBool_laughed() && !growthSaveFilterModel.getBool_Today_I_M_Feeling() && growthSaveFilterModel.getSelected_date_range_filter_value() == 0 && growthSaveFilterModel.getStrGrowthSerach().equals("")
-                            && !growthSaveFilterModel.getBool_working_towards() && !growthSaveFilterModel.getBool_found_gift() && !growthSaveFilterModel.getBool_I_acknowledge() && !growthSaveFilterModel.getBool_felt_happy_today()
-                            && !growthSaveFilterModel.getBool_prompt_of_The_day()&& !growthSaveFilterModel.getBool_feeling_growth()&& !growthSaveFilterModel.getBool_committing_to()
-                            && !growthSaveFilterModel.getBool_grateful_for()&& !growthSaveFilterModel.getBool_I_Appreciate()&& !growthSaveFilterModel.getBool_I_choose_To_Know()&& !growthSaveFilterModel.getBool_only_pic()&& growthSaveFilterModel.getBool_show_img()
-
-                    ) {
-                        Util.achivementfilter="";
-
-                        sharedPreference.write("achivementfilter", "", "");
-
-                        imgFilterAchieve.setImageResource(R.drawable.mbhq_filter);
-                    } else {
-
-                        sharedPreference.write("achivementfilter", "", "yes");
-
-                        Util.achivementfilter="yes";
-                        imgFilterAchieve.setImageResource(R.drawable.mbhq_filter_green);
-                    }
-                }*/
-                    String userid=sharedPreference.read("UserID", "");
-                    String json= sharedPreference.read("my_list_eq_filter", "");
-                    ArrayList<GrowthSaveFilterModel> growthSaveFilterModellist = new Gson().fromJson(json, new TypeToken<ArrayList<GrowthSaveFilterModel>>(){}.getType());
-                    if(null==growthSaveFilterModellist|| growthSaveFilterModellist.size()==0){
-                        Log.e("SAVE_FILTER", "NULLLLLLLLLLLL");
-                        imgFilterAchieve.setImageResource(R.drawable.mbhq_filter_green);
-                        GrowthSaveFilterModel growthSaveFilterModel = new GrowthSaveFilterModel();
-                        growthSaveFilterModellist.add(growthSaveFilterModel);
-                        sharedPreference.write("my_list_eq_filter", "", new Gson().toJson(growthSaveFilterModellist));
-
-                    }else{
-                        GrowthSaveFilterModel growthSaveFilterModel=null;
-                        for(int i =0;i<growthSaveFilterModellist.size();i++){
-                            if(userid.equalsIgnoreCase(growthSaveFilterModellist.get(i).getUserid())){
-                                growthSaveFilterModel=growthSaveFilterModellist.get(i);
-                                break;
-                            }
-                        }
-
-                        if (!growthSaveFilterModel.getBool_proud_of() && !growthSaveFilterModel.getBool_accomplished() && !growthSaveFilterModel.getBool_observed() && !growthSaveFilterModel.getBool_learned() && !growthSaveFilterModel.getBool_praised() && !growthSaveFilterModel.getBool_let_go_of() && !growthSaveFilterModel.getBool_dreamt_of() && !growthSaveFilterModel.getBool_journal_entry() && !growthSaveFilterModel.getBool_the_story() && !growthSaveFilterModel.getBool_challenged() && !growthSaveFilterModel.getBool_celebrating() && !growthSaveFilterModel.getBool_laughed() && !growthSaveFilterModel.getBool_Today_I_M_Feeling() && growthSaveFilterModel.getSelected_date_range_filter_value() == 0 && growthSaveFilterModel.getStrGrowthSerach().equals("")
-                                && !growthSaveFilterModel.getBool_working_towards() && !growthSaveFilterModel.getBool_found_gift() && !growthSaveFilterModel.getBool_I_acknowledge() && !growthSaveFilterModel.getBool_felt_happy_today()
-                                && !growthSaveFilterModel.getBool_prompt_of_The_day()&& !growthSaveFilterModel.getBool_feeling_growth()&& !growthSaveFilterModel.getBool_committing_to()
-                                && !growthSaveFilterModel.getBool_grateful_for()&& !growthSaveFilterModel.getBool_I_Appreciate()&& !growthSaveFilterModel.getBool_I_choose_To_Know()&& !growthSaveFilterModel.getBool_only_pic()&& growthSaveFilterModel.getBool_show_img()
-
-                        ) {
-                            Util.achivementfilter="";
-
-                            sharedPreference.write("achivementfilter", "", "");
-
-                            imgFilterAchieve.setImageResource(R.drawable.mbhq_filter);
-                        } else {
-
-                            sharedPreference.write("achivementfilter", "", "yes");
-
-                            Util.achivementfilter="yes";
-                            imgFilterAchieve.setImageResource(R.drawable.mbhq_filter_green);
-                        }
-
-                    }
-
-                    imgSearchAchieve.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            if (rlSearch.getVisibility() == View.VISIBLE) {
-                                rlSearch.setVisibility(View.GONE);
-                            } else {
-                                rlSearch.setVisibility(View.VISIBLE);
-                            }
-                        }
-                    });
-
-                    imgAchieveAdd.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            long currentTime = SystemClock.elapsedRealtime();
-                            if (currentTime - lastClickTime < CLICK_DELAY) {
-                                return; // Ignore the click event
-                            }
-                            lastClickTime = currentTime;
-                            GetJounalPromptofDay();
-
-
-
-                        }
-                    });
-
-                    imgPrintAchieve.setOnClickListener(view -> {
-                        printGrowthApiCall();
-                    });
-
-                    imgBigPlus.setOnClickListener(view -> {
-                        if (!Util.isShowDialogToday(requireContext(), "GROWTH")) {
-                            openDialogForAchieveAdd();
-                        } else showEQDialog(true);
-                    });
-
-
-                    imgFilterAchieve.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            openDialogForFilter();
-                        }
-                    });
-
-                    imgQuestionMark.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-
-                            if (videoBarOpenStatus) {
-                                videoBarOpenStatus = false;
-                                video_view.setVisibility(View.GONE);
-                            } else {
-                                videoBarOpenStatus = true;
-                                video_view.setVisibility(View.VISIBLE);
-                            }
-                        }
-                    });
-
-
-                    llAddNew.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-
-                            Bundle bundle = new Bundle();
-                            bundle.putString("GRATITUDESTATUS", "ADD");
-                            ((MainActivity) getActivity()).loadFragment(new MyAchievementsListAddEditFragment(), "MyAchievementsListAddEdit", bundle);
-                        }
-                    });
-
-                    imgEQ.setOnClickListener(view -> {
-                        showEQDialog(false);
-                    });
-
-                    if (getArguments() != null && getArguments().containsKey("ADD_GROWTH_FROM_TODAY")) {
-                        imgAchieveAdd.performClick();
-                    }
-
-                    if (sharedPreference.read("GROWTH_INFO_ONCE", "").equals("")) {
-                        if (!Util.grateFul_popup &&  Util.grateFul_popup_from_habit) {       //add by jyotirmoy-j15
-                            // openGrowthAndGratitudeDialog();
-                        }
-                    } else {
-                        //  JournalDailyPopupCall();   //added by jyotirmoy patra 18.10.22
-
-
-                    }
-                    try{
-                        achievementFirstTime = sharedPreference.read("achievementFirstTime","");
-
-                        firstLoginTime = sharedPreference.read("FIRST_LOGIN_TIME", "");
-                        Log.e("FFLLLIIII", "onCreateView: " + firstLoginTime );
-
-                        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy/MM/dd");
-                        Calendar calendar = Calendar.getInstance();
-                        currentTime = simpleDateFormat.format(calendar.getTime());
-                        Log.e("CURRRTIIII", "onCreateView: " + currentTime );
-
-                        Date dateFirstLoginDt = simpleDateFormat.parse(firstLoginTime);
-                        Date dateCurrentTime = simpleDateFormat.parse(currentTime);
-
-                        if (dateCurrentTime != null) {
-                            if(dateCurrentTime.after(dateFirstLoginDt) && "true".equals(achievementFirstTime)){
-                                Log.e("CHHHHTIMMMMMM", "onCreateView: " + "TRUE" );
-                                sharedPreference.write("achievementFirstTime", "", "false");
-
-                                // show popup here
-                                // openGratitudeDialog();
-
-                            }else {
-                                Log.e("CHHHHTIMMMMMM", "onCreateView: " + "FALSE" );
-                            }
-                        }
-
-                    }catch (Exception e){
-                        e.printStackTrace();
-                    }
-
-                    //add by jyotirmoy-j15
-                    if (Util.grateFul_popup) {
-                        openDialogForAchieveAdd();
-                    }
-
-                    txtLoading.setVisibility(View.GONE);
-                    Util.grateFul_popup_from_habit=true;
+                    frm_notaccess.setVisibility(View.GONE);
+                    txt_notaccess.setVisibility(View.GONE);
+                    funoncreateview_globalviewnull(globalView);
                     return globalView;
                 } else {
                     Log.e("state","oncreateview1");
-                    img_notaccess= globalView.findViewById(R.id.img_notaccess);
-                    img_notaccess.setVisibility(View.GONE);
-                    ll_total= globalView.findViewById(R.id.ll_total);
-                    ll_total.setVisibility(View.VISIBLE);
-                    txtLoading.setVisibility(View.GONE);
-                    Log.e("print","text2");
-                    txtLoading = globalView.findViewById(R.id.txtLoading);
-                    txtLoading.setVisibility(View.GONE);
-                    funToolBar();
+                    funoncreateview_globalview_notnull(globalView);
                     return globalView;
                 }
             }
@@ -1433,33 +763,67 @@ if("habit".equalsIgnoreCase(Util.sourcepage)){
             if (globalView == null) {
                 Log.e("state","oncreateview");
                 globalView = inflater.inflate(R.layout.fragment_myachievements, null);
-                swipeLayout = globalView.findViewById(R.id.swipeLayout);
-                img_notaccess= globalView.findViewById(R.id.img_notaccess);
-                img_notaccess.setVisibility(View.GONE);
-                ll_total= globalView.findViewById(R.id.ll_total);
-                ll_total.setVisibility(View.VISIBLE);
-                Log.i("called meditation","called meditation");
-                funToolBar();
-                sharedPreference = new SharedPreference(getActivity());
-                finisherService = new FinisherServiceImpl(getActivity(),sharedPreference.read("jwt", ""));
+                funoncreateview_globalviewnull(globalView);
+                return globalView;
+            } else {
+                Log.e("state","oncreateview1");
+                funoncreateview_globalview_notnull(globalView);
+                return globalView;
+            }
+        }
 
 
-                txtFromDate = globalView.findViewById(R.id.txtFromDate);
-                txtToDate = globalView.findViewById(R.id.txtToDate);
-                loadImageJournal = globalView.findViewById(R.id.loadImageJournal1);
+    }
 
-                txtGoalValue1 = (TextView) globalView.findViewById(R.id.txtGoalValue1);
-                txtGoalValue2 = (TextView) globalView.findViewById(R.id.txtGoalValue2);
-                txtGoalValue3 = (TextView) globalView.findViewById(R.id.txtGoalValue3);
-                recyclerGratitudes = (RecyclerView) globalView.findViewById(R.id.recyclerGratitudes);
+    void funoncreateview_globalview_notnull(View globalView){
+        img_notaccess= globalView.findViewById(R.id.img_notaccess);
+        frm_notaccess= globalView.findViewById(R.id.frm_notaccess);
+        txt_notaccess= globalView.findViewById(R.id.txt_notaccess);
+        img_notaccess.setVisibility(View.GONE);
+        frm_notaccess.setVisibility(View.GONE);
+        txt_notaccess.setVisibility(View.GONE);
+        ll_total= globalView.findViewById(R.id.ll_total);
+        ll_total.setVisibility(View.VISIBLE);
+        txtLoading.setVisibility(View.GONE);
+        Log.e("print","text2");
+        txtLoading = globalView.findViewById(R.id.txtLoading);
+        txtLoading.setVisibility(View.GONE);
+        funToolBar();
+    }
 
-                imgQuestionMark = (ImageView) globalView.findViewById(R.id.imgQuestionMark);
-                video_view = (VideoView) globalView.findViewById(R.id.video_view);
-                llAddNew = (LinearLayout) globalView.findViewById(R.id.llAddNew);
+    void funoncreateview_globalviewnull(View globalView){
+            Log.e("state","oncreateview");
+            swipeLayout = globalView.findViewById(R.id.swipeLayout);
+            img_notaccess= globalView.findViewById(R.id.img_notaccess);
+           frm_notaccess= globalView.findViewById(R.id.frm_notaccess);
+           txt_notaccess= globalView.findViewById(R.id.txt_notaccess);
+            img_notaccess.setVisibility(View.GONE);
+        frm_notaccess.setVisibility(View.GONE);
+        txt_notaccess.setVisibility(View.GONE);
+            ll_total= globalView.findViewById(R.id.ll_total);
+            ll_total.setVisibility(View.VISIBLE);
+            Log.i("called meditation","called meditation");
+            funToolBar();
+            sharedPreference = new SharedPreference(getActivity());
+            finisherService = new FinisherServiceImpl(getActivity(),sharedPreference.read("jwt", ""));
 
-                imgAchieveAdd = globalView.findViewById(R.id.imgAchieveAdd);
-                imgEQ = globalView.findViewById(R.id.imgEQ);
-                imgFilterAchieve = globalView.findViewById(R.id.imgFilterAchieve);
+
+            txtFromDate = globalView.findViewById(R.id.txtFromDate);
+            txtToDate = globalView.findViewById(R.id.txtToDate);
+            loadImageJournal = globalView.findViewById(R.id.loadImageJournal1);
+
+            txtGoalValue1 = (TextView) globalView.findViewById(R.id.txtGoalValue1);
+            txtGoalValue2 = (TextView) globalView.findViewById(R.id.txtGoalValue2);
+            txtGoalValue3 = (TextView) globalView.findViewById(R.id.txtGoalValue3);
+            recyclerGratitudes = (RecyclerView) globalView.findViewById(R.id.recyclerGratitudes);
+
+            imgQuestionMark = (ImageView) globalView.findViewById(R.id.imgQuestionMark);
+            video_view = (VideoView) globalView.findViewById(R.id.video_view);
+            llAddNew = (LinearLayout) globalView.findViewById(R.id.llAddNew);
+
+            imgAchieveAdd = globalView.findViewById(R.id.imgAchieveAdd);
+            imgEQ = globalView.findViewById(R.id.imgEQ);
+            imgFilterAchieve = globalView.findViewById(R.id.imgFilterAchieve);
 
           /*  if(null==sharedPreference.read("achivementfilter", "") || "".equalsIgnoreCase(sharedPreference.read("achivementfilter", ""))){
                imgFilterAchieve.setImageResource(R.drawable.mbhq_filter);
@@ -1469,115 +833,115 @@ if("habit".equalsIgnoreCase(Util.sourcepage)){
 
             }*/
 
-                rlSearch = globalView.findViewById(R.id.rlSearch);
-                rlLoadingNoDataFound = globalView.findViewById(R.id.rlLoadingNoDataFound);
-                imgSearchAchieve = globalView.findViewById(R.id.imgSearchAchieve);
-                imgPrintAchieve = globalView.findViewById(R.id.imgPrintAchieve);
-                txtLoading = globalView.findViewById(R.id.txtLoading);
-                txtLoadFailed = globalView.findViewById(R.id.txtLoadFailed);
-                edtSearch = globalView.findViewById(R.id.edtSearch);
-                imgBigPlus = globalView.findViewById(R.id.imgBigPlus);
-                lstAll = new ArrayList<>();
-                lstShowAll = new ArrayList<>();
-                lstShowAll_db = new ArrayList<>();
-                lstPicture = new ArrayList<>();
-                lstToday = new ArrayList<>();
-                lstThisMonth = new ArrayList<>();
-                lstThreeMonthsAgo = new ArrayList<>();
-                lstOneYearAgo = new ArrayList<>();
+            rlSearch = globalView.findViewById(R.id.rlSearch);
+            rlLoadingNoDataFound = globalView.findViewById(R.id.rlLoadingNoDataFound);
+            imgSearchAchieve = globalView.findViewById(R.id.imgSearchAchieve);
+            imgPrintAchieve = globalView.findViewById(R.id.imgPrintAchieve);
+            txtLoading = globalView.findViewById(R.id.txtLoading);
+            txtLoadFailed = globalView.findViewById(R.id.txtLoadFailed);
+            edtSearch = globalView.findViewById(R.id.edtSearch);
+            imgBigPlus = globalView.findViewById(R.id.imgBigPlus);
+            lstAll = new ArrayList<>();
+            lstShowAll = new ArrayList<>();
+            lstShowAll_db = new ArrayList<>();
+            lstPicture = new ArrayList<>();
+            lstToday = new ArrayList<>();
+            lstThisMonth = new ArrayList<>();
+            lstThreeMonthsAgo = new ArrayList<>();
+            lstOneYearAgo = new ArrayList<>();
 
-                lstProudOf = new ArrayList<>();
-                lstAccomplish = new ArrayList<>();
-                lstObserved = new ArrayList<>();
-                lstLearned = new ArrayList<>();
-                lstPraised = new ArrayList<>();
-                lstTodayletGoOf = new ArrayList<>();
-                lstDreamtOf = new ArrayList<>();
-                lstJournalEntry = new ArrayList<>();
-                lstTheStory = new ArrayList<>();
-                lstChallengedBy = new ArrayList<>();
-                lstCelebrating = new ArrayList<>();
-                lstLaughed = new ArrayList<>();
-                lstImFeeling = new ArrayList<>();
-
-
-                setimage();
+            lstProudOf = new ArrayList<>();
+            lstAccomplish = new ArrayList<>();
+            lstObserved = new ArrayList<>();
+            lstLearned = new ArrayList<>();
+            lstPraised = new ArrayList<>();
+            lstTodayletGoOf = new ArrayList<>();
+            lstDreamtOf = new ArrayList<>();
+            lstJournalEntry = new ArrayList<>();
+            lstTheStory = new ArrayList<>();
+            lstChallengedBy = new ArrayList<>();
+            lstCelebrating = new ArrayList<>();
+            lstLaughed = new ArrayList<>();
+            lstImFeeling = new ArrayList<>();
 
 
-                String isInserted = sharedPreference.read("isInserted", "");
-                Log.e(TAG, "onCreateView: " + isInserted);
-                if ("no".equals(isInserted)) {
-
-                } else {
-                    sharedPreference.write("isInserted", "", "yes");
-                }
+            setimage();
 
 
-                swipeLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-                    @Override
-                    public void onRefresh() {
-                        ConnectivityManager connectivityManager = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
-                        NetworkInfo activeNetwork = connectivityManager.getActiveNetworkInfo();
-                        boolean isConnected = activeNetwork != null && activeNetwork.isConnectedOrConnecting();
-                        if (!isConnected) {
-                            Log.e("print","nointernate2");
-                            // Internet connection is lost
-                            pagenation_from_api=false;
-                            //  calldatabase_nointernate(position, count);
-                            ((MainActivity) getActivity()).refershGamePoint(getActivity());
-                            ((MainActivity) getActivity()).clearCacheForParticularFragment(new MyAchievementsFragment());
-                            Util.isReloadTodayMainPage = true;
-                            ((MainActivity) getActivity()).loadFragment(new MyAchievementsFragment(), "GratitudeMyList", null);
+            String isInserted = sharedPreference.read("isInserted", "");
+            Log.e(TAG, "onCreateView: " + isInserted);
+            if ("no".equals(isInserted)) {
 
-                        }else{
-                            try {
-                                swipeLayout.setRefreshing(false);
-                                new MyAsyncTask3().execute();
-                            } catch (Exception e) {
-                                Log.e("block", "5");
-                                e.printStackTrace();
-                            }
+            } else {
+                sharedPreference.write("isInserted", "", "yes");
+            }
 
+
+            swipeLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+                @Override
+                public void onRefresh() {
+                    ConnectivityManager connectivityManager = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
+                    NetworkInfo activeNetwork = connectivityManager.getActiveNetworkInfo();
+                    boolean isConnected = activeNetwork != null && activeNetwork.isConnectedOrConnecting();
+                    if (!isConnected) {
+                        Log.e("print","nointernate2");
+                        // Internet connection is lost
+                        pagenation_from_api=false;
+                        //  calldatabase_nointernate(position, count);
+                        ((MainActivity) getActivity()).refershGamePoint(getActivity());
+                        ((MainActivity) getActivity()).clearCacheForParticularFragment(new MyAchievementsFragment());
+                        Util.isReloadTodayMainPage = true;
+                        ((MainActivity) getActivity()).loadFragment(new MyAchievementsFragment(), "GratitudeMyList", null);
+
+                    }else{
+                        try {
+                            swipeLayout.setRefreshing(false);
+                            new MyAsyncTask3().execute();
+                        } catch (Exception e) {
+                            Log.e("block", "5");
+                            e.printStackTrace();
                         }
 
-
-
                     }
-                });
 
 
-                // passing array list to our adapter class.
-                myAchievementsListAdapter = new MyAchievementsListAdapter(getActivity(), this);
-
-                // setting layout manager to our recycler view.
-//            recyclerGratitudes.setLayoutManager(new LinearLayoutManager(getActivity()));
-
-                // setting adapter to our recycler view.
-                recyclerGratitudes.setAdapter(myAchievementsListAdapter);
-
-
-
-                // setting layout manager to our recycler view.
-                //  recyclerGratitudes.setLayoutManager(new LinearLayoutManager(this));
-                // setting adapter to our recycler view.
-
-                LinearLayoutManager layoutManager_all = new LinearLayoutManager(getActivity()) {
-
-                    @Override
-                    public boolean canScrollVertically() {
-                        return true;
-                    }
-                };
-                recyclerGratitudes.setLayoutManager(layoutManager_all);
-                /*added by sahenita*/
-                if (!"".equalsIgnoreCase(sharedPreference.read("total_result_db", ""))) {
-                    total_result_db = Integer.parseInt(sharedPreference.read("total_result_db", ""));
-                    remaining_db = Integer.parseInt(sharedPreference.read("remaining_db", ""));
-                    total_page_db = Integer.parseInt(sharedPreference.read("total_page_db", ""));
-                    CurrentPage_db = Integer.parseInt(sharedPreference.read("CurrentPage_db", ""));
-                    Log.e(TAG, "total_result_db0: " + total_result_db);
 
                 }
+            });
+
+
+            // passing array list to our adapter class.
+            myAchievementsListAdapter = new MyAchievementsListAdapter(getActivity(), this);
+
+            // setting layout manager to our recycler view.
+//            recyclerGratitudes.setLayoutManager(new LinearLayoutManager(getActivity()));
+
+            // setting adapter to our recycler view.
+            recyclerGratitudes.setAdapter(myAchievementsListAdapter);
+
+
+
+            // setting layout manager to our recycler view.
+            //  recyclerGratitudes.setLayoutManager(new LinearLayoutManager(this));
+            // setting adapter to our recycler view.
+
+            LinearLayoutManager layoutManager_all = new LinearLayoutManager(getActivity()) {
+
+                @Override
+                public boolean canScrollVertically() {
+                    return true;
+                }
+            };
+            recyclerGratitudes.setLayoutManager(layoutManager_all);
+            /*added by sahenita*/
+            if (!"".equalsIgnoreCase(sharedPreference.read("total_result_db", ""))) {
+                total_result_db = Integer.parseInt(sharedPreference.read("total_result_db", ""));
+                remaining_db = Integer.parseInt(sharedPreference.read("remaining_db", ""));
+                total_page_db = Integer.parseInt(sharedPreference.read("total_page_db", ""));
+                CurrentPage_db = Integer.parseInt(sharedPreference.read("CurrentPage_db", ""));
+                Log.e(TAG, "total_result_db0: " + total_result_db);
+
+            }
          /*   ConnectivityManager connectivityManager = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
             NetworkInfo activeNetwork = connectivityManager.getActiveNetworkInfo();
             boolean isConnected = activeNetwork != null && activeNetwork.isConnectedOrConnecting();
@@ -1588,43 +952,43 @@ if("habit".equalsIgnoreCase(Util.sourcepage)){
              //   GetJounalPromptofDay();
             }*/
 
-                Log.e(TAG, "pagenation:" + pagenation_from_api);
-                scrollListener = new EndlessRecyclerViewScrollListener(layoutManager_all) {
-                    @Override
-                    public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
-                        Log.e(TAG, "total_result_db2: " + total_result_db);
-                        Log.e(TAG, "current_page_db: " + CurrentPage_db); ///
-                        Log.e(TAG, "pagenation_from_api: " + pagenation_from_api);
-                        Log.e(TAG, "total_page_db: " + total_page_db);
+            Log.e(TAG, "pagenation:" + pagenation_from_api);
+            scrollListener = new EndlessRecyclerViewScrollListener(layoutManager_all) {
+                @Override
+                public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
+                    Log.e(TAG, "total_result_db2: " + total_result_db);
+                    Log.e(TAG, "current_page_db: " + CurrentPage_db); ///
+                    Log.e(TAG, "pagenation_from_api: " + pagenation_from_api);
+                    Log.e(TAG, "total_page_db: " + total_page_db);
 
-                        if (pagenation_from_api) {
-                            Page = CurrentPage + 1;
-                            Log.e(TAG, "onScrollChange: " + Page);
-                            // loadingPB.setVisibility(View.VISIBLE);
-                            getAchievementsList_loadmore(Page);
+                    if (pagenation_from_api) {
+                        Page = CurrentPage + 1;
+                        Log.e(TAG, "onScrollChange: " + Page);
+                        // loadingPB.setVisibility(View.VISIBLE);
+                        getAchievementsList_loadmore(Page);
 
-                        } else {
-                            Log.e(TAG, "total_result_db1: " + total_result_db);
+                    } else {
+                        Log.e(TAG, "total_result_db1: " + total_result_db);
 
-                            CurrentPage_db = CurrentPage_db + 1;//1
-                            if (CurrentPage_db < total_page_db) {
-                                position = position + count;//0>50>100
-                                Log.e(TAG, "total_result_db2: " + total_result_db);
-                                Log.e(TAG, "position_db2: " + position);
-                                Log.e(TAG, "current_page_db: " + CurrentPage_db); ///
-                                int remaining = total_result_db - position;
-                                Log.e(TAG, "remaining_db2:: " + remaining);
-                                if (remaining > 0) {
-                                    getAchievementsList_loadmore_for_db(position, count);
-                                }
+                        CurrentPage_db = CurrentPage_db + 1;//1
+                        if (CurrentPage_db < total_page_db) {
+                            position = position + count;//0>50>100
+                            Log.e(TAG, "total_result_db2: " + total_result_db);
+                            Log.e(TAG, "position_db2: " + position);
+                            Log.e(TAG, "current_page_db: " + CurrentPage_db); ///
+                            int remaining = total_result_db - position;
+                            Log.e(TAG, "remaining_db2:: " + remaining);
+                            if (remaining > 0) {
+                                getAchievementsList_loadmore_for_db(position, count);
                             }
                         }
-
                     }
-                };
 
-                recyclerGratitudes.addOnScrollListener(scrollListener);
-                recyclerGratitudes.setAdapter(myAchievementsListAdapter);
+                }
+            };
+
+            recyclerGratitudes.addOnScrollListener(scrollListener);
+            recyclerGratitudes.setAdapter(myAchievementsListAdapter);
 
 
                /* if (SharedPreference.getSavedObjectFromPreference(getActivity(), "GROWTH_FILTER_SAVE_FILE", "GROWTH_FILTER_SAVE_KEY", GrowthSaveFilterModel.class) == null) {
@@ -1655,76 +1019,76 @@ if("habit".equalsIgnoreCase(Util.sourcepage)){
                     }
                 }*/
 
-                Log.e("SAVE_FILTER", "0");
-                String userid=sharedPreference.read("UserID", "");
-                Log.e("SAVE_FILTER", userid);
+            Log.e("SAVE_FILTER", "0");
+            String userid=sharedPreference.read("UserID", "");
+            Log.e("SAVE_FILTER", userid);
 
-                if(null!=sharedPreference.read("my_list_eq_filter", "")){
-                    String json= sharedPreference.read("my_list_eq_filter", "");
-                    Log.e("SAVE_FILTER", json);
-                    if(null==new Gson().fromJson(json, new TypeToken<ArrayList<GrowthSaveFilterModel>>(){}.getType())){
-                        ArrayList<GrowthSaveFilterModel> growthSaveFilterModellist=new ArrayList<>();
-                        Log.e("SAVE_FILTER", "NULLLLLLLLLLLL");
-                        imgFilterAchieve.setImageResource(R.drawable.mbhq_filter_green);
-                        GrowthSaveFilterModel growthSaveFilterModel = new GrowthSaveFilterModel();
-                        growthSaveFilterModellist.add(growthSaveFilterModel);
-                        sharedPreference.write("my_list_eq_filter", "", new Gson().toJson(growthSaveFilterModellist));
-                        // GrowthSaveFilterModel growthSaveFilterModel = new GrowthSaveFilterModel();
-                        SharedPreference.saveObjectToSharedPreference(getActivity(), "GROWTH_FILTER_SAVE_FILE", "GROWTH_FILTER_SAVE_KEY", growthSaveFilterModel);
-                    }else{
-                        ArrayList<GrowthSaveFilterModel> growthSaveFilterModellist=new ArrayList<>();
-                        growthSaveFilterModellist = new Gson().fromJson(json, new TypeToken<ArrayList<GrowthSaveFilterModel>>(){}.getType());
-                        Log.e("SAVE_FILTER", "NOT_NULLLLLLLLLLLL");
-                        // Log.e("SAVE_FILTER", String.valueOf(growthSaveFilterModellist.size()));
-                        // Log.e("SAVE_FILTER", String.valueOf(growthSaveFilterModellist.get(0).getUserid()));
+            if(null!=sharedPreference.read("my_list_eq_filter", "")){
+                String json= sharedPreference.read("my_list_eq_filter", "");
+                Log.e("SAVE_FILTER", json);
+                if(null==new Gson().fromJson(json, new TypeToken<ArrayList<GrowthSaveFilterModel>>(){}.getType())){
+                    ArrayList<GrowthSaveFilterModel> growthSaveFilterModellist=new ArrayList<>();
+                    Log.e("SAVE_FILTER", "NULLLLLLLLLLLL");
+                    imgFilterAchieve.setImageResource(R.drawable.mbhq_filter_green);
+                    GrowthSaveFilterModel growthSaveFilterModel = new GrowthSaveFilterModel();
+                    growthSaveFilterModellist.add(growthSaveFilterModel);
+                    sharedPreference.write("my_list_eq_filter", "", new Gson().toJson(growthSaveFilterModellist));
+                    // GrowthSaveFilterModel growthSaveFilterModel = new GrowthSaveFilterModel();
+                    SharedPreference.saveObjectToSharedPreference(getActivity(), "GROWTH_FILTER_SAVE_FILE", "GROWTH_FILTER_SAVE_KEY", growthSaveFilterModel);
+                }else{
+                    ArrayList<GrowthSaveFilterModel> growthSaveFilterModellist=new ArrayList<>();
+                    growthSaveFilterModellist = new Gson().fromJson(json, new TypeToken<ArrayList<GrowthSaveFilterModel>>(){}.getType());
+                    Log.e("SAVE_FILTER", "NOT_NULLLLLLLLLLLL");
+                    // Log.e("SAVE_FILTER", String.valueOf(growthSaveFilterModellist.size()));
+                    // Log.e("SAVE_FILTER", String.valueOf(growthSaveFilterModellist.get(0).getUserid()));
 
-                        GrowthSaveFilterModel growthSaveFilterModel=new GrowthSaveFilterModel();
-                        if(growthSaveFilterModellist.size()>0){
-                            for(int i =0;i<growthSaveFilterModellist.size();i++){
-                                Log.e("SAVE_FILTER", "1");
-                                if(userid.equalsIgnoreCase(growthSaveFilterModellist.get(i).getUserid())){
-                                    Log.e("SAVE_FILTER", "2");
-                                    growthSaveFilterModel=growthSaveFilterModellist.get(i);
-                                    modelupdated=true;
-                                    break;
-                                }
+                    GrowthSaveFilterModel growthSaveFilterModel=new GrowthSaveFilterModel();
+                    if(growthSaveFilterModellist.size()>0){
+                        for(int i =0;i<growthSaveFilterModellist.size();i++){
+                            Log.e("SAVE_FILTER", "1");
+                            if(userid.equalsIgnoreCase(growthSaveFilterModellist.get(i).getUserid())){
+                                Log.e("SAVE_FILTER", "2");
+                                growthSaveFilterModel=growthSaveFilterModellist.get(i);
+                                modelupdated=true;
+                                break;
                             }
-                            if(modelupdated){
+                        }
+                        if(modelupdated){
 
-                            }else{
-
-                                growthSaveFilterModel=new GrowthSaveFilterModel();
-
-                            }
                         }else{
-                            Log.e("SAVE_FILTER", "5");
+
                             growthSaveFilterModel=new GrowthSaveFilterModel();
+
                         }
-                        SharedPreference.saveObjectToSharedPreference(getActivity(), "GROWTH_FILTER_SAVE_FILE", "GROWTH_FILTER_SAVE_KEY", growthSaveFilterModel);
-                        Log.d("SAVE_FILTER", growthSaveFilterModel.toString());
-
-                        if (!growthSaveFilterModel.getBool_proud_of() && !growthSaveFilterModel.getBool_accomplished() && !growthSaveFilterModel.getBool_observed() && !growthSaveFilterModel.getBool_learned() && !growthSaveFilterModel.getBool_praised() && !growthSaveFilterModel.getBool_let_go_of() && !growthSaveFilterModel.getBool_dreamt_of() && !growthSaveFilterModel.getBool_journal_entry() && !growthSaveFilterModel.getBool_the_story() && !growthSaveFilterModel.getBool_challenged() && !growthSaveFilterModel.getBool_celebrating() && !growthSaveFilterModel.getBool_laughed() && !growthSaveFilterModel.getBool_Today_I_M_Feeling() && growthSaveFilterModel.getSelected_date_range_filter_value() == 0 && growthSaveFilterModel.getStrGrowthSerach().equals("")
-                                && !growthSaveFilterModel.getBool_working_towards() && !growthSaveFilterModel.getBool_found_gift() && !growthSaveFilterModel.getBool_I_acknowledge() && !growthSaveFilterModel.getBool_felt_happy_today()
-                                && !growthSaveFilterModel.getBool_prompt_of_The_day()&& !growthSaveFilterModel.getBool_feeling_growth()&& !growthSaveFilterModel.getBool_committing_to()
-                                && !growthSaveFilterModel.getBool_grateful_for()&& !growthSaveFilterModel.getBool_I_Appreciate()&& !growthSaveFilterModel.getBool_I_choose_To_Know()&& !growthSaveFilterModel.getBool_only_pic()&& growthSaveFilterModel.getBool_show_img()
-
-                        ) {
-                            // Log.d("SAVE_FILTER", growthSaveFilterModel.toString());
-                            Log.e("SAVE_FILTER", "3");
-                            Util.achivementfilter="";
-
-                            sharedPreference.write("achivementfilter", "", "");
-
-                            imgFilterAchieve.setImageResource(R.drawable.mbhq_filter);
-                        } else {
-                            Log.e("SAVE_FILTER", "4");
-                            Log.d("SAVE_FILTER", growthSaveFilterModel.toString());
-                            sharedPreference.write("achivementfilter", "", "yes");
-
-                            Util.achivementfilter="yes";
-                            imgFilterAchieve.setImageResource(R.drawable.mbhq_filter_green);
-                        }
+                    }else{
+                        Log.e("SAVE_FILTER", "5");
+                        growthSaveFilterModel=new GrowthSaveFilterModel();
                     }
+                    SharedPreference.saveObjectToSharedPreference(getActivity(), "GROWTH_FILTER_SAVE_FILE", "GROWTH_FILTER_SAVE_KEY", growthSaveFilterModel);
+                    Log.d("SAVE_FILTER", growthSaveFilterModel.toString());
+
+                    if (!growthSaveFilterModel.getBool_proud_of() && !growthSaveFilterModel.getBool_accomplished() &&!growthSaveFilterModel.getBool_needTowork()&& !growthSaveFilterModel.getBool_observed() && !growthSaveFilterModel.getBool_learned() && !growthSaveFilterModel.getBool_praised() && !growthSaveFilterModel.getBool_let_go_of() && !growthSaveFilterModel.getBool_dreamt_of() && !growthSaveFilterModel.getBool_journal_entry() && !growthSaveFilterModel.getBool_the_story() && !growthSaveFilterModel.getBool_challenged() && !growthSaveFilterModel.getBool_celebrating() && !growthSaveFilterModel.getBool_laughed() && !growthSaveFilterModel.getBool_Today_I_M_Feeling() && growthSaveFilterModel.getSelected_date_range_filter_value() == 0 && growthSaveFilterModel.getStrGrowthSerach().equals("")
+                            && !growthSaveFilterModel.getBool_working_towards() && !growthSaveFilterModel.getBool_found_gift() && !growthSaveFilterModel.getBool_I_acknowledge() && !growthSaveFilterModel.getBool_felt_happy_today()
+                            && !growthSaveFilterModel.getBool_prompt_of_The_day()&& !growthSaveFilterModel.getBool_feeling_growth()&& !growthSaveFilterModel.getBool_committing_to()
+                            && !growthSaveFilterModel.getBool_grateful_for()&& !growthSaveFilterModel.getBool_I_Appreciate()&& !growthSaveFilterModel.getBool_I_choose_To_Know()&& !growthSaveFilterModel.getBool_only_pic()&& growthSaveFilterModel.getBool_show_img()
+
+                    ) {
+                        // Log.d("SAVE_FILTER", growthSaveFilterModel.toString());
+                        Log.e("SAVE_FILTER", "3");
+                        Util.achivementfilter="";
+
+                        sharedPreference.write("achivementfilter", "", "");
+
+                        imgFilterAchieve.setImageResource(R.drawable.mbhq_filter);
+                    } else {
+                        Log.e("SAVE_FILTER", "4");
+                        Log.d("SAVE_FILTER", growthSaveFilterModel.toString());
+                        sharedPreference.write("achivementfilter", "", "yes");
+
+                        Util.achivementfilter="yes";
+                        imgFilterAchieve.setImageResource(R.drawable.mbhq_filter_green);
+                    }
+                }
                    /* growthSaveFilterModellist = new Gson().fromJson(json, new TypeToken<ArrayList<GrowthSaveFilterModel>>(){}.getType());
                     if(null==growthSaveFilterModellist|| growthSaveFilterModellist.size()==0){
                         Log.e("SAVE_FILTER", "NULLLLLLLLLLLL");
@@ -1769,7 +1133,7 @@ if("habit".equalsIgnoreCase(Util.sourcepage)){
                         }
 
                     }*/
-                }
+            }
 
                /* if (SharedPreference.getSavedObjectFromPreference(getActivity(), "GROWTH_FILTER_SAVE_FILE", "GROWTH_FILTER_SAVE_KEY", GrowthSaveFilterModel.class) == null) {
                     Log.e("SAVE_FILTER", "NULLLLLLLLLLLL");
@@ -1799,146 +1163,130 @@ if("habit".equalsIgnoreCase(Util.sourcepage)){
                     }
                 }*/
 
-                imgSearchAchieve.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        if (rlSearch.getVisibility() == View.VISIBLE) {
-                            rlSearch.setVisibility(View.GONE);
-                        } else {
-                            rlSearch.setVisibility(View.VISIBLE);
-                        }
+            imgSearchAchieve.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (rlSearch.getVisibility() == View.VISIBLE) {
+                        rlSearch.setVisibility(View.GONE);
+                    } else {
+                        rlSearch.setVisibility(View.VISIBLE);
                     }
-                });
-
-                imgAchieveAdd.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        long currentTime = SystemClock.elapsedRealtime();
-                        if (currentTime - lastClickTime < CLICK_DELAY) {
-                            return; // Ignore the click event
-                        }
-                        lastClickTime = currentTime;
-                        GetJounalPromptofDay();
-
-
-
-                    }
-                });
-
-                imgPrintAchieve.setOnClickListener(view -> {
-                    printGrowthApiCall();
-                });
-
-                imgBigPlus.setOnClickListener(view -> {
-                    if (!Util.isShowDialogToday(requireContext(), "GROWTH")) {
-                        openDialogForAchieveAdd();
-                    } else showEQDialog(true);
-                });
-
-
-                imgFilterAchieve.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        openDialogForFilter();
-                    }
-                });
-
-                imgQuestionMark.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-
-                        if (videoBarOpenStatus) {
-                            videoBarOpenStatus = false;
-                            video_view.setVisibility(View.GONE);
-                        } else {
-                            videoBarOpenStatus = true;
-                            video_view.setVisibility(View.VISIBLE);
-                        }
-                    }
-                });
-
-
-                llAddNew.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-
-                        Bundle bundle = new Bundle();
-                        bundle.putString("GRATITUDESTATUS", "ADD");
-                        ((MainActivity) getActivity()).loadFragment(new MyAchievementsListAddEditFragment(), "MyAchievementsListAddEdit", bundle);
-                    }
-                });
-
-                imgEQ.setOnClickListener(view -> {
-                    showEQDialog(false);
-                });
-
-                if (getArguments() != null && getArguments().containsKey("ADD_GROWTH_FROM_TODAY")) {
-                    imgAchieveAdd.performClick();
                 }
+            });
 
-                if (sharedPreference.read("GROWTH_INFO_ONCE", "").equals("")) {
-                    if (!Util.grateFul_popup &&  Util.grateFul_popup_from_habit) {       //add by jyotirmoy-j15
-                        // openGrowthAndGratitudeDialog();
+            imgAchieveAdd.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    long currentTime = SystemClock.elapsedRealtime();
+                    if (currentTime - lastClickTime < CLICK_DELAY) {
+                        return; // Ignore the click event
                     }
-                } else {
-                    //  JournalDailyPopupCall();   //added by jyotirmoy patra 18.10.22
+                    lastClickTime = currentTime;
+                    GetJounalPromptofDay();
+
 
 
                 }
-                try{
-                    achievementFirstTime = sharedPreference.read("achievementFirstTime","");
+            });
 
-                    firstLoginTime = sharedPreference.read("FIRST_LOGIN_TIME", "");
-                    Log.e("FFLLLIIII", "onCreateView: " + firstLoginTime );
+            imgPrintAchieve.setOnClickListener(view -> {
+                printGrowthApiCall();
+            });
 
-                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy/MM/dd");
-                    Calendar calendar = Calendar.getInstance();
-                    currentTime = simpleDateFormat.format(calendar.getTime());
-                    Log.e("CURRRTIIII", "onCreateView: " + currentTime );
-
-                    Date dateFirstLoginDt = simpleDateFormat.parse(firstLoginTime);
-                    Date dateCurrentTime = simpleDateFormat.parse(currentTime);
-
-                    if (dateCurrentTime != null) {
-                        if(dateCurrentTime.after(dateFirstLoginDt) && "true".equals(achievementFirstTime)){
-                            Log.e("CHHHHTIMMMMMM", "onCreateView: " + "TRUE" );
-                            sharedPreference.write("achievementFirstTime", "", "false");
-
-                            // show popup here
-                            // openGratitudeDialog();
-
-                        }else {
-                            Log.e("CHHHHTIMMMMMM", "onCreateView: " + "FALSE" );
-                        }
-                    }
-
-                }catch (Exception e){
-                    e.printStackTrace();
-                }
-
-                //add by jyotirmoy-j15
-                if (Util.grateFul_popup) {
+            imgBigPlus.setOnClickListener(view -> {
+                if (!Util.isShowDialogToday(requireContext(), "GROWTH")) {
                     openDialogForAchieveAdd();
+                } else showEQDialog(true);
+            });
+
+
+            imgFilterAchieve.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    openDialogForFilter();
+                }
+            });
+
+            imgQuestionMark.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                    if (videoBarOpenStatus) {
+                        videoBarOpenStatus = false;
+                        video_view.setVisibility(View.GONE);
+                    } else {
+                        videoBarOpenStatus = true;
+                        video_view.setVisibility(View.VISIBLE);
+                    }
+                }
+            });
+
+
+            llAddNew.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                    Bundle bundle = new Bundle();
+                    bundle.putString("GRATITUDESTATUS", "ADD");
+                    ((MainActivity) getActivity()).loadFragment(new MyAchievementsListAddEditFragment(), "MyAchievementsListAddEdit", bundle);
+                }
+            });
+
+            imgEQ.setOnClickListener(view -> {
+                showEQDialog(false);
+            });
+
+            if (getArguments() != null && getArguments().containsKey("ADD_GROWTH_FROM_TODAY")) {
+                imgAchieveAdd.performClick();
+            }
+
+            if (sharedPreference.read("GROWTH_INFO_ONCE", "").equals("")) {
+                if (!Util.grateFul_popup &&  Util.grateFul_popup_from_habit) {       //add by jyotirmoy-j15
+                    // openGrowthAndGratitudeDialog();
+                }
+            } else {
+                //  JournalDailyPopupCall();   //added by jyotirmoy patra 18.10.22
+
+
+            }
+            try{
+                achievementFirstTime = sharedPreference.read("achievementFirstTime","");
+
+                firstLoginTime = sharedPreference.read("FIRST_LOGIN_TIME", "");
+                Log.e("FFLLLIIII", "onCreateView: " + firstLoginTime );
+
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy/MM/dd");
+                Calendar calendar = Calendar.getInstance();
+                currentTime = simpleDateFormat.format(calendar.getTime());
+                Log.e("CURRRTIIII", "onCreateView: " + currentTime );
+
+                Date dateFirstLoginDt = simpleDateFormat.parse(firstLoginTime);
+                Date dateCurrentTime = simpleDateFormat.parse(currentTime);
+
+                if (dateCurrentTime != null) {
+                    if(dateCurrentTime.after(dateFirstLoginDt) && "true".equals(achievementFirstTime)){
+                        Log.e("CHHHHTIMMMMMM", "onCreateView: " + "TRUE" );
+                        sharedPreference.write("achievementFirstTime", "", "false");
+
+                        // show popup here
+                        // openGratitudeDialog();
+
+                    }else {
+                        Log.e("CHHHHTIMMMMMM", "onCreateView: " + "FALSE" );
+                    }
                 }
 
-                txtLoading.setVisibility(View.GONE);
-                Util.grateFul_popup_from_habit=true;
-                return globalView;
-            } else {
-                Log.e("state","oncreateview1");
-                img_notaccess= globalView.findViewById(R.id.img_notaccess);
-                img_notaccess.setVisibility(View.GONE);
-                ll_total= globalView.findViewById(R.id.ll_total);
-                ll_total.setVisibility(View.VISIBLE);
-                txtLoading.setVisibility(View.GONE);
-                Log.e("print","text2");
-                txtLoading = globalView.findViewById(R.id.txtLoading);
-                txtLoading.setVisibility(View.GONE);
-                funToolBar();
-                return globalView;
+            }catch (Exception e){
+                e.printStackTrace();
             }
-        }
 
+            //add by jyotirmoy-j15
+            if (Util.grateFul_popup) {
+                openDialogForAchieveAdd();
+            }
+
+            txtLoading.setVisibility(View.GONE);
+            Util.grateFul_popup_from_habit=true;
 
     }
     private void loadData1(ArrayList<MyAchievementsListInnerModel> details,String s) {
@@ -2428,6 +1776,7 @@ if("habit".equalsIgnoreCase(Util.sourcepage)){
 
                         arrAchieveOptions.add("The story I've told myself is:");
                         arrAchieveOptions.add("I've been challenged by:");
+                        arrAchieveOptions.add("I need to work on/clear:");
                         arrAchieveOptions.add("I've observed:");
                         arrAchieveOptions.add("I've learned:");
                         arrAchieveOptions.add("I acknowledge:");
@@ -2478,6 +1827,7 @@ if("habit".equalsIgnoreCase(Util.sourcepage)){
 
             arrAchieveOptions.add("The story I've told myself is:");
             arrAchieveOptions.add("I've been challenged by:");
+            arrAchieveOptions.add("I need to work on/clear:");
             arrAchieveOptions.add("I've observed:");
             arrAchieveOptions.add("I've learned:");
             arrAchieveOptions.add("I acknowledge:");
@@ -2743,6 +2093,7 @@ if("habit".equalsIgnoreCase(Util.sourcepage)){
                                 boolProudOf = growthSaveFilterModel.getBool_proud_of();
                                 boolAccomplished = growthSaveFilterModel.getBool_accomplished();
                                 boolObserved = growthSaveFilterModel.getBool_observed();
+                                boolNeedToWork = growthSaveFilterModel.getBool_needTowork();
                                 boolLearned = growthSaveFilterModel.getBool_learned();
                                 boolPraised = growthSaveFilterModel.getBool_praised();
                                 boolLetGoOf = growthSaveFilterModel.getBool_let_go_of();
@@ -3022,6 +2373,7 @@ if("habit".equalsIgnoreCase(Util.sourcepage)){
                                 boolProudOf = growthSaveFilterModel.getBool_proud_of();
                                 boolAccomplished = growthSaveFilterModel.getBool_accomplished();
                                 boolObserved = growthSaveFilterModel.getBool_observed();
+                                boolNeedToWork = growthSaveFilterModel.getBool_needTowork();
                                 boolLearned = growthSaveFilterModel.getBool_learned();
                                 boolPraised = growthSaveFilterModel.getBool_praised();
                                 boolLetGoOf = growthSaveFilterModel.getBool_let_go_of();
@@ -3305,6 +2657,7 @@ if("habit".equalsIgnoreCase(Util.sourcepage)){
                                     boolProudOf = growthSaveFilterModel.getBool_proud_of();
                                     boolAccomplished = growthSaveFilterModel.getBool_accomplished();
                                     boolObserved = growthSaveFilterModel.getBool_observed();
+                                    boolNeedToWork = growthSaveFilterModel.getBool_needTowork();
                                     boolLearned = growthSaveFilterModel.getBool_learned();
                                     boolPraised = growthSaveFilterModel.getBool_praised();
                                     boolLetGoOf = growthSaveFilterModel.getBool_let_go_of();
@@ -3576,6 +2929,13 @@ if("habit".equalsIgnoreCase(Util.sourcepage)){
                 }
             }
         }
+        if (boolNeedToWork) {
+            for (int i = 0; i < lstShowResults.size(); i++) {
+                if (lstShowResults.get(i).getPrompt().contains("I need to work on/clear")) {
+                    lstShowResultsFinal.add(lstShowResults.get(i));
+                }
+            }
+        }
         if(boolIChooseToKnow){
             for (int i = 0; i < lstShowResults.size(); i++) {
                 if (lstShowResults.get(i).getPrompt().contains("I Choose to Know")) {
@@ -3760,7 +3120,7 @@ if("habit".equalsIgnoreCase(Util.sourcepage)){
         if (boolDateSelected && txtFromDate.getText().toString().equalsIgnoreCase("from date") && txtToDate.getText().toString().equalsIgnoreCase("to date")) {
             Util.showToast(getActivity(), "Please select date");
         } else {
-            if (boolProudOf || boolAccomplished || boolObserved || boolLearned || boolPraised ||
+            if (boolProudOf || boolAccomplished ||boolNeedToWork|| boolObserved || boolLearned || boolPraised ||
                     boolLetGoOf || boolFeelingGrowth || boolIAcknowledge || boolFeltHappyToday ||
                     boolFoundGift || boolPromptOfTheDay || boolCommittingTo || boolDreamtOf ||
                     boolJournalEntry || boolGratefulFor || boolWorkingTowards || boolTheStory ||
@@ -3850,6 +3210,13 @@ if("habit".equalsIgnoreCase(Util.sourcepage)){
                 }
             }
         }
+        if (boolNeedToWork) {
+            for (int i = 0; i < lstShowResults.size(); i++) {
+                if (lstShowResults.get(i).getPrompt().contains("I need to work on/clear")) {
+                    lstShowResultsFinal.add(lstShowResults.get(i));
+                }
+            }
+        }
         if(boolIChooseToKnow){
             for (int i = 0; i < lstShowResults.size(); i++) {
                 if (lstShowResults.get(i).getPrompt().contains("I Choose to Know")) {
@@ -4030,7 +3397,7 @@ if("habit".equalsIgnoreCase(Util.sourcepage)){
         if (boolDateSelected && txtFromDate.getText().toString().equalsIgnoreCase("from date") && txtToDate.getText().toString().equalsIgnoreCase("to date")) {
             Util.showToast(getActivity(), "Please select date");
         } else {
-            if (boolProudOf || boolAccomplished || boolObserved || boolLearned || boolPraised ||
+            if (boolProudOf || boolAccomplished ||boolNeedToWork|| boolObserved || boolLearned || boolPraised ||
                     boolLetGoOf || boolFeelingGrowth || boolIAcknowledge || boolFeltHappyToday ||
                     boolFoundGift || boolPromptOfTheDay || boolCommittingTo || boolDreamtOf ||
                     boolJournalEntry || boolGratefulFor || boolWorkingTowards || boolTheStory ||
@@ -4154,8 +3521,9 @@ if("habit".equalsIgnoreCase(Util.sourcepage)){
 
         TextView txtIamGratefulFor = dialog.findViewById(R.id.txtIamGratefulFor);
         TextView txtPromptofTheDay = dialog.findViewById(R.id.txtPromptofTheDay);
+        TextView txtneedtowork = dialog.findViewById(R.id.txtneedtowork);
         /*added by sahenita*/
-
+        checkneedtowork = dialog.findViewById(R.id.checkneedtowork);
         checkGrateful_image = dialog.findViewById(R.id.checkGrateful_image);
         checkPromptofTheDay_image = dialog.findViewById(R.id.checkPromptofTheDay_image);
         checkTodayImFelling_image = dialog.findViewById(R.id.checkTodayImFelling_image);
@@ -4216,6 +3584,7 @@ if("habit".equalsIgnoreCase(Util.sourcepage)){
             checkIDreamtOf.setImageResource(R.drawable.mbhq_circle_green);
             checkOnething.setImageResource(R.drawable.mbhq_circle_green);
             checkIchoose.setImageResource(R.drawable.mbhq_circle_green);
+            checkneedtowork.setImageResource(R.drawable.mbhq_circle_green);
         }else{
             if("click_grateful".equalsIgnoreCase(sharedPreference.read("click_option",""))){
                 checkGrateful.setImageResource(R.drawable.mbhq_checked_active);
@@ -4241,9 +3610,38 @@ if("habit".equalsIgnoreCase(Util.sourcepage)){
                 checkIDreamtOf.setImageResource(R.drawable.mbhq_circle_green);
                 checkOnething.setImageResource(R.drawable.mbhq_circle_green);
                 checkIchoose.setImageResource(R.drawable.mbhq_circle_green);
+                checkneedtowork.setImageResource(R.drawable.mbhq_circle_green);
             }else if("click_journalentry".equalsIgnoreCase(sharedPreference.read("click_option",""))){
                 checkGrateful.setImageResource(R.drawable.mbhq_circle_green);
                 checkJournal.setImageResource(R.drawable.mbhq_checked_active);
+                checkPromptofTheDay.setImageResource(R.drawable.mbhq_circle_green);
+                checkTodayImFelling.setImageResource(R.drawable.mbhq_circle_green);
+                checkProudOf.setImageResource(R.drawable.mbhq_circle_green);
+                checkAccomplish.setImageResource(R.drawable.mbhq_circle_green);
+                checkToward.setImageResource(R.drawable.mbhq_circle_green);
+                checkFeelGrowth.setImageResource(R.drawable.mbhq_circle_green);
+                checkCommitting.setImageResource(R.drawable.mbhq_circle_green);
+                checkCelebrate.setImageResource(R.drawable.mbhq_circle_green);
+                checkFoundGift.setImageResource(R.drawable.mbhq_circle_green);
+                checkHappy.setImageResource(R.drawable.mbhq_circle_green);
+                checkTheStoryAdd.setImageResource(R.drawable.mbhq_circle_green);
+                checkChallenged.setImageResource(R.drawable.mbhq_circle_green);
+                checkObserved.setImageResource(R.drawable.mbhq_circle_green);
+                checkLearned.setImageResource(R.drawable.mbhq_circle_green);
+                checkAcknowledge.setImageResource(R.drawable.mbhq_circle_green);
+                checkLaughed.setImageResource(R.drawable.mbhq_circle_green);
+                checkPraised.setImageResource(R.drawable.mbhq_circle_green);
+                checkTodayLetOf.setImageResource(R.drawable.mbhq_circle_green);
+                checkIDreamtOf.setImageResource(R.drawable.mbhq_circle_green);
+                checkOnething.setImageResource(R.drawable.mbhq_circle_green);
+                checkIchoose.setImageResource(R.drawable.mbhq_circle_green);
+                checkneedtowork.setImageResource(R.drawable.mbhq_circle_green);
+            }else if("click_needtowork".equalsIgnoreCase(sharedPreference.read("click_option",""))){
+                checkGrateful.setImageResource(R.drawable.mbhq_circle_green);
+                checkJournal.setImageResource(R.drawable.mbhq_circle_green);
+
+                checkneedtowork.setImageResource(R.drawable.mbhq_checked_active);
+
                 checkPromptofTheDay.setImageResource(R.drawable.mbhq_circle_green);
                 checkTodayImFelling.setImageResource(R.drawable.mbhq_circle_green);
                 checkProudOf.setImageResource(R.drawable.mbhq_circle_green);
@@ -4289,6 +3687,7 @@ if("habit".equalsIgnoreCase(Util.sourcepage)){
                 checkIDreamtOf.setImageResource(R.drawable.mbhq_circle_green);
                 checkOnething.setImageResource(R.drawable.mbhq_circle_green);
                 checkIchoose.setImageResource(R.drawable.mbhq_circle_green);
+                checkneedtowork.setImageResource(R.drawable.mbhq_circle_green);
             }else if("click_todayiamfelling".equalsIgnoreCase(sharedPreference.read("click_option",""))){
                 checkGrateful.setImageResource(R.drawable.mbhq_circle_green);
                 checkJournal.setImageResource(R.drawable.mbhq_circle_green);
@@ -4313,6 +3712,7 @@ if("habit".equalsIgnoreCase(Util.sourcepage)){
                 checkIDreamtOf.setImageResource(R.drawable.mbhq_circle_green);
                 checkOnething.setImageResource(R.drawable.mbhq_circle_green);
                 checkIchoose.setImageResource(R.drawable.mbhq_circle_green);
+                checkneedtowork.setImageResource(R.drawable.mbhq_circle_green);
             }else if("click_proudof".equalsIgnoreCase(sharedPreference.read("click_option",""))){
                 checkGrateful.setImageResource(R.drawable.mbhq_circle_green);
                 checkJournal.setImageResource(R.drawable.mbhq_circle_green);
@@ -4337,6 +3737,7 @@ if("habit".equalsIgnoreCase(Util.sourcepage)){
                 checkIDreamtOf.setImageResource(R.drawable.mbhq_circle_green);
                 checkOnething.setImageResource(R.drawable.mbhq_circle_green);
                 checkIchoose.setImageResource(R.drawable.mbhq_circle_green);
+                checkneedtowork.setImageResource(R.drawable.mbhq_circle_green);
             }else if("click_accomplise".equalsIgnoreCase(sharedPreference.read("click_option",""))){
                 checkGrateful.setImageResource(R.drawable.mbhq_circle_green);
                 checkJournal.setImageResource(R.drawable.mbhq_circle_green);
@@ -4361,6 +3762,7 @@ if("habit".equalsIgnoreCase(Util.sourcepage)){
                 checkIDreamtOf.setImageResource(R.drawable.mbhq_circle_green);
                 checkOnething.setImageResource(R.drawable.mbhq_circle_green);
                 checkIchoose.setImageResource(R.drawable.mbhq_circle_green);
+                checkneedtowork.setImageResource(R.drawable.mbhq_circle_green);
             }else if("click_toward".equalsIgnoreCase(sharedPreference.read("click_option",""))){
                 checkGrateful.setImageResource(R.drawable.mbhq_circle_green);
                 checkJournal.setImageResource(R.drawable.mbhq_circle_green);
@@ -4385,6 +3787,7 @@ if("habit".equalsIgnoreCase(Util.sourcepage)){
                 checkIDreamtOf.setImageResource(R.drawable.mbhq_circle_green);
                 checkOnething.setImageResource(R.drawable.mbhq_circle_green);
                 checkIchoose.setImageResource(R.drawable.mbhq_circle_green);
+                checkneedtowork.setImageResource(R.drawable.mbhq_circle_green);
             }else if("click_feelgrowth".equalsIgnoreCase(sharedPreference.read("click_option",""))){
                 checkGrateful.setImageResource(R.drawable.mbhq_circle_green);
                 checkJournal.setImageResource(R.drawable.mbhq_circle_green);
@@ -4409,6 +3812,7 @@ if("habit".equalsIgnoreCase(Util.sourcepage)){
                 checkIDreamtOf.setImageResource(R.drawable.mbhq_circle_green);
                 checkOnething.setImageResource(R.drawable.mbhq_circle_green);
                 checkIchoose.setImageResource(R.drawable.mbhq_circle_green);
+                checkneedtowork.setImageResource(R.drawable.mbhq_circle_green);
             }else if("click_committing".equalsIgnoreCase(sharedPreference.read("click_option",""))){
                 checkGrateful.setImageResource(R.drawable.mbhq_circle_green);
                 checkJournal.setImageResource(R.drawable.mbhq_circle_green);
@@ -4433,6 +3837,7 @@ if("habit".equalsIgnoreCase(Util.sourcepage)){
                 checkIDreamtOf.setImageResource(R.drawable.mbhq_circle_green);
                 checkOnething.setImageResource(R.drawable.mbhq_circle_green);
                 checkIchoose.setImageResource(R.drawable.mbhq_circle_green);
+                checkneedtowork.setImageResource(R.drawable.mbhq_circle_green);
             }else if("click_celebrate".equalsIgnoreCase(sharedPreference.read("click_option",""))){
                 checkGrateful.setImageResource(R.drawable.mbhq_circle_green);
                 checkJournal.setImageResource(R.drawable.mbhq_circle_green);
@@ -4457,6 +3862,7 @@ if("habit".equalsIgnoreCase(Util.sourcepage)){
                 checkIDreamtOf.setImageResource(R.drawable.mbhq_circle_green);
                 checkOnething.setImageResource(R.drawable.mbhq_circle_green);
                 checkIchoose.setImageResource(R.drawable.mbhq_circle_green);
+                checkneedtowork.setImageResource(R.drawable.mbhq_circle_green);
             }else if("click_foundgift".equalsIgnoreCase(sharedPreference.read("click_option",""))){
                 checkGrateful.setImageResource(R.drawable.mbhq_circle_green);
                 checkJournal.setImageResource(R.drawable.mbhq_circle_green);
@@ -4481,6 +3887,7 @@ if("habit".equalsIgnoreCase(Util.sourcepage)){
                 checkIDreamtOf.setImageResource(R.drawable.mbhq_circle_green);
                 checkOnething.setImageResource(R.drawable.mbhq_circle_green);
                 checkIchoose.setImageResource(R.drawable.mbhq_circle_green);
+                checkneedtowork.setImageResource(R.drawable.mbhq_circle_green);
             }else if("click_happy".equalsIgnoreCase(sharedPreference.read("click_option",""))){
                 checkGrateful.setImageResource(R.drawable.mbhq_circle_green);
                 checkJournal.setImageResource(R.drawable.mbhq_circle_green);
@@ -4505,6 +3912,7 @@ if("habit".equalsIgnoreCase(Util.sourcepage)){
                 checkIDreamtOf.setImageResource(R.drawable.mbhq_circle_green);
                 checkOnething.setImageResource(R.drawable.mbhq_circle_green);
                 checkIchoose.setImageResource(R.drawable.mbhq_circle_green);
+                checkneedtowork.setImageResource(R.drawable.mbhq_circle_green);
             }else if("click_onething".equalsIgnoreCase(sharedPreference.read("click_option",""))){
                 checkGrateful.setImageResource(R.drawable.mbhq_circle_green);
                 checkJournal.setImageResource(R.drawable.mbhq_circle_green);
@@ -4529,6 +3937,7 @@ if("habit".equalsIgnoreCase(Util.sourcepage)){
                 checkIDreamtOf.setImageResource(R.drawable.mbhq_circle_green);
                 checkOnething.setImageResource(R.drawable.mbhq_checked_active);
                 checkIchoose.setImageResource(R.drawable.mbhq_circle_green);
+                checkneedtowork.setImageResource(R.drawable.mbhq_circle_green);
             }else if("click_thestoryadd".equalsIgnoreCase(sharedPreference.read("click_option",""))){
                 checkGrateful.setImageResource(R.drawable.mbhq_circle_green);
                 checkJournal.setImageResource(R.drawable.mbhq_circle_green);
@@ -4553,6 +3962,7 @@ if("habit".equalsIgnoreCase(Util.sourcepage)){
                 checkIDreamtOf.setImageResource(R.drawable.mbhq_circle_green);
                 checkOnething.setImageResource(R.drawable.mbhq_circle_green);
                 checkIchoose.setImageResource(R.drawable.mbhq_circle_green);
+                checkneedtowork.setImageResource(R.drawable.mbhq_circle_green);
             }else if("click_challenged".equalsIgnoreCase(sharedPreference.read("click_option",""))){
                 checkGrateful.setImageResource(R.drawable.mbhq_circle_green);
                 checkJournal.setImageResource(R.drawable.mbhq_circle_green);
@@ -4577,6 +3987,7 @@ if("habit".equalsIgnoreCase(Util.sourcepage)){
                 checkIDreamtOf.setImageResource(R.drawable.mbhq_circle_green);
                 checkOnething.setImageResource(R.drawable.mbhq_circle_green);
                 checkIchoose.setImageResource(R.drawable.mbhq_circle_green);
+                checkneedtowork.setImageResource(R.drawable.mbhq_circle_green);
             }else if("click_observed".equalsIgnoreCase(sharedPreference.read("click_option",""))){
                 checkGrateful.setImageResource(R.drawable.mbhq_circle_green);
                 checkJournal.setImageResource(R.drawable.mbhq_circle_green);
@@ -4601,6 +4012,7 @@ if("habit".equalsIgnoreCase(Util.sourcepage)){
                 checkIDreamtOf.setImageResource(R.drawable.mbhq_circle_green);
                 checkOnething.setImageResource(R.drawable.mbhq_circle_green);
                 checkIchoose.setImageResource(R.drawable.mbhq_circle_green);
+                checkneedtowork.setImageResource(R.drawable.mbhq_circle_green);
             }else if("click_learned".equalsIgnoreCase(sharedPreference.read("click_option",""))){
                 checkGrateful.setImageResource(R.drawable.mbhq_circle_green);
                 checkJournal.setImageResource(R.drawable.mbhq_circle_green);
@@ -4625,6 +4037,7 @@ if("habit".equalsIgnoreCase(Util.sourcepage)){
                 checkIDreamtOf.setImageResource(R.drawable.mbhq_circle_green);
                 checkOnething.setImageResource(R.drawable.mbhq_circle_green);
                 checkIchoose.setImageResource(R.drawable.mbhq_circle_green);
+                checkneedtowork.setImageResource(R.drawable.mbhq_circle_green);
             }else if("click_acknowledge".equalsIgnoreCase(sharedPreference.read("click_option",""))){
                 checkGrateful.setImageResource(R.drawable.mbhq_circle_green);
                 checkJournal.setImageResource(R.drawable.mbhq_circle_green);
@@ -4649,6 +4062,7 @@ if("habit".equalsIgnoreCase(Util.sourcepage)){
                 checkIDreamtOf.setImageResource(R.drawable.mbhq_circle_green);
                 checkOnething.setImageResource(R.drawable.mbhq_circle_green);
                 checkIchoose.setImageResource(R.drawable.mbhq_circle_green);
+                checkneedtowork.setImageResource(R.drawable.mbhq_circle_green);
             }else if("click_laughed".equalsIgnoreCase(sharedPreference.read("click_option",""))){
                 checkGrateful.setImageResource(R.drawable.mbhq_circle_green);
                 checkJournal.setImageResource(R.drawable.mbhq_circle_green);
@@ -4673,6 +4087,7 @@ if("habit".equalsIgnoreCase(Util.sourcepage)){
                 checkIDreamtOf.setImageResource(R.drawable.mbhq_circle_green);
                 checkOnething.setImageResource(R.drawable.mbhq_circle_green);
                 checkIchoose.setImageResource(R.drawable.mbhq_circle_green);
+                checkneedtowork.setImageResource(R.drawable.mbhq_circle_green);
             }else if("click_praised".equalsIgnoreCase(sharedPreference.read("click_option",""))){
                 checkGrateful.setImageResource(R.drawable.mbhq_circle_green);
                 checkJournal.setImageResource(R.drawable.mbhq_circle_green);
@@ -4697,6 +4112,7 @@ if("habit".equalsIgnoreCase(Util.sourcepage)){
                 checkIDreamtOf.setImageResource(R.drawable.mbhq_circle_green);
                 checkOnething.setImageResource(R.drawable.mbhq_circle_green);
                 checkIchoose.setImageResource(R.drawable.mbhq_circle_green);
+                checkneedtowork.setImageResource(R.drawable.mbhq_circle_green);
             }else if("click_todayletof".equalsIgnoreCase(sharedPreference.read("click_option",""))){
                 checkGrateful.setImageResource(R.drawable.mbhq_circle_green);
                 checkJournal.setImageResource(R.drawable.mbhq_circle_green);
@@ -4721,6 +4137,7 @@ if("habit".equalsIgnoreCase(Util.sourcepage)){
                 checkIDreamtOf.setImageResource(R.drawable.mbhq_circle_green);
                 checkOnething.setImageResource(R.drawable.mbhq_circle_green);
                 checkIchoose.setImageResource(R.drawable.mbhq_circle_green);
+                checkneedtowork.setImageResource(R.drawable.mbhq_circle_green);
             }else if("click_dreamtof".equalsIgnoreCase(sharedPreference.read("click_option",""))){
                 checkGrateful.setImageResource(R.drawable.mbhq_circle_green);
                 checkJournal.setImageResource(R.drawable.mbhq_circle_green);
@@ -4745,6 +4162,7 @@ if("habit".equalsIgnoreCase(Util.sourcepage)){
                 checkIDreamtOf.setImageResource(R.drawable.mbhq_checked_active);
                 checkOnething.setImageResource(R.drawable.mbhq_circle_green);
                 checkIchoose.setImageResource(R.drawable.mbhq_circle_green);
+                checkneedtowork.setImageResource(R.drawable.mbhq_circle_green);
             }else if("click_ichoose".equalsIgnoreCase(sharedPreference.read("click_option",""))){
                 checkGrateful.setImageResource(R.drawable.mbhq_circle_green);
                 checkJournal.setImageResource(R.drawable.mbhq_circle_green);
@@ -4769,6 +4187,7 @@ if("habit".equalsIgnoreCase(Util.sourcepage)){
                 checkIDreamtOf.setImageResource(R.drawable.mbhq_circle_green);
                 checkIchoose.setImageResource(R.drawable.mbhq_checked_active);
                 checkOnething.setImageResource(R.drawable.mbhq_circle_green);
+                checkneedtowork.setImageResource(R.drawable.mbhq_circle_green);
             }
         }
 
@@ -4801,6 +4220,17 @@ if("habit".equalsIgnoreCase(Util.sourcepage)){
                 dialog.dismiss();
 
                 openDialogForAchieveAddWithOption(0);
+            }
+        });
+        txtneedtowork.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //j16
+                sharedPreference.write("click_option", "", "click_needtowork");
+
+                dialog.dismiss();
+
+                openDialogForAchieveAddWithOption(14);
             }
         });
 
@@ -4972,7 +4402,7 @@ if("habit".equalsIgnoreCase(Util.sourcepage)){
                 dialog.dismiss();
                 sharedPreference.write("click_option", "", "click_observed");
 
-                openDialogForAchieveAddWithOption(14);
+                openDialogForAchieveAddWithOption(15);
 
 
             }
@@ -4984,7 +4414,7 @@ if("habit".equalsIgnoreCase(Util.sourcepage)){
                 sharedPreference.write("click_option", "", "click_learned");
 
 
-                openDialogForAchieveAddWithOption(15);
+                openDialogForAchieveAddWithOption(16);
 
 
             }
@@ -4994,7 +4424,7 @@ if("habit".equalsIgnoreCase(Util.sourcepage)){
             dialog.dismiss();
             sharedPreference.write("click_option", "", "click_acknowledge");
 
-            openDialogForAchieveAddWithOption(16);
+            openDialogForAchieveAddWithOption(17);
 
 
         });
@@ -5003,7 +4433,7 @@ if("habit".equalsIgnoreCase(Util.sourcepage)){
             dialog.dismiss();
             sharedPreference.write("click_option", "", "click_laughed");
 
-            openDialogForAchieveAddWithOption(17);
+            openDialogForAchieveAddWithOption(18);
 
 
         });
@@ -5014,7 +4444,7 @@ if("habit".equalsIgnoreCase(Util.sourcepage)){
                 dialog.dismiss();
                 sharedPreference.write("click_option", "", "click_praised");
 
-                openDialogForAchieveAddWithOption(18);
+                openDialogForAchieveAddWithOption(19);
 
 
             }
@@ -5025,7 +4455,7 @@ if("habit".equalsIgnoreCase(Util.sourcepage)){
                 dialog.dismiss();
                 sharedPreference.write("click_option", "", "click_todayletof");
 
-                openDialogForAchieveAddWithOption(19);
+                openDialogForAchieveAddWithOption(20);
 
 
             }
@@ -5037,7 +4467,7 @@ if("habit".equalsIgnoreCase(Util.sourcepage)){
                 dialog.dismiss();
                 sharedPreference.write("click_option", "", "click_dreamtof");
 
-                openDialogForAchieveAddWithOption(20);
+                openDialogForAchieveAddWithOption(21);
 
 
             }
@@ -6410,10 +5840,7 @@ if("habit".equalsIgnoreCase(Util.sourcepage)){
     }
 
 
-//    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        Log.e("PICTURE FRAGMENT", "trueeeeeeeee");
-//
-//    }
+
 
     private void cropPhoto(final Bitmap bitmap, final String imgPath) {
         final Dialog dialogcrop = new Dialog(getActivity(), android.R.style.Theme);
@@ -7000,6 +6427,7 @@ if("habit".equalsIgnoreCase(Util.sourcepage)){
         RelativeLayout rlIHvAccomplish = dialog.findViewById(R.id.rlIHvAccomplish);
         RelativeLayout rlChooseTo = dialog.findViewById(R.id.rlChooseTo);
         RelativeLayout rlIHvObserve = dialog.findViewById(R.id.rlIHvObserve);
+        RelativeLayout rlIneedtowork=dialog.findViewById(R.id.rlIneedtowork);
         RelativeLayout rlIHvLearned = dialog.findViewById(R.id.rlIHvLearned);
         RelativeLayout rlIHvPraised = dialog.findViewById(R.id.rlIHvPraised);
         RelativeLayout rlTodayLetGoOf = dialog.findViewById(R.id.rlTodayLetGoOf);
@@ -7039,6 +6467,7 @@ if("habit".equalsIgnoreCase(Util.sourcepage)){
         imgOneYearCheck = dialog.findViewById(R.id.imgOneYearCheck);
         imgAmProudOf = dialog.findViewById(R.id.imgAmProudOf);
         imgIHvAccomplish = dialog.findViewById(R.id.imgIHvAccomplish);
+        imgIneedtowork = dialog.findViewById(R.id.imgIneedtowork);
         imgIHvObserve = dialog.findViewById(R.id.imgIHvObserve);
         imgIHvLearned = dialog.findViewById(R.id.imgIHvLearned);
         imgIHvPraised = dialog.findViewById(R.id.imgIHvPraised);
@@ -7086,6 +6515,7 @@ if("habit".equalsIgnoreCase(Util.sourcepage)){
 
         boolProudOf = growthSaveFilterModel.getBool_proud_of();
         boolAccomplished = growthSaveFilterModel.getBool_accomplished();
+        boolNeedToWork = growthSaveFilterModel.getBool_needTowork();
         boolObserved = growthSaveFilterModel.getBool_observed();
         boolLearned = growthSaveFilterModel.getBool_learned();
         boolPraised = growthSaveFilterModel.getBool_praised();
@@ -7154,6 +6584,13 @@ if("habit".equalsIgnoreCase(Util.sourcepage)){
         } else {
             imgIHvObserve.setBackgroundResource(R.drawable.mbhq_ic_untick);
         }
+
+        if (boolNeedToWork) {
+            imgIneedtowork.setBackgroundResource(R.drawable.mbhq_ic_tick);
+        } else {
+            imgIneedtowork.setBackgroundResource(R.drawable.mbhq_ic_untick);
+        }
+
         if (boolLearned) {
             imgIHvLearned.setBackgroundResource(R.drawable.mbhq_ic_tick);
         } else {
@@ -7379,10 +6816,6 @@ if("habit".equalsIgnoreCase(Util.sourcepage)){
             }
         });
 
-
-
-
-
         imgSearchGrowth.setOnClickListener(view -> {
 
             String searchPrmpt = edtSearch1.getText().toString().trim();
@@ -7580,7 +7013,19 @@ if("habit".equalsIgnoreCase(Util.sourcepage)){
                         imgChallenge.setBackgroundResource(R.drawable.mbhq_ic_untick);
                     }
 
-                } else if ("I've observed".equalsIgnoreCase(searchPrmpt)) {
+                } else if ("I need to work on/clear".equalsIgnoreCase(searchPrmpt)) {
+                    clearFilterResults(growthSaveFilterModel, txtSelectDate);
+                    globalSearchStr = "";
+                    imgShowAllCheck.setBackgroundResource(R.drawable.mbhq_ic_untick);
+                    if (!boolNeedToWork) {
+                        boolNeedToWork = true;
+                        imgIneedtowork.setBackgroundResource(R.drawable.mbhq_ic_tick);
+                    } else {
+                        boolNeedToWork = false;
+                        imgIneedtowork.setBackgroundResource(R.drawable.mbhq_ic_untick);
+                    }
+
+                }else if ("I've observed".equalsIgnoreCase(searchPrmpt)) {
                     clearFilterResults(growthSaveFilterModel, txtSelectDate);
                     globalSearchStr = "";
                     imgShowAllCheck.setBackgroundResource(R.drawable.mbhq_ic_untick);
@@ -7925,7 +7370,20 @@ if("habit".equalsIgnoreCase(Util.sourcepage)){
                 }
             }
         });
-
+        rlIneedtowork.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                globalSearchStr = "";
+                imgShowAllCheck.setBackgroundResource(R.drawable.mbhq_ic_untick);
+                if (!boolNeedToWork) {
+                    boolNeedToWork = true;
+                    imgIneedtowork.setBackgroundResource(R.drawable.mbhq_ic_tick);
+                } else {
+                    boolNeedToWork = false;
+                    imgIneedtowork.setBackgroundResource(R.drawable.mbhq_ic_untick);
+                }
+            }
+        });
         rlIHvLearned.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -8328,6 +7786,7 @@ if("habit".equalsIgnoreCase(Util.sourcepage)){
         boolIChooseToKnow = false;
         boolProudOf = false;
         boolAccomplished = false;
+        boolNeedToWork = false;
         boolObserved = false;
         boolLearned = false;
         boolPraised = false;
@@ -8898,6 +8357,7 @@ if("habit".equalsIgnoreCase(Util.sourcepage)){
 
             boolProudOf = growthSaveFilterModel.getBool_proud_of();
             boolAccomplished = growthSaveFilterModel.getBool_accomplished();
+            boolNeedToWork = growthSaveFilterModel.getBool_needTowork();
             boolObserved = growthSaveFilterModel.getBool_observed();
             boolLearned = growthSaveFilterModel.getBool_learned();
             boolPraised = growthSaveFilterModel.getBool_praised();
@@ -9106,7 +8566,6 @@ if("habit".equalsIgnoreCase(Util.sourcepage)){
                 lstImFeeling.clear();
                 lstPicture.clear();
                 Log.i("check_eq","150");
-/*
         mDisposable.add(
                 gratitudeViewModel1.getAllAchive(position_,count_)
                         .subscribeOn(Schedulers.io())
@@ -9138,10 +8597,9 @@ if("habit".equalsIgnoreCase(Util.sourcepage)){
                                 Throwable::getMessage
                         )
         );
-*/
-                pagenation_from_api = true;
+               /* pagenation_from_api = true;
                 new MyAsyncTask().execute();
-                getAchievementsList(Page);
+                getAchievementsList(Page);*/
 
 
             } else {
@@ -9420,10 +8878,6 @@ if("habit".equalsIgnoreCase(Util.sourcepage)){
         dialog.setContentView(R.layout.dialog_achievement_add1);
 
         dialog.setCancelable(false);
-
-
-
-
         TextView txtGoalValue1 = dialog.findViewById(R.id.txtGoalValue1);
         TextView txtGoalValue2 = dialog.findViewById(R.id.txtGoalValue2);
         TextView txtGoalValue3 = dialog.findViewById(R.id.txtGoalValue3);
@@ -9510,32 +8964,14 @@ if("habit".equalsIgnoreCase(Util.sourcepage)){
                         userfolderid=folderid;
                         moveEQFolder(folderid,globalmMyAchievementsListInnerModel.getId());
                         adapter1.notifyDataSetChanged();
-                      /*  habitSwapList_.get(p).setIsDefaultView(true);
-                        if(!Util.checkfolder.contains(folderid)){
-                            // Log.i("clicked_________folderadd",String.valueOf(check) +" ->>  "+ String.valueOf(eqfolderid));
 
-                            Util.checkfolder.add(folderid);
-                            setDefault(folderid,true);
-                        }*/
-
-                        // adapter1.notifyDataSetChanged();
                         Toast.makeText(getActivity(),filename,Toast.LENGTH_LONG).show();
                     }
 
                     @Override
                     public void onItemClick_remove(int p,int folderidrmv, String filename, Boolean check) {
                         //  Log.i("clicked_________folderremove",String.valueOf(check) +" ->>  "+ String.valueOf(folderidrmv));
-                      /*  Integer a=folderidrmv;
-                        habitSwapList_.get(p).setIsDefaultView(false);
-                        if(Util.checkfolder.contains(a)){
 
-
-                            Util.checkfolder.remove(a);
-                            setDefault(a,false);
-                        }
-                        Log.i("clicked_________folderadd",String.valueOf(Util.checkfolder.size()));
-
-                        adapter1.notifyDataSetChanged();*/
 
                     }
 
@@ -12333,10 +11769,6 @@ if("habit".equalsIgnoreCase(Util.sourcepage)){
                 share.putExtra(Intent.EXTRA_STREAM, photoURI);
                 startActivity(Intent.createChooser(share, "Share Image"));
 
-
-
-
-
             }
 
             @Override
@@ -12379,30 +11811,6 @@ if("habit".equalsIgnoreCase(Util.sourcepage)){
         });
 
     }
-    private void openGratitudeDialog() {
-        Dialog dialog = new Dialog(getActivity(), R.style.DialogThemeAnother);
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-//        dialog.setContentView(R.layout.dialog_info_gratitude);
-        dialog.setContentView(R.layout.dialog_info_growth);
-
-        ImageView imgCross = dialog.findViewById(R.id.imgCross);
-        Button btnGotIt = dialog.findViewById(R.id.btnGotIt);
-
-        imgCross.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-            }
-        });
-
-        btnGotIt.setOnClickListener(view -> {
-            dialog.dismiss();
-        });
-
-        dialog.show();
-    }
-
-
 
     private void getAchievementsList_(int page) {
         Log.i("check_eq","19");
@@ -12622,6 +12030,7 @@ if("habit".equalsIgnoreCase(Util.sourcepage)){
 
                                 boolProudOf = growthSaveFilterModel.getBool_proud_of();
                                 boolAccomplished = growthSaveFilterModel.getBool_accomplished();
+                                boolNeedToWork = growthSaveFilterModel.getBool_needTowork();
                                 boolObserved = growthSaveFilterModel.getBool_observed();
                                 boolLearned = growthSaveFilterModel.getBool_learned();
                                 boolPraised = growthSaveFilterModel.getBool_praised();
@@ -13062,6 +12471,7 @@ if("habit".equalsIgnoreCase(Util.sourcepage)){
 
                                 boolProudOf = growthSaveFilterModel.getBool_proud_of();
                                 boolAccomplished = growthSaveFilterModel.getBool_accomplished();
+                                boolNeedToWork = growthSaveFilterModel.getBool_needTowork();
                                 boolObserved = growthSaveFilterModel.getBool_observed();
                                 boolLearned = growthSaveFilterModel.getBool_learned();
                                 boolPraised = growthSaveFilterModel.getBool_praised();
@@ -13216,7 +12626,7 @@ if("habit".equalsIgnoreCase(Util.sourcepage)){
 
 
 
-
+        growthSaveFilterModel.setBool_needTowork(boolNeedToWork);
         growthSaveFilterModel.setBool_observed(boolObserved);
         growthSaveFilterModel.setBool_learned(boolLearned);
         growthSaveFilterModel.setBool_praised(boolPraised);
@@ -13241,7 +12651,7 @@ if("habit".equalsIgnoreCase(Util.sourcepage)){
         growthSaveFilterModel.setBool_laughed(boolLaughed);
         growthSaveFilterModel.setBool_Today_I_M_Feeling(boolTodayImFeeling);
 
-        if (!growthSaveFilterModel.getBool_proud_of() && !growthSaveFilterModel.getBool_accomplished() && !growthSaveFilterModel.getBool_observed() && !growthSaveFilterModel.getBool_learned() && !growthSaveFilterModel.getBool_praised() && !growthSaveFilterModel.getBool_let_go_of() && !growthSaveFilterModel.getBool_dreamt_of() && !growthSaveFilterModel.getBool_journal_entry() && !growthSaveFilterModel.getBool_the_story() && !growthSaveFilterModel.getBool_challenged() && !growthSaveFilterModel.getBool_celebrating() && !growthSaveFilterModel.getBool_laughed() && !growthSaveFilterModel.getBool_Today_I_M_Feeling() && growthSaveFilterModel.getSelected_date_range_filter_value() == 0 && growthSaveFilterModel.getStrGrowthSerach().equals("")
+        if (!growthSaveFilterModel.getBool_proud_of() && !growthSaveFilterModel.getBool_accomplished() &&!growthSaveFilterModel.getBool_needTowork()&& !growthSaveFilterModel.getBool_observed() && !growthSaveFilterModel.getBool_learned() && !growthSaveFilterModel.getBool_praised() && !growthSaveFilterModel.getBool_let_go_of() && !growthSaveFilterModel.getBool_dreamt_of() && !growthSaveFilterModel.getBool_journal_entry() && !growthSaveFilterModel.getBool_the_story() && !growthSaveFilterModel.getBool_challenged() && !growthSaveFilterModel.getBool_celebrating() && !growthSaveFilterModel.getBool_laughed() && !growthSaveFilterModel.getBool_Today_I_M_Feeling() && growthSaveFilterModel.getSelected_date_range_filter_value() == 0 && growthSaveFilterModel.getStrGrowthSerach().equals("")
                 && !growthSaveFilterModel.getBool_working_towards() && !growthSaveFilterModel.getBool_found_gift() && !growthSaveFilterModel.getBool_I_acknowledge() && !growthSaveFilterModel.getBool_felt_happy_today()
                 && !growthSaveFilterModel.getBool_prompt_of_The_day()&& !growthSaveFilterModel.getBool_feeling_growth()&& !growthSaveFilterModel.getBool_committing_to()
                 && !growthSaveFilterModel.getBool_grateful_for()&& !growthSaveFilterModel.getBool_I_Appreciate()&& !growthSaveFilterModel.getBool_I_choose_To_Know()&& !growthSaveFilterModel.getBool_only_pic()&&growthSaveFilterModel.getBool_show_img()) {
@@ -13285,16 +12695,7 @@ if("habit".equalsIgnoreCase(Util.sourcepage)){
 
         }
 
-      /* if(growthSaveFilterModelArrayList.size()>0) {
-           growthSaveFilterModelArrayList.clear();
-           growthSaveFilterModelArrayList.add(growthSaveFilterModel);
-           sharedPreference.write("my_list_eq_filter", "", new Gson().toJson(growthSaveFilterModelArrayList));
 
-       }else{
-           growthSaveFilterModelArrayList.add(growthSaveFilterModel);
-           sharedPreference.write("my_list_eq_filter", "", new Gson().toJson(growthSaveFilterModelArrayList));
-
-       }*/
 
         SharedPreference.saveObjectToSharedPreference(getActivity(), "GROWTH_FILTER_SAVE_FILE", "GROWTH_FILTER_SAVE_KEY", growthSaveFilterModel);
 
@@ -13320,6 +12721,7 @@ if("habit".equalsIgnoreCase(Util.sourcepage)){
 
         growthSaveFilterModel.setBool_proud_of(false);
         growthSaveFilterModel.setBool_accomplished(false);
+        growthSaveFilterModel.setBool_needTowork(false);
         growthSaveFilterModel.setBool_observed(false);
         growthSaveFilterModel.setBool_learned(false);
         growthSaveFilterModel.setBool_praised(false);
@@ -13335,15 +12737,7 @@ if("habit".equalsIgnoreCase(Util.sourcepage)){
         growthSaveFilterModel.setStrGrowthSerach("");
 
     }
-/*
-    public static  void changefilter_greenfromadapter(){
 
-       sharedPreference.write("achivementfilter", "", "yes");
-
-        imgFilterAchieve.setImageResource(R.drawable.mbhq_filter_green);
-
-    }
-*/
 
     public interface OnItemClickListener {
         void onItemClick_add(int p,int position,String filename,Boolean check);
@@ -13370,25 +12764,8 @@ if("habit".equalsIgnoreCase(Util.sourcepage)){
             jsonObjectCall.enqueue(new Callback<JsonObject>() {
                 @Override
                 public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
-/*
-                    if (response.body() != null && response.body().has("Success") && response.body().get("Success").getAsBoolean()) {
-                        Log.e("Eqfolderupdate", "SUCCESSFUL");
-                        dialog.dismiss();
-                      //  sharedPreference.write("SEVENDAY_TRIAL_START", "", "TRUE");
-                    }
-*/
 
-                   /* Gson gson = new Gson();
-                    if(response.isSuccessful()){
-                        dialog.dismiss();
-                        // ArrayList<Mymodel>mymodelArrayList=new ArrayList<>();
-                        Type type = new TypeToken<ArrayList<UserEqFolder>>() {
-                        }.getType();
-                        mymodelArrayList = gson.fromJson(gson.toJson(response.body().getUserEqFolders()), type);
 
-                    }
-                    sharedPreference.write("my_list_eqfolder", "", new Gson().toJson(mymodelArrayList));
-*/
                 }
 
                 @Override
@@ -13402,5 +12779,226 @@ if("habit".equalsIgnoreCase(Util.sourcepage)){
         }
 
     }
+void init(){
+    Log.e("state11111111111","onActivityCreated");
+    ////////////////////////////////////////////// Added by mugdho///////////////////////////////////////////
+    factoryForGratitude1 = Injection.provideViewModelFactoryGratitude(getActivity());
+    gratitudeViewModel1 = new ViewModelProvider(this, factoryForGratitude1).get(GratitudeViewModel.class);
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    if("yes".equalsIgnoreCase(Util.opengratitudeforfirstuser)){
+        Log.e("state11111111111","onActivityCreated");
+        Log.i("check_eq","23");
+        Util.opengratitudeforfirstuser="";
+        Log.e("state","onActivityCreated1");
+        pagenation_from_api=true;
+        getAchievementsList_firstcall(Page);
+    }
+    Util.opengratitudeforfirstuser="";
+    factoryForGratitude = Injection.provideViewModelFactoryGrowth(getActivity());
+    gratitudeViewModel = new ViewModelProvider(this, factoryForGratitude).get(GrowthViewModel.class);
+
+    ConnectivityManager connectivityManager = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
+    NetworkInfo activeNetwork = connectivityManager.getActiveNetworkInfo();
+    boolean isConnected = activeNetwork != null && activeNetwork.isConnectedOrConnecting();
+    if (!isConnected) {
+        Log.i("check_eq","32");
+        // Internet connection is lost
+        Log.e("state11111111111","onActivityCreated");
+        pagenation_from_api=false;
+        calldatabase_nointernate(position, count);
+    }else{
+        Log.e("state11111111111","onActivityCreated");
+        Log.i("check_eq","26");
+        if (getArguments() != null && getArguments().containsKey("NOTIFICATIONID")) {
+            Log.i("check_eq","27");
+            ((MainActivity) getActivity()).clearCacheForParticularFragment(new MyAchievementsFragment());
+            getSelectedAchievement(getArguments().getInt("NOTIFICATIONID"), "", false);
+        } else {
+            Log.i("check_eq","28");
+            if (getArguments() != null && getArguments().containsKey("ADD_GROWTH_FROM_TODAY")) {
+                Log.i("check_eq","29");
+            } else if (getArguments() != null && getArguments().containsKey("openaddpopup")) {
+                Log.i("check_eq","30");
+                Log.e("state11111111111","onActivityCreated");
+                checkGratitudeCacheExpiration();
+                arrAchieveOptions.add("I'm Grateful For:");
+                arrAchieveOptions.add("Journal Entry:");
+
+                arrAchieveOptions.add(Util.prompt1 );
+
+                arrAchieveOptions.add("Today I'm Feeling:");
+                arrAchieveOptions.add("I am proud of:");
+                arrAchieveOptions.add("I've accomplished:");
+                arrAchieveOptions.add("I'm working towards:");
+                arrAchieveOptions.add("I'm feeling growth in:");
+                arrAchieveOptions.add("I’m committing to:");
+                arrAchieveOptions.add("A small win I'm celebrating is:");
+                arrAchieveOptions.add("I've found the gift in:");
+                arrAchieveOptions.add("I felt happy today because:");
+
+                arrAchieveOptions.add("The story I've told myself is:");
+                arrAchieveOptions.add("I've been challenged by:");
+                arrAchieveOptions.add("I need to work on/clear:");
+                arrAchieveOptions.add("I've observed:");
+                arrAchieveOptions.add("I've learned:");
+                arrAchieveOptions.add("I acknowledge:");
+                arrAchieveOptions.add("I laughed:");
+                arrAchieveOptions.add("I've praised:");
+                arrAchieveOptions.add("I've let go of:");
+                arrAchieveOptions.add("I dreamt of:");
+                arrAchieveOptions.add("One thing I appreciate about you today is:");
+                arrAchieveOptions.add("I Choose to Know:");
+                openDialogForAchieveAdd();
+
+            } else if (getArguments() != null && getArguments().containsKey("openprompt")) {
+                Log.e("state11111111111","--------5");
+                Log.i("check_eq","30");
+                checkGratitudeCacheExpiration();
+
+                // GetJounalPromptofDay();
+
+                ConnectivityManager connectivityManager1 = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
+                NetworkInfo activeNetwork1 = connectivityManager1.getActiveNetworkInfo();
+                boolean isConnected1 = activeNetwork1!= null && activeNetwork1.isConnectedOrConnecting();
+                if (!isConnected1) {
+                    // Internet connection is lost
+                    showpopup4();
+                }else{
+                    sharedPreference.write("click_option", "", "click_promptoftheday");
+
+                    arrAchieveOptions.add("I'm Grateful For:");
+                    arrAchieveOptions.add("Journal Entry:");
+
+                    arrAchieveOptions.add(Util.prompt1 );
+
+                    arrAchieveOptions.add("Today I'm Feeling:");
+                    arrAchieveOptions.add("I am proud of:");
+                    arrAchieveOptions.add("I've accomplished:");
+                    arrAchieveOptions.add("I'm working towards:");
+                    arrAchieveOptions.add("I'm feeling growth in:");
+                    arrAchieveOptions.add("I’m committing to:");
+                    arrAchieveOptions.add("A small win I'm celebrating is:");
+                    arrAchieveOptions.add("I've found the gift in:");
+                    arrAchieveOptions.add("I felt happy today because:");
+
+                    arrAchieveOptions.add("The story I've told myself is:");
+                    arrAchieveOptions.add("I've been challenged by:");
+                    arrAchieveOptions.add("I need to work on/clear:");
+                    arrAchieveOptions.add("I've observed:");
+                    arrAchieveOptions.add("I've learned:");
+                    arrAchieveOptions.add("I acknowledge:");
+                    arrAchieveOptions.add("I laughed:");
+                    arrAchieveOptions.add("I've praised:");
+                    arrAchieveOptions.add("I've let go of:");
+                    arrAchieveOptions.add("I dreamt of:");
+                    arrAchieveOptions.add("One thing I appreciate about you today is:");
+                    arrAchieveOptions.add("I Choose to Know:");
+                    openDialogForAchieveAddWithOption(2);
+
+                }
+
+            }else if (getArguments() != null && getArguments().containsKey("calledapi")) {
+                Log.i("check_eq","31");
+                Log.e("state11111111111","onActivityCreated");
+                checkGratitudeCacheExpiration();
+
+            } else {
+                Log.i("check_eq","122");
+                Log.e("state11111111111","onActivityCreated");
+                checkGratitudeCacheExpiration();
+
+            }
+        }
+    }
+}
+
+
+
+    private void getUserPaidStatusApiCall() {
+
+        if (Connection.checkConnection(getActivity())) {
+            final ProgressDialog progressDialog = ProgressDialog.show(getActivity(), "", "Please wait...");
+
+            HashMap<String, Object> hashReq = new HashMap<>();
+            hashReq.put("Email", sharedPreference.read("USEREMAIL", ""));
+            FinisherServiceImpl finisherService = new FinisherServiceImpl(getActivity());
+            Call<GetUserPaidStatusModel> paidStatusModelCall = finisherService.getUserPaidStatusApi(hashReq);
+            paidStatusModelCall.enqueue(new Callback<GetUserPaidStatusModel>() {
+                @Override
+                public void onResponse(Call<GetUserPaidStatusModel> call, Response<GetUserPaidStatusModel> response) {
+                    progressDialog.dismiss();
+
+                    if (response.body() != null && response.body().getSuccessFlag()) {
+
+                        Integer accesstype=response.body().getMbhqAccessType();
+                        Log.i("printttttttttttttttttttttttttttttt",String.valueOf(accesstype));
+                        Log.i("111111",String.valueOf(accesstype));
+                        Boolean HabitAccess=response.body().getHabitAccess();
+                        Log.i("111111",String.valueOf(HabitAccess));
+                        Boolean EqJournalAccess=response.body().getEqJournalAccess();
+                        Log.i("111111",String.valueOf(EqJournalAccess));
+                        Boolean MeditationAccess=response.body().getMeditationAccess();
+                        Log.i("111111",String.valueOf(MeditationAccess));
+                        Boolean ForumAccess=response.body().getForumAccess();
+                        Log.i("111111",String.valueOf(ForumAccess));
+                        Boolean LiveChatAccess=response.body().getLiveChatAccess();
+                        Log.i("111111",String.valueOf(LiveChatAccess));
+                        Boolean TestsAccess=response.body().getTestsAccess();
+                        Log.i("111111",String.valueOf(TestsAccess));
+                        Boolean CourseAccess=response.body().getCourseAccess();
+                        Log.i("111111",String.valueOf(CourseAccess));
+                        sharedPreference.write("accesstype", "", String.valueOf(accesstype));
+                        sharedPreference.write("HabitAccess", "", String.valueOf(HabitAccess));
+                        sharedPreference.write("EqJournalAccess", "", String.valueOf(EqJournalAccess));
+                        sharedPreference.write("MeditationAccess", "", String.valueOf(MeditationAccess));
+                        sharedPreference.write("ForumAccess", "", String.valueOf(ForumAccess));
+                        sharedPreference.write("LiveChatAccess", "", String.valueOf(LiveChatAccess));
+                        sharedPreference.write("TestsAccess", "", String.valueOf(TestsAccess));
+                        sharedPreference.write("CourseAccess", "", String.valueOf(CourseAccess));
+                        String accesstype1=sharedPreference.read("accesstype","");
+                        String habit_access=sharedPreference.read("HabitAccess","");
+                        String eq_access=sharedPreference.read("EqJournalAccess","");
+                        String medi_access=sharedPreference.read("MeditationAccess","");
+                        String forum_access=sharedPreference.read("ForumAccess","");
+                        String Live_access=sharedPreference.read("LiveChatAccess","");
+                        String Test_acess=sharedPreference.read("TestsAccess","");
+                        String Course_access=sharedPreference.read("CourseAccess","");
+
+                        Log.i("1111111100",eq_access);
+                        Log.i("2222222200",medi_access);
+                        Log.i("3333333300",accesstype1);
+                        Log.i("4444444400",habit_access);
+                        Log.i("5555555500",forum_access);
+                        Log.i("6666666600",Live_access);
+                        Log.i("7777777700",Test_acess);
+                        Log.i("8888888800",Course_access);
+
+                        if(null!=getActivity()){
+                            pagenation_from_api=true;
+                            ((MainActivity) getActivity()).refershGamePoint(getActivity());
+                            ((MainActivity) getActivity()).clearCacheForParticularFragment(new MyAchievementsFragment());
+                            Util.isReloadTodayMainPage = true;
+                            ((MainActivity) getActivity()).loadFragment(new MyAchievementsFragment(), "GratitudeMyList", null);
+
+                        }
+
+
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<GetUserPaidStatusModel> call, Throwable t) {
+                    progressDialog.dismiss();
+                }
+            });
+
+        } else {
+            Util.showToast(getActivity(), Util.networkMsg);
+        }
+
+    }
+
+
 
 }

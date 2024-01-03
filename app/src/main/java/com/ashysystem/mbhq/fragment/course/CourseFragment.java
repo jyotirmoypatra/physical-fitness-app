@@ -7,6 +7,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.net.ConnectivityManager;
@@ -15,6 +16,8 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
 
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -48,6 +51,7 @@ import com.ashysystem.mbhq.Service.impl.FinisherServiceImpl;
 import com.ashysystem.mbhq.activity.MainActivity;
 
 import com.ashysystem.mbhq.adapter.AvailableCourseAdapter;
+import com.ashysystem.mbhq.adapter.MeditationCourseAdapter;
 import com.ashysystem.mbhq.fragment.LearnFragment;
 import com.ashysystem.mbhq.fragment.TrainFragment;
 import com.ashysystem.mbhq.fragment.WelcomeScrenCheckLIstFragment;
@@ -55,10 +59,12 @@ import com.ashysystem.mbhq.fragment.achievement.MyAchievementsFragment;
 import com.ashysystem.mbhq.fragment.meditation.MeditationFragment;
 import com.ashysystem.mbhq.model.AvailableCourseModel;
 import com.ashysystem.mbhq.model.CourseDataViewModel;
+import com.ashysystem.mbhq.model.MeditationCourseModel;
 import com.ashysystem.mbhq.util.Connection;
 import com.ashysystem.mbhq.util.SharedPreference;
 import com.ashysystem.mbhq.util.Util;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration;
 
 import java.text.SimpleDateFormat;
@@ -183,7 +189,7 @@ public class CourseFragment extends Fragment {
     private static final String FILTER_TYPE_LIVE_PROGRAMS = "FILTER_TYPE_LIVE_PROGRAMS";
     private static final String FILTER_TYPE_MASTERCLASS = "FILTER_TYPE_MASTERCLASS";
     private static final String FILTER_TYPE_PAID_MASTERCLASS = "FILTER_TYPE_PAID_MASTERCLASS";
-
+    AvailableCourseAdapter availableCourseAdapter=null;
     private static final String FILTER_STATUS_ALL_STATUSES = "FILTER_STATUS_ALL_STATUSES";
     private static final String FILTER_STATUS_IN_PROGRESS = "FILTER_STATUS_IN_PROGRESS";
     private static final String FILTER_STATUS_PAUSED = "FILTER_STATUS_PAUSED";
@@ -322,7 +328,28 @@ public class CourseFragment extends Fragment {
            }
        }else{*/
            if (vi == null) {
+               Log.i("course_print","0");
                vi = inflater.inflate(R.layout.fragment_courses, container, false);
+
+               courseViewModel = new ViewModelProvider(requireActivity()).get(CourseDataViewModel.class);
+
+               boolean shouldCourseRenew = sharedPreference.readBoolean("COURSE_LIST_SHOULD_RENEW", "");
+
+               if (courseViewModel.lstTotalDataM.isEmpty() || courseViewModel.allTags.isEmpty() || shouldCourseRenew) {
+                   Log.i("course_print","1");
+                   sharedPreference.writeBoolean("COURSE_LIST_SHOULD_RENEW", "", false);
+
+                   getAvailableCourse();
+
+               } else {
+                   Log.i("course_print","2");
+                   openDialogForFilter_();
+                   //loadAllAdapters();
+
+               }
+
+
+
                sharedPreference = new SharedPreference(getActivity());
                sharedPreference.clear("med");
                sharedPreference.clear("medT");
@@ -404,55 +431,6 @@ public class CourseFragment extends Fragment {
                return vi;
            }
       // }
-
-
-
-
-    }
-
-
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-/*if("3".equalsIgnoreCase(accesstype)){
-    if("false".equalsIgnoreCase(Course_access)) {
-
-    }else{
-        courseViewModel = ViewModelProviders.of(requireActivity()).get(CourseDataViewModel.class);
-
-        boolean shouldCourseRenew = sharedPreference.readBoolean("COURSE_LIST_SHOULD_RENEW", "");
-
-        if (courseViewModel.lstTotalDataM.isEmpty() || courseViewModel.allTags.isEmpty() || shouldCourseRenew) {
-
-            sharedPreference.writeBoolean("COURSE_LIST_SHOULD_RENEW", "", false);
-
-            getAvailableCourse();
-
-        } else {
-
-            loadAllAdapters();
-
-        }
-    }
-}else{*/
-    courseViewModel = new ViewModelProvider(requireActivity()).get(CourseDataViewModel.class);
-
-    boolean shouldCourseRenew = sharedPreference.readBoolean("COURSE_LIST_SHOULD_RENEW", "");
-
-    if (courseViewModel.lstTotalDataM.isEmpty() || courseViewModel.allTags.isEmpty() || shouldCourseRenew) {
-
-        sharedPreference.writeBoolean("COURSE_LIST_SHOULD_RENEW", "", false);
-
-        getAvailableCourse();
-
-    } else {
-
-        loadAllAdapters();
-
-    }
-//}
-
-
 
 
     }
@@ -678,6 +656,315 @@ public class CourseFragment extends Fragment {
             Util.showToast(getActivity(), "No Program Data Found");
         }
 
+    }
+    private void getAvailableCourse_clear() {
+
+        if (Connection.checkConnection(getActivity())) {
+            final ProgressDialog progressDialog = ProgressDialog.show(getActivity(), "", "Please wait...");
+            SharedPreference sharedPreference = new SharedPreference(getActivity());
+
+            HashMap<String, Object> hashReq = new HashMap<>();
+            hashReq.put("UserId", sharedPreference.read("UserID", ""));
+            hashReq.put("Key", Util.KEY);
+            hashReq.put("UserSessionID", sharedPreference.read("UserSessionID", ""));
+
+            FinisherServiceImpl finisherService = new FinisherServiceImpl(getActivity());
+            Call<AvailableCourseModel> serverCall = finisherService.getAvailableCourse(hashReq);
+            serverCall.enqueue(new Callback<AvailableCourseModel>() {
+                @Override
+                public void onResponse(Call<AvailableCourseModel> call, Response<AvailableCourseModel> response) {
+                    progressDialog.dismiss();
+
+                    Log.e("success", "su");
+                    if (response.body() != null) {
+
+                        courseViewModel.lstTotalDataM.clear();
+                        courseViewModel.allPodcastPrograms.clear();
+                        courseViewModel.myAllPrograms.clear();
+                        courseViewModel.myCompletedPrograms.clear();
+                        courseViewModel.myInProgressPrograms.clear();
+                        courseViewModel.myVirginPrograms.clear();
+                        courseViewModel.myPausedPrograms.clear();
+
+                        courseViewModel.allMemberPrograms.clear();
+                        courseViewModel.completedMemberPrograms.clear();
+                        courseViewModel.inProgressMemberPrograms.clear();
+                        courseViewModel.pausedMemberPrograms.clear();
+                        courseViewModel.virginMemberPrograms.clear();
+
+                        courseViewModel.allLivePrograms.clear();
+                        courseViewModel.inProgressLivePrograms.clear();
+                        courseViewModel.pausedLivePrograms.clear();
+                        courseViewModel.completedLivePrograms.clear();
+                        courseViewModel.virginLivePrograms.clear();
+
+                        courseViewModel.allPaidPrograms.clear();
+                        courseViewModel.inProgressPaidPrograms.clear();
+                        courseViewModel.pausedPaidPrograms.clear();
+                        courseViewModel.completedPaidPrograms.clear();
+                        courseViewModel.virginPaidPrograms.clear();
+
+                        courseViewModel.allMaterclassPrograms.clear();
+                        courseViewModel.inProgressMaterclassPrograms.clear();
+                        courseViewModel.pausedMaterclassPrograms.clear();
+                        courseViewModel.completedMaterclassPrograms.clear();
+                        courseViewModel.virginMaterclassPrograms.clear();
+
+                        courseViewModel.allPaidMaterclassPrograms.clear();
+                        courseViewModel.inProgressPaidMaterclassPrograms.clear();
+                        courseViewModel.pausedPaidMaterclassPrograms.clear();
+                        courseViewModel.completedPaidMaterclassPrograms.clear();
+                        courseViewModel.virginPaidMaterclassPrograms.clear();
+
+
+                        try {
+                            AvailableCourseModel lstData = response.body();
+
+                            List<AvailableCourseModel.Course> courses = lstData.getCourses();
+
+                            sharedPreference.write("AVAILABLE_COURSE_MODEL", "", new Gson().toJson(lstData));
+
+                            courseViewModel.allTags.clear();
+
+                            for (int index = 0; index < courses.size(); index++) {
+
+                                AvailableCourseModel.Course course = courses.get(index);
+
+                                courseViewModel.lstTotalDataM.add(course);
+
+                                List<String> tags = course.getTags();
+                                for (int tagIndex = 0; tagIndex < tags.size(); tagIndex++) {
+                                    if (!courseViewModel.allTags.contains(tags.get(tagIndex))) {
+                                        courseViewModel.allTags.add(tags.get(tagIndex));
+                                    }
+                                }
+
+                                if (course.getCourseType().equalsIgnoreCase("Podcast")) {
+                                    courseViewModel.allPodcastPrograms.add(course);
+                                }else{
+                                    if (course.getCourseType().equalsIgnoreCase("Masterclass")) {
+
+                                        if (course.getSubscriptionType() == 2 && course.getHasSubscribed() == false) {
+
+                                            courseViewModel.allPaidMaterclassPrograms.add(course);
+
+                                            switch (course.getStatus()) {
+
+                                                case 0: {
+                                                    courseViewModel.virginPaidMaterclassPrograms.add(course);
+                                                    break;
+                                                }
+                                                case 1: {
+                                                    courseViewModel.inProgressPaidMaterclassPrograms.add(course);
+                                                    break;
+                                                }
+                                                case 2: {
+                                                    courseViewModel.pausedPaidMaterclassPrograms.add(course);
+                                                    break;
+                                                }
+                                                case 3: {
+                                                    courseViewModel.completedPaidMaterclassPrograms.add(course);
+                                                    break;
+                                                }
+                                                default: {
+
+                                                }
+                                            }
+
+                                        } else {
+
+                                            courseViewModel.allMaterclassPrograms.add(course);
+
+                                            switch (course.getStatus()) {
+
+                                                case 0: {
+                                                    courseViewModel.virginMaterclassPrograms.add(course);
+                                                    break;
+                                                }
+                                                case 1: {
+                                                    courseViewModel.inProgressMaterclassPrograms.add(course);
+                                                    break;
+                                                }
+                                                case 2: {
+                                                    courseViewModel.pausedMaterclassPrograms.add(course);
+                                                    break;
+                                                }
+                                                case 3: {
+                                                    courseViewModel.completedMaterclassPrograms.add(course);
+                                                    break;
+                                                }
+                                                default: {
+
+                                                }
+                                            }
+                                        }
+
+                                    } else if ((course.getSubscriptionType() == 0 || course.getSubscriptionType() == 1) && sharedPreference.read("PROGRAM_PURCHASE_ONLY", "").equalsIgnoreCase("TRUE")) {
+
+                                        courseViewModel.allMemberPrograms.add(course);
+
+                                        switch (course.getStatus()) {
+
+                                            case 0: {
+                                                courseViewModel.virginMemberPrograms.add(course);
+                                                break;
+                                            }
+                                            case 1: {
+                                                courseViewModel.inProgressMemberPrograms.add(course);
+                                                break;
+                                            }
+                                            case 2: {
+                                                courseViewModel.pausedMemberPrograms.add(course);
+                                                break;
+                                            }
+                                            case 3: {
+                                                courseViewModel.completedMemberPrograms.add(course);
+                                                break;
+                                            }
+                                            default: {
+
+                                            }
+                                        }
+
+                                    } else if (course.getHasSubscribed() || course.getSubscriptionType() == 0 || course.getSubscriptionType() == 1) {
+
+                                        courseViewModel.myAllPrograms.add(course);
+
+                                        switch (course.getStatus()) {
+
+                                            case 0: {
+                                                courseViewModel.myVirginPrograms.add(course);
+                                                break;
+                                            }
+                                            case 1: {
+                                                courseViewModel.myInProgressPrograms.add(course);
+                                                break;
+                                            }
+                                            case 2: {
+                                                courseViewModel.myPausedPrograms.add(course);
+                                                break;
+                                            }
+                                            case 3: {
+                                                courseViewModel.myCompletedPrograms.add(course);
+                                                break;
+                                            }
+                                            default: {
+
+                                            }
+                                        }
+
+                                    } else if (course.getIsLiveCourse()) {
+
+                                        courseViewModel.allLivePrograms.add(course);
+
+                                        switch (course.getStatus()) {
+
+                                            case 0: {
+                                                courseViewModel.virginLivePrograms.add(course);
+                                                break;
+                                            }
+                                            case 1: {
+                                                courseViewModel.inProgressLivePrograms.add(course);
+                                                break;
+                                            }
+                                            case 2: {
+                                                courseViewModel.pausedLivePrograms.add(course);
+                                                break;
+                                            }
+                                            case 3: {
+                                                courseViewModel.completedLivePrograms.add(course);
+                                                break;
+                                            }
+                                            default: {
+
+                                            }
+                                        }
+
+                                    } else if (course.getSubscriptionType() == 2) {
+
+                                        courseViewModel.allPaidPrograms.add(course);
+
+                                        switch (course.getStatus()) {
+
+                                            case 0: {
+                                                courseViewModel.virginPaidPrograms.add(course);
+                                                break;
+                                            }
+                                            case 1: {
+                                                courseViewModel.inProgressPaidPrograms.add(course);
+                                                break;
+                                            }
+                                            case 2: {
+                                                courseViewModel.pausedPaidPrograms.add(course);
+                                                break;
+                                            }
+                                            case 3: {
+                                                courseViewModel.completedPaidPrograms.add(course);
+                                                break;
+                                            }
+                                            default: {
+
+                                            }
+                                        }
+
+                                    }
+                                }
+
+
+
+                            }
+
+                            Collections.sort(courseViewModel.allTags, new Comparator<String>() {
+                                @Override
+                                public int compare(String o1, String o2) {
+                                    return o1.compareToIgnoreCase(o2);
+                                }
+                            });
+
+                            Collections.sort(courseViewModel.myAllPrograms, new Comparator<AvailableCourseModel.Course>() {
+                                @Override
+                                public int compare(AvailableCourseModel.Course o1, AvailableCourseModel.Course o2) {
+
+                                    if (o1.getIsLiveCourse() && o2.getIsLiveCourse()) {
+                                        return 0;
+                                    } else if (o1.getIsLiveCourse()) {
+                                        return 1;
+                                    } else if (o1.getSubscriptionType() != 2 && o2.getSubscriptionType() != 2) {
+                                        return 0;
+                                    } else {
+                                        if ((o1.getSubscriptionType() == 0 || o1.getSubscriptionType() == 1) && (o2.getSubscriptionType() == 0 || o2.getSubscriptionType() == 1)) {
+                                            return 0;
+                                        } else if (o1.getSubscriptionType() == 0 || o1.getSubscriptionType() == 1) {
+                                            return -1;
+                                        }
+                                    }
+
+                                    return 0;
+
+                                }
+                            });
+
+
+                             loadAllAdapters();
+//                            openDialogForFilter_();
+
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                        getUserPermission();
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<AvailableCourseModel> call, Throwable t) {
+                    t.printStackTrace();
+                    progressDialog.dismiss();
+
+                }
+            });
+        } else {
+            Util.showToast(getActivity(), Util.networkMsg);
+        }
     }
 
     private void getAvailableCourse() {
@@ -967,9 +1254,9 @@ public class CourseFragment extends Fragment {
                                 }
                             });
 
-
-                            loadAllAdapters();
-
+                            Log.i("course_print","4");
+                           // loadAllAdapters();
+                         openDialogForFilter_();
 
                         } catch (Exception e) {
                             e.printStackTrace();
@@ -989,6 +1276,7 @@ public class CourseFragment extends Fragment {
             Util.showToast(getActivity(), Util.networkMsg);
         }
     }
+
     /////////////
 
     private void loadAllAdapters() {
@@ -1009,13 +1297,22 @@ public class CourseFragment extends Fragment {
         loadPodcastProgramsAdapter(courseViewModel.allPodcastPrograms, courseViewModel.allPodcastPrograms.size());
 
     }
-
+    private void loadAllAdapters_filter() {
+        Log.e("pod",String.valueOf(courseViewModel.allPodcastPrograms_filter.size()));
+        loadMyPrgramsAdapter(courseViewModel.myAllPrograms_filter, courseViewModel.myAllPrograms_filter.size());
+        loadMemberProgramsAdapter(courseViewModel.allMemberPrograms_filter, courseViewModel.allMemberPrograms_filter.size());
+        loadLiveProgramsAdapter(courseViewModel.allLivePrograms_filter, courseViewModel.allLivePrograms_filter.size());
+        loadPaidProgramsAdapter(courseViewModel.allPaidPrograms_filter, courseViewModel.allPaidPrograms_filter.size());
+        loadMasterclassProgramsAdapter(courseViewModel.allMaterclassPrograms_filter, courseViewModel.allMaterclassPrograms_filter.size());
+        loadPaidMasterclassProgramsAdapter(courseViewModel.allPaidMaterclassPrograms_filter, courseViewModel.allPaidMaterclassPrograms_filter.size());
+        loadPodcastProgramsAdapter(courseViewModel.allPodcastPrograms_filter, courseViewModel.allPodcastPrograms_filter.size());
+    }
 
     private void loadMyPrgramsAdapter(List<AvailableCourseModel.Course> lstData, int Size) {
         if (Size > 0) {
-            myProgramsContainer.setVisibility(View.VISIBLE);
-            AvailableCourseAdapter availableCourseAdapter = new AvailableCourseAdapter(getActivity(), lstData, AvailableCourseAdapter.ProgramType.MY_PROGRAMS, origin, PLAY_EPISODE_ONE, FROMSETPROGRAM, FROMTODAYPAGE, Size);
-            rvMyPrograms.setAdapter(availableCourseAdapter);
+             myProgramsContainer.setVisibility(View.VISIBLE);
+             availableCourseAdapter = new AvailableCourseAdapter(getActivity(), lstData, AvailableCourseAdapter.ProgramType.MY_PROGRAMS, origin, PLAY_EPISODE_ONE, FROMSETPROGRAM, FROMTODAYPAGE, Size);
+             rvMyPrograms.setAdapter(availableCourseAdapter);
         } else {
             myProgramsContainer.setVisibility(View.GONE);
         }
@@ -1025,7 +1322,7 @@ public class CourseFragment extends Fragment {
     private void loadPaidProgramsAdapter(List<AvailableCourseModel.Course> lstData, int Size) {
         if (Size > 0) {
             paidProgramsContainer.setVisibility(View.VISIBLE);
-            AvailableCourseAdapter availableCourseAdapter = new AvailableCourseAdapter(getActivity(), lstData, AvailableCourseAdapter.ProgramType.PAID_PROGRAMS, origin, PLAY_EPISODE_ONE, FROMSETPROGRAM, FROMTODAYPAGE, Size);
+             availableCourseAdapter = new AvailableCourseAdapter(getActivity(), lstData, AvailableCourseAdapter.ProgramType.PAID_PROGRAMS, origin, PLAY_EPISODE_ONE, FROMSETPROGRAM, FROMTODAYPAGE, Size);
             rvPaidPrograms.setAdapter(availableCourseAdapter);
         } else {
             paidProgramsContainer.setVisibility(View.GONE);
@@ -1035,7 +1332,7 @@ public class CourseFragment extends Fragment {
     private void loadLiveProgramsAdapter(List<AvailableCourseModel.Course> lstData, int Size) {
         if (Size > 0) {
             liveProgramsContainer.setVisibility(View.VISIBLE);
-            AvailableCourseAdapter availableCourseAdapter = new AvailableCourseAdapter(getActivity(), lstData, AvailableCourseAdapter.ProgramType.LIVE_PROGRAM, origin, PLAY_EPISODE_ONE, FROMSETPROGRAM, FROMTODAYPAGE, Size);
+             availableCourseAdapter = new AvailableCourseAdapter(getActivity(), lstData, AvailableCourseAdapter.ProgramType.LIVE_PROGRAM, origin, PLAY_EPISODE_ONE, FROMSETPROGRAM, FROMTODAYPAGE, Size);
             rvLivePrograms.setAdapter(availableCourseAdapter);
         } else {
             liveProgramsContainer.setVisibility(View.GONE);
@@ -1045,7 +1342,7 @@ public class CourseFragment extends Fragment {
     private void loadMasterclassProgramsAdapter(List<AvailableCourseModel.Course> lstData, int Size) {
         if (Size > 0) {
             masterclassProgramsContainer.setVisibility(View.VISIBLE);
-            AvailableCourseAdapter availableCourseAdapter = new AvailableCourseAdapter(getActivity(), lstData, AvailableCourseAdapter.ProgramType.MASTERCLASS_PROGRAMS, origin, PLAY_EPISODE_ONE, FROMSETPROGRAM, FROMTODAYPAGE, Size);
+             availableCourseAdapter = new AvailableCourseAdapter(getActivity(), lstData, AvailableCourseAdapter.ProgramType.MASTERCLASS_PROGRAMS, origin, PLAY_EPISODE_ONE, FROMSETPROGRAM, FROMTODAYPAGE, Size);
             rvMasterclassPrograms.setAdapter(availableCourseAdapter);
         } else {
             masterclassProgramsContainer.setVisibility(View.GONE);
@@ -1055,7 +1352,7 @@ public class CourseFragment extends Fragment {
     private void loadPaidMasterclassProgramsAdapter(List<AvailableCourseModel.Course> lstData, int Size) {
         if (Size > 0) {
             paidMasterclassProgramsContainer.setVisibility(View.VISIBLE);
-            AvailableCourseAdapter availableCourseAdapter = new AvailableCourseAdapter(getActivity(), lstData, AvailableCourseAdapter.ProgramType.PAID_MASTERCLASS_PROGRAMS, origin, PLAY_EPISODE_ONE, FROMSETPROGRAM, FROMTODAYPAGE, Size);
+             availableCourseAdapter = new AvailableCourseAdapter(getActivity(), lstData, AvailableCourseAdapter.ProgramType.PAID_MASTERCLASS_PROGRAMS, origin, PLAY_EPISODE_ONE, FROMSETPROGRAM, FROMTODAYPAGE, Size);
             rvPaidMasterclassPrograms.setAdapter(availableCourseAdapter);
         } else {
             paidMasterclassProgramsContainer.setVisibility(View.GONE);
@@ -1066,7 +1363,7 @@ public class CourseFragment extends Fragment {
       Log.e("pod",String.valueOf(lstData.size()));
         if (Size > 0) {
             podcastProgramsContainer.setVisibility(View.VISIBLE);
-            AvailableCourseAdapter availableCourseAdapter = new AvailableCourseAdapter(getActivity(), lstData, AvailableCourseAdapter.ProgramType.PODCAST_PROGRAMS, origin, PLAY_EPISODE_ONE, FROMSETPROGRAM, FROMTODAYPAGE, Size);
+             availableCourseAdapter = new AvailableCourseAdapter(getActivity(), lstData, AvailableCourseAdapter.ProgramType.PODCAST_PROGRAMS, origin, PLAY_EPISODE_ONE, FROMSETPROGRAM, FROMTODAYPAGE, Size);
             rvPodcastPrograms.setAdapter(availableCourseAdapter);
         } else {
             podcastProgramsContainer.setVisibility(View.GONE);
@@ -1075,58 +1372,15 @@ public class CourseFragment extends Fragment {
 
     private void loadMemberProgramsAdapter(List<AvailableCourseModel.Course> lstData, int Size) {
         if (Size > 0) {
-            AvailableCourseAdapter availableCourseAdapter = new AvailableCourseAdapter(getActivity(), lstData, AvailableCourseAdapter.ProgramType.MEMBER_ONLY_PROGRAMS, origin, PLAY_EPISODE_ONE, FROMSETPROGRAM, FROMTODAYPAGE, Size);
+             availableCourseAdapter = new AvailableCourseAdapter(getActivity(), lstData, AvailableCourseAdapter.ProgramType.MEMBER_ONLY_PROGRAMS, origin, PLAY_EPISODE_ONE, FROMSETPROGRAM, FROMTODAYPAGE, Size);
             rvMemberPrograms.setAdapter(availableCourseAdapter);
         } else {
             memberOnlyProgramsContainer.setVisibility(View.GONE);
         }
     }
 
-/*commented by sahenita unused in squad*/
-/*
-    private void loadEnrollAdapter(List<AvailableCourseModel.Course> lstData) {
-        EnrollCourseAdapter availableCourseAdapter = new EnrollCourseAdapter(getActivity(), lstData);
-        rvEnroll.setAdapter(availableCourseAdapter);
-    }
-*/
-    /*commented by sahenita unused in squad*/
-/*
-    private void getEnrollCourse() {
 
-        if (Connection.checkConnection(getActivity())) {
-            final ProgressDialog progressDialog = ProgressDialog.show(getActivity(), "", "Please wait...");
-            SharedPreference sharedPreference = new SharedPreference(getActivity());
 
-            HashMap<String, Object> hashReq = new HashMap<>();
-            hashReq.put("UserId", sharedPreference.read("UserID", ""));
-            hashReq.put("Key", Util.KEY);
-            hashReq.put("UserSessionID", sharedPreference.read("UserSessionID", ""));
-
-            FinisherServiceImpl finisherService = new FinisherServiceImpl(getActivity());
-            Call<AvailableCourseModel> serverCall = finisherService.getEnrolledCourse(hashReq);
-            serverCall.enqueue(new Callback<AvailableCourseModel>() {
-                @Override
-                public void onResponse(Call<AvailableCourseModel> call, Response<AvailableCourseModel> response) {
-                    progressDialog.dismiss();
-                    Log.e("success", "su");
-                    if (response.body() != null) {
-                        AvailableCourseModel lstData = response.body();
-                        loadEnrollAdapter(lstData.getCourses());
-                    }
-                }
-
-                @Override
-                public void onFailure(Call<AvailableCourseModel> call, Throwable t) {
-                    Log.e("error", "er");
-                    progressDialog.dismiss();
-
-                }
-            });
-        } else {
-            Util.showToast(getActivity(), Util.networkMsg);
-        }
-    }
-*/
 
     private void funToolBar() {
        // ((MainActivity) getActivity()).funDrawer();
@@ -1375,35 +1629,407 @@ public class CourseFragment extends Fragment {
 
 
     }
-    /*commented by sahenita unused in squad*/
-    /*
-    private void openRestrictionDialog() {
 
+
+
+/*
+    private void openDialogForFilter_() {
+        try{
+
+            filters= sharedPreference.getLocalFilters(getActivity(), "Coursefilterfile");
+            //filters= sharedPreference.getLocalFilters(getActivity(), "Coursefilterfile");
+
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
         final Dialog dialog = new Dialog(getActivity(), R.style.DialogThemeAnother);
-        dialog.setContentView(R.layout.dialog_restriction);
-        ImageView imgCross = dialog.findViewById(R.id.imgCross);
-        Button updateNow = dialog.findViewById(R.id.updateNowBtn);
+        dialog.setContentView(R.layout.dialog_setprograms_filter);
 
-        imgCross.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                dialog.dismiss();
-            }
-        });
+//        ImageView imgClose = dialog.findViewById(R.id.imgClose);
+        ImageView imgAllCheck = dialog.findViewById(R.id.imgAllCheck);
+        ImageView imgActiveCheck = dialog.findViewById(R.id.imgActiveCheck);
+        ImageView imgAvailableCheck = dialog.findViewById(R.id.imgAvailableCheck);
+        ImageView imgCompletedCheck = dialog.findViewById(R.id.imgCompletedCheck);
+//        RelativeLayout rlAll = dialog.findViewById(R.id.rlAll);
+//        RelativeLayout rlInprogress = dialog.findViewById(R.id.rlInprogress);
+//        RelativeLayout rlPaused = dialog.findViewById(R.id.rlPaused);
+//        RelativeLayout rlCompleted = dialog.findViewById(R.id.rlCompleted);
+//        RelativeLayout rlTransparent = dialog.findViewById(R.id.rlTransparent);
+        LinearLayout llTagsContainer = dialog.findViewById(R.id.llTagsContainer);
+        EditText edtSearch = dialog.findViewById(R.id.edtSearch);
 
-        updateNow.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                getActivity().startActivity(new Intent(getActivity(), SignUpActivity.class));
+//        RelativeLayout rlClearAll = dialog.findViewById(R.id.rlClearAll);
+//        RelativeLayout rlShowResults = dialog.findViewById(R.id.rlShowResults);
+
+        CheckBox chkBoxShowAllCheck = dialog.findViewById(R.id.chkBoxShowAllCheck);
+
+        CheckBox chkBoxMyPrograms = dialog.findViewById(R.id.chkBoxMyPrograms);
+        CheckBox chkBoxPaidPrograms = dialog.findViewById(R.id.chkBoxPaidPrograms);
+        CheckBox chkBoxLivePrograms = dialog.findViewById(R.id.chkBoxLivePrograms);
+        CheckBox chkBoxMasterclassPrograms = dialog.findViewById(R.id.chkBoxMasterclassPrograms);
+
+        CheckBox chkBoxStatusAll = dialog.findViewById(R.id.chkBoxStatusAll);
+        CheckBox chkBoxStatusInProgress = dialog.findViewById(R.id.chkBoxStatusInProgress);
+        CheckBox chkBoxStatusPaused = dialog.findViewById(R.id.chkBoxStatusPaused);
+        CheckBox chkBoxStatusCompleted = dialog.findViewById(R.id.chkBoxStatusCompleted);
+
+        ArrayList<CheckBox> chkBoxTagsList = new ArrayList<CheckBox>();
+
+        HashMap<String, ArrayList<String>> localFilters = new HashMap<String, ArrayList<String>>() {{
+            put(FILTER_KEY_TYPE, new ArrayList<String>() {{
+            }});
+            put(FILTER_KEY_STATUS, new ArrayList<String>() {{
+            }});
+            put(FILTER_KEY_TAGS, new ArrayList<>());
+        }};
+
+
+       */
+/* for (int index = 0; index < courseViewModel.allTags.size(); index++) {
+
+            View v = getLayoutInflater().inflate(R.layout.layout_dynamic_filter_meditation, null);
+
+            CheckBox imgChk = v.findViewById(R.id.imgChk);
+            imgChk.setText(courseViewModel.allTags.get(index));
+
+            if(null==filters){
+                imgChk.setChecked(true);
+            }else{
+                uncheckTickBoxes(chkBoxShowAllCheck);
+                if (filters.get(FILTER_KEY_TAGS).contains(courseViewModel.allTags.get(index))) {
+                    imgChk.setChecked(true);
+                }
+
             }
-        });
-        dialog.show();
+
+
+            chkBoxTagsList.add(imgChk);
+            llTagsContainer.addView(v);
+        }*//*
+
+
+        CompoundButton.OnCheckedChangeListener onCheckedChangeListener = new CheckBox.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                int clickedCheckboxId = buttonView.getId();
+
+                if (clickedCheckboxId == chkBoxShowAllCheck.getId()) {
+
+                    if (isChecked) {
+
+                        uncheckTickBoxes(chkBoxMyPrograms, chkBoxPaidPrograms, chkBoxLivePrograms, chkBoxStatusAll, chkBoxStatusInProgress, chkBoxStatusPaused, chkBoxStatusCompleted);
+
+                        uncheckTickBoxes(chkBoxTagsList.toArray(new CheckBox[chkBoxTagsList.size()]));
+
+
+                    } else {
+
+                    }
+
+                } else if (clickedCheckboxId == chkBoxMyPrograms.getId()) {
+                    if (isChecked) {
+                        uncheckTickBoxes(chkBoxShowAllCheck);
+
+                        if (!localFilters.get(FILTER_KEY_TYPE).contains(FILTER_TYPE_MY_PROGRAMS)) {
+                            localFilters.get(FILTER_KEY_TYPE).add(FILTER_TYPE_MY_PROGRAMS);
+                        }
+                    } else {
+                        localFilters.get(FILTER_KEY_TYPE).remove(FILTER_TYPE_MY_PROGRAMS);
+                    }
+                } else if (clickedCheckboxId == chkBoxMasterclassPrograms.getId()) {
+                    if (isChecked) {
+                        uncheckTickBoxes(chkBoxShowAllCheck);
+                        if (!localFilters.get(FILTER_KEY_TYPE).contains(FILTER_TYPE_MASTERCLASS)) {
+                            localFilters.get(FILTER_KEY_TYPE).add(FILTER_TYPE_MASTERCLASS);
+                        }
+                    } else {
+                        localFilters.get(FILTER_KEY_TYPE).remove(FILTER_TYPE_MASTERCLASS);
+                    }
+                } else if (clickedCheckboxId == chkBoxPaidPrograms.getId()) {
+                    if (isChecked) {
+                        uncheckTickBoxes(chkBoxShowAllCheck);
+                        if (!localFilters.get(FILTER_KEY_TYPE).contains(FILTER_TYPE_PAID_PROGRAMS)) {
+                            localFilters.get(FILTER_KEY_TYPE).add(FILTER_TYPE_PAID_PROGRAMS);
+                        }
+                    } else {
+                        localFilters.get(FILTER_KEY_TYPE).remove(FILTER_TYPE_PAID_PROGRAMS);
+                    }
+                } else if (clickedCheckboxId == chkBoxLivePrograms.getId()) {
+                    if (isChecked) {
+                        uncheckTickBoxes(chkBoxShowAllCheck);
+                        if (!localFilters.get(FILTER_KEY_TYPE).contains(FILTER_TYPE_LIVE_PROGRAMS)) {
+                            localFilters.get(FILTER_KEY_TYPE).add(FILTER_TYPE_LIVE_PROGRAMS);
+                        }
+                    } else {
+                        localFilters.get(FILTER_KEY_TYPE).remove(FILTER_TYPE_LIVE_PROGRAMS);
+                    }
+                } else if (clickedCheckboxId == chkBoxStatusAll.getId()) {
+                    if (isChecked) {
+                        uncheckTickBoxes(chkBoxShowAllCheck);
+                        if (!localFilters.get(FILTER_KEY_STATUS).contains(FILTER_STATUS_ALL_STATUSES)) {
+                            localFilters.get(FILTER_KEY_STATUS).add(FILTER_STATUS_ALL_STATUSES);
+                        }
+                    } else {
+                        localFilters.get(FILTER_KEY_STATUS).remove(FILTER_STATUS_ALL_STATUSES);
+                    }
+                } else if (clickedCheckboxId == chkBoxStatusInProgress.getId()) {
+                    if (isChecked) {
+                        uncheckTickBoxes(chkBoxShowAllCheck);
+                        if (!localFilters.get(FILTER_KEY_STATUS).contains(FILTER_STATUS_IN_PROGRESS)) {
+                            localFilters.get(FILTER_KEY_STATUS).add(FILTER_STATUS_IN_PROGRESS);
+                        }
+                    } else {
+                        localFilters.get(FILTER_KEY_STATUS).remove(FILTER_STATUS_IN_PROGRESS);
+                    }
+                } else if (clickedCheckboxId == chkBoxStatusPaused.getId()) {
+                    if (isChecked) {
+                        uncheckTickBoxes(chkBoxShowAllCheck);
+                        if (!localFilters.get(FILTER_KEY_STATUS).contains(FILTER_STATUS_PAUSED)) {
+                            localFilters.get(FILTER_KEY_STATUS).add(FILTER_STATUS_PAUSED);
+                        }
+                    } else {
+                        localFilters.get(FILTER_KEY_STATUS).remove(FILTER_STATUS_PAUSED);
+                    }
+                } else if (clickedCheckboxId == chkBoxStatusCompleted.getId()) {
+                    if (isChecked) {
+                        uncheckTickBoxes(chkBoxShowAllCheck);
+                        if (!localFilters.get(FILTER_KEY_STATUS).contains(FILTER_STATUS_COMPLETED)) {
+                            localFilters.get(FILTER_KEY_STATUS).add(FILTER_STATUS_COMPLETED);
+                        }
+                    } else {
+                        localFilters.get(FILTER_KEY_STATUS).remove(FILTER_STATUS_COMPLETED);
+                    }
+                }
+
+                Log.i(TAG, "filter types => " + localFilters.get(FILTER_KEY_TYPE).toString());
+                Log.i(TAG, "filter statuses => " + localFilters.get(FILTER_KEY_STATUS).toString());
+
+            }
+        };
+
+        chkBoxShowAllCheck.setOnCheckedChangeListener(onCheckedChangeListener);
+        chkBoxMyPrograms.setOnCheckedChangeListener(onCheckedChangeListener);
+        chkBoxPaidPrograms.setOnCheckedChangeListener(onCheckedChangeListener);
+        chkBoxLivePrograms.setOnCheckedChangeListener(onCheckedChangeListener);
+        chkBoxMasterclassPrograms.setOnCheckedChangeListener(onCheckedChangeListener);
+
+        chkBoxStatusAll.setOnCheckedChangeListener(onCheckedChangeListener);
+        chkBoxStatusInProgress.setOnCheckedChangeListener(onCheckedChangeListener);
+        chkBoxStatusPaused.setOnCheckedChangeListener(onCheckedChangeListener);
+        chkBoxStatusCompleted.setOnCheckedChangeListener(onCheckedChangeListener);
+
+
+        if(null==filters){
+            Log.i("course_print","5");
+            chkBoxShowAllCheck.setChecked(true);
+            Log.i("course_filter","1");
+            imgFilter.setImageResource(R.drawable.mbhq_filter);
+
+        }else{
+            Log.i("course_print","6");
+            if (filters.get(FILTER_KEY_STATUS).isEmpty() && filters.get(FILTER_KEY_TYPE).isEmpty() && filters.get(FILTER_KEY_TAGS).isEmpty()) {
+                Log.i("course_print","7");
+                imgFilter.setImageResource(R.drawable.mbhq_filter);
+                chkBoxShowAllCheck.setChecked(true);
+            } else {
+                Log.i("course_print","8");
+                imgFilter.setImageResource(R.drawable.mbhq_filter_green);
+                chkBoxShowAllCheck.setChecked(false);
+                if (filters.get(FILTER_KEY_TYPE).contains(FILTER_TYPE_MY_PROGRAMS)) {
+                    chkBoxMyPrograms.setChecked(true);
+                }
+                if (filters.get(FILTER_KEY_TYPE).contains(FILTER_TYPE_LIVE_PROGRAMS)) {
+                    chkBoxLivePrograms.setChecked(true);
+                }
+                if (filters.get(FILTER_KEY_TYPE).contains(FILTER_TYPE_PAID_PROGRAMS)) {
+                    chkBoxPaidPrograms.setChecked(true);
+                }
+                if (filters.get(FILTER_KEY_TYPE).contains(FILTER_TYPE_MASTERCLASS)) {
+                    chkBoxMasterclassPrograms.setChecked(true);
+                }
+
+                if (filters.get(FILTER_KEY_STATUS).contains(FILTER_STATUS_ALL_STATUSES)) {
+                    chkBoxStatusAll.setChecked(true);
+                }
+                if (filters.get(FILTER_KEY_STATUS).contains(FILTER_STATUS_IN_PROGRESS)) {
+                    chkBoxStatusInProgress.setChecked(true);
+                }
+                if (filters.get(FILTER_KEY_STATUS).contains(FILTER_STATUS_PAUSED)) {
+                    chkBoxStatusPaused.setChecked(true);
+                }
+                if (filters.get(FILTER_KEY_STATUS).contains(FILTER_STATUS_COMPLETED)) {
+                    chkBoxStatusCompleted.setChecked(true);
+                }
+
+            }
+        }
+
+        */
+/*show data*//*
+
+if(null==filters){
+    Log.i("course_print","9");
+loadAllAdapters();
+}else{
+    Log.i("course_print","10");
+    ArrayList<AvailableCourseModel.Course> filteredMyPrograms = new ArrayList<>();
+    ArrayList<AvailableCourseModel.Course> filteredPaidPrograms = new ArrayList<>();
+    ArrayList<AvailableCourseModel.Course> filteredLivePrograms = new ArrayList<>();
+    ArrayList<AvailableCourseModel.Course> filteredMasterclassPrograms = new ArrayList<>();
+
+
+    if (filters.get(FILTER_KEY_TYPE).contains(FILTER_TYPE_MY_PROGRAMS)
+            || filters.get(FILTER_KEY_TYPE).isEmpty()) {
+
+        if (filters.get(FILTER_KEY_STATUS).contains(FILTER_STATUS_ALL_STATUSES) || filters.get(FILTER_KEY_STATUS).isEmpty()) {
+            filteredMyPrograms.addAll(sortDataByTags(courseViewModel.myAllPrograms, localFilters.get(FILTER_KEY_TAGS)));
+        } else {
+
+            if (filters.get(FILTER_KEY_STATUS).contains(FILTER_STATUS_IN_PROGRESS)) {
+                filteredMyPrograms.addAll(sortDataByTags(courseViewModel.myInProgressPrograms, localFilters.get(FILTER_KEY_TAGS)));
+            }
+            if (filters.get(FILTER_KEY_STATUS).contains(FILTER_STATUS_COMPLETED)) {
+                filteredMyPrograms.addAll(sortDataByTags(courseViewModel.myCompletedPrograms, localFilters.get(FILTER_KEY_TAGS)));
+            }
+            if (filters.get(FILTER_KEY_STATUS).contains(FILTER_STATUS_PAUSED)) {
+                filteredMyPrograms.addAll(sortDataByTags(courseViewModel.myPausedPrograms, localFilters.get(FILTER_KEY_TAGS)));
+            }
+
+        }
+
+    }
+
+    if (
+            filters.get(FILTER_KEY_TYPE).contains(FILTER_TYPE_PAID_PROGRAMS)
+                    ||
+                    filters.get(FILTER_KEY_TYPE).isEmpty()
+    ) {
+
+        if (filters.get(FILTER_KEY_STATUS).contains(FILTER_STATUS_ALL_STATUSES) || filters.get(FILTER_KEY_STATUS).isEmpty()) {
+            filteredPaidPrograms.addAll(sortDataByTags(courseViewModel.allPaidPrograms, localFilters.get(FILTER_KEY_TAGS)));
+        } else {
+            if (filters.get(FILTER_KEY_STATUS).contains(FILTER_STATUS_IN_PROGRESS)) {
+                filteredPaidPrograms.addAll(sortDataByTags(courseViewModel.inProgressPaidPrograms, localFilters.get(FILTER_KEY_TAGS)));
+            }
+            if (filters.get(FILTER_KEY_STATUS).contains(FILTER_STATUS_COMPLETED)) {
+                filteredPaidPrograms.addAll(sortDataByTags(courseViewModel.completedPaidPrograms, localFilters.get(FILTER_KEY_TAGS)));
+            }
+            if (filters.get(FILTER_KEY_STATUS).contains(FILTER_STATUS_PAUSED)) {
+                filteredPaidPrograms.addAll(sortDataByTags(courseViewModel.pausedPaidPrograms, localFilters.get(FILTER_KEY_TAGS)));
+            }
+        }
+
+    }
+
+    if (
+            filters.get(FILTER_KEY_TYPE).contains(FILTER_TYPE_LIVE_PROGRAMS)
+                    ||
+                    filters.get(FILTER_KEY_TYPE).isEmpty()
+    ) {
+
+        if (filters.get(FILTER_KEY_STATUS).contains(FILTER_STATUS_ALL_STATUSES) || filters.get(FILTER_KEY_STATUS).isEmpty()) {
+            filteredLivePrograms.addAll(sortDataByTags(courseViewModel.allLivePrograms, localFilters.get(FILTER_KEY_TAGS)));
+        } else {
+            if (filters.get(FILTER_KEY_STATUS).contains(FILTER_STATUS_IN_PROGRESS)) {
+                filteredLivePrograms.addAll(sortDataByTags(courseViewModel.inProgressLivePrograms, localFilters.get(FILTER_KEY_TAGS)));
+            }
+            if (filters.get(FILTER_KEY_STATUS).contains(FILTER_STATUS_COMPLETED)) {
+                filteredLivePrograms.addAll(sortDataByTags(courseViewModel.completedLivePrograms, localFilters.get(FILTER_KEY_TAGS)));
+            }
+            if (filters.get(FILTER_KEY_STATUS).contains(FILTER_STATUS_PAUSED)) {
+                filteredLivePrograms.addAll(sortDataByTags(courseViewModel.pausedLivePrograms, localFilters.get(FILTER_KEY_TAGS)));
+            }
+        }
+
+    }
+
+    if (
+            filters.get(FILTER_KEY_TYPE).contains(FILTER_TYPE_MASTERCLASS)
+                    ||
+                    filters.get(FILTER_KEY_TYPE).isEmpty()
+    ) {
+
+        if (filters.get(FILTER_KEY_STATUS).contains(FILTER_STATUS_ALL_STATUSES) || filters.get(FILTER_KEY_STATUS).isEmpty()) {
+            filteredMasterclassPrograms.addAll(sortDataByTags(courseViewModel.allMaterclassPrograms, localFilters.get(FILTER_KEY_TAGS)));
+        } else {
+            if (filters.get(FILTER_KEY_STATUS).contains(FILTER_STATUS_IN_PROGRESS)) {
+                filteredMasterclassPrograms.addAll(sortDataByTags(courseViewModel.inProgressMaterclassPrograms, localFilters.get(FILTER_KEY_TAGS)));
+            }
+            if (filters.get(FILTER_KEY_STATUS).contains(FILTER_STATUS_COMPLETED)) {
+                filteredMasterclassPrograms.addAll(sortDataByTags(courseViewModel.completedMaterclassPrograms, localFilters.get(FILTER_KEY_TAGS)));
+            }
+            if (filters.get(FILTER_KEY_STATUS).contains(FILTER_STATUS_PAUSED)) {
+                filteredMasterclassPrograms.addAll(sortDataByTags(courseViewModel.pausedMaterclassPrograms, localFilters.get(FILTER_KEY_TAGS)));
+            }
+        }
+
+    }
+
+    if (!filteredMyPrograms.isEmpty() || !filteredLivePrograms.isEmpty() || !filteredPaidPrograms.isEmpty() || !filteredMasterclassPrograms.isEmpty()) {
+        Log.i("course_print","11");
+
+        if (filters.get(FILTER_KEY_STATUS).isEmpty() && filters.get(FILTER_KEY_TYPE).isEmpty() && filters.get(FILTER_KEY_TAGS).isEmpty()) {
+            Log.i("course_print","25");
+            loadMyPrgramsAdapter(filteredMyPrograms, filteredMyPrograms.size());
+
+            loadLiveProgramsAdapter(filteredLivePrograms, filteredLivePrograms.size());
+
+            loadPaidProgramsAdapter(filteredPaidPrograms, filteredPaidPrograms.size());
+
+            loadMasterclassProgramsAdapter(filteredMasterclassPrograms, filteredMasterclassPrograms.size());
+            loadPodcastProgramsAdapter(courseViewModel.allPodcastPrograms, courseViewModel.allPodcastPrograms.size());
+
+        }else{
+            Log.i("course_print","26");
+            loadMyPrgramsAdapter(filteredMyPrograms, filteredMyPrograms.size());
+
+            loadLiveProgramsAdapter(filteredLivePrograms, filteredLivePrograms.size());
+
+            loadPaidProgramsAdapter(filteredPaidPrograms, filteredPaidPrograms.size());
+
+            loadMasterclassProgramsAdapter(filteredMasterclassPrograms, filteredMasterclassPrograms.size());
+        }
+
+
+    } else {
+        Util.showToast(getActivity(), "No Program Data Found");
+    }
+}
+
+
+        */
+/*show data*//*
+
+
+
+        edtSearch.setText(searchFilterText);
+
+
+        if (filterSelectedvalue == 0) {
+            hideAllFilterImage(imgAllCheck, imgActiveCheck, imgAvailableCheck, imgCompletedCheck);
+            imgAllCheck.setVisibility(View.VISIBLE);
+        }
+        if (filterSelectedvalue == 1) {
+            hideAllFilterImage(imgAllCheck, imgActiveCheck, imgAvailableCheck, imgCompletedCheck);
+            imgActiveCheck.setVisibility(View.VISIBLE);
+        }
+        if (filterSelectedvalue == 2) {
+            hideAllFilterImage(imgAllCheck, imgActiveCheck, imgAvailableCheck, imgCompletedCheck);
+            imgAvailableCheck.setVisibility(View.VISIBLE);
+        }
+        if (filterSelectedvalue == 3) {
+            hideAllFilterImage(imgAllCheck, imgActiveCheck, imgAvailableCheck, imgCompletedCheck);
+            imgCompletedCheck.setVisibility(View.VISIBLE);
+        }
+
+        //dialog.show();
 
     }
 */
 
+    private void openDialogForFilter_() {
 
-    private void openDialogForFilter() {
         try{
 
             filters= sharedPreference.getLocalFilters(getActivity(), "Coursefilterfile");
@@ -1465,7 +2091,7 @@ public class CourseFragment extends Fragment {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                     String val = imgChk.getText().toString();
-                  //  uncheckTickBoxes(chkBoxShowAllCheck);
+                    //  uncheckTickBoxes(chkBoxShowAllCheck);
                     if (isChecked) {
                         if (!localFilters.get(FILTER_KEY_TAGS).contains(val))
                             localFilters.get(FILTER_KEY_TAGS).add(val);
@@ -1610,22 +2236,31 @@ public class CourseFragment extends Fragment {
                 filters.get(FILTER_KEY_TYPE).clear();
                 filters.get(FILTER_KEY_STATUS).clear();
                 filters.get(FILTER_KEY_TAGS).clear();
-                getAvailableCourse();
+
+                //filters=null;
+                sharedPreference.saveLocalFilters(getActivity(),"Coursefilterfile","aaa",filters);
+
+                getAvailableCourse_clear();
                 dialog.dismiss();
             }
         });
+
         if(null==filters){
 
+            Log.i("course_print","12");
             chkBoxShowAllCheck.setChecked(true);
             Log.i("course_filter","1");
             imgFilter.setImageResource(R.drawable.mbhq_filter);
 
         }else{
 
+            Log.i("course_print","13");
             if (filters.get(FILTER_KEY_STATUS).isEmpty() && filters.get(FILTER_KEY_TYPE).isEmpty() && filters.get(FILTER_KEY_TAGS).isEmpty()) {
+                Log.i("course_print","14");
                 imgFilter.setImageResource(R.drawable.mbhq_filter);
                 chkBoxShowAllCheck.setChecked(true);
             } else {
+                Log.i("course_print","15");
                 imgFilter.setImageResource(R.drawable.mbhq_filter_green);
                 chkBoxShowAllCheck.setChecked(false);
                 if (filters.get(FILTER_KEY_TYPE).contains(FILTER_TYPE_MY_PROGRAMS)) {
@@ -1658,117 +2293,121 @@ public class CourseFragment extends Fragment {
         }
 
         /*show data*/
-if(null==filters){
-loadAllAdapters();
-}else{
-    ArrayList<AvailableCourseModel.Course> filteredMyPrograms = new ArrayList<>();
-    ArrayList<AvailableCourseModel.Course> filteredPaidPrograms = new ArrayList<>();
-    ArrayList<AvailableCourseModel.Course> filteredLivePrograms = new ArrayList<>();
-    ArrayList<AvailableCourseModel.Course> filteredMasterclassPrograms = new ArrayList<>();
+        if(null==filters){
+            Log.i("course_print","16");
+            loadAllAdapters();
+        }else{
+            Log.i("course_print","17");
+            ArrayList<AvailableCourseModel.Course> filteredMyPrograms = new ArrayList<>();
+            ArrayList<AvailableCourseModel.Course> filteredPaidPrograms = new ArrayList<>();
+            ArrayList<AvailableCourseModel.Course> filteredLivePrograms = new ArrayList<>();
+            ArrayList<AvailableCourseModel.Course> filteredMasterclassPrograms = new ArrayList<>();
 
 
-    if (filters.get(FILTER_KEY_TYPE).contains(FILTER_TYPE_MY_PROGRAMS)
-            || filters.get(FILTER_KEY_TYPE).isEmpty()) {
+            if (filters.get(FILTER_KEY_TYPE).contains(FILTER_TYPE_MY_PROGRAMS)
+                    || filters.get(FILTER_KEY_TYPE).isEmpty()) {
 
-        if (filters.get(FILTER_KEY_STATUS).contains(FILTER_STATUS_ALL_STATUSES) || filters.get(FILTER_KEY_STATUS).isEmpty()) {
-            filteredMyPrograms.addAll(sortDataByTags(courseViewModel.myAllPrograms, localFilters.get(FILTER_KEY_TAGS)));
-        } else {
+                if (filters.get(FILTER_KEY_STATUS).contains(FILTER_STATUS_ALL_STATUSES) || filters.get(FILTER_KEY_STATUS).isEmpty()) {
+                    filteredMyPrograms.addAll(sortDataByTags(courseViewModel.myAllPrograms, localFilters.get(FILTER_KEY_TAGS)));
+                } else {
 
-            if (filters.get(FILTER_KEY_STATUS).contains(FILTER_STATUS_IN_PROGRESS)) {
-                filteredMyPrograms.addAll(sortDataByTags(courseViewModel.myInProgressPrograms, localFilters.get(FILTER_KEY_TAGS)));
+                    if (filters.get(FILTER_KEY_STATUS).contains(FILTER_STATUS_IN_PROGRESS)) {
+                        filteredMyPrograms.addAll(sortDataByTags(courseViewModel.myInProgressPrograms, localFilters.get(FILTER_KEY_TAGS)));
+                    }
+                    if (filters.get(FILTER_KEY_STATUS).contains(FILTER_STATUS_COMPLETED)) {
+                        filteredMyPrograms.addAll(sortDataByTags(courseViewModel.myCompletedPrograms, localFilters.get(FILTER_KEY_TAGS)));
+                    }
+                    if (filters.get(FILTER_KEY_STATUS).contains(FILTER_STATUS_PAUSED)) {
+                        filteredMyPrograms.addAll(sortDataByTags(courseViewModel.myPausedPrograms, localFilters.get(FILTER_KEY_TAGS)));
+                    }
+
+                }
+
             }
-            if (filters.get(FILTER_KEY_STATUS).contains(FILTER_STATUS_COMPLETED)) {
-                filteredMyPrograms.addAll(sortDataByTags(courseViewModel.myCompletedPrograms, localFilters.get(FILTER_KEY_TAGS)));
-            }
-            if (filters.get(FILTER_KEY_STATUS).contains(FILTER_STATUS_PAUSED)) {
-                filteredMyPrograms.addAll(sortDataByTags(courseViewModel.myPausedPrograms, localFilters.get(FILTER_KEY_TAGS)));
+
+            if (
+                    filters.get(FILTER_KEY_TYPE).contains(FILTER_TYPE_PAID_PROGRAMS)
+                            ||
+                            filters.get(FILTER_KEY_TYPE).isEmpty()
+            ) {
+
+                if (filters.get(FILTER_KEY_STATUS).contains(FILTER_STATUS_ALL_STATUSES) || filters.get(FILTER_KEY_STATUS).isEmpty()) {
+                    filteredPaidPrograms.addAll(sortDataByTags(courseViewModel.allPaidPrograms, localFilters.get(FILTER_KEY_TAGS)));
+                } else {
+                    if (filters.get(FILTER_KEY_STATUS).contains(FILTER_STATUS_IN_PROGRESS)) {
+                        filteredPaidPrograms.addAll(sortDataByTags(courseViewModel.inProgressPaidPrograms, localFilters.get(FILTER_KEY_TAGS)));
+                    }
+                    if (filters.get(FILTER_KEY_STATUS).contains(FILTER_STATUS_COMPLETED)) {
+                        filteredPaidPrograms.addAll(sortDataByTags(courseViewModel.completedPaidPrograms, localFilters.get(FILTER_KEY_TAGS)));
+                    }
+                    if (filters.get(FILTER_KEY_STATUS).contains(FILTER_STATUS_PAUSED)) {
+                        filteredPaidPrograms.addAll(sortDataByTags(courseViewModel.pausedPaidPrograms, localFilters.get(FILTER_KEY_TAGS)));
+                    }
+                }
+
             }
 
+            if (
+                    filters.get(FILTER_KEY_TYPE).contains(FILTER_TYPE_LIVE_PROGRAMS)
+                            ||
+                            filters.get(FILTER_KEY_TYPE).isEmpty()
+            ) {
+
+                if (filters.get(FILTER_KEY_STATUS).contains(FILTER_STATUS_ALL_STATUSES) || filters.get(FILTER_KEY_STATUS).isEmpty()) {
+                    filteredLivePrograms.addAll(sortDataByTags(courseViewModel.allLivePrograms, localFilters.get(FILTER_KEY_TAGS)));
+                } else {
+                    if (filters.get(FILTER_KEY_STATUS).contains(FILTER_STATUS_IN_PROGRESS)) {
+                        filteredLivePrograms.addAll(sortDataByTags(courseViewModel.inProgressLivePrograms, localFilters.get(FILTER_KEY_TAGS)));
+                    }
+                    if (filters.get(FILTER_KEY_STATUS).contains(FILTER_STATUS_COMPLETED)) {
+                        filteredLivePrograms.addAll(sortDataByTags(courseViewModel.completedLivePrograms, localFilters.get(FILTER_KEY_TAGS)));
+                    }
+                    if (filters.get(FILTER_KEY_STATUS).contains(FILTER_STATUS_PAUSED)) {
+                        filteredLivePrograms.addAll(sortDataByTags(courseViewModel.pausedLivePrograms, localFilters.get(FILTER_KEY_TAGS)));
+                    }
+                }
+
+            }
+
+            if (
+                    filters.get(FILTER_KEY_TYPE).contains(FILTER_TYPE_MASTERCLASS)
+                            ||
+                            filters.get(FILTER_KEY_TYPE).isEmpty()
+            ) {
+
+                if (filters.get(FILTER_KEY_STATUS).contains(FILTER_STATUS_ALL_STATUSES) || filters.get(FILTER_KEY_STATUS).isEmpty()) {
+                    filteredMasterclassPrograms.addAll(sortDataByTags(courseViewModel.allMaterclassPrograms, localFilters.get(FILTER_KEY_TAGS)));
+                } else {
+                    if (filters.get(FILTER_KEY_STATUS).contains(FILTER_STATUS_IN_PROGRESS)) {
+                        filteredMasterclassPrograms.addAll(sortDataByTags(courseViewModel.inProgressMaterclassPrograms, localFilters.get(FILTER_KEY_TAGS)));
+                    }
+                    if (filters.get(FILTER_KEY_STATUS).contains(FILTER_STATUS_COMPLETED)) {
+                        filteredMasterclassPrograms.addAll(sortDataByTags(courseViewModel.completedMaterclassPrograms, localFilters.get(FILTER_KEY_TAGS)));
+                    }
+                    if (filters.get(FILTER_KEY_STATUS).contains(FILTER_STATUS_PAUSED)) {
+                        filteredMasterclassPrograms.addAll(sortDataByTags(courseViewModel.pausedMaterclassPrograms, localFilters.get(FILTER_KEY_TAGS)));
+                    }
+                }
+
+            }
+
+            if (!filteredMyPrograms.isEmpty() || !filteredLivePrograms.isEmpty() || !filteredPaidPrograms.isEmpty() || !filteredMasterclassPrograms.isEmpty()) {
+                Log.i("course_print","18");
+                loadMyPrgramsAdapter(filteredMyPrograms, filteredMyPrograms.size());
+
+                loadLiveProgramsAdapter(filteredLivePrograms, filteredLivePrograms.size());
+
+                loadPaidProgramsAdapter(filteredPaidPrograms, filteredPaidPrograms.size());
+
+                loadMasterclassProgramsAdapter(filteredMasterclassPrograms, filteredMasterclassPrograms.size());
+
+
+            } else {
+                Util.showToast(getActivity(), "No Program Data Found");
+
+
+            }
         }
-
-    }
-
-    if (
-            filters.get(FILTER_KEY_TYPE).contains(FILTER_TYPE_PAID_PROGRAMS)
-                    ||
-                    filters.get(FILTER_KEY_TYPE).isEmpty()
-    ) {
-
-        if (filters.get(FILTER_KEY_STATUS).contains(FILTER_STATUS_ALL_STATUSES) || filters.get(FILTER_KEY_STATUS).isEmpty()) {
-            filteredPaidPrograms.addAll(sortDataByTags(courseViewModel.allPaidPrograms, localFilters.get(FILTER_KEY_TAGS)));
-        } else {
-            if (filters.get(FILTER_KEY_STATUS).contains(FILTER_STATUS_IN_PROGRESS)) {
-                filteredPaidPrograms.addAll(sortDataByTags(courseViewModel.inProgressPaidPrograms, localFilters.get(FILTER_KEY_TAGS)));
-            }
-            if (filters.get(FILTER_KEY_STATUS).contains(FILTER_STATUS_COMPLETED)) {
-                filteredPaidPrograms.addAll(sortDataByTags(courseViewModel.completedPaidPrograms, localFilters.get(FILTER_KEY_TAGS)));
-            }
-            if (filters.get(FILTER_KEY_STATUS).contains(FILTER_STATUS_PAUSED)) {
-                filteredPaidPrograms.addAll(sortDataByTags(courseViewModel.pausedPaidPrograms, localFilters.get(FILTER_KEY_TAGS)));
-            }
-        }
-
-    }
-
-    if (
-            filters.get(FILTER_KEY_TYPE).contains(FILTER_TYPE_LIVE_PROGRAMS)
-                    ||
-                    filters.get(FILTER_KEY_TYPE).isEmpty()
-    ) {
-
-        if (filters.get(FILTER_KEY_STATUS).contains(FILTER_STATUS_ALL_STATUSES) || filters.get(FILTER_KEY_STATUS).isEmpty()) {
-            filteredLivePrograms.addAll(sortDataByTags(courseViewModel.allLivePrograms, localFilters.get(FILTER_KEY_TAGS)));
-        } else {
-            if (filters.get(FILTER_KEY_STATUS).contains(FILTER_STATUS_IN_PROGRESS)) {
-                filteredLivePrograms.addAll(sortDataByTags(courseViewModel.inProgressLivePrograms, localFilters.get(FILTER_KEY_TAGS)));
-            }
-            if (filters.get(FILTER_KEY_STATUS).contains(FILTER_STATUS_COMPLETED)) {
-                filteredLivePrograms.addAll(sortDataByTags(courseViewModel.completedLivePrograms, localFilters.get(FILTER_KEY_TAGS)));
-            }
-            if (filters.get(FILTER_KEY_STATUS).contains(FILTER_STATUS_PAUSED)) {
-                filteredLivePrograms.addAll(sortDataByTags(courseViewModel.pausedLivePrograms, localFilters.get(FILTER_KEY_TAGS)));
-            }
-        }
-
-    }
-
-    if (
-            filters.get(FILTER_KEY_TYPE).contains(FILTER_TYPE_MASTERCLASS)
-                    ||
-                    filters.get(FILTER_KEY_TYPE).isEmpty()
-    ) {
-
-        if (filters.get(FILTER_KEY_STATUS).contains(FILTER_STATUS_ALL_STATUSES) || filters.get(FILTER_KEY_STATUS).isEmpty()) {
-            filteredMasterclassPrograms.addAll(sortDataByTags(courseViewModel.allMaterclassPrograms, localFilters.get(FILTER_KEY_TAGS)));
-        } else {
-            if (filters.get(FILTER_KEY_STATUS).contains(FILTER_STATUS_IN_PROGRESS)) {
-                filteredMasterclassPrograms.addAll(sortDataByTags(courseViewModel.inProgressMaterclassPrograms, localFilters.get(FILTER_KEY_TAGS)));
-            }
-            if (filters.get(FILTER_KEY_STATUS).contains(FILTER_STATUS_COMPLETED)) {
-                filteredMasterclassPrograms.addAll(sortDataByTags(courseViewModel.completedMaterclassPrograms, localFilters.get(FILTER_KEY_TAGS)));
-            }
-            if (filters.get(FILTER_KEY_STATUS).contains(FILTER_STATUS_PAUSED)) {
-                filteredMasterclassPrograms.addAll(sortDataByTags(courseViewModel.pausedMaterclassPrograms, localFilters.get(FILTER_KEY_TAGS)));
-            }
-        }
-
-    }
-
-    if (!filteredMyPrograms.isEmpty() || !filteredLivePrograms.isEmpty() || !filteredPaidPrograms.isEmpty() || !filteredMasterclassPrograms.isEmpty()) {
-
-        loadMyPrgramsAdapter(filteredMyPrograms, filteredMyPrograms.size());
-
-        loadLiveProgramsAdapter(filteredLivePrograms, filteredLivePrograms.size());
-
-        loadPaidProgramsAdapter(filteredPaidPrograms, filteredPaidPrograms.size());
-
-        loadMasterclassProgramsAdapter(filteredMasterclassPrograms, filteredMasterclassPrograms.size());
-
-
-    } else {
-        Util.showToast(getActivity(), "No Program Data Found");
-    }
-}
 
 
         /*show data*/
@@ -1805,7 +2444,7 @@ loadAllAdapters();
                     ArrayList<AvailableCourseModel.Course> filteredPaidPrograms = new ArrayList<>();
                     ArrayList<AvailableCourseModel.Course> filteredLivePrograms = new ArrayList<>();
                     ArrayList<AvailableCourseModel.Course> filteredMasterclassPrograms = new ArrayList<>();
-
+                    imgFilter.setImageResource(R.drawable.mbhq_filter);
 
                     if (filters.get(FILTER_KEY_TYPE).contains(FILTER_TYPE_MY_PROGRAMS)
                             || filters.get(FILTER_KEY_TYPE).isEmpty()) {
@@ -1895,7 +2534,8 @@ loadAllAdapters();
                     }
 
                     if (!filteredMyPrograms.isEmpty() || !filteredLivePrograms.isEmpty() || !filteredPaidPrograms.isEmpty() || !filteredMasterclassPrograms.isEmpty()) {
-
+                        Log.i("course_print","19");
+                        imgFilter.setImageResource(R.drawable.mbhq_filter_green);
                         loadMyPrgramsAdapter(filteredMyPrograms, filteredMyPrograms.size());
 
                         loadLiveProgramsAdapter(filteredLivePrograms, filteredLivePrograms.size());
@@ -1903,6 +2543,7 @@ loadAllAdapters();
                         loadPaidProgramsAdapter(filteredPaidPrograms, filteredPaidPrograms.size());
 
                         loadMasterclassProgramsAdapter(filteredMasterclassPrograms, filteredMasterclassPrograms.size());
+                        loadPodcastProgramsAdapter(courseViewModel.allPodcastPrograms, 0);
 
 
                     } else {
@@ -1918,6 +2559,13 @@ loadAllAdapters();
 
 
                 }else{
+                    Log.i("course_print","20");
+
+
+
+
+
+
                     filters.get(FILTER_KEY_TYPE).clear();
                     filters.get(FILTER_KEY_STATUS).clear();
                     filters.get(FILTER_KEY_TAGS).clear();
@@ -1925,6 +2573,15 @@ loadAllAdapters();
                     filters.get(FILTER_KEY_TYPE).addAll(localFilters.get(FILTER_KEY_TYPE));
                     filters.get(FILTER_KEY_STATUS).addAll(localFilters.get(FILTER_KEY_STATUS));
                     filters.get(FILTER_KEY_TAGS).addAll(localFilters.get(FILTER_KEY_TAGS));
+
+
+                    if (filters.get(FILTER_KEY_STATUS).isEmpty() && filters.get(FILTER_KEY_TYPE).isEmpty() && filters.get(FILTER_KEY_TAGS).isEmpty()) {
+                        Log.i("course_print","21");
+                        imgFilter.setImageResource(R.drawable.mbhq_filter);
+                    } else {
+                        Log.i("course_print","22");
+                        imgFilter.setImageResource(R.drawable.mbhq_filter_green);
+                    }
 
                     //  sharedPreference.saveLocalFilters(filters);
 
@@ -2022,14 +2679,30 @@ loadAllAdapters();
                     }
 
                     if (!filteredMyPrograms.isEmpty() || !filteredLivePrograms.isEmpty() || !filteredPaidPrograms.isEmpty() || !filteredMasterclassPrograms.isEmpty()) {
+                        Log.i("course_print","23");
 
-                        loadMyPrgramsAdapter(filteredMyPrograms, filteredMyPrograms.size());
+                        if (filters.get(FILTER_KEY_STATUS).isEmpty() && filters.get(FILTER_KEY_TYPE).isEmpty() && filters.get(FILTER_KEY_TAGS).isEmpty()) {
+                            Log.i("course_print","27");
+                            loadMyPrgramsAdapter(filteredMyPrograms, filteredMyPrograms.size());
 
-                        loadLiveProgramsAdapter(filteredLivePrograms, filteredLivePrograms.size());
+                            loadLiveProgramsAdapter(filteredLivePrograms, filteredLivePrograms.size());
 
-                        loadPaidProgramsAdapter(filteredPaidPrograms, filteredPaidPrograms.size());
+                            loadPaidProgramsAdapter(filteredPaidPrograms, filteredPaidPrograms.size());
 
-                        loadMasterclassProgramsAdapter(filteredMasterclassPrograms, filteredMasterclassPrograms.size());
+                            loadMasterclassProgramsAdapter(filteredMasterclassPrograms, filteredMasterclassPrograms.size());
+                            loadPodcastProgramsAdapter(courseViewModel.allPodcastPrograms, courseViewModel.allPodcastPrograms.size());
+
+                        }else{
+                            Log.i("course_print","28");
+                            loadMyPrgramsAdapter(filteredMyPrograms, filteredMyPrograms.size());
+
+                            loadLiveProgramsAdapter(filteredLivePrograms, filteredLivePrograms.size());
+
+                            loadPaidProgramsAdapter(filteredPaidPrograms, filteredPaidPrograms.size());
+
+                            loadMasterclassProgramsAdapter(filteredMasterclassPrograms, filteredMasterclassPrograms.size());
+                            loadPodcastProgramsAdapter(courseViewModel.allPodcastPrograms, 0);
+                        }
 
 
                     } else {
@@ -2045,7 +2718,6 @@ loadAllAdapters();
                 }
 
                 dialog.dismiss();
-
 
             }
         });
@@ -2075,6 +2747,820 @@ loadAllAdapters();
             }
         });
 
+
+        rlAll.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+                if (courseViewModel.myAllPrograms.size() > 0) {
+                    filterSelectedvalue = 0;
+                    rvMyPrograms.setAdapter(null);
+                    AvailableCourseAdapter availableCourseAdapter = new AvailableCourseAdapter(getActivity(), courseViewModel.myAllPrograms, AvailableCourseAdapter.ProgramType.MY_PROGRAMS, origin, PLAY_EPISODE_ONE, FROMSETPROGRAM, FROMTODAYPAGE, courseViewModel.myAllPrograms.size());
+                    rvMyPrograms.setAdapter(availableCourseAdapter);
+                    loadLiveProgramsAdapter(courseViewModel.allLivePrograms, courseViewModel.allLivePrograms.size());
+                    loadPaidProgramsAdapter(courseViewModel.allPaidPrograms, courseViewModel.allPaidPrograms.size());
+                    loadMemberProgramsAdapter(courseViewModel.allMemberPrograms, courseViewModel.allMemberPrograms.size());
+
+                } else
+                    Util.showToast(getActivity(), "No matching data found");
+                ////////////////
+
+
+            }
+        });
+
+        rlInprogress.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+                if (courseViewModel.myInProgressPrograms.size() > 0) {
+                    filterSelectedvalue = 1;
+                    rvMyPrograms.setAdapter(null);
+                    Log.e("print size inprogress--", courseViewModel.myInProgressPrograms.size() + "???");
+                    AvailableCourseAdapter availableCourseAdapter = new AvailableCourseAdapter(getActivity(), courseViewModel.myInProgressPrograms, AvailableCourseAdapter.ProgramType.MY_PROGRAMS, origin, PLAY_EPISODE_ONE, FROMSETPROGRAM, FROMTODAYPAGE, courseViewModel.myInProgressPrograms.size());
+                    rvMyPrograms.setAdapter(availableCourseAdapter);
+                    loadLiveProgramsAdapter(courseViewModel.inProgressLivePrograms, courseViewModel.inProgressLivePrograms.size());
+                    loadPaidProgramsAdapter(courseViewModel.inProgressPaidPrograms, courseViewModel.inProgressPaidPrograms.size());
+                    loadMemberProgramsAdapter(courseViewModel.inProgressMemberPrograms, courseViewModel.inProgressMemberPrograms.size());
+                } else
+                    Util.showToast(getActivity(), "No matching data found");
+                ///////////////
+
+
+            }
+        });
+
+        rlPaused.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+                if (courseViewModel.myPausedPrograms.size() > 0) {
+                    filterSelectedvalue = 2;
+                    Log.e("print size paused--", courseViewModel.myPausedPrograms.size() + "???");
+                    AvailableCourseAdapter availableCourseAdapter = new AvailableCourseAdapter(getActivity(), courseViewModel.myPausedPrograms, AvailableCourseAdapter.ProgramType.MY_PROGRAMS, origin, PLAY_EPISODE_ONE, FROMSETPROGRAM, FROMTODAYPAGE, courseViewModel.myPausedPrograms.size());
+                    rvMyPrograms.setAdapter(availableCourseAdapter);
+                    loadLiveProgramsAdapter(courseViewModel.pausedLivePrograms, courseViewModel.pausedLivePrograms.size());
+                    loadPaidProgramsAdapter(courseViewModel.pausedPaidPrograms, courseViewModel.pausedPaidPrograms.size());
+                    loadMemberProgramsAdapter(courseViewModel.pausedMemberPrograms, courseViewModel.pausedMemberPrograms.size());
+
+                } else
+                    Util.showToast(getActivity(), "No matching data found");
+                //////////////
+
+            }
+        });
+
+        rlCompleted.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+                if (courseViewModel.myCompletedPrograms.size() > 0) {
+                    filterSelectedvalue = 3;
+                    Log.e("print size completed--", courseViewModel.myCompletedPrograms.size() + "???");
+                    AvailableCourseAdapter availableCourseAdapter = new AvailableCourseAdapter(getActivity(), courseViewModel.myCompletedPrograms, AvailableCourseAdapter.ProgramType.MY_PROGRAMS, origin, PLAY_EPISODE_ONE, FROMSETPROGRAM, FROMTODAYPAGE, courseViewModel.myCompletedPrograms.size());
+                    rvMyPrograms.setAdapter(availableCourseAdapter);
+                    loadLiveProgramsAdapter(courseViewModel.completedLivePrograms, courseViewModel.completedLivePrograms.size());
+                    loadPaidProgramsAdapter(courseViewModel.completedPaidPrograms, courseViewModel.completedPaidPrograms.size());
+                    loadMemberProgramsAdapter(courseViewModel.completedMemberPrograms, courseViewModel.completedMemberPrograms.size());
+
+                } else
+                    Util.showToast(getActivity(), "No matching data found");
+
+
+            }
+        });
+
+        rlTransparent.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+
+
+       // dialog.show();
+    }
+
+    private void openDialogForFilter() {
+
+        try{
+
+            filters= sharedPreference.getLocalFilters(getActivity(), "Coursefilterfile");
+            //filters= sharedPreference.getLocalFilters(getActivity(), "Coursefilterfile");
+
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        final Dialog dialog = new Dialog(getActivity(), R.style.DialogThemeAnother);
+        dialog.setContentView(R.layout.dialog_setprograms_filter);
+
+        ImageView imgClose = dialog.findViewById(R.id.imgClose);
+        ImageView imgAllCheck = dialog.findViewById(R.id.imgAllCheck);
+        ImageView imgActiveCheck = dialog.findViewById(R.id.imgActiveCheck);
+        ImageView imgAvailableCheck = dialog.findViewById(R.id.imgAvailableCheck);
+        ImageView imgCompletedCheck = dialog.findViewById(R.id.imgCompletedCheck);
+        RelativeLayout rlAll = dialog.findViewById(R.id.rlAll);
+        RelativeLayout rlInprogress = dialog.findViewById(R.id.rlInprogress);
+        RelativeLayout rlPaused = dialog.findViewById(R.id.rlPaused);
+        RelativeLayout rlCompleted = dialog.findViewById(R.id.rlCompleted);
+        RelativeLayout rlTransparent = dialog.findViewById(R.id.rlTransparent);
+        LinearLayout llTagsContainer = dialog.findViewById(R.id.llTagsContainer);
+        EditText edtSearch = dialog.findViewById(R.id.edtSearch);
+        ImageView img_search=dialog.findViewById(R.id.img_search);
+        RelativeLayout rlClearAll = dialog.findViewById(R.id.rlClearAll);
+        RelativeLayout rlShowResults = dialog.findViewById(R.id.rlShowResults);
+
+        CheckBox chkBoxShowAllCheck = dialog.findViewById(R.id.chkBoxShowAllCheck);
+
+        CheckBox chkBoxMyPrograms = dialog.findViewById(R.id.chkBoxMyPrograms);
+        CheckBox chkBoxPaidPrograms = dialog.findViewById(R.id.chkBoxPaidPrograms);
+        CheckBox chkBoxLivePrograms = dialog.findViewById(R.id.chkBoxLivePrograms);
+        CheckBox chkBoxMasterclassPrograms = dialog.findViewById(R.id.chkBoxMasterclassPrograms);
+
+        CheckBox chkBoxStatusAll = dialog.findViewById(R.id.chkBoxStatusAll);
+        CheckBox chkBoxStatusInProgress = dialog.findViewById(R.id.chkBoxStatusInProgress);
+        CheckBox chkBoxStatusPaused = dialog.findViewById(R.id.chkBoxStatusPaused);
+        CheckBox chkBoxStatusCompleted = dialog.findViewById(R.id.chkBoxStatusCompleted);
+
+        ArrayList<CheckBox> chkBoxTagsList = new ArrayList<CheckBox>();
+
+        HashMap<String, ArrayList<String>> localFilters = new HashMap<String, ArrayList<String>>() {{
+            put(FILTER_KEY_TYPE, new ArrayList<String>() {{
+            }});
+            put(FILTER_KEY_STATUS, new ArrayList<String>() {{
+            }});
+            put(FILTER_KEY_TAGS, new ArrayList<>());
+        }};
+
+
+        for (int index = 0; index < courseViewModel.allTags.size(); index++) {
+
+            View v = getLayoutInflater().inflate(R.layout.layout_dynamic_filter_meditation, null);
+
+            CheckBox imgChk = v.findViewById(R.id.imgChk);
+            imgChk.setText(courseViewModel.allTags.get(index));
+            imgChk.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    String val = imgChk.getText().toString();
+                    //  uncheckTickBoxes(chkBoxShowAllCheck);
+                    if (isChecked) {
+                        if (!localFilters.get(FILTER_KEY_TAGS).contains(val))
+                            localFilters.get(FILTER_KEY_TAGS).add(val);
+                    } else {
+                        localFilters.get(FILTER_KEY_TAGS).remove(val);
+                    }
+                }
+            });
+
+            if(null==filters){
+                imgChk.setChecked(true);
+            }else{
+                uncheckTickBoxes(chkBoxShowAllCheck);
+                if (filters.get(FILTER_KEY_TAGS).contains(courseViewModel.allTags.get(index))) {
+                    imgChk.setChecked(true);
+                }
+
+            }
+
+
+            chkBoxTagsList.add(imgChk);
+            llTagsContainer.addView(v);
+        }
+
+        CompoundButton.OnCheckedChangeListener onCheckedChangeListener = new CheckBox.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                int clickedCheckboxId = buttonView.getId();
+
+                if (clickedCheckboxId == chkBoxShowAllCheck.getId()) {
+
+                    if (isChecked) {
+
+                        uncheckTickBoxes(chkBoxMyPrograms, chkBoxPaidPrograms, chkBoxLivePrograms, chkBoxStatusAll, chkBoxStatusInProgress, chkBoxStatusPaused, chkBoxStatusCompleted);
+
+                        uncheckTickBoxes(chkBoxTagsList.toArray(new CheckBox[chkBoxTagsList.size()]));
+
+
+                    } else {
+
+                    }
+
+                } else if (clickedCheckboxId == chkBoxMyPrograms.getId()) {
+                    if (isChecked) {
+                        uncheckTickBoxes(chkBoxShowAllCheck);
+
+                        if (!localFilters.get(FILTER_KEY_TYPE).contains(FILTER_TYPE_MY_PROGRAMS)) {
+                            localFilters.get(FILTER_KEY_TYPE).add(FILTER_TYPE_MY_PROGRAMS);
+                        }
+                    } else {
+                        localFilters.get(FILTER_KEY_TYPE).remove(FILTER_TYPE_MY_PROGRAMS);
+                    }
+                } else if (clickedCheckboxId == chkBoxMasterclassPrograms.getId()) {
+                    if (isChecked) {
+                        uncheckTickBoxes(chkBoxShowAllCheck);
+                        if (!localFilters.get(FILTER_KEY_TYPE).contains(FILTER_TYPE_MASTERCLASS)) {
+                            localFilters.get(FILTER_KEY_TYPE).add(FILTER_TYPE_MASTERCLASS);
+                        }
+                    } else {
+                        localFilters.get(FILTER_KEY_TYPE).remove(FILTER_TYPE_MASTERCLASS);
+                    }
+                } else if (clickedCheckboxId == chkBoxPaidPrograms.getId()) {
+                    if (isChecked) {
+                        uncheckTickBoxes(chkBoxShowAllCheck);
+                        if (!localFilters.get(FILTER_KEY_TYPE).contains(FILTER_TYPE_PAID_PROGRAMS)) {
+                            localFilters.get(FILTER_KEY_TYPE).add(FILTER_TYPE_PAID_PROGRAMS);
+                        }
+                    } else {
+                        localFilters.get(FILTER_KEY_TYPE).remove(FILTER_TYPE_PAID_PROGRAMS);
+                    }
+                } else if (clickedCheckboxId == chkBoxLivePrograms.getId()) {
+                    if (isChecked) {
+                        uncheckTickBoxes(chkBoxShowAllCheck);
+                        if (!localFilters.get(FILTER_KEY_TYPE).contains(FILTER_TYPE_LIVE_PROGRAMS)) {
+                            localFilters.get(FILTER_KEY_TYPE).add(FILTER_TYPE_LIVE_PROGRAMS);
+                        }
+                    } else {
+                        localFilters.get(FILTER_KEY_TYPE).remove(FILTER_TYPE_LIVE_PROGRAMS);
+                    }
+                } else if (clickedCheckboxId == chkBoxStatusAll.getId()) {
+                    if (isChecked) {
+                        uncheckTickBoxes(chkBoxShowAllCheck);
+                        if (!localFilters.get(FILTER_KEY_STATUS).contains(FILTER_STATUS_ALL_STATUSES)) {
+                            localFilters.get(FILTER_KEY_STATUS).add(FILTER_STATUS_ALL_STATUSES);
+                        }
+                    } else {
+                        localFilters.get(FILTER_KEY_STATUS).remove(FILTER_STATUS_ALL_STATUSES);
+                    }
+                } else if (clickedCheckboxId == chkBoxStatusInProgress.getId()) {
+                    if (isChecked) {
+                        uncheckTickBoxes(chkBoxShowAllCheck);
+                        if (!localFilters.get(FILTER_KEY_STATUS).contains(FILTER_STATUS_IN_PROGRESS)) {
+                            localFilters.get(FILTER_KEY_STATUS).add(FILTER_STATUS_IN_PROGRESS);
+                        }
+                    } else {
+                        localFilters.get(FILTER_KEY_STATUS).remove(FILTER_STATUS_IN_PROGRESS);
+                    }
+                } else if (clickedCheckboxId == chkBoxStatusPaused.getId()) {
+                    if (isChecked) {
+                        uncheckTickBoxes(chkBoxShowAllCheck);
+                        if (!localFilters.get(FILTER_KEY_STATUS).contains(FILTER_STATUS_PAUSED)) {
+                            localFilters.get(FILTER_KEY_STATUS).add(FILTER_STATUS_PAUSED);
+                        }
+                    } else {
+                        localFilters.get(FILTER_KEY_STATUS).remove(FILTER_STATUS_PAUSED);
+                    }
+                } else if (clickedCheckboxId == chkBoxStatusCompleted.getId()) {
+                    if (isChecked) {
+                        uncheckTickBoxes(chkBoxShowAllCheck);
+                        if (!localFilters.get(FILTER_KEY_STATUS).contains(FILTER_STATUS_COMPLETED)) {
+                            localFilters.get(FILTER_KEY_STATUS).add(FILTER_STATUS_COMPLETED);
+                        }
+                    } else {
+                        localFilters.get(FILTER_KEY_STATUS).remove(FILTER_STATUS_COMPLETED);
+                    }
+                }
+
+                Log.i(TAG, "filter types => " + localFilters.get(FILTER_KEY_TYPE).toString());
+                Log.i(TAG, "filter statuses => " + localFilters.get(FILTER_KEY_STATUS).toString());
+
+            }
+        };
+
+        chkBoxShowAllCheck.setOnCheckedChangeListener(onCheckedChangeListener);
+        chkBoxMyPrograms.setOnCheckedChangeListener(onCheckedChangeListener);
+        chkBoxPaidPrograms.setOnCheckedChangeListener(onCheckedChangeListener);
+        chkBoxLivePrograms.setOnCheckedChangeListener(onCheckedChangeListener);
+        chkBoxMasterclassPrograms.setOnCheckedChangeListener(onCheckedChangeListener);
+
+        chkBoxStatusAll.setOnCheckedChangeListener(onCheckedChangeListener);
+        chkBoxStatusInProgress.setOnCheckedChangeListener(onCheckedChangeListener);
+        chkBoxStatusPaused.setOnCheckedChangeListener(onCheckedChangeListener);
+        chkBoxStatusCompleted.setOnCheckedChangeListener(onCheckedChangeListener);
+
+
+        rlClearAll.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                uncheckTickBoxes(chkBoxShowAllCheck, chkBoxMyPrograms, chkBoxPaidPrograms, chkBoxLivePrograms, chkBoxStatusAll, chkBoxStatusInProgress, chkBoxStatusPaused, chkBoxStatusCompleted);
+                imgFilter.setImageResource(R.drawable.mbhq_filter);
+                chkBoxShowAllCheck.setChecked(true);
+                filters.get(FILTER_KEY_TYPE).clear();
+                filters.get(FILTER_KEY_STATUS).clear();
+                filters.get(FILTER_KEY_TAGS).clear();
+
+                //filters=null;
+                sharedPreference.saveLocalFilters(getActivity(),"Coursefilterfile","aaa",filters);
+
+                getAvailableCourse_clear();
+                dialog.dismiss();
+            }
+        });
+
+        if(null==filters){
+
+            Log.i("course_print","12");
+            chkBoxShowAllCheck.setChecked(true);
+            Log.i("course_filter","1");
+            imgFilter.setImageResource(R.drawable.mbhq_filter);
+
+        }else{
+
+            Log.i("course_print","13");
+            if (filters.get(FILTER_KEY_STATUS).isEmpty() && filters.get(FILTER_KEY_TYPE).isEmpty() && filters.get(FILTER_KEY_TAGS).isEmpty()) {
+                Log.i("course_print","14");
+                imgFilter.setImageResource(R.drawable.mbhq_filter);
+                chkBoxShowAllCheck.setChecked(true);
+            } else {
+                Log.i("course_print","15");
+                imgFilter.setImageResource(R.drawable.mbhq_filter_green);
+                chkBoxShowAllCheck.setChecked(false);
+                if (filters.get(FILTER_KEY_TYPE).contains(FILTER_TYPE_MY_PROGRAMS)) {
+                    chkBoxMyPrograms.setChecked(true);
+                }
+                if (filters.get(FILTER_KEY_TYPE).contains(FILTER_TYPE_LIVE_PROGRAMS)) {
+                    chkBoxLivePrograms.setChecked(true);
+                }
+                if (filters.get(FILTER_KEY_TYPE).contains(FILTER_TYPE_PAID_PROGRAMS)) {
+                    chkBoxPaidPrograms.setChecked(true);
+                }
+                if (filters.get(FILTER_KEY_TYPE).contains(FILTER_TYPE_MASTERCLASS)) {
+                    chkBoxMasterclassPrograms.setChecked(true);
+                }
+
+                if (filters.get(FILTER_KEY_STATUS).contains(FILTER_STATUS_ALL_STATUSES)) {
+                    chkBoxStatusAll.setChecked(true);
+                }
+                if (filters.get(FILTER_KEY_STATUS).contains(FILTER_STATUS_IN_PROGRESS)) {
+                    chkBoxStatusInProgress.setChecked(true);
+                }
+                if (filters.get(FILTER_KEY_STATUS).contains(FILTER_STATUS_PAUSED)) {
+                    chkBoxStatusPaused.setChecked(true);
+                }
+                if (filters.get(FILTER_KEY_STATUS).contains(FILTER_STATUS_COMPLETED)) {
+                    chkBoxStatusCompleted.setChecked(true);
+                }
+
+            }
+        }
+
+        /*show data*/
+        if(null==filters){
+            Log.i("course_print","16");
+            loadAllAdapters();
+        }else{
+            Log.i("course_print","17");
+            ArrayList<AvailableCourseModel.Course> filteredMyPrograms = new ArrayList<>();
+            ArrayList<AvailableCourseModel.Course> filteredPaidPrograms = new ArrayList<>();
+            ArrayList<AvailableCourseModel.Course> filteredLivePrograms = new ArrayList<>();
+            ArrayList<AvailableCourseModel.Course> filteredMasterclassPrograms = new ArrayList<>();
+
+
+            if (filters.get(FILTER_KEY_TYPE).contains(FILTER_TYPE_MY_PROGRAMS)
+                    /*|| filters.get(FILTER_KEY_TYPE).isEmpty()*/) {
+
+                if (filters.get(FILTER_KEY_STATUS).contains(FILTER_STATUS_ALL_STATUSES) || filters.get(FILTER_KEY_STATUS).isEmpty()) {
+                    filteredMyPrograms.addAll(sortDataByTags(courseViewModel.myAllPrograms, localFilters.get(FILTER_KEY_TAGS)));
+                } else {
+
+                    if (filters.get(FILTER_KEY_STATUS).contains(FILTER_STATUS_IN_PROGRESS)) {
+                        filteredMyPrograms.addAll(sortDataByTags(courseViewModel.myInProgressPrograms, localFilters.get(FILTER_KEY_TAGS)));
+                    }
+                    if (filters.get(FILTER_KEY_STATUS).contains(FILTER_STATUS_COMPLETED)) {
+                        filteredMyPrograms.addAll(sortDataByTags(courseViewModel.myCompletedPrograms, localFilters.get(FILTER_KEY_TAGS)));
+                    }
+                    if (filters.get(FILTER_KEY_STATUS).contains(FILTER_STATUS_PAUSED)) {
+                        filteredMyPrograms.addAll(sortDataByTags(courseViewModel.myPausedPrograms, localFilters.get(FILTER_KEY_TAGS)));
+                    }
+
+                }
+
+            }
+
+            if (
+                    filters.get(FILTER_KEY_TYPE).contains(FILTER_TYPE_PAID_PROGRAMS)
+                          /*  ||
+                            filters.get(FILTER_KEY_TYPE).isEmpty()*/
+            ) {
+
+                if (filters.get(FILTER_KEY_STATUS).contains(FILTER_STATUS_ALL_STATUSES) || filters.get(FILTER_KEY_STATUS).isEmpty()) {
+                    filteredPaidPrograms.addAll(sortDataByTags(courseViewModel.allPaidPrograms, localFilters.get(FILTER_KEY_TAGS)));
+                } else {
+                    if (filters.get(FILTER_KEY_STATUS).contains(FILTER_STATUS_IN_PROGRESS)) {
+                        filteredPaidPrograms.addAll(sortDataByTags(courseViewModel.inProgressPaidPrograms, localFilters.get(FILTER_KEY_TAGS)));
+                    }
+                    if (filters.get(FILTER_KEY_STATUS).contains(FILTER_STATUS_COMPLETED)) {
+                        filteredPaidPrograms.addAll(sortDataByTags(courseViewModel.completedPaidPrograms, localFilters.get(FILTER_KEY_TAGS)));
+                    }
+                    if (filters.get(FILTER_KEY_STATUS).contains(FILTER_STATUS_PAUSED)) {
+                        filteredPaidPrograms.addAll(sortDataByTags(courseViewModel.pausedPaidPrograms, localFilters.get(FILTER_KEY_TAGS)));
+                    }
+                }
+
+            }
+
+            if (
+                    filters.get(FILTER_KEY_TYPE).contains(FILTER_TYPE_LIVE_PROGRAMS)
+                          /*  ||
+                            filters.get(FILTER_KEY_TYPE).isEmpty()*/
+            ) {
+
+                if (filters.get(FILTER_KEY_STATUS).contains(FILTER_STATUS_ALL_STATUSES) || filters.get(FILTER_KEY_STATUS).isEmpty()) {
+                    filteredLivePrograms.addAll(sortDataByTags(courseViewModel.allLivePrograms, localFilters.get(FILTER_KEY_TAGS)));
+                } else {
+                    if (filters.get(FILTER_KEY_STATUS).contains(FILTER_STATUS_IN_PROGRESS)) {
+                        filteredLivePrograms.addAll(sortDataByTags(courseViewModel.inProgressLivePrograms, localFilters.get(FILTER_KEY_TAGS)));
+                    }
+                    if (filters.get(FILTER_KEY_STATUS).contains(FILTER_STATUS_COMPLETED)) {
+                        filteredLivePrograms.addAll(sortDataByTags(courseViewModel.completedLivePrograms, localFilters.get(FILTER_KEY_TAGS)));
+                    }
+                    if (filters.get(FILTER_KEY_STATUS).contains(FILTER_STATUS_PAUSED)) {
+                        filteredLivePrograms.addAll(sortDataByTags(courseViewModel.pausedLivePrograms, localFilters.get(FILTER_KEY_TAGS)));
+                    }
+                }
+
+            }
+
+            if (
+                    filters.get(FILTER_KEY_TYPE).contains(FILTER_TYPE_MASTERCLASS)
+                           /* ||
+                            filters.get(FILTER_KEY_TYPE).isEmpty()*/
+            ) {
+
+                if (filters.get(FILTER_KEY_STATUS).contains(FILTER_STATUS_ALL_STATUSES) || filters.get(FILTER_KEY_STATUS).isEmpty()) {
+                    filteredMasterclassPrograms.addAll(sortDataByTags(courseViewModel.allMaterclassPrograms, localFilters.get(FILTER_KEY_TAGS)));
+                } else {
+                    if (filters.get(FILTER_KEY_STATUS).contains(FILTER_STATUS_IN_PROGRESS)) {
+                        filteredMasterclassPrograms.addAll(sortDataByTags(courseViewModel.inProgressMaterclassPrograms, localFilters.get(FILTER_KEY_TAGS)));
+                    }
+                    if (filters.get(FILTER_KEY_STATUS).contains(FILTER_STATUS_COMPLETED)) {
+                        filteredMasterclassPrograms.addAll(sortDataByTags(courseViewModel.completedMaterclassPrograms, localFilters.get(FILTER_KEY_TAGS)));
+                    }
+                    if (filters.get(FILTER_KEY_STATUS).contains(FILTER_STATUS_PAUSED)) {
+                        filteredMasterclassPrograms.addAll(sortDataByTags(courseViewModel.pausedMaterclassPrograms, localFilters.get(FILTER_KEY_TAGS)));
+                    }
+                }
+
+            }
+
+            if (!filteredMyPrograms.isEmpty() || !filteredLivePrograms.isEmpty() || !filteredPaidPrograms.isEmpty() || !filteredMasterclassPrograms.isEmpty()) {
+                Log.i("course_print","18");
+                loadMyPrgramsAdapter(filteredMyPrograms, filteredMyPrograms.size());
+
+                loadLiveProgramsAdapter(filteredLivePrograms, filteredLivePrograms.size());
+
+                loadPaidProgramsAdapter(filteredPaidPrograms, filteredPaidPrograms.size());
+
+                loadMasterclassProgramsAdapter(filteredMasterclassPrograms, filteredMasterclassPrograms.size());
+
+
+            } else {
+                Util.showToast(getActivity(), "No Program Data Found");
+
+
+            }
+        }
+
+
+        /*show data*/
+
+
+
+
+
+        searchFilterText="";
+        edtSearch.setText(searchFilterText);
+
+        rlShowResults.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(null==filters){
+                    HashMap<String, ArrayList<String>> filters = new HashMap<String, ArrayList<String>>() {{
+                        put(FILTER_KEY_TYPE, new ArrayList<String>() {{
+                        }});
+                        put(FILTER_KEY_STATUS, new ArrayList<String>() {{
+                        }});
+                        put(FILTER_KEY_TAGS, new ArrayList<>());
+                    }};
+                    filters.get(FILTER_KEY_TYPE).clear();
+                    filters.get(FILTER_KEY_STATUS).clear();
+                    filters.get(FILTER_KEY_TAGS).clear();
+
+                    filters.get(FILTER_KEY_TYPE).addAll(localFilters.get(FILTER_KEY_TYPE));
+                    filters.get(FILTER_KEY_STATUS).addAll(localFilters.get(FILTER_KEY_STATUS));
+                    filters.get(FILTER_KEY_TAGS).addAll(localFilters.get(FILTER_KEY_TAGS));
+
+                    //  sharedPreference.saveLocalFilters(filters);
+
+                    ArrayList<AvailableCourseModel.Course> filteredMyPrograms = new ArrayList<>();
+                    ArrayList<AvailableCourseModel.Course> filteredPaidPrograms = new ArrayList<>();
+                    ArrayList<AvailableCourseModel.Course> filteredLivePrograms = new ArrayList<>();
+                    ArrayList<AvailableCourseModel.Course> filteredMasterclassPrograms = new ArrayList<>();
+                    imgFilter.setImageResource(R.drawable.mbhq_filter);
+
+                    if (filters.get(FILTER_KEY_TYPE).contains(FILTER_TYPE_MY_PROGRAMS)
+                            || filters.get(FILTER_KEY_TYPE).isEmpty()) {
+
+                        if (filters.get(FILTER_KEY_STATUS).contains(FILTER_STATUS_ALL_STATUSES) || filters.get(FILTER_KEY_STATUS).isEmpty()) {
+                            filteredMyPrograms.addAll(sortDataByTags(courseViewModel.myAllPrograms, localFilters.get(FILTER_KEY_TAGS)));
+                        } else {
+
+                            if (filters.get(FILTER_KEY_STATUS).contains(FILTER_STATUS_IN_PROGRESS)) {
+                                filteredMyPrograms.addAll(sortDataByTags(courseViewModel.myInProgressPrograms, localFilters.get(FILTER_KEY_TAGS)));
+                            }
+                            if (filters.get(FILTER_KEY_STATUS).contains(FILTER_STATUS_COMPLETED)) {
+                                filteredMyPrograms.addAll(sortDataByTags(courseViewModel.myCompletedPrograms, localFilters.get(FILTER_KEY_TAGS)));
+                            }
+                            if (filters.get(FILTER_KEY_STATUS).contains(FILTER_STATUS_PAUSED)) {
+                                filteredMyPrograms.addAll(sortDataByTags(courseViewModel.myPausedPrograms, localFilters.get(FILTER_KEY_TAGS)));
+                            }
+
+                        }
+
+                    }
+
+                    if (
+                            filters.get(FILTER_KEY_TYPE).contains(FILTER_TYPE_PAID_PROGRAMS)
+                                    ||
+                                    filters.get(FILTER_KEY_TYPE).isEmpty()
+                    ) {
+
+                        if (filters.get(FILTER_KEY_STATUS).contains(FILTER_STATUS_ALL_STATUSES) || filters.get(FILTER_KEY_STATUS).isEmpty()) {
+                            filteredPaidPrograms.addAll(sortDataByTags(courseViewModel.allPaidPrograms, localFilters.get(FILTER_KEY_TAGS)));
+                        } else {
+                            if (filters.get(FILTER_KEY_STATUS).contains(FILTER_STATUS_IN_PROGRESS)) {
+                                filteredPaidPrograms.addAll(sortDataByTags(courseViewModel.inProgressPaidPrograms, localFilters.get(FILTER_KEY_TAGS)));
+                            }
+                            if (filters.get(FILTER_KEY_STATUS).contains(FILTER_STATUS_COMPLETED)) {
+                                filteredPaidPrograms.addAll(sortDataByTags(courseViewModel.completedPaidPrograms, localFilters.get(FILTER_KEY_TAGS)));
+                            }
+                            if (filters.get(FILTER_KEY_STATUS).contains(FILTER_STATUS_PAUSED)) {
+                                filteredPaidPrograms.addAll(sortDataByTags(courseViewModel.pausedPaidPrograms, localFilters.get(FILTER_KEY_TAGS)));
+                            }
+                        }
+
+                    }
+
+                    if (
+                            filters.get(FILTER_KEY_TYPE).contains(FILTER_TYPE_LIVE_PROGRAMS)
+                                    ||
+                                    filters.get(FILTER_KEY_TYPE).isEmpty()
+                    ) {
+
+                        if (filters.get(FILTER_KEY_STATUS).contains(FILTER_STATUS_ALL_STATUSES) || filters.get(FILTER_KEY_STATUS).isEmpty()) {
+                            filteredLivePrograms.addAll(sortDataByTags(courseViewModel.allLivePrograms, localFilters.get(FILTER_KEY_TAGS)));
+                        } else {
+                            if (filters.get(FILTER_KEY_STATUS).contains(FILTER_STATUS_IN_PROGRESS)) {
+                                filteredLivePrograms.addAll(sortDataByTags(courseViewModel.inProgressLivePrograms, localFilters.get(FILTER_KEY_TAGS)));
+                            }
+                            if (filters.get(FILTER_KEY_STATUS).contains(FILTER_STATUS_COMPLETED)) {
+                                filteredLivePrograms.addAll(sortDataByTags(courseViewModel.completedLivePrograms, localFilters.get(FILTER_KEY_TAGS)));
+                            }
+                            if (filters.get(FILTER_KEY_STATUS).contains(FILTER_STATUS_PAUSED)) {
+                                filteredLivePrograms.addAll(sortDataByTags(courseViewModel.pausedLivePrograms, localFilters.get(FILTER_KEY_TAGS)));
+                            }
+                        }
+
+                    }
+
+                    if (
+                            filters.get(FILTER_KEY_TYPE).contains(FILTER_TYPE_MASTERCLASS)
+                                    ||
+                                    filters.get(FILTER_KEY_TYPE).isEmpty()
+                    ) {
+
+                        if (filters.get(FILTER_KEY_STATUS).contains(FILTER_STATUS_ALL_STATUSES) || filters.get(FILTER_KEY_STATUS).isEmpty()) {
+                            filteredMasterclassPrograms.addAll(sortDataByTags(courseViewModel.allMaterclassPrograms, localFilters.get(FILTER_KEY_TAGS)));
+                        } else {
+                            if (filters.get(FILTER_KEY_STATUS).contains(FILTER_STATUS_IN_PROGRESS)) {
+                                filteredMasterclassPrograms.addAll(sortDataByTags(courseViewModel.inProgressMaterclassPrograms, localFilters.get(FILTER_KEY_TAGS)));
+                            }
+                            if (filters.get(FILTER_KEY_STATUS).contains(FILTER_STATUS_COMPLETED)) {
+                                filteredMasterclassPrograms.addAll(sortDataByTags(courseViewModel.completedMaterclassPrograms, localFilters.get(FILTER_KEY_TAGS)));
+                            }
+                            if (filters.get(FILTER_KEY_STATUS).contains(FILTER_STATUS_PAUSED)) {
+                                filteredMasterclassPrograms.addAll(sortDataByTags(courseViewModel.pausedMaterclassPrograms, localFilters.get(FILTER_KEY_TAGS)));
+                            }
+                        }
+
+                    }
+
+                    if (!filteredMyPrograms.isEmpty() || !filteredLivePrograms.isEmpty() || !filteredPaidPrograms.isEmpty() || !filteredMasterclassPrograms.isEmpty()) {
+                        Log.i("course_print","19");
+                        imgFilter.setImageResource(R.drawable.mbhq_filter_green);
+                        loadMyPrgramsAdapter(filteredMyPrograms, filteredMyPrograms.size());
+
+                        loadLiveProgramsAdapter(filteredLivePrograms, filteredLivePrograms.size());
+
+                        loadPaidProgramsAdapter(filteredPaidPrograms, filteredPaidPrograms.size());
+
+                        loadMasterclassProgramsAdapter(filteredMasterclassPrograms, filteredMasterclassPrograms.size());
+                        loadPodcastProgramsAdapter(courseViewModel.allPodcastPrograms, 0);
+
+
+                    } else {
+                        Util.showToast(getActivity(), "No Program Data Found");
+                    }
+
+                    try{
+
+                        sharedPreference.saveLocalFilters(getActivity(),"Coursefilterfile","aaa",filters);
+                    }catch(Exception e){
+                        e.printStackTrace();
+                    }
+
+
+                }else{
+                    Log.i("course_print","20");
+
+
+
+
+
+
+                    filters.get(FILTER_KEY_TYPE).clear();
+                    filters.get(FILTER_KEY_STATUS).clear();
+                    filters.get(FILTER_KEY_TAGS).clear();
+
+                    filters.get(FILTER_KEY_TYPE).addAll(localFilters.get(FILTER_KEY_TYPE));
+                    filters.get(FILTER_KEY_STATUS).addAll(localFilters.get(FILTER_KEY_STATUS));
+                    filters.get(FILTER_KEY_TAGS).addAll(localFilters.get(FILTER_KEY_TAGS));
+
+
+                    if (filters.get(FILTER_KEY_STATUS).isEmpty() && filters.get(FILTER_KEY_TYPE).isEmpty() && filters.get(FILTER_KEY_TAGS).isEmpty()) {
+                        Log.i("course_print","21");
+                        imgFilter.setImageResource(R.drawable.mbhq_filter);
+                    } else {
+                        Log.i("course_print","22");
+                        imgFilter.setImageResource(R.drawable.mbhq_filter_green);
+                    }
+
+                    //  sharedPreference.saveLocalFilters(filters);
+
+                    ArrayList<AvailableCourseModel.Course> filteredMyPrograms = new ArrayList<>();
+                    ArrayList<AvailableCourseModel.Course> filteredPaidPrograms = new ArrayList<>();
+                    ArrayList<AvailableCourseModel.Course> filteredLivePrograms = new ArrayList<>();
+                    ArrayList<AvailableCourseModel.Course> filteredMasterclassPrograms = new ArrayList<>();
+
+
+                    if (filters.get(FILTER_KEY_TYPE).contains(FILTER_TYPE_MY_PROGRAMS)
+                            || filters.get(FILTER_KEY_TYPE).isEmpty()) {
+
+                        if (filters.get(FILTER_KEY_STATUS).contains(FILTER_STATUS_ALL_STATUSES) || filters.get(FILTER_KEY_STATUS).isEmpty()) {
+                            filteredMyPrograms.addAll(sortDataByTags(courseViewModel.myAllPrograms, localFilters.get(FILTER_KEY_TAGS)));
+                        } else {
+
+                            if (filters.get(FILTER_KEY_STATUS).contains(FILTER_STATUS_IN_PROGRESS)) {
+                                filteredMyPrograms.addAll(sortDataByTags(courseViewModel.myInProgressPrograms, localFilters.get(FILTER_KEY_TAGS)));
+                            }
+                            if (filters.get(FILTER_KEY_STATUS).contains(FILTER_STATUS_COMPLETED)) {
+                                filteredMyPrograms.addAll(sortDataByTags(courseViewModel.myCompletedPrograms, localFilters.get(FILTER_KEY_TAGS)));
+                            }
+                            if (filters.get(FILTER_KEY_STATUS).contains(FILTER_STATUS_PAUSED)) {
+                                filteredMyPrograms.addAll(sortDataByTags(courseViewModel.myPausedPrograms, localFilters.get(FILTER_KEY_TAGS)));
+                            }
+
+                        }
+
+                    }
+
+                    if (
+                            filters.get(FILTER_KEY_TYPE).contains(FILTER_TYPE_PAID_PROGRAMS)
+                                    ||
+                                    filters.get(FILTER_KEY_TYPE).isEmpty()
+                    ) {
+
+                        if (filters.get(FILTER_KEY_STATUS).contains(FILTER_STATUS_ALL_STATUSES) || filters.get(FILTER_KEY_STATUS).isEmpty()) {
+                            filteredPaidPrograms.addAll(sortDataByTags(courseViewModel.allPaidPrograms, localFilters.get(FILTER_KEY_TAGS)));
+                        } else {
+                            if (filters.get(FILTER_KEY_STATUS).contains(FILTER_STATUS_IN_PROGRESS)) {
+                                filteredPaidPrograms.addAll(sortDataByTags(courseViewModel.inProgressPaidPrograms, localFilters.get(FILTER_KEY_TAGS)));
+                            }
+                            if (filters.get(FILTER_KEY_STATUS).contains(FILTER_STATUS_COMPLETED)) {
+                                filteredPaidPrograms.addAll(sortDataByTags(courseViewModel.completedPaidPrograms, localFilters.get(FILTER_KEY_TAGS)));
+                            }
+                            if (filters.get(FILTER_KEY_STATUS).contains(FILTER_STATUS_PAUSED)) {
+                                filteredPaidPrograms.addAll(sortDataByTags(courseViewModel.pausedPaidPrograms, localFilters.get(FILTER_KEY_TAGS)));
+                            }
+                        }
+
+                    }
+
+                    if (
+                            filters.get(FILTER_KEY_TYPE).contains(FILTER_TYPE_LIVE_PROGRAMS)
+                                    ||
+                                    filters.get(FILTER_KEY_TYPE).isEmpty()
+                    ) {
+
+                        if (filters.get(FILTER_KEY_STATUS).contains(FILTER_STATUS_ALL_STATUSES) || filters.get(FILTER_KEY_STATUS).isEmpty()) {
+                            filteredLivePrograms.addAll(sortDataByTags(courseViewModel.allLivePrograms, localFilters.get(FILTER_KEY_TAGS)));
+                        } else {
+                            if (filters.get(FILTER_KEY_STATUS).contains(FILTER_STATUS_IN_PROGRESS)) {
+                                filteredLivePrograms.addAll(sortDataByTags(courseViewModel.inProgressLivePrograms, localFilters.get(FILTER_KEY_TAGS)));
+                            }
+                            if (filters.get(FILTER_KEY_STATUS).contains(FILTER_STATUS_COMPLETED)) {
+                                filteredLivePrograms.addAll(sortDataByTags(courseViewModel.completedLivePrograms, localFilters.get(FILTER_KEY_TAGS)));
+                            }
+                            if (filters.get(FILTER_KEY_STATUS).contains(FILTER_STATUS_PAUSED)) {
+                                filteredLivePrograms.addAll(sortDataByTags(courseViewModel.pausedLivePrograms, localFilters.get(FILTER_KEY_TAGS)));
+                            }
+                        }
+
+                    }
+
+                    if (
+                            filters.get(FILTER_KEY_TYPE).contains(FILTER_TYPE_MASTERCLASS)
+                                    ||
+                                    filters.get(FILTER_KEY_TYPE).isEmpty()
+                    ) {
+
+                        if (filters.get(FILTER_KEY_STATUS).contains(FILTER_STATUS_ALL_STATUSES) || filters.get(FILTER_KEY_STATUS).isEmpty()) {
+                            filteredMasterclassPrograms.addAll(sortDataByTags(courseViewModel.allMaterclassPrograms, localFilters.get(FILTER_KEY_TAGS)));
+                        } else {
+                            if (filters.get(FILTER_KEY_STATUS).contains(FILTER_STATUS_IN_PROGRESS)) {
+                                filteredMasterclassPrograms.addAll(sortDataByTags(courseViewModel.inProgressMaterclassPrograms, localFilters.get(FILTER_KEY_TAGS)));
+                            }
+                            if (filters.get(FILTER_KEY_STATUS).contains(FILTER_STATUS_COMPLETED)) {
+                                filteredMasterclassPrograms.addAll(sortDataByTags(courseViewModel.completedMaterclassPrograms, localFilters.get(FILTER_KEY_TAGS)));
+                            }
+                            if (filters.get(FILTER_KEY_STATUS).contains(FILTER_STATUS_PAUSED)) {
+                                filteredMasterclassPrograms.addAll(sortDataByTags(courseViewModel.pausedMaterclassPrograms, localFilters.get(FILTER_KEY_TAGS)));
+                            }
+                        }
+
+                    }
+
+                    if (!filteredMyPrograms.isEmpty() || !filteredLivePrograms.isEmpty() || !filteredPaidPrograms.isEmpty() || !filteredMasterclassPrograms.isEmpty()) {
+                        Log.i("course_print","23");
+
+                        if (filters.get(FILTER_KEY_STATUS).isEmpty() && filters.get(FILTER_KEY_TYPE).isEmpty() && filters.get(FILTER_KEY_TAGS).isEmpty()) {
+                            Log.i("course_print","27");
+                            loadMyPrgramsAdapter(filteredMyPrograms, filteredMyPrograms.size());
+
+                            loadLiveProgramsAdapter(filteredLivePrograms, filteredLivePrograms.size());
+
+                            loadPaidProgramsAdapter(filteredPaidPrograms, filteredPaidPrograms.size());
+
+                            loadMasterclassProgramsAdapter(filteredMasterclassPrograms, filteredMasterclassPrograms.size());
+                            loadPodcastProgramsAdapter(courseViewModel.allPodcastPrograms, courseViewModel.allPodcastPrograms.size());
+
+                        }else{
+                            Log.i("course_print","28");
+                            loadMyPrgramsAdapter(filteredMyPrograms, filteredMyPrograms.size());
+
+                            loadLiveProgramsAdapter(filteredLivePrograms, filteredLivePrograms.size());
+
+                            loadPaidProgramsAdapter(filteredPaidPrograms, filteredPaidPrograms.size());
+
+                            loadMasterclassProgramsAdapter(filteredMasterclassPrograms, filteredMasterclassPrograms.size());
+                            loadPodcastProgramsAdapter(courseViewModel.allPodcastPrograms, 0);
+                        }
+
+
+                    } else {
+                        Util.showToast(getActivity(), "No Program Data Found");
+                    }
+
+                    try{
+
+                        sharedPreference.saveLocalFilters(getActivity(),"Coursefilterfile","aaa",filters);
+                    }catch(Exception e){
+                        e.printStackTrace();
+                    }
+                }
+
+                dialog.dismiss();
+
+            }
+        });
+
+
+        if (filterSelectedvalue == 0) {
+            hideAllFilterImage(imgAllCheck, imgActiveCheck, imgAvailableCheck, imgCompletedCheck);
+            imgAllCheck.setVisibility(View.VISIBLE);
+        }
+        if (filterSelectedvalue == 1) {
+            hideAllFilterImage(imgAllCheck, imgActiveCheck, imgAvailableCheck, imgCompletedCheck);
+            imgActiveCheck.setVisibility(View.VISIBLE);
+        }
+        if (filterSelectedvalue == 2) {
+            hideAllFilterImage(imgAllCheck, imgActiveCheck, imgAvailableCheck, imgCompletedCheck);
+            imgAvailableCheck.setVisibility(View.VISIBLE);
+        }
+        if (filterSelectedvalue == 3) {
+            hideAllFilterImage(imgAllCheck, imgActiveCheck, imgAvailableCheck, imgCompletedCheck);
+            imgCompletedCheck.setVisibility(View.VISIBLE);
+        }
+
+        imgClose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+
+/*
         edtSearch.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
@@ -2091,6 +3577,53 @@ loadAllAdapters();
                 return false;
             }
         });
+*/
+
+
+        img_search.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (!edtSearch.getText().toString().equals("")) {
+                    searchFilterText = edtSearch.getText().toString();
+                    Util.hideKeyboard(getActivity());
+                    search(searchFilterText);
+
+
+                }
+                dialog.dismiss();
+            }
+        });
+
+
+/*
+        edtSearch.addTextChangedListener(new TextWatcher() {
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+
+
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start,
+                                          int count, int after) {
+
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start,
+                                      int before, int count) {
+
+                if(s.toString().length()>0){
+                    //if(null!=availableCourseAdapter)
+                 search(s.toString());
+                }
+
+            }
+        });
+*/
 
         rlAll.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -2184,6 +3717,7 @@ loadAllAdapters();
 
         dialog.show();
     }
+
 
     private ArrayList<AvailableCourseModel.Course> sortDataByTags(List<AvailableCourseModel.Course> dataToBeFiltered, ArrayList<String> filteringTags) {
         ArrayList<AvailableCourseModel.Course> sortedData = new ArrayList<AvailableCourseModel.Course>();
@@ -2422,4 +3956,126 @@ loadAllAdapters();
             }
         }
     };
+
+
+
+
+
+
+    public void search(String searchString) {
+        courseViewModel.lstTotalDataM_filter.clear();
+        courseViewModel.myAllPrograms_filter.clear();
+        courseViewModel.allMemberPrograms_filter.clear();
+        courseViewModel.allLivePrograms_filter.clear();
+        courseViewModel.allPaidPrograms_filter.clear();
+        courseViewModel.allMaterclassPrograms_filter.clear();
+        courseViewModel.allPaidMaterclassPrograms_filter.clear();
+        courseViewModel.allPodcastPrograms_filter.clear();
+
+        String searchLower = searchString.toLowerCase();
+        String searchUpper = searchString.toUpperCase();
+        if (searchString.equals("")) {
+              openDialogForFilter_();
+          //  loadAllAdapters();
+        } else {
+
+
+            for(int x = 0; x < courseViewModel.lstTotalDataM.size(); x++){
+                if (courseViewModel.lstTotalDataM.get(x).getCourseName().toLowerCase().contains(searchString.toLowerCase()) ||courseViewModel.lstTotalDataM.get(x).getTags().contains(searchLower)||courseViewModel.lstTotalDataM.get(x).getTags().contains(searchUpper)||
+                        courseViewModel.lstTotalDataM.get(x).getAuthorName().toLowerCase().contains(searchString.toLowerCase())
+                    /*||
+                        courseViewModel.lstTotalDataM.get(x).getTags().get(0).toLowerCase().contains(searchLower)*/
+                ) {
+
+                    courseViewModel.lstTotalDataM_filter.add(courseViewModel.lstTotalDataM.get(x));
+
+                }
+            }
+            loadAllAdapters_filter(courseViewModel.lstTotalDataM_filter);
+
+
+        }
+
+    }
+
+
+    private void loadAllAdapters_filter(List<AvailableCourseModel.Course> lstTotalDataM_filter) {
+        for (int index = 0; index < lstTotalDataM_filter.size(); index++) {
+
+            AvailableCourseModel.Course course = lstTotalDataM_filter.get(index);
+
+            if (course.getCourseType().equalsIgnoreCase("Podcast")) {
+                courseViewModel.allPodcastPrograms_filter.add(course);
+            }else{
+                if (course.getCourseType().equalsIgnoreCase("Masterclass")) {
+
+                    if (course.getSubscriptionType() == 2 && course.getHasSubscribed() == false) {
+
+                        courseViewModel.allPaidMaterclassPrograms_filter.add(course);
+
+
+                    } else {
+
+                        courseViewModel.allMaterclassPrograms_filter.add(course);
+
+                    }
+
+                } else if ((course.getSubscriptionType() == 0 || course.getSubscriptionType() == 1) && sharedPreference.read("PROGRAM_PURCHASE_ONLY", "").equalsIgnoreCase("TRUE")) {
+
+                    courseViewModel.allMemberPrograms_filter.add(course);
+
+
+                } else if (course.getHasSubscribed() || course.getSubscriptionType() == 0 || course.getSubscriptionType() == 1) {
+
+                    courseViewModel.myAllPrograms_filter.add(course);
+
+
+                } else if (course.getIsLiveCourse()) {
+
+                    courseViewModel.allLivePrograms_filter.add(course);
+
+
+
+                } else if (course.getSubscriptionType() == 2) {
+
+                    courseViewModel.allPaidPrograms_filter.add(course);
+
+
+
+                }
+            }
+
+
+
+        }
+
+        Collections.sort(courseViewModel.myAllPrograms_filter, new Comparator<AvailableCourseModel.Course>() {
+            @Override
+            public int compare(AvailableCourseModel.Course o1, AvailableCourseModel.Course o2) {
+
+                if (o1.getIsLiveCourse() && o2.getIsLiveCourse()) {
+                    return 0;
+                } else if (o1.getIsLiveCourse()) {
+                    return 1;
+                } else if (o1.getSubscriptionType() != 2 && o2.getSubscriptionType() != 2) {
+                    return 0;
+                } else {
+                    if ((o1.getSubscriptionType() == 0 || o1.getSubscriptionType() == 1) && (o2.getSubscriptionType() == 0 || o2.getSubscriptionType() == 1)) {
+                        return 0;
+                    } else if (o1.getSubscriptionType() == 0 || o1.getSubscriptionType() == 1) {
+                        return -1;
+                    }
+                }
+
+                return 0;
+
+            }
+        });
+
+        Log.i("course_print","4");
+        loadAllAdapters_filter();
+        //openDialogForFilter_();
+    }
+
+
 }

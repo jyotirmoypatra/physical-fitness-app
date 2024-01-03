@@ -38,6 +38,7 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -45,7 +46,9 @@ import android.widget.TextView;
 
 import com.ashysystem.mbhq.R;
 import com.ashysystem.mbhq.Service.impl.FinisherServiceImpl;
+import com.ashysystem.mbhq.activity.LogInActivity;
 import com.ashysystem.mbhq.activity.MainActivity;
+import com.ashysystem.mbhq.activity.UserPaidStatusActivity;
 import com.ashysystem.mbhq.activity.WebViewActivity;
 import com.ashysystem.mbhq.adapter.mbhq_today.HabitHistoryAdapter;
 import com.ashysystem.mbhq.adapter.mbhq_today.TodayHabitHackerAdpapter;
@@ -57,6 +60,7 @@ import com.ashysystem.mbhq.fragment.habit_hacker.HabitHackerListFragment;
 import com.ashysystem.mbhq.model.GetGratitudeCacheExpiryTimeResponse;
 import com.ashysystem.mbhq.model.GetGratitudeListModelInner;
 import com.ashysystem.mbhq.model.GetPrompt;
+import com.ashysystem.mbhq.model.GetUserPaidStatusModel;
 import com.ashysystem.mbhq.model.TodayPage.GetAppHomePageValuesResponseModel;
 import com.ashysystem.mbhq.model.habit_hacker.HabitBreakTickUntickModel;
 import com.ashysystem.mbhq.model.habit_hacker.HabitSwap;
@@ -67,6 +71,7 @@ import com.ashysystem.mbhq.roomDatabase.modelFactory.ViewModelFactoryForHabitCal
 import com.ashysystem.mbhq.roomDatabase.viewModel.GratitudeViewModel;
 import com.ashysystem.mbhq.roomDatabase.viewModel.HabitCalendarViewModel;
 import com.ashysystem.mbhq.roomDatabase.viewModel.HabitEditViewModel;
+import com.ashysystem.mbhq.util.AlertDialogCustom;
 import com.ashysystem.mbhq.util.Connection;
 import com.ashysystem.mbhq.util.SharedPreference;
 import com.ashysystem.mbhq.util.Util;
@@ -193,7 +198,8 @@ public class MbhqTodayTwoFragment extends Fragment {
     private String habbitFirstTime = "";
     private String habbitFirstTime_firstpopup = "";
     ImageView img_notaccess;
-
+    FrameLayout frm_notaccess;
+    Button txt_notaccess;
     private void getAchievementsFromDB(){
 
         SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH);
@@ -495,8 +501,12 @@ public class MbhqTodayTwoFragment extends Fragment {
             if("false".equalsIgnoreCase(habit_access)){
                 globalView = inflater.inflate(R.layout.fragment_todaytwo_mbhq, null);
                 img_notaccess = globalView.findViewById(R.id.img_notaccess_habit);
+                frm_notaccess = globalView.findViewById(R.id.frm_notaccess_habit);
+                txt_notaccess = globalView.findViewById(R.id.txt_notaccess_habit);
                 swipeLayout = globalView.findViewById(R.id.swipeLayout);
                 img_notaccess.setVisibility(View.VISIBLE);
+                frm_notaccess.setVisibility(View.VISIBLE);
+                txt_notaccess.setVisibility(View.VISIBLE);
                 swipeLayout.setVisibility(View.GONE);
                 img_notaccess.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -504,6 +514,13 @@ public class MbhqTodayTwoFragment extends Fragment {
                         Uri uri = Uri.parse("https://mindbodyhq.com/products/habit-transformer"); // missing 'http://' will cause crashed
                         Intent intent = new Intent(Intent.ACTION_VIEW, uri);
                         startActivity(intent);
+                    }
+                });
+
+                txt_notaccess.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        getUserPaidStatusApiCall();
                     }
                 });
                 return globalView;
@@ -515,8 +532,12 @@ public class MbhqTodayTwoFragment extends Fragment {
                     // globalView = inflater.inflate(R.layout.fragment_todaytwo_mbhq, null);
                     globalView = inflater.inflate(R.layout.fragment_todaytwo_mbhq, null);
                     img_notaccess = globalView.findViewById(R.id.img_notaccess_habit);
+                    frm_notaccess = globalView.findViewById(R.id.frm_notaccess_habit);
+                    txt_notaccess = globalView.findViewById(R.id.txt_notaccess_habit);
                     swipeLayout = globalView.findViewById(R.id.swipeLayout);
                     img_notaccess.setVisibility(View.GONE);
+                    frm_notaccess.setVisibility(View.GONE);
+                    txt_notaccess.setVisibility(View.GONE);
                     swipeLayout.setVisibility(View.VISIBLE);
                     imgAddHabit = globalView.findViewById(R.id.imgAddHabit);
                     imgWinTheWeekStats = globalView.findViewById(R.id.imgWinTheWeekStats);
@@ -789,8 +810,12 @@ public class MbhqTodayTwoFragment extends Fragment {
                 } else {
                     Log.e("calledhabit1", "9");
                     img_notaccess = globalView.findViewById(R.id.img_notaccess_habit);
+                    frm_notaccess = globalView.findViewById(R.id.frm_notaccess_habit);
+                    txt_notaccess = globalView.findViewById(R.id.txt_notaccess_habit);
                     swipeLayout = globalView.findViewById(R.id.swipeLayout);
                     img_notaccess.setVisibility(View.GONE);
+                    frm_notaccess.setVisibility(View.GONE);
+                    txt_notaccess.setVisibility(View.GONE);
                     swipeLayout.setVisibility(View.VISIBLE);
                     return globalView;
                 }
@@ -803,8 +828,12 @@ public class MbhqTodayTwoFragment extends Fragment {
                 // globalView = inflater.inflate(R.layout.fragment_todaytwo_mbhq, null);
                 globalView = inflater.inflate(R.layout.fragment_todaytwo_mbhq, null);
                 img_notaccess = globalView.findViewById(R.id.img_notaccess_habit);
+                frm_notaccess = globalView.findViewById(R.id.frm_notaccess_habit);
+                txt_notaccess = globalView.findViewById(R.id.txt_notaccess_habit);
                 swipeLayout = globalView.findViewById(R.id.swipeLayout);
                 img_notaccess.setVisibility(View.GONE);
+                frm_notaccess.setVisibility(View.GONE);
+                txt_notaccess.setVisibility(View.GONE);
                 swipeLayout.setVisibility(View.VISIBLE);
                 imgAddHabit = globalView.findViewById(R.id.imgAddHabit);
                 imgWinTheWeekStats = globalView.findViewById(R.id.imgWinTheWeekStats);
@@ -1077,8 +1106,12 @@ public class MbhqTodayTwoFragment extends Fragment {
             } else {
                 Log.e("calledhabit1", "9");
                 img_notaccess = globalView.findViewById(R.id.img_notaccess_habit);
+                frm_notaccess = globalView.findViewById(R.id.frm_notaccess_habit);
+                txt_notaccess = globalView.findViewById(R.id.txt_notaccess_habit);
                 swipeLayout = globalView.findViewById(R.id.swipeLayout);
                 img_notaccess.setVisibility(View.GONE);
+                frm_notaccess.setVisibility(View.GONE);
+                txt_notaccess.setVisibility(View.GONE);
                 swipeLayout.setVisibility(View.VISIBLE);
                 return globalView;
             }
@@ -3642,6 +3675,85 @@ public class MbhqTodayTwoFragment extends Fragment {
     }
 
 
+    private void getUserPaidStatusApiCall() {
+
+        if (Connection.checkConnection(getActivity())) {
+            final ProgressDialog progressDialog = ProgressDialog.show(getActivity(), "", "Please wait...");
+
+            HashMap<String, Object> hashReq = new HashMap<>();
+            hashReq.put("Email", sharedPreference.read("USEREMAIL", ""));
+            FinisherServiceImpl finisherService = new FinisherServiceImpl(getActivity());
+            Call<GetUserPaidStatusModel> paidStatusModelCall = finisherService.getUserPaidStatusApi(hashReq);
+            paidStatusModelCall.enqueue(new Callback<GetUserPaidStatusModel>() {
+                @Override
+                public void onResponse(Call<GetUserPaidStatusModel> call, Response<GetUserPaidStatusModel> response) {
+                    progressDialog.dismiss();
+
+                    if (response.body() != null && response.body().getSuccessFlag()) {
+
+                        Integer accesstype=response.body().getMbhqAccessType();
+                        Log.i("printttttttttttttttttttttttttttttt",String.valueOf(accesstype));
+                        Log.i("111111",String.valueOf(accesstype));
+                        Boolean HabitAccess=response.body().getHabitAccess();
+                        Log.i("111111",String.valueOf(HabitAccess));
+                        Boolean EqJournalAccess=response.body().getEqJournalAccess();
+                        Log.i("111111",String.valueOf(EqJournalAccess));
+                        Boolean MeditationAccess=response.body().getMeditationAccess();
+                        Log.i("111111",String.valueOf(MeditationAccess));
+                        Boolean ForumAccess=response.body().getForumAccess();
+                        Log.i("111111",String.valueOf(ForumAccess));
+                        Boolean LiveChatAccess=response.body().getLiveChatAccess();
+                        Log.i("111111",String.valueOf(LiveChatAccess));
+                        Boolean TestsAccess=response.body().getTestsAccess();
+                        Log.i("111111",String.valueOf(TestsAccess));
+                        Boolean CourseAccess=response.body().getCourseAccess();
+                        Log.i("111111",String.valueOf(CourseAccess));
+                        sharedPreference.write("accesstype", "", String.valueOf(accesstype));
+                        sharedPreference.write("HabitAccess", "", String.valueOf(HabitAccess));
+                        sharedPreference.write("EqJournalAccess", "", String.valueOf(EqJournalAccess));
+                        sharedPreference.write("MeditationAccess", "", String.valueOf(MeditationAccess));
+                        sharedPreference.write("ForumAccess", "", String.valueOf(ForumAccess));
+                        sharedPreference.write("LiveChatAccess", "", String.valueOf(LiveChatAccess));
+                        sharedPreference.write("TestsAccess", "", String.valueOf(TestsAccess));
+                        sharedPreference.write("CourseAccess", "", String.valueOf(CourseAccess));
+                        String accesstype1=sharedPreference.read("accesstype","");
+                        String habit_access=sharedPreference.read("HabitAccess","");
+                        String eq_access=sharedPreference.read("EqJournalAccess","");
+                        String medi_access=sharedPreference.read("MeditationAccess","");
+                        String forum_access=sharedPreference.read("ForumAccess","");
+                        String Live_access=sharedPreference.read("LiveChatAccess","");
+                        String Test_acess=sharedPreference.read("TestsAccess","");
+                        String Course_access=sharedPreference.read("CourseAccess","");
+
+                        Log.i("1111111100",eq_access);
+                        Log.i("2222222200",medi_access);
+                        Log.i("3333333300",accesstype1);
+                        Log.i("4444444400",habit_access);
+                        Log.i("5555555500",forum_access);
+                        Log.i("6666666600",Live_access);
+                        Log.i("7777777700",Test_acess);
+                        Log.i("8888888800",Course_access);
+
+                        if(null!=getActivity()){
+                            ((MainActivity) getActivity()).clearCacheForParticularFragment(new MbhqTodayTwoFragment());
+                            ((MainActivity) getActivity()).loadFragment(new MbhqTodayTwoFragment(), "MbhqTodayTwo", null);
+                        }
+
+
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<GetUserPaidStatusModel> call, Throwable t) {
+                    progressDialog.dismiss();
+                }
+            });
+
+        } else {
+            Util.showToast(getActivity(), Util.networkMsg);
+        }
+
+    }
 
 
 }
