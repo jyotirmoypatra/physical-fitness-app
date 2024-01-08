@@ -315,7 +315,7 @@ public class MbhqTodayMainFragment extends Fragment {
                                             .subscribeOn(Schedulers.io())
                                             .observeOn(AndroidSchedulers.mainThread())
                                             .subscribe(gratitudeEntities1 -> {
-                                                if (gratitudeEntities1 != null && gratitudeEntities1.size() > 0) {
+                                                if (gratitudeEntities1 == null || gratitudeEntities1.size() == 0) {
                                                     Log.i("unique1111111111111111111111","4");
                                                     sharedPreference.write("appreciate_nav", "", "journal");
                                                     sharedPreference.write("appreciate_nav_pos", "", 1 + "");

@@ -1,4 +1,4 @@
-package com.ashysystem.mbhq.fragment.course;
+package com.ashysystem.mbhq.fragment.meditation;
 
 
 import android.app.ActivityManager;
@@ -21,14 +21,12 @@ import android.graphics.PorterDuff;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.media.audiofx.Visualizer;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.PowerManager;
-
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -51,6 +49,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.VideoView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.NotificationCompat;
+import androidx.fragment.app.Fragment;
+
 import com.ashysystem.mbhq.R;
 import com.ashysystem.mbhq.Service.AudioService;
 import com.ashysystem.mbhq.Service.BackgroundSoundServiceNew;
@@ -58,11 +62,10 @@ import com.ashysystem.mbhq.Service.OnClearFromRecentService;
 import com.ashysystem.mbhq.Service.impl.FinisherServiceImpl;
 import com.ashysystem.mbhq.activity.MainActivity;
 import com.ashysystem.mbhq.activity.WebViewActivity;
-
-import com.ashysystem.mbhq.fragment.meditation.MeditationDetailsNew;
+import com.ashysystem.mbhq.fragment.course.CourseDetailsFragment;
+import com.ashysystem.mbhq.fragment.course.CourseFragment;
 import com.ashysystem.mbhq.model.GetArticleDetail;
 import com.ashysystem.mbhq.model.MeditationCourseModel;
-
 import com.ashysystem.mbhq.model.ReadUnreadResponse;
 import com.ashysystem.mbhq.model.response.suggestedmedicin.Suggestedmedicin;
 import com.ashysystem.mbhq.util.Connection;
@@ -72,7 +75,6 @@ import com.ashysystem.mbhq.util.Util;
 import com.ashysystem.mbhq.util.VisualizerView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
@@ -85,17 +87,12 @@ import java.util.UUID;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.widget.Toolbar;
-import androidx.core.app.NotificationCompat;
-import androidx.fragment.app.Fragment;
 
 /**
  * Created by android-krishnendu on 2/23/17.
  */
 
-public class CourseArticleDetailsNewFragment extends Fragment implements AudioService.TrackChangeLIstener, View.OnTouchListener {
+public class MeditationVideo extends Fragment implements AudioService.TrackChangeLIstener, View.OnTouchListener {
     Handler seekHandler = new Handler();
     LinearLayout llSeek, llAction;
     FrameLayout frameVideo;
@@ -1309,18 +1306,6 @@ public class CourseArticleDetailsNewFragment extends Fragment implements AudioSe
                     getResources().getColor(R.color.black), PorterDuff.Mode.SRC_IN);
         }
 
-        rlAttachment.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                openAttachmentDialog();
-            }
-        });
-        rl_suggestedmedicines.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                openAttachmentDialog1();
-            }
-        });
         txtBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -1394,107 +1379,6 @@ public class CourseArticleDetailsNewFragment extends Fragment implements AudioSe
             }
         });
 
-        llTickLast.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //Log.e("print task id----",taskId+"???");
-
-                sharedPreference.clear("LAST_ARTICLE_DETAILS");
-                sharedPreference.clear("LAST_ARTICLE_ID");
-                sharedPreference.clear("LAST_COURSE_DETAILS");
-                sharedPreference.clear("LAST_COURSE_ID");
-
-                if (Connection.checkConnection(getActivity())) {
-
-                    if (!sharedPreference.read("USEREMAIL", "").equals("")) {
-                        progressDialog = ProgressDialog.show(getActivity(), "", "Please wait...");
-
-                        HashMap<String, Object> hashMap = new HashMap<>();
-                        hashMap.put("UserId", sharedPreference.read("UserID", ""));
-                        hashMap.put("CourseId", courseId);
-                        hashMap.put("ArticleId", articleId);
-                        hashMap.put("Key", Util.KEY);
-                        hashMap.put("UserSessionID", sharedPreference.read("UserSessionID", ""));
-
-                        if (isRead) {
-                            Call<ReadUnreadResponse> readUnreadResponseCall = finisherService.unreadArticle(hashMap);
-                            readUnreadResponseCall.enqueue(new Callback<ReadUnreadResponse>() {
-                                @Override
-                                public void onResponse(Call<ReadUnreadResponse> call, Response<ReadUnreadResponse> response) {
-                                    progressDialog.dismiss();
-                                    if (response.body() != null) {
-                                        if (response.body().getSuccessFlag()) {
-                                            //((MainActivity)getActivity()).loadFragment(new CourseArticleDetailsFragment(),"CourseArticleDetails",courseDetailBundle);
-                                           // Leanplum.track("Learn_Android_Completed a lesson");
-                                            //imgTick.setVisibility(View.VISIBLE);
-                                            //imgTickLast.setVisibility(View.GONE);
-                                            txtTickStatus.setText("TICK  IT OFF");
-                                            txtTickStatusBottom.setText("TICK  IT OFF");
-                                            isRead = false;
-
-                                            llTickLast.setBackgroundResource(R.drawable.capsule_border_green_white);
-                                            llTickLastBottom.setBackgroundResource(R.drawable.capsule_border_green_white);
-                                            txtTickStatus.setTextColor(getActivity().getResources().getColor(R.color.light_green));
-                                            txtTickStatusBottom.setTextColor(getActivity().getResources().getColor(R.color.light_green));
-                                            if (taskId != null)
-                                                updateTask(isRead);
-
-
-                                        }
-                                    }
-                                }
-
-                                @Override
-                                public void onFailure(Call<ReadUnreadResponse> call, Throwable t) {
-                                    progressDialog.dismiss();
-                                }
-                            });
-                        } else {
-
-                            Call<ReadUnreadResponse> unreadResponseCall = finisherService.articleRead(hashMap);
-                            unreadResponseCall.enqueue(new Callback<ReadUnreadResponse>() {
-                                @Override
-                                public void onResponse(Call<ReadUnreadResponse> call, Response<ReadUnreadResponse> response) {
-                                    progressDialog.dismiss();
-                                    if (response.body().getSuccessFlag()) {
-                                        //((MainActivity)getActivity()).loadFragment(new CourseArticleDetailsFragment(),"CourseArticleDetails",courseDetailBundle);
-                                        //imgTick.setVisibility(View.GONE);
-                                        //imgTickLast.setVisibility(View.GONE);
-                                        txtTickStatus.setText("DONE");
-                                        txtTickStatusBottom.setText("DONE");
-
-                                        llTickLast.setBackgroundResource(R.drawable.capsule_green);
-                                        llTickLastBottom.setBackgroundResource(R.drawable.capsule_green);
-                                        txtTickStatus.setTextColor(getActivity().getResources().getColor(R.color.white));
-                                        txtTickStatusBottom.setTextColor(getActivity().getResources().getColor(R.color.white));
-
-                                        ((MainActivity) getActivity()).clearCacheForParticularFragment(new CourseFragment());
-                                        ((MainActivity) getActivity()).clearCacheForParticularFragment(new CourseDetailsFragment());
-                                        isRead = true;
-                                        ((MainActivity) getActivity()).refershGamePoint(getActivity());
-                                        if (taskId != null)
-                                            updateTask(isRead);
-                                    }
-                                }
-
-                                @Override
-                                public void onFailure(Call<ReadUnreadResponse> call, Throwable t) {
-                                    // progressDialog.dismiss();
-                                }
-                            });
-
-                        }
-                    } else {
-                        /*commented by sahenita*/
-                       // ((MainActivity) getActivity()).openDialogForRegisterUser(null, null);
-                    }
-
-
-                } else {
-                    Util.showToast(getActivity(), Util.networkMsg);
-                }
-            }
-        });
         imgPlayPause.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -1851,21 +1735,22 @@ public class CourseArticleDetailsNewFragment extends Fragment implements AudioSe
         lastArticleDetails_new=articleDetail;
         // txtHeader.setText(response.body().getArticleDetail().getArticleTitle());
         txtChallengeNameBelow.setText(articleDetail.getArticleDetail().getArticleTitle());
+/*
         if (articleDetail.getArticleDetail().getTime() != null && !articleDetail.getArticleDetail().getTime().equals("")) {
             seekTimeApi = articleDetail.getArticleDetail().getTime();
             seekTimeApiLong = Double.parseDouble(seekTimeApi);
             seekTimeApiLong = seekTimeApiLong * 1000;
 
         }
+*/
 
 
-        callFireBaseEvent(articleDetail.getArticleDetail().getArticleTitle());
+//        callFireBaseEvent(articleDetail.getArticleDetail().getArticleTitle());
 
 
-        //Log.e("print read status--",response.body().getArticleDetail().getIsRead()+"????");
 
         //Do Tick Status Work
-        if (articleDetail.getArticleDetail().getIsRead()) {
+      /*  if (articleDetail.getArticleDetail().getIsRead()) {
             // imgTick.setVisibility(View.VISIBLE);
             //imgTickLast.setVisibility(View.GONE);
             txtTickStatus.setText("DONE");
@@ -1888,7 +1773,7 @@ public class CourseArticleDetailsNewFragment extends Fragment implements AudioSe
             txtTickStatus.setTextColor(getActivity().getResources().getColor(R.color.light_green));
             txtTickStatusBottom.setTextColor(getActivity().getResources().getColor(R.color.light_green));
 
-        }
+        }*/
         isRead = articleDetail.getArticleDetail().getIsRead();
         if (articleDetail.getArticleDetail().getRelatedTask() != null) {
             if (articleDetail.getArticleDetail().getRelatedTask() != null && articleDetail.getArticleDetail().getRelatedTask().getTaskId() != null)

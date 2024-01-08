@@ -1,5 +1,7 @@
 package com.ashysystem.mbhq.fragment.achievement;
 
+import android.content.ContentResolver;
+import android.content.ContentValues;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
@@ -21,6 +23,8 @@ import android.view.ViewGroup;
 
 import com.ashysystem.mbhq.R;
 
+import static com.ashysystem.mbhq.activity.MainActivity.imgGratitude;
+import static com.ashysystem.mbhq.activity.MainActivity.imgHabits;
 import static com.ashysystem.mbhq.fragment.MyAchievementsListAddEditFragment.decodeSampledBitmapFromFile;
 import static com.ashysystem.mbhq.fragment.allSettingsFragment.KEY_DAILY_POPUP_JOURNAL;
 
@@ -157,6 +161,8 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.lang.reflect.Type;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -572,7 +578,7 @@ public class MyAchievementsFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // Log.e("state1111111111111111111111111111","onCreate0");
+         Log.e("state1111111111111111111111111111","onCreate0");
         sharedPreference = new SharedPreference(getActivity());
         Util.checkfolder.clear();
         String json= sharedPreference.read("my_list_eqfolder", "");
@@ -1560,6 +1566,7 @@ public class MyAchievementsFragment extends Fragment {
         });
         dialog.show();
     }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         Log.i("MyAchievementsFragment", "request code => " + requestCode + "result code => " + resultCode);
@@ -1572,11 +1579,17 @@ public class MyAchievementsFragment extends Fragment {
                     ((MainActivity) requireActivity()).rlGratitude.performClick();
                 }
             } else if(requestCode == CAMERA_PIC_REQUEST && resultCode == RESULT_OK){
-                if (photoFile != null) {
-                    Bitmap imageBitmap = BitmapFactory.decodeFile(photoFile.getAbsolutePath());
-                    cropPhoto(imageBitmap,photoFile.getAbsolutePath());
-                }
+//                if (imgPath != null) {
+//                    Bitmap imageBitmap = BitmapFactory.decodeFile(photoFile.getAbsolutePath());
+//                    cropPhoto(imageBitmap,photoFile.getAbsolutePath());
+//                }
+                if (!imgPath.equals("")) {
 
+                    Log.e("camera", "03");
+                    File selectedImagePath = new File(imgPath);
+                    imgDecodableString = selectedImagePath.getAbsolutePath();
+                    cropPhoto(BitmapFactory.decodeFile(selectedImagePath.getAbsolutePath()), imgDecodableString);
+                }
             }
             else {
                 if (resultCode != 0) {
@@ -1655,9 +1668,16 @@ public class MyAchievementsFragment extends Fragment {
                     //  if (!songPath.equals(""))
                     // PlayMusic(songPath);
                 } else if(requestCode == CAMERA_PIC_REQUEST && resultCode == RESULT_OK){
-                    if (photoFile != null) {
-                        Bitmap imageBitmap = BitmapFactory.decodeFile(photoFile.getAbsolutePath());
-                        cropPhoto1(imageBitmap,photoFile.getAbsolutePath());
+//                    if (photoFile != null) {
+//                        Bitmap imageBitmap = BitmapFactory.decodeFile(photoFile.getAbsolutePath());
+//                        cropPhoto1(imageBitmap,photoFile.getAbsolutePath());
+//                    }
+                    if (!imgPath.equals("")) {
+
+                        Log.e("camera", "03");
+                        File selectedImagePath = new File(imgPath);
+                        imgDecodableString = selectedImagePath.getAbsolutePath();
+                        cropPhoto1(BitmapFactory.decodeFile(selectedImagePath.getAbsolutePath()), imgDecodableString);
                     }
 
                 }
@@ -4759,26 +4779,50 @@ public class MyAchievementsFragment extends Fragment {
     }
 
     private void openCam(){
-        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        if (takePictureIntent.resolveActivity(Objects.requireNonNull(getActivity()).getPackageManager()) != null) {
-            // Create the File where the photo should go
-            try {
-                photoFile = createImageFile();
-                // Continue only if the File was successfully created
-                Uri photoURI = FileProvider.getUriForFile(
-                        getActivity(),
-                        "com.ashysystem.mbhq.fileprovider",
-                        photoFile
-                );
-                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
-                startActivityForResult(takePictureIntent, CAMERA_PIC_REQUEST);
-            } catch (Exception ex) {
-                // Error occurred while creating the File
-                ex.printStackTrace();
-            }
-        }
+//        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+//        if (takePictureIntent.resolveActivity(Objects.requireNonNull(getActivity()).getPackageManager()) != null) {
+//            // Create the File where the photo should go
+//            try {
+//                photoFile = createImageFile();
+//                // Continue only if the File was successfully created
+//                Uri photoURI = FileProvider.getUriForFile(
+//                        getActivity(),
+//                        "com.ashysystem.mbhq.fileprovider",
+//                        photoFile
+//                );
+//                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
+//                startActivityForResult(takePictureIntent, CAMERA_PIC_REQUEST);
+//            } catch (Exception ex) {
+//                // Error occurred while creating the File
+//                ex.printStackTrace();
+//            }
+//        }
+        ContentResolver contentResolver = getActivity().getContentResolver();
+        ContentValues values = new ContentValues();
+        values.put(MediaStore.Images.Media.DISPLAY_NAME, "EFC" + System.currentTimeMillis());
+        values.put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg");
+        String relativePath = Environment.DIRECTORY_PICTURES + File.separator + "Emotional FC";
+        values.put(MediaStore.Images.Media.RELATIVE_PATH, relativePath);
+        Uri uri = contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
+        imgPath = getRealPathFromUri(uri);
+        Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
+        startActivityForResult(cameraIntent, CAMERA_PIC_REQUEST);
     }
+    private String getRealPathFromUri(Uri uri) {
+        String[] projection = {MediaStore.Images.Media.DATA};
+        Cursor cursor = getActivity().getContentResolver().query(uri, projection, null, null, null);
+        if (cursor == null) {
+            // Handle the error gracefully
+            return null;
+        }
 
+        int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+        cursor.moveToFirst();
+        String filePath = cursor.getString(column_index);
+        cursor.close();
+        return filePath;
+    }
     private void pickImageFromCamrea_(TextView addPicButton) {
 
         final Dialog dlg = new Dialog(getActivity());
@@ -4812,8 +4856,13 @@ public class MyAchievementsFragment extends Fragment {
 
                     } else {
                         if (!Settings.System.canWrite(getActivity())) {
-                            requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                                    Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.CAMERA}, 203);
+//                            requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,
+//                                    Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.CAMERA}, 203);
+                            if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                                requestPermissions(new String[]{Manifest.permission.READ_MEDIA_IMAGES,Manifest.permission.READ_MEDIA_AUDIO,Manifest.permission.READ_MEDIA_VIDEO,Manifest.permission.CAMERA}, 203);
+                            }else{
+                                requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.CAMERA}, 203);
+                            }
                         }
                     }
 
@@ -5776,18 +5825,31 @@ public class MyAchievementsFragment extends Fragment {
     }
 
     private boolean hasCameraPermission() {
-        int hasPermissionWrite = ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE);
-        int hasPermissionRead = ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_EXTERNAL_STORAGE);
-        int hasPermissionCamera = ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.CAMERA);
-        if (hasPermissionRead == PackageManager.PERMISSION_GRANTED && hasPermissionCamera == PackageManager.PERMISSION_GRANTED && hasPermissionWrite == PackageManager.PERMISSION_GRANTED) {
-            Log.e("camera","10");
+//        int hasPermissionWrite = ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE);
+//        int hasPermissionRead = ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_EXTERNAL_STORAGE);
+//        int hasPermissionCamera = ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.CAMERA);
+//        if (hasPermissionRead == PackageManager.PERMISSION_GRANTED && hasPermissionCamera == PackageManager.PERMISSION_GRANTED && hasPermissionWrite == PackageManager.PERMISSION_GRANTED) {
+//            Log.e("camera","10");
+//
+//            return true;
+//        } else
+//
+//            Log.e("camera","11");
+//
+//        return false;
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.R) {
+            // For Android versions below API level 30
+            return ContextCompat.checkSelfPermission(getContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
+                    && ContextCompat.checkSelfPermission(getContext(), Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
+                    && ContextCompat.checkSelfPermission(getContext(), Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED;
 
-            return true;
-        } else
-
-            Log.e("camera","11");
-
-        return false;
+        } else {
+            // For Android versions R (API level 30) and above
+            return ContextCompat.checkSelfPermission(getContext(), Manifest.permission.READ_MEDIA_IMAGES) == PackageManager.PERMISSION_GRANTED
+                    && ContextCompat.checkSelfPermission(getContext(), Manifest.permission.READ_MEDIA_VIDEO) == PackageManager.PERMISSION_GRANTED
+                    && ContextCompat.checkSelfPermission(getContext(), Manifest.permission.READ_MEDIA_AUDIO) == PackageManager.PERMISSION_GRANTED
+                    && ContextCompat.checkSelfPermission(getContext(), Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED;
+        }
     }
 
     private boolean hasGalleryPermission() {
@@ -5902,8 +5964,9 @@ public class MyAchievementsFragment extends Fragment {
 
                     bitimage = cropImageView.getCroppedImage();
                     dialogcrop.dismiss();
-                    Uri uri = getImageUri(Objects.requireNonNull(getActivity()),bitimage);
-                    String cropPath = Util.getFilePathFromUri(Objects.requireNonNull(getActivity()),uri);
+//                    Uri uri = getImageUri(Objects.requireNonNull(getActivity()),bitimage);
+//                    String cropPath = Util.getFilePathFromUri(Objects.requireNonNull(getActivity()),uri);
+                    String cropPath = storeImage(bitimage);
                     preaprePictureForUpload(cropPath);
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -5937,60 +6000,128 @@ public class MyAchievementsFragment extends Fragment {
         return Uri.parse(path);
     }
 
+//    private void preaprePictureForUpload(String cropPath) {
+//        try {
+//            File file = new File(cropPath);
+//            FileInputStream imageInFile = new FileInputStream(file);
+//            byte[] imageData = new byte[(int) file.length()];
+//            imageInFile.read(imageData);
+//            stringImg = encodeImage(imageData);
+//            Log.e("BASE64STRING", stringImg);//////
+//            sharedPreference.write("GRATITUDEIMAGE", "", stringImg);
+//            mFile = file;
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//
+//        try {
+//            cardViewBackgroundPicTOP.setVisibility(View.VISIBLE);
+//            imgBackgroundPicTOP.setVisibility(View.VISIBLE);
+//            if (null != cropPath) {
+//                Log.e("CRPPPPPP", "preaprePictureForUpload: " + cropPath );
+//                imgBackgroundPicTOP.setImageBitmap(BitmapFactory.decodeFile(cropPath));
+//
+//            }
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            Log.e("CROPPPP", "preaprePictureForUpload: " + e.getMessage());
+//        }
+//    }
+
+    public  File getFileFromContentUri(ContentResolver contentResolver, Uri contentUri) {
+        String[] projection = {MediaStore.Images.Media.DATA};
+        Cursor cursor = contentResolver.query(contentUri, projection, null, null, null);
+
+        if (cursor != null && cursor.moveToFirst()) {
+            int columnIndex = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+            String filePath = cursor.getString(columnIndex);
+
+            // Now you have the actual file path
+            cursor.close();
+            return new File(filePath);
+        } else {
+            // Handle the case where the cursor is null or empty
+            if (cursor != null) {
+                cursor.close();
+            }
+            return null;
+        }
+    }
     private void preaprePictureForUpload(String cropPath) {
-        try {
-            File file = new File(cropPath);
-            FileInputStream imageInFile = new FileInputStream(file);
-            byte[] imageData = new byte[(int) file.length()];
-            imageInFile.read(imageData);
-            stringImg = encodeImage(imageData);
-            Log.e("BASE64STRING", stringImg);//////
-            sharedPreference.write("GRATITUDEIMAGE", "", stringImg);
-            mFile = file;
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    try {
+        ContentResolver contentResolver = getActivity().getContentResolver();
+        Uri contentUri = Uri.parse(cropPath);
+        File file =getFileFromContentUri(contentResolver, contentUri);
 
-        try {
-            cardViewBackgroundPicTOP.setVisibility(View.VISIBLE);
-            imgBackgroundPicTOP.setVisibility(View.VISIBLE);
-            if (null != cropPath) {
-                Log.e("CRPPPPPP", "preaprePictureForUpload: " + cropPath );
-                imgBackgroundPicTOP.setImageBitmap(BitmapFactory.decodeFile(cropPath));
+        InputStream imageInFile =  contentResolver.openInputStream(Uri.parse(cropPath));
+        byte[] imageData = new byte[(int) file.length()];
+        imageInFile.read(imageData);
+        stringImg = encodeImage(imageData);
+        Log.e("BASE64STRING", stringImg);
+        sharedPreference.write("GRATITUDEIMAGE", "", stringImg);
+        mFile = file;
+        Log.e("mfile",""+mFile);
 
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            Log.e("CROPPPP", "preaprePictureForUpload: " + e.getMessage());
-        }
+    } catch (Exception e) {
+        e.printStackTrace();
     }
+        cardViewBackgroundPicTOP.setVisibility(View.VISIBLE);
+    imgBackgroundPicTOP.setImageURI(Uri.parse(cropPath));
+    cardViewBackgroundPicTOP.setVisibility(View.VISIBLE);
+    imgBackgroundPicTOP.setVisibility(View.VISIBLE);
 
-
+}
     private String storeImage(Bitmap image) {
+        ContentValues values = new ContentValues();
+        values.put(MediaStore.Images.Media.DISPLAY_NAME, "EFC_EQ_CROPPED" + System.currentTimeMillis());
+        values.put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg");
+        // values.put(MediaStore.Images.Media.RELATIVE_PATH, Environment.DIRECTORY_PICTURES);
+        String relativePath = Environment.DIRECTORY_PICTURES + File.separator + "Emotional FC";
+        values.put(MediaStore.Images.Media.RELATIVE_PATH, relativePath);
+        Uri imageUri = getActivity().getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
 
-        if(null==image){
-
-        }else{
-            File pictureFile = getOutputMediaFile();
-
-            if (pictureFile == null) {
-                Log.d("TAG",
-                        "Error creating media file, check storage permissions: ");// e.getMessage());
-                return "";
-            }
-            try {
-                FileOutputStream fos = new FileOutputStream(pictureFile);
-                image.compress(Bitmap.CompressFormat.PNG, 40, fos);
-                fos.close();
-            } catch (FileNotFoundException e) {
-                Log.d("TAG", "File not found: " + e.getMessage());
-            } catch (IOException e) {
-                Log.d("TAG", "Error accessing file: " + e.getMessage());
-            }
-            return pictureFile.getAbsolutePath();
+        if (imageUri == null) {
+            Log.e("TAG", "Error creating media file");
+            return "";
         }
-        return null;
+
+        try {
+            OutputStream outputStream = getActivity().getContentResolver().openOutputStream(imageUri);
+            image.compress(Bitmap.CompressFormat.JPEG, 90, outputStream);
+            if (outputStream != null) {
+                outputStream.close();
+            }
+        } catch (IOException e) {
+            Log.e("TAG", "Error accessing file: " + e.getMessage());
+        }
+
+        return imageUri.toString();
     }
+//    private String storeImage(Bitmap image) {
+//
+//        if(null==image){
+//
+//        }else{
+//            File pictureFile = getOutputMediaFile();
+//
+//            if (pictureFile == null) {
+//                Log.d("TAG",
+//                        "Error creating media file, check storage permissions: ");// e.getMessage());
+//                return "";
+//            }
+//            try {
+//                FileOutputStream fos = new FileOutputStream(pictureFile);
+//                image.compress(Bitmap.CompressFormat.PNG, 40, fos);
+//                fos.close();
+//            } catch (FileNotFoundException e) {
+//                Log.d("TAG", "File not found: " + e.getMessage());
+//            } catch (IOException e) {
+//                Log.d("TAG", "Error accessing file: " + e.getMessage());
+//            }
+//            return pictureFile.getAbsolutePath();
+//        }
+//        return null;
+//    }
 
     private File getOutputMediaFile() {
 
@@ -9054,9 +9185,14 @@ public class MyAchievementsFragment extends Fragment {
                         openCam();
 
                     } else {
-                        if (!Settings.System.canWrite(getActivity())) {
-                            requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                                    Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.CAMERA}, 203);
+//                        if (!Settings.System.canWrite(getActivity())) {
+//                            requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,
+//                                    Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.CAMERA}, 203);
+//                        }
+                        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                            requestPermissions(new String[]{Manifest.permission.READ_MEDIA_IMAGES,Manifest.permission.READ_MEDIA_AUDIO,Manifest.permission.READ_MEDIA_VIDEO,Manifest.permission.CAMERA}, 203);
+                        }else{
+                            requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.CAMERA}, 203);
                         }
                     }
 
@@ -9114,7 +9250,7 @@ public class MyAchievementsFragment extends Fragment {
                 dialogEdit.requestWindowFeature(Window.FEATURE_NO_TITLE);
 
                 dialogEdit.setContentView(R.layout.myachievement_edit_dialog);
-                dialogEdit.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+                dialogEdit.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
                 RelativeLayout editAchievement = (RelativeLayout) dialogEdit.findViewById(R.id.editAchievement);
                 RelativeLayout rl_folder=(RelativeLayout) dialogEdit.findViewById(R.id.rl_folder);
                 TextView tv_foldername=(TextView) dialogEdit.findViewById(R.id.tv_foldername);
@@ -11358,27 +11494,26 @@ public class MyAchievementsFragment extends Fragment {
 
                     if (hasCameraPermission()) {
 
-                        Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                        out = createFolder1();
-                        imgPath = out.getAbsolutePath();
-                        Uri photoURI = FileProvider.getUriForFile(getActivity(), BuildConfig.APPLICATION_ID + ".fileprovider", out);
-                        cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
-                        getActivity().startActivityForResult(cameraIntent, CAMERA_PIC_REQUEST);
+//                        Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+//                        out = createFolder1();
+//                        imgPath = out.getAbsolutePath();
+//                        Uri photoURI = FileProvider.getUriForFile(getActivity(), BuildConfig.APPLICATION_ID + ".fileprovider", out);
+//                        cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
+//                        getActivity().startActivityForResult(cameraIntent, CAMERA_PIC_REQUEST);
+                        openCam();
 
                     } else {
                         if (!Settings.System.canWrite(getActivity())) {
-                            requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                                    Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.CAMERA}, 203);
+                            if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                                requestPermissions(new String[]{Manifest.permission.READ_MEDIA_IMAGES,Manifest.permission.READ_MEDIA_AUDIO,Manifest.permission.READ_MEDIA_VIDEO,Manifest.permission.CAMERA}, 203);
+                            }else{
+                                requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.CAMERA}, 203);
+                            }
                         }
                     }
 
                 } else {
-                    Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                    out = createFolder1();
-                    imgPath = out.getAbsolutePath();
-                    Uri photoURI = FileProvider.getUriForFile(getActivity(), BuildConfig.APPLICATION_ID + ".fileprovider", out);
-                    cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
-                    getActivity().startActivityForResult(cameraIntent, CAMERA_PIC_REQUEST);
+                    openCam();
                 }
             }
         });
@@ -11446,7 +11581,7 @@ public class MyAchievementsFragment extends Fragment {
         // Create a media file name
 
         // For unique file name appending current timeStamp with file name
-        java.util.Date date = new java.util.Date();
+        Date date = new Date();
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss")
                 .format(date.getTime());
 
@@ -11544,8 +11679,9 @@ public class MyAchievementsFragment extends Fragment {
                     // new ImageloadAsyn(bitimage).execute();
                     //Uri tempUri = getImageUri(getActivity(), bitimage);
                     //String cropPath = getRealPathFromURI(tempUri);
-                    Uri uri = getImageUri(Objects.requireNonNull(getActivity()),bitimage);
-                    String cropPath = Util.getFilePathFromUri(Objects.requireNonNull(getActivity()),uri);
+//                    Uri uri = getImageUri(Objects.requireNonNull(getActivity()),bitimage);
+//                    String cropPath = Util.getFilePathFromUri(Objects.requireNonNull(getActivity()),uri);
+                    String cropPath = storeImage(bitimage);
                     preaprePictureForUpload1(cropPath);
                     imgJournalLoadingBar.setVisibility(View.GONE);
                 } catch (Exception e) {
@@ -11603,23 +11739,40 @@ public class MyAchievementsFragment extends Fragment {
         return mediaFile;
     }
     private void preaprePictureForUpload1(String cropPath) {
+//        try {
+//            File file = new File(cropPath);
+//            FileInputStream imageInFile = new FileInputStream(file);
+//            byte[] imageData = new byte[(int) file.length()];
+//            imageInFile.read(imageData);
+//            stringImg = encodeImage(imageData);
+//            Log.e("BASE64STRING", stringImg);
+//            sharedPreference.write("GRATITUDEIMAGE", "", stringImg);
+//            mFile = file;
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
         try {
-            File file = new File(cropPath);
-            FileInputStream imageInFile = new FileInputStream(file);
+            ContentResolver contentResolver = getActivity().getContentResolver();
+            Uri contentUri = Uri.parse(cropPath);
+            File file =getFileFromContentUri(contentResolver, contentUri);
+
+            InputStream imageInFile =  contentResolver.openInputStream(Uri.parse(cropPath));
             byte[] imageData = new byte[(int) file.length()];
             imageInFile.read(imageData);
             stringImg = encodeImage(imageData);
             Log.e("BASE64STRING", stringImg);
             sharedPreference.write("GRATITUDEIMAGE", "", stringImg);
             mFile = file;
-        } catch (IOException e) {
+            Log.e("mfile",""+mFile);
+
+        } catch (Exception e) {
             e.printStackTrace();
         }
-
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
             imgGratitudeMain.setBackgroundResource(0);
         }
-        imgGratitudeMain.setImageBitmap(BitmapFactory.decodeFile(cropPath));
+       // imgGratitudeMain.setImageBitmap(BitmapFactory.decodeFile(cropPath));
+        imgGratitudeMain.setImageURI(Uri.parse(cropPath));
 
         if (gratitudeStatus.equals("EDIT")) {
             //sendPicInfoToserver();
@@ -11640,7 +11793,16 @@ public class MyAchievementsFragment extends Fragment {
                     imgBackgroundPicTOP.setBackgroundResource(0);
                 }
                 Log.e("add img direct", "add img direct---->" + cropPath);
-                imgBackgroundPicTOP.setImageBitmap(BitmapFactory.decodeFile(cropPath));
+//                imgBackgroundPicTOP.setImageBitmap(BitmapFactory.decodeFile(cropPath));
+//                cardViewBackgroundPicTOP.setVisibility(View.VISIBLE);
+//                imgBackgroundPicTOP.setVisibility(View.VISIBLE);
+//                llAddPicTOP.setVisibility(View.GONE);
+//                buttonChangeBackgroundImageTOP.setVisibility(View.VISIBLE);
+//                if (strDialogSelectionType.equals("textOverPic")) {
+//                    buttonMoveTextBoxTOP.setVisibility(View.VISIBLE);
+//                }
+
+                imgBackgroundPicTOP.setImageURI(Uri.parse(cropPath));
                 cardViewBackgroundPicTOP.setVisibility(View.VISIBLE);
                 imgBackgroundPicTOP.setVisibility(View.VISIBLE);
                 llAddPicTOP.setVisibility(View.GONE);
@@ -12780,20 +12942,25 @@ public class MyAchievementsFragment extends Fragment {
 
     }
 void init(){
+    imgHabits.setImageResource(0);
+    imgHabits.setImageResource(R.drawable.mbhq_habits_inactive);
+    imgGratitude.setImageResource(0);
+    imgGratitude.setImageResource(R.drawable.mbhq_gratitude_active);
+
     Log.e("state11111111111","onActivityCreated");
     ////////////////////////////////////////////// Added by mugdho///////////////////////////////////////////
     factoryForGratitude1 = Injection.provideViewModelFactoryGratitude(getActivity());
     gratitudeViewModel1 = new ViewModelProvider(this, factoryForGratitude1).get(GratitudeViewModel.class);
     //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    if("yes".equalsIgnoreCase(Util.opengratitudeforfirstuser)){
-        Log.e("state11111111111","onActivityCreated");
-        Log.i("check_eq","23");
-        Util.opengratitudeforfirstuser="";
-        Log.e("state","onActivityCreated1");
-        pagenation_from_api=true;
-        getAchievementsList_firstcall(Page);
-    }
+//    if("yes".equalsIgnoreCase(Util.opengratitudeforfirstuser)){
+//        Log.e("state11111111111","onActivityCreated");
+//        Log.i("check_eq","23");
+//        Util.opengratitudeforfirstuser="";
+//        Log.e("state","onActivityCreated1");
+//        pagenation_from_api=true;
+//        getAchievementsList_firstcall(Page);
+//    }
     Util.opengratitudeforfirstuser="";
     factoryForGratitude = Injection.provideViewModelFactoryGrowth(getActivity());
     gratitudeViewModel = new ViewModelProvider(this, factoryForGratitude).get(GrowthViewModel.class);

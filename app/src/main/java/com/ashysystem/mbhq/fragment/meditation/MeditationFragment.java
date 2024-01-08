@@ -24,6 +24,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import android.os.SystemClock;
 import android.provider.Settings;
 import android.text.Editable;
 import android.text.SpannableString;
@@ -52,6 +53,7 @@ import com.ashysystem.mbhq.R;
 import com.ashysystem.mbhq.Service.impl.FinisherServiceImpl;
 import com.ashysystem.mbhq.activity.MainActivity;
 import com.ashysystem.mbhq.adapter.MeditationCourseAdapter;
+import com.ashysystem.mbhq.fragment.achievement.MyAchievementsFragment;
 import com.ashysystem.mbhq.fragment.habit_hacker.MbhqTodayMainFragment;
 import com.ashysystem.mbhq.fragment.habit_hacker.MbhqTodayTwoFragment;
 import com.ashysystem.mbhq.model.GetMeditationCacheExpiryTimeResponse;
@@ -65,6 +67,7 @@ import com.ashysystem.mbhq.roomDatabase.Injection;
 import com.ashysystem.mbhq.roomDatabase.entity.MeditationEntity;
 import com.ashysystem.mbhq.roomDatabase.modelFactory.ViewModelFactoryForMeditation;
 import com.ashysystem.mbhq.roomDatabase.viewModel.MeditationViewModel;
+import com.ashysystem.mbhq.util.AlertDialogCustom;
 import com.ashysystem.mbhq.util.Connection;
 import com.ashysystem.mbhq.util.SharedPreference;
 import com.ashysystem.mbhq.util.Util;
@@ -274,7 +277,9 @@ if("3".equalsIgnoreCase(accesstype)){
                 img_notaccess.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        Uri uri = Uri.parse("https://www.mindbodyhq.com/efc"); // missing 'http://' will cause crashed
+                        String url=sharedPreference.read("MeditationPurchaseUrl","");
+
+                        Uri uri = Uri.parse(url); // missing 'http://' will cause crashed
                         Intent intent = new Intent(Intent.ACTION_VIEW, uri);
                         startActivity(intent);
                     }
@@ -1328,7 +1333,6 @@ if("3".equalsIgnoreCase(accesstype)){
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
-
                     }
                 }
 
@@ -1369,7 +1373,9 @@ if("3".equalsIgnoreCase(accesstype)){
             Log.i("medi_tation","2");
 
             if (!testViewModel.lstTotalDataM.isEmpty()) {
-                getGuidedMeditationList();
+
+                /*commented by sahenita(temporary)*/
+                //getGuidedMeditationList();
                 /*if(testViewModel.arrJson != null)*//*sahenita*/
                 if (testViewModel.arrJson .length()!=0) {
                     Log.i("medi_tation","3");
@@ -1865,6 +1871,19 @@ void init(View view){
         bundle.putString("data", Util.strMeditationDetailsForBackground);
         meditationDetails.setArguments(bundle);
         ((MainActivity) requireActivity()).loadFragment(meditationDetails, "MeditationDetailsNew", null);
+    }else if (Util.boolBackGroundServiceRunningProgram_video && Util.bundleProgramDetailsForBackground_vedio != null && !fromDetailsPage) {
+        Log.i(TAG, "UTILVALUEEEEEE" + Util.strMeditationDetailsForBackground + ">>>>>");
+        Util.backto="";
+//        ((MainActivity) requireActivity()).clearCacheForParticularFragment(new MeditationDetailsNew());
+//        MeditationDetailsNew meditationDetails = new MeditationDetailsNew();
+//        Bundle bundle = new Bundle();
+//        bundle.putString("data", Util.strMeditationDetailsForBackground);
+//        meditationDetails.setArguments(bundle);
+//        ((MainActivity) requireActivity()).loadFragment(meditationDetails, "MeditationDetailsNew", null);
+
+        ((MainActivity) requireActivity()).clearCacheForParticularFragment(MeditationDetailsNew_video.newInstance(Util.bundleProgramDetailsForBackground_vedio));
+        ((MainActivity) requireActivity()).loadFragment(MeditationDetailsNew_video.newInstance(Util.bundleProgramDetailsForBackground_vedio), "LiveChatPlayer", null);//temporary bt jyoti
+
     } else {
         // fromDetailsPage = false;
     }
@@ -2614,11 +2633,7 @@ void init(View view){
                         Log.i("7777777700",Test_acess);
                         Log.i("8888888800",Course_access);
 
-                        if(null!=getActivity()){
-                            ((MainActivity) getActivity()).clearCacheForParticularFragment(new MeditationFragment());
-                            ((MainActivity) getActivity()).loadFragment(new MeditationFragment(), "MeditationFragment", null);
-                        }
-
+                        showpopup_upgrade();
 
                     }
                 }
@@ -2636,6 +2651,28 @@ void init(View view){
     }
 
 
+    private void showpopup_upgrade( ){
+        AlertDialogCustom alertDialogCustom = new AlertDialogCustom(getActivity());
+        alertDialogCustom.ShowDialog("Efc", "Your Access Check has been Completed.", false);
+        alertDialogCustom.setAlertAction(new AlertDialogCustom.AlertResponse() {
+            @Override
+            public void onDone(String title) {
+
+                if(null!=getActivity()){
+                    ((MainActivity) getActivity()).clearCacheForParticularFragment(new MeditationFragment());
+                    ((MainActivity) getActivity()).loadFragment(new MeditationFragment(), "MeditationFragment", null);
+                }
+
+
+            }
+
+            @Override
+            public void onCancel(String title) {
+
+            }
+        });
+
+    }
 
 
 }

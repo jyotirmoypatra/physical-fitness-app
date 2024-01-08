@@ -17,6 +17,59 @@ public class LoginResponse {
     @SerializedName("IsSubscribed")
     @Expose
     private Boolean isSubscribed;
+    @SerializedName("TestsPurchaseUrl")
+    @Expose
+    private String TestsPurchaseUrl;
+    @SerializedName("HabitPurchaseUrl")
+    @Expose
+    private String HabitPurchaseUrl;
+    @SerializedName("EQJournalPurchaseUrl")
+    @Expose
+    private String EQJournalPurchaseUrl;
+    @SerializedName("MeditationPurchaseUrl")
+    @Expose
+    private String MeditationPurchaseUrl;
+
+    public Boolean getSubscribed() {
+        return isSubscribed;
+    }
+
+    public void setSubscribed(Boolean subscribed) {
+        isSubscribed = subscribed;
+    }
+
+    public String getTestsPurchaseUrl() {
+        return TestsPurchaseUrl;
+    }
+
+    public void setTestsPurchaseUrl(String testsPurchaseUrl) {
+        TestsPurchaseUrl = testsPurchaseUrl;
+    }
+
+    public String getHabitPurchaseUrl() {
+        return HabitPurchaseUrl;
+    }
+
+    public void setHabitPurchaseUrl(String habitPurchaseUrl) {
+        HabitPurchaseUrl = habitPurchaseUrl;
+    }
+
+    public String getEQJournalPurchaseUrl() {
+        return EQJournalPurchaseUrl;
+    }
+
+    public void setEQJournalPurchaseUrl(String EQJournalPurchaseUrl) {
+        this.EQJournalPurchaseUrl = EQJournalPurchaseUrl;
+    }
+
+    public String getMeditationPurchaseUrl() {
+        return MeditationPurchaseUrl;
+    }
+
+    public void setMeditationPurchaseUrl(String meditationPurchaseUrl) {
+        MeditationPurchaseUrl = meditationPurchaseUrl;
+    }
+
     @SerializedName("Jwt")
     @Expose
     private String jwt;

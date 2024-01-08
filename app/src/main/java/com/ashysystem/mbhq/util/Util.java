@@ -208,6 +208,10 @@ public class Util {
     public static String strMeditationDetailsForBackground = "";
     public static boolean boolBackGroundServiceRunningProgram = false;
     public static Bundle bundleProgramDetailsForBackground = null;
+    public static boolean boolBackGroundServiceRunningProgram_video = false;
+
+    public static MeditationCourseModel.Webinar bundleProgramDetailsForBackground_vedio = null;
+
     public static ArrayList<View> arrViewNu = new ArrayList<>();
     public static List<MeditationCourseModel.Webinar> withfilterlist_afterbackfrommeditationdetails = new ArrayList<>();
     public static String str_withfilterlist_afterbackfrommeditationdetails = "";

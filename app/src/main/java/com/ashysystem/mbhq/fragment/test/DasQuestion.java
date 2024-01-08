@@ -4074,7 +4074,14 @@ public class DasQuestion extends Fragment {
 
 
 
+    @Override
+    public void onResume() {
+        super.onResume();
 
+        Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
+        toolbar.setNavigationIcon(R.drawable.logo1);
+
+    }
 
 
 

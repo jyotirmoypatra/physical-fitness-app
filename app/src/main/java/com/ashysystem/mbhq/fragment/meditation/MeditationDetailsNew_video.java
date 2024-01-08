@@ -73,12 +73,6 @@ import java.util.Objects;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link MeditationDetailsNew_video#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class MeditationDetailsNew_video extends Fragment implements View.OnClickListener, View.OnTouchListener {
 
 
@@ -255,47 +249,6 @@ public class MeditationDetailsNew_video extends Fragment implements View.OnClick
         PAUSED
     }
 
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-       /* AudioManager audioManager = (AudioManager) Objects.requireNonNull(getActivity()).getSystemService(Context.AUDIO_SERVICE);
-
-        AudioManager.OnAudioFocusChangeListener afChangeListener = new AudioManager.OnAudioFocusChangeListener() {
-            public void onAudioFocusChange(int focusChange) {
-                if (focusChange == AudioManager.AUDIOFOCUS_LOSS_TRANSIENT) {
-                    // Pause playback
-                    musicSrv.pauseMedia();
-                } else if (focusChange == AudioManager.AUDIOFOCUS_GAIN) {
-                    // Resume playback
-                    //  musicSrv.startMedia();
-                } else if (focusChange == AudioManager.AUDIOFOCUS_LOSS) {
-                    // Stop playback
-                    musicSrv.pauseMedia();
-                }
-            }
-        };
-
-        int result = audioManager.requestAudioFocus(afChangeListener,
-                // Use the music stream.
-                AudioManager.STREAM_MUSIC,
-                // Request permanent focus.
-                AudioManager.AUDIOFOCUS_GAIN);
-*/
-       /* if (result == AudioManager.AUDIOFOCUS_REQUEST_GRANTED) {
-            // Start playback
-           // musicSrv.startMedia();
-        }*/
-        if (getArguments() != null) {
-            liveChatData = (MeditationCourseModel.Webinar) getArguments().getSerializable(ARG_LIVE_CHAT_DATA);
-        }
-
-        downloadedFileUri = Util.getDownloadedFileUri(getContext(), liveChatData.getDownloadid());
-        Log.e("D_URI", "onReceive: " + downloadedFileUri);
-
-    }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -306,9 +259,16 @@ public class MeditationDetailsNew_video extends Fragment implements View.OnClick
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        if (getArguments() != null) {
+            liveChatData = (MeditationCourseModel.Webinar) getArguments().getSerializable(ARG_LIVE_CHAT_DATA);
+        }
+
+        downloadedFileUri = Util.getDownloadedFileUri(getContext(), liveChatData.getDownloadid());
+        Log.e("D_URI", "onReceive: " + downloadedFileUri);
 
         initView(view);
-
+        disableMediaControls();
+        doBindService();
         liveChatVideoView.getHolder().addCallback(new SurfaceHolder.Callback() {
             @Override
             public void surfaceCreated(SurfaceHolder holder) {
@@ -408,32 +368,17 @@ public class MeditationDetailsNew_video extends Fragment implements View.OnClick
         txtLiveChatTitle.setText(liveChatData.getEventName());
         txtLiveChatPresenter.setText(liveChatData.getPresenterName());
         txtBack.setOnClickListener(this);
-        // liveChatVideoView.setOnTouchListener(this);
-        // videoViewControlsContainer.setOnTouchListener(this);
-        //  imgPlayPause.setOnTouchListener(this);
+
         imgFastForward.setOnTouchListener(this);
         imgRewind.setOnTouchListener(this);
         rlFullscreen.setOnClickListener(this); // added
 
         imgBackwardOnVideo.setOnTouchListener(this);
         imgForwardOnVideo.setOnTouchListener(this);
-        // imgPlayPauseOnVideo.setOnTouchListener(this);
 
-        // imgPlayPauseOnVideo.setOnTouchListener(this); // added
-        // videoControlsOnVideoView.setOnTouchListener(this); // added
         frameVideo.setOnTouchListener(this); // added
 
 
-    }
-
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        if (savedInstanceState != null) {
-            liveChatData = (MeditationCourseModel.Webinar) savedInstanceState.getSerializable("LIVE_CHAT_DATA");
-        }
-        disableMediaControls();
-        doBindService();
     }
 
     @Override
@@ -448,8 +393,7 @@ public class MeditationDetailsNew_video extends Fragment implements View.OnClick
         super.onResume();
         requireActivity().registerReceiver(broadcastReceiver, new IntentFilter("MediaNotification"));
         getActivity().startService(new Intent(getContext(), OnClearFromRecentService.class));
-//        IntentFilter filter = new IntentFilter(Intent.ACTION_SCREEN_OFF);
-//        getActivity().registerReceiver(broadcastReceiverForScreen,filter);
+
         LinearLayout llTabView = (LinearLayout) getActivity().findViewById(R.id.llTabView);
         llTabView.setVisibility(View.GONE);
         ((MainActivity) getActivity()).toolbar.setVisibility(View.VISIBLE);
@@ -463,13 +407,10 @@ public class MeditationDetailsNew_video extends Fragment implements View.OnClick
     @Override
     public void onPause() {
         super.onPause();
-        //((MainActivity) getActivity()).toolbar.setVisibility(View.VISIBLE);
-       /* LinearLayout llTabView = (LinearLayout) getActivity().findViewById(R.id.llTabView);
-        llTabView.setVisibility(View.VISIBLE);*/
+
         try {
             musicSrv.getMediaPlayer().setDisplay(null);
             musicSrv.getMediaPlayer().setSurface(null);
-            //videoView.getHolder().getSurface().release();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -506,113 +447,7 @@ public class MeditationDetailsNew_video extends Fragment implements View.OnClick
     }
 
 
-    private void toggleEventLike(Integer eventID) {
-
-        SharedPreference sharedPreference = new SharedPreference(requireContext());
-        FinisherServiceImpl finisherService = new FinisherServiceImpl(requireContext());
-
-        if (Connection.checkConnection(requireContext())) {
-
-            progressDialog = ProgressDialog.show(requireContext(), "", "Please wait...", true);
-
-
-            HashMap<String, Object> hashReq = new HashMap<>();
-
-            hashReq.put("UserId", Integer.parseInt(sharedPreference.read("UserID", "")));
-            hashReq.put("Key", Util.KEY);
-            hashReq.put("UserSessionID", Integer.parseInt(sharedPreference.read("UserSessionID", "")));
-            hashReq.put("EventID", eventID);
-
-
-            Call<JsonObject> userHabitSwapsModelCall = finisherService.ToggleEventLike(hashReq);
-            userHabitSwapsModelCall.enqueue(new Callback<JsonObject>() {
-                @Override
-                public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
-                    progressDialog.dismiss();
-
-                    if (response.body() != null) {
-                        sharedPreference.writeBoolean("HAS_USER_A_FAV_MEDITATION", "", true);
-
-                        handleback(true);
-
-                    }
-
-                }
-
-                @Override
-                public void onFailure(Call<JsonObject> call, Throwable t) {
-                    progressDialog.dismiss();
-                }
-            });
-
-        } else {
-            Util.showToast(requireContext(), Util.networkMsg);
-        }
-
-    }
-
-
-
     private void handleback(boolean fromBack) {
-
-        SharedPreference sharedPreference = new SharedPreference(requireContext());
-
-        List<Integer> medIds = new ArrayList<>();
-
-        String medIdString = sharedPreference.read("MEDITATION_IDS_FOR_FAV_DIALOG_SHOWN", "");
-        Log.i(TAG, "med ids: " + medIdString);
-
-        if (!medIdString.isEmpty()) {
-            medIds = new Gson().fromJson(medIdString, new TypeToken<List<Integer>>() {
-            }.getType());
-        }
-
-        if (!sharedPreference.readBoolean("HAS_USER_A_FAV_MEDITATION", "") && medIds != null && !medIds.contains(liveChatData.getEventItemID())) {
-
-            medIds.add(liveChatData.getEventItemID());
-            sharedPreference.write("MEDITATION_IDS_FOR_FAV_DIALOG_SHOWN", "", new Gson().toJson(medIds));
-            medIdString = sharedPreference.read("MEDITATION_IDS_FOR_FAV_DIALOG_SHOWN", "");
-            Log.i(TAG, "med ids: " + medIdString);
-
-            AlertDialog.Builder alertBuilder = new AlertDialog.Builder(requireContext());
-            alertBuilder.setMessage("Did you like this meditation? Make it a favourite now so you can find it again quickly");
-            alertBuilder.setPositiveButton("yes",
-                    new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface arg0, int arg1) {
-                            try {
-                                toggleEventLike(liveChatData.getEventItemID());
-                            } catch (Exception ex) {
-                                ex.printStackTrace();
-                            }
-
-
-                        }
-                    });
-
-            alertBuilder.setNegativeButton("No", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-
-                    try {
-                        ((MainActivity) getActivity()).clearCacheForParticularFragment(new MeditationFragment());
-                        MeditationFragment meditationFragment = new MeditationFragment();
-                        if (fromBack) {
-                            getArguments().putString("BACKBUTTONCLICKED", "TRUE");
-                        }
-                        ((MainActivity) getActivity()).loadFragment(meditationFragment, "MeditationFragment", getArguments());
-                    } catch (Exception ex) {
-                        ex.printStackTrace();
-                    }
-
-
-                }
-            });
-
-            AlertDialog alertDialog = alertBuilder.create();
-            alertDialog.show();
-
-        } else {
 
             ((MainActivity) getActivity()).clearCacheForParticularFragment(new MeditationFragment());
             MeditationFragment meditationFragment = new MeditationFragment();
@@ -620,15 +455,11 @@ public class MeditationDetailsNew_video extends Fragment implements View.OnClick
                 getArguments().putString("BACKBUTTONCLICKED", "TRUE");
             }
             ((MainActivity) getActivity()).loadFragment(meditationFragment, "MeditationFragment", getArguments());
-
-        }
-
     }
 
     @Override
     public void onClick(View v) {
         if (v.getId() == txtBack.getId()) {
-            // ((MainActivity) requireActivity()).loadFragment(LiveChatFragment.newInstance(), "LiveChat", null);
             handleback(true);
         }
         if (v.getId() == rlFullscreen.getId()) {
@@ -644,19 +475,6 @@ public class MeditationDetailsNew_video extends Fragment implements View.OnClick
                 portraitFullscreenMode();
             }
         }
-        /*if(v.getId() == imgBackwardOnVideo.getId()){
-            imgRewind.performClick();
-
-        }
-
-        if(v.getId() == imgForwardOnVideo.getId()){
-            imgFastForward.performClick();
-
-        }
-        if(v.getId() == imgPlayPauseOnVideo.getId()){
-            imgPlayPause.performClick();
-
-        }*/
 
     }
 
@@ -866,41 +684,6 @@ public class MeditationDetailsNew_video extends Fragment implements View.OnClick
 
         }
         else if(v.getId() == imgPlayPauseOnVideo.getId()){
-          /*  switch (event.getAction()) {
-
-                case MotionEvent.ACTION_DOWN:
-
-                    videoControlHandler.removeCallbacks(controlsVisibilityRunner);
-                    return true;
-
-                case MotionEvent.ACTION_UP:
-
-                    videoControlHandler.removeCallbacks(controlsVisibilityRunner);
-                    videoControlHandler.postDelayed(
-                            controlsVisibilityRunner, VIDEO_CONTROLS_VISIBILITY_TIMEOUT
-                    );
-                    if (musicSrv.isMediaPlaying()) {
-
-                        musicSrv.pauseMedia();
-                     //   imgPlayPause.setImageDrawable(this.requireContext().getDrawable(R.drawable.mbhq_play));
-                          imgPlayPauseOnVideo.setImageResource(R.drawable.mbhq_play);
-                          imgPlayPause.setImageResource(R.drawable.mbhq_play);
-                      //  imgPlayPauseOnVideo.setImageDrawable(this.requireContext().getDrawable(R.drawable.mbhq_play));
-                        mediaPlayerHandler.removeCallbacks(mediaUpdateTimeTask);
-                    } else {
-                        musicSrv.startMedia();
-                       // imgPlayPause.setImageDrawable(this.requireContext().getDrawable(R.drawable.mbhq_pause));
-                        imgPlayPauseOnVideo.setImageResource(R.drawable.mbhq_pause);
-                        imgPlayPause.setImageResource(R.drawable.mbhq_pause);
-                       // imgPlayPauseOnVideo.setImageDrawable(this.requireContext().getDrawable(R.drawable.mbhq_pause));
-                        mediaPlayerHandler.postDelayed(mediaUpdateTimeTask, 100);
-                    }
-                    return true;
-
-                case MotionEvent.ACTION_BUTTON_PRESS:
-                    liveChatVideoView.performClick();
-                    return true;
-            }*/
 
         }
 
@@ -1000,10 +783,7 @@ public class MeditationDetailsNew_video extends Fragment implements View.OnClick
                             mediaPlayerHandler.removeCallbacks(mediaUpdateTimeTask);
                             mediaPlayerHandler.postDelayed(mediaUpdateTimeTask, 1000);
                             musicSrv.startMedia();
-                            //  imgPlayPause.setImageDrawable(LiveChatPlayerFragment.this.requireContext().getDrawable(R.drawable.mbhq_pause));
                             imgPlayPause.setBackgroundResource(R.drawable.mbhq_pause_black); //
-                            //  imgPlayPauseOnVideo.setBackgroundResource(R.drawable.mbhq_pause); //
-                            // mediaPlayerHandler.postDelayed(mediaUpdateTimeTask, 1000);
                             enableMediaControls();
 
                             break;
@@ -1012,7 +792,6 @@ public class MeditationDetailsNew_video extends Fragment implements View.OnClick
                             try {
 
                                 if (globalLinkMediaType == BackgroundSoundServiceNew.MediaType.VIDEO) {
-                                    //musicSrv.getMediaPlayer().setSurface(videoView.getHolder().getSurface());
                                     musicSrv.getMediaPlayer().setDisplay(liveChatVideoView.getHolder());
                                     scaleVideo();
                                 }
@@ -1097,51 +876,7 @@ public class MeditationDetailsNew_video extends Fragment implements View.OnClick
             boolean isConnected = activeNetwork != null && activeNetwork.isConnectedOrConnecting();
 
 
-            if (musicSrv.getVideoName().equals(liveChatData.getEventName()) && musicSrv.getFromPage().equals(BackgroundSoundServiceNew.FromPage.LIVE_CHAT)) {
 
-                if(!isConnected){
-                    musicSrv.createMediaPlayer1_(liveChatData.getEventName(), BackgroundSoundServiceNew.FromPage.LIVE_CHAT, downloadedFileUri, globalLinkMediaType, 0, liveChatData, stateListener);
-                }else {
-                    musicSrv.createMediaPlayer1(liveChatData.getEventName(), BackgroundSoundServiceNew.FromPage.LIVE_CHAT, liveChatData.getEventItemVideoDetails().get(0).getDownloadURL(), globalLinkMediaType, 0, liveChatData, stateListener);
-                }
-
-
-
-
-                if (musicSrv.isMediaPlaying()) {
-                    //  imgPlayPause.setImageDrawable(LiveChatPlayerFragment.this.requireContext().getDrawable(R.drawable.mbhq_pause));
-                    //  imgPlayPauseOnVideo.setImageDrawable(LiveChatPlayerFragment.this.requireContext().getDrawable(R.drawable.mbhq_pause));
-                    imgPlayPause.setBackgroundResource(R.drawable.mbhq_pause_black);
-                    imgPlayPauseOnVideo.setBackgroundResource(R.drawable.mbhq_pause_black);
-                } else {
-                    //imgPlayPause.setImageDrawable(LiveChatPlayerFragment.this.requireContext().getDrawable(R.drawable.mbhq_play));
-                    //imgPlayPauseOnVideo.setImageDrawable(LiveChatPlayerFragment.this.requireContext().getDrawable(R.drawable.mbhq_play));
-                    imgPlayPause.setBackgroundResource(R.drawable.mbhq_play_black);
-                    imgPlayPauseOnVideo.setBackgroundResource(R.drawable.mbhq_play_black);
-                }
-
-                try {
-                    if (globalLinkMediaType == BackgroundSoundServiceNew.MediaType.VIDEO) {
-                        musicSrv.getMediaPlayer().setDisplay(liveChatVideoView.getHolder());
-                        scaleVideo();
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-
-
-                if (progressDialog != null) {
-                    progressDialog.dismiss();
-                }
-
-
-                mediaPlayerHandler.removeCallbacks(mediaUpdateTimeTask);
-                mediaPlayerHandler.postDelayed(mediaUpdateTimeTask, 1000);
-                enableMediaControls();
-
-
-
-            } else {
                 musicSrv.stopMedia();
                 if (progressDialog != null) {
                     progressDialog.dismiss();
@@ -1150,22 +885,23 @@ public class MeditationDetailsNew_video extends Fragment implements View.OnClick
                 progressDialog.setCancelable(false);
 
                 if(!isConnected){
-                    musicSrv.createMediaPlayer1_(liveChatData.getEventName(), BackgroundSoundServiceNew.FromPage.LIVE_CHAT, downloadedFileUri, globalLinkMediaType, 0, liveChatData, stateListener);
+                    musicSrv.createMediaPlayer1_(liveChatData.getEventName(), BackgroundSoundServiceNew.FromPage.MEDITATION_VIDEO, downloadedFileUri, globalLinkMediaType, 0, liveChatData, stateListener);
                 }else {
-                    musicSrv.createMediaPlayer1(liveChatData.getEventName(), BackgroundSoundServiceNew.FromPage.LIVE_CHAT, liveChatData.getEventItemVideoDetails().get(0).getDownloadURL(), globalLinkMediaType, 0, liveChatData, stateListener);
+                    musicSrv.createMediaPlayer1(liveChatData.getEventName(), BackgroundSoundServiceNew.FromPage.MEDITATION_VIDEO, liveChatData.getEventItemVideoDetails().get(0).getDownloadURL(), globalLinkMediaType, 0, liveChatData, stateListener);
 
                 }
+            if (musicSrv.isMediaPlaying()) {
 
-
-
-
-
-                //   imgPlayPause.setImageDrawable(LiveChatPlayerFragment.this.requireContext().getDrawable(R.drawable.mbhq_play));
-                //   imgPlayPauseOnVideo.setImageDrawable(LiveChatPlayerFragment.this.requireContext().getDrawable(R.drawable.mbhq_play));
+                imgPlayPause.setBackgroundResource(R.drawable.mbhq_pause_black);
+                imgPlayPauseOnVideo.setBackgroundResource(R.drawable.mbhq_pause_black);
+            } else {
                 imgPlayPause.setBackgroundResource(R.drawable.mbhq_play_black);
                 imgPlayPauseOnVideo.setBackgroundResource(R.drawable.mbhq_play_black);
-
             }
+//                imgPlayPause.setBackgroundResource(R.drawable.mbhq_play_black);
+//                imgPlayPauseOnVideo.setBackgroundResource(R.drawable.mbhq_play_black);
+
+
 
             musicBound = true;
 
@@ -1187,19 +923,6 @@ public class MeditationDetailsNew_video extends Fragment implements View.OnClick
         finisherService = new FinisherServiceImpl(getActivity());
         rl_suggestedmedicines= vi.findViewById(R.id.rl_suggestedmedicines);
         rl_suggestedmedicines.setVisibility(View.GONE);
-    /*    if(Util.meditationsArrayList.size()>0){
-            rl_suggestedmedicines.setVisibility(View.VISIBLE);
-
-        }else{
-            rl_suggestedmedicines.setVisibility(View.GONE);
-
-        }*/
-        rl_suggestedmedicines.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // openAttachmentDialog1();
-            }
-        });
         sharedPreference = new SharedPreference(getActivity());
         txtBack = vi.findViewById(R.id.txtBack);
         txtElapsedDuration = vi.findViewById(R.id.txtElapsedDuration);
@@ -1214,8 +937,6 @@ public class MeditationDetailsNew_video extends Fragment implements View.OnClick
         videoViewControlsContainer = vi.findViewById(R.id.videoViewControlsContainer);
         liveChatVideoView = vi.findViewById(R.id.liveChatVideoView);
         seekBarForVideo = vi.findViewById(R.id.seekBarForVideo);
-
-
         /////////////// added /////////////////////////////////////////////////////////////////////////////////////////////////
         frameVideo = vi.findViewById(R.id.frameVideo);
         rlFullscreen = vi.findViewById(R.id.rlFullscreen);
@@ -1239,15 +960,6 @@ public class MeditationDetailsNew_video extends Fragment implements View.OnClick
         frameVideo.setEnabled(false);
         rlHead.setVisibility(View.VISIBLE);
 
-        ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-        imgPlayPauseOnVideo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                imgPlayPause.performClick();
-            }
-        });
-
         imgPlayPause.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -1264,10 +976,7 @@ public class MeditationDetailsNew_video extends Fragment implements View.OnClick
                             } else {
                                 Log.i(TAG, "media player started");
 
-
-
                                 Log.e("DWNLOAD_DATA1", "onClick: " + liveChatData.getEventItemVideoDetails().get(0).getDownloadURL());
-//                                Log.e("DWNLOAD_DATA2", "onClick: " + liveChatData.getEventItemVideoDetails().get(0).getUniqueName());
                                 Log.i(TAG, "media player started");
 
                                 String[] segments = liveChatData.getEventItemVideoDetails().get(0).getDownloadURL().split("/");
@@ -1285,7 +994,6 @@ public class MeditationDetailsNew_video extends Fragment implements View.OnClick
                                     liveChatData.setDownloadid(dwnldId);
                                     lstTotalDataM.add(liveChatData);
                                     SharedPreferences.Editor editor = preferences.edit();
-//                                sharedPreference.write("my_downloaded_medicine", "", new Gson().toJson(testViewModel.lstTotalDataM));
                                     editor.putString("my_downloaded_medicine", new Gson().toJson(lstTotalDataM));
                                     editor.apply();
 
@@ -1305,9 +1013,6 @@ public class MeditationDetailsNew_video extends Fragment implements View.OnClick
 
 
                                 }
-
-
-
 
                                 musicSrv.startMedia();
                                 imgPlayPause.setBackgroundResource(R.drawable.mbhq_pause_black);
@@ -1340,29 +1045,13 @@ public class MeditationDetailsNew_video extends Fragment implements View.OnClick
         }
     };
 
-    BroadcastReceiver broadcastReceiverForScreen = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            String action = intent.getAction();
-            if (action.equals(Intent.ACTION_SCREEN_OFF)) {
-
-                //  onPlayPause1();
-
-            }
-        }
-    };
 
     private void onPlayPause() {
-        //  Toast.makeText(this,"Test",Toast.LENGTH_SHORT).show();
         Log.e("MMPPLL", "onPlayPause: " + musicSrv.isMediaPlaying());
         if (musicSrv.isMediaPlaying()) {
-            //imgPlayPause.setImageDrawable(LiveChatPlayerFragment.this.requireContext().getDrawable(R.drawable.mbhq_pause));
-            // imgPlayPauseOnVideo.setImageDrawable(LiveChatPlayerFragment.this.requireContext().getDrawable(R.drawable.mbhq_pause));
             imgPlayPause.setBackgroundResource(R.drawable.mbhq_pause_black);
             imgPlayPauseOnVideo.setBackgroundResource(R.drawable.mbhq_pause_black);
         } else {
-            // imgPlayPause.setImageDrawable(LiveChatPlayerFragment.this.requireContext().getDrawable(R.drawable.mbhq_play));
-            //imgPlayPauseOnVideo.setImageDrawable(LiveChatPlayerFragment.this.requireContext().getDrawable(R.drawable.mbhq_play));
             imgPlayPause.setBackgroundResource(R.drawable.mbhq_play_black);
             imgPlayPauseOnVideo.setBackgroundResource(R.drawable.mbhq_play_black);
         }
@@ -1370,27 +1059,8 @@ public class MeditationDetailsNew_video extends Fragment implements View.OnClick
 
     }
 
-    private void onPlayPause1() {
-        //  Toast.makeText(this,"Test",Toast.LENGTH_SHORT).show();
-        Log.e("MMPPLL", "onPlayPause: " + musicSrv.isMediaPlaying());
-        if (musicSrv.isMediaPlaying()) {
-            //imgPlayPause.setImageDrawable(LiveChatPlayerFragment.this.requireContext().getDrawable(R.drawable.mbhq_pause));
-            // imgPlayPauseOnVideo.setImageDrawable(LiveChatPlayerFragment.this.requireContext().getDrawable(R.drawable.mbhq_pause));
-            imgPlayPause.setBackgroundResource(R.drawable.mbhq_pause_black);
-            imgPlayPauseOnVideo.setBackgroundResource(R.drawable.mbhq_pause_black);
-        } else {
-            // imgPlayPause.setImageDrawable(LiveChatPlayerFragment.this.requireContext().getDrawable(R.drawable.mbhq_play));
-            //imgPlayPauseOnVideo.setImageDrawable(LiveChatPlayerFragment.this.requireContext().getDrawable(R.drawable.mbhq_play));
-           /* imgPlayPause.setBackgroundResource(R.drawable.mbhq_play);
-            imgPlayPauseOnVideo.setBackgroundResource(R.drawable.mbhq_play);*/
-        }
 
 
-    }
-
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-    ///////////////////////////////////////// newly added methods //////////////////////////////////////////////////////////////////
     private void portraitMode() {
 
         llSeek.setVisibility(View.VISIBLE);
@@ -1456,16 +1126,12 @@ public class MeditationDetailsNew_video extends Fragment implements View.OnClick
 
 
         if (isFullScreen) {
-            //video is in full screen mode.
-            //portrait videos will be scaled upon screen height.
-            //landscape videos will be scaled upon full width and ratio-wise height with a max of screen height.
+
             maxAllowedHeight = screenHeight;
             maxAllowedWidth = screenWidth;
 
         } else {
-            //video is in non full screen mode.
-            //portrait videos will be scaled upon screen height's half.
-            //landscape videos will be scaled upon full width and ratio-wise height with a max of screen height's half
+
             maxAllowedHeight = screenHeight / 2;
             maxAllowedWidth = screenWidth;
 
@@ -1590,137 +1256,6 @@ public class MeditationDetailsNew_video extends Fragment implements View.OnClick
 
         scaleVideo();
     }
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    private void openAttachmentDialog1() {
-        Dialog dialog = new Dialog(getActivity());
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setContentView(R.layout.dialog_attachment_course);
-        LinearLayout llDynamicAttachment = dialog.findViewById(R.id.llDynamicAttachment);
-        ImageView imgCross = dialog.findViewById(R.id.imgCross);
-        imgCross.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-            }
-        });
-        ///////////////
-        if (Util.meditationsArrayList != null && Util.meditationsArrayList.size() > 0) {
-            //llAttachment.setVisibility(View.VISIBLE);
-            //txtAttachment.setText("Attachments");
-            llDynamicAttachment.removeAllViews();
-            for (int i = 0; i < Util.meditationsArrayList.size(); i++) {
-                View dynamicView = layoutInflater.inflate(R.layout.dynamic_course_attachement1, null);
-                TextView txtTipsInstructions = dynamicView.findViewById(R.id.txtTipsInstructions);
-                LinearLayout llTotal = dynamicView.findViewById(R.id.llTotal);
-                //txtTipsInstructions.setTextColor(Color.parseColor("#98B6F7"));
-                txtTipsInstructions.setText(Util.meditationsArrayList.get(i).getEventName());
-                //txtTipsInstructions.setText("Click Here");
-                final int finalI = i;
 
-                dynamicView.setId(i); // Set a unique ID for each view
-
-                dynamicView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        // Handle click event here
-                        int clickedViewId = v.getId(); // Get the ID of the clicked view
-
-                        Log.i("clicked position",String.valueOf(clickedViewId));
-                        Log.i("clicked position",String.valueOf(Util.meditationsArrayList.get(clickedViewId).getEventItemId()));
-                        getSuggestedmeditationdetails(Util.meditationsArrayList.get(clickedViewId).getEventItemId(),dialog);
-                        // Do something based on which view was clicked
-                    }
-                });
-
-                llDynamicAttachment.addView(dynamicView);
-            }
-        } else {
-        }
-
-
-        ////////////
-        dialog.show();
-    }
-
-    private void getSuggestedmeditationdetails(int EventItemId,Dialog dialog) {
-      /*   //Log.e("print art id-", articleId +
-                "?" + courseId + "?");*/
-        Log.i("courdrid",String.valueOf(EventItemId));
-//        if (Connection.checkConnection(getActivity())) {
-
-
-        // progressDialog = ProgressDialog.show(getActivity(), "", "Please wait...");
-
-        HashMap<String, Object> hashMap = new HashMap<>();
-        hashMap.put("UserId", sharedPreference.read("UserID", ""));
-        hashMap.put("EventItemId", String.valueOf(EventItemId));
-        hashMap.put("Key", Util.KEY);
-        hashMap.put("UserSessionID", sharedPreference.read("UserSessionID", ""));
-
-        Call<Suggestedmedicin> getArticleDetailCall = finisherService.getsuggestedmeditation(hashMap);
-        getArticleDetailCall.enqueue(new Callback<Suggestedmedicin>() {
-            @Override
-            public void onResponse(Call<Suggestedmedicin> call, final Response<Suggestedmedicin> response) {
-                if (progressDialog != null)
-                    progressDialog.dismiss();
-                try {
-                    if (response.body() != null && response.body()!= null) {
-                        dialog.dismiss();
-                        //  globalResponse1=response;
-                        MeditationCourseModel.Webinar lstData= new MeditationCourseModel.Webinar();
-                        lstData.setCommentsCount(response.body().getMeditationDetails().getCommentsCount());
-                        lstData.setContent(response.body().getMeditationDetails().getContent());
-                        lstData.setDuration(response.body().getMeditationDetails().getDuration());
-                        lstData.setDonationAmount(response.body().getMeditationDetails().getDonationAmount());
-                        lstData.setEventItemID(response.body().getMeditationDetails().getEventItemID());
-                        lstData.setEventName(response.body().getMeditationDetails().getEventName());
-                        int v=response.body().getMeditationDetails().getEventItemVideoDetails().get(0).getEventItemVideoID();
-                        MeditationCourseModel.EventItemVideoDetail eventItemVideoDetail=new MeditationCourseModel.EventItemVideoDetail();
-
-                        eventItemVideoDetail.setEventItemVideoID(v);
-                        eventItemVideoDetail.setSequenceNo(response.body().getMeditationDetails().getEventItemVideoDetails().get(0).getSequenceNo());
-                        eventItemVideoDetail.setVideoURL(response.body().getMeditationDetails().getEventItemVideoDetails().get(0).getVideoURL());
-                        eventItemVideoDetail.setAppURL(response.body().getMeditationDetails().getEventItemVideoDetails().get(0).getAppURL());
-                        eventItemVideoDetail.setDownloadURL(response.body().getMeditationDetails().getEventItemVideoDetails().get(0).getDownloadURL2());
-                        eventItemVideoDetail.setIsWatchListVideo(response.body().getMeditationDetails().getEventItemVideoDetails().get(0).getIsWatchListVideo());
-                        eventItemVideoDetail.setIsViewedVideo(response.body().getMeditationDetails().getEventItemVideoDetails().get(0).getIsViewedVideo());
-                        ArrayList<MeditationCourseModel.EventItemVideoDetail> eventItemVideoDetailArrayList=new ArrayList<>();
-                        eventItemVideoDetailArrayList.add(eventItemVideoDetail);
-
-                        lstData.setEventItemVideoDetails(eventItemVideoDetailArrayList);
-                        lstData.setTags(response.body().getMeditationDetails().getTags());
-                        lstData.setPresenterName(response.body().getMeditationDetails().getPresenterName());
-                        lstData.setEventType(response.body().getMeditationDetails().getEventType());
-                        lstData.setImageUrl(response.body().getMeditationDetails().getImageUrl());
-                        lstData.setEventTypename(response.body().getMeditationDetails().getEventTypename());
-                        ((MainActivity) requireActivity()).clearCacheForParticularFragment(new MeditationDetailsNew());
-                        Util.backto="";
-                        MeditationDetailsNew meditationDetails = new MeditationDetailsNew();
-                        Bundle bundle = new Bundle();
-                        String totalData = new Gson().toJson(lstData);
-                        bundle.putString("data", totalData);
-                        meditationDetails.setArguments(bundle);
-                        ((MainActivity) requireActivity()).loadFragment(meditationDetails, "MeditationDetailsNew", null);
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-
-            }
-
-            @Override
-            public void onFailure(Call<Suggestedmedicin> call, Throwable t) {
-                // rlFlashScreen.setVisibility(View.GONE);
-                progressDialog.dismiss();
-            }
-        });
-
-
-        /*} else {
-            rlFlashScreen.setVisibility(View.GONE);
-            Util.showToast(getActivity(), Util.networkMsg);
-        }*/
-
-    }
 
 }

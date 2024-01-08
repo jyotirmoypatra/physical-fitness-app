@@ -1,6 +1,7 @@
 package com.ashysystem.mbhq.activity;
 
-
+import android.content.ContentResolver;
+import android.content.ContentValues;
 import static com.ashysystem.mbhq.activity.MainActivity.decodeSampledBitmapFromFile;
 import static com.ashysystem.mbhq.activity.MainActivity.encodeImage;
 
@@ -9,6 +10,8 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.ContentValues;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -68,6 +71,8 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -580,7 +585,20 @@ public class DemoSliderActivity extends Activity {
             // You can update the UI or do any post-processing here
         }
     }
+    private String getRealPathFromUri(Uri uri) {
+        String[] projection = {MediaStore.Images.Media.DATA};
+        Cursor cursor = getContentResolver().query(uri, projection, null, null, null);
+        if (cursor == null) {
+            // Handle the error gracefully
+            return null;
+        }
 
+        int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+        cursor.moveToFirst();
+        String filePath = cursor.getString(column_index);
+        cursor.close();
+        return filePath;
+    }
     private void pickImageFromGallery() {
         final Dialog dlg = new Dialog(this);
         dlg.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -605,26 +623,58 @@ public class DemoSliderActivity extends Activity {
 
                     if (hasCameraPermission()) {
 
+//                        Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+//                        out = createFolder();
+//                        imgPath = out.getAbsolutePath();
+//                        Uri photoURI = FileProvider.getUriForFile(DemoSliderActivity.this, BuildConfig.APPLICATION_ID + ".fileprovider", out);
+//                        cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
+//                        startActivityForResult(cameraIntent, CAMERA_PIC_REQUEST);
+                        ContentResolver contentResolver = getContentResolver();
+                        ContentValues values = new ContentValues();
+                        //values.put(MediaStore.Images.Media.TITLE, "EFC");
+                        values.put(MediaStore.Images.Media.DISPLAY_NAME, "EFC" + System.currentTimeMillis());
+                        values.put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg");
+                      //  values.put(MediaStore.Images.Media.RELATIVE_PATH, Environment.DIRECTORY_PICTURES);
+                        String relativePath = Environment.DIRECTORY_PICTURES + File.separator + "Emotional FC";
+                        values.put(MediaStore.Images.Media.RELATIVE_PATH, relativePath);
+
+                        Uri uri = contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
+                        imgPath = getRealPathFromUri(uri);
                         Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                        out = createFolder();
-                        imgPath = out.getAbsolutePath();
-                        Uri photoURI = FileProvider.getUriForFile(DemoSliderActivity.this, BuildConfig.APPLICATION_ID + ".fileprovider", out);
-                        cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
+                        cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
                         startActivityForResult(cameraIntent, CAMERA_PIC_REQUEST);
 
                     } else {
                         if (!Settings.System.canWrite(DemoSliderActivity.this)) {
-                            requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                                    Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.CAMERA}, 203);
+//                            requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,
+//                                    Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.CAMERA}, 203);
+                            if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                                requestPermissions(new String[]{Manifest.permission.READ_MEDIA_IMAGES,Manifest.permission.READ_MEDIA_AUDIO,Manifest.permission.READ_MEDIA_VIDEO,Manifest.permission.CAMERA}, 203);
+                            }else{
+                                requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.CAMERA}, 203);
+                            }
                         }
                     }
 
                 } else {
+//                    Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+//                    out = createFolder();
+//                    imgPath = out.getAbsolutePath();
+//                    Uri photoURI = FileProvider.getUriForFile(DemoSliderActivity.this, BuildConfig.APPLICATION_ID + ".fileprovider", out);
+//                    cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
+//                    startActivityForResult(cameraIntent, CAMERA_PIC_REQUEST);
+                    ContentResolver contentResolver = getContentResolver();
+                    ContentValues values = new ContentValues();
+                   // values.put(MediaStore.Images.Media.TITLE, "EFC");
+                    values.put(MediaStore.Images.Media.DISPLAY_NAME, "EFC" + System.currentTimeMillis());
+                    values.put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg");
+                   // values.put(MediaStore.Images.Media.RELATIVE_PATH, Environment.DIRECTORY_PICTURES);
+                    String relativePath = Environment.DIRECTORY_PICTURES + File.separator + "Emotional FC";
+                    values.put(MediaStore.Images.Media.RELATIVE_PATH, relativePath);
+                    Uri uri = contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
+                    imgPath = getRealPathFromUri(uri);
                     Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                    out = createFolder();
-                    imgPath = out.getAbsolutePath();
-                    Uri photoURI = FileProvider.getUriForFile(DemoSliderActivity.this, BuildConfig.APPLICATION_ID + ".fileprovider", out);
-                    cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
+                    cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
                     startActivityForResult(cameraIntent, CAMERA_PIC_REQUEST);
                 }
 
@@ -757,18 +807,29 @@ public class DemoSliderActivity extends Activity {
     }
 
     private boolean hasCameraPermission() {
-        int hasPermissionWrite = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
-        int hasPermissionRead = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE);
-        int hasPermissionCamera = ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA);
-        if (hasPermissionRead == PackageManager.PERMISSION_GRANTED && hasPermissionCamera == PackageManager.PERMISSION_GRANTED && hasPermissionWrite == PackageManager.PERMISSION_GRANTED) {
-            Log.e("camera","10");
+//        int hasPermissionWrite = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+//        int hasPermissionRead = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE);
+//        int hasPermissionCamera = ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA);
+//        if (hasPermissionRead == PackageManager.PERMISSION_GRANTED && hasPermissionCamera == PackageManager.PERMISSION_GRANTED && hasPermissionWrite == PackageManager.PERMISSION_GRANTED) {
+//            Log.e("camera","10");
+//
+//            return true;
+//        } else
+//
+//        return false;
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.R) {
+            // For Android versions below API level 30
+            return ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
+                    && ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
+                    && ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED;
 
-            return true;
-        } else
-
-            Log.e("camera","11");
-//need to check
-        return false;
+        } else {
+            // For Android versions R (API level 30) and above
+            return ContextCompat.checkSelfPermission(this, Manifest.permission.READ_MEDIA_IMAGES) == PackageManager.PERMISSION_GRANTED
+                    && ContextCompat.checkSelfPermission(this, Manifest.permission.READ_MEDIA_VIDEO) == PackageManager.PERMISSION_GRANTED
+                    && ContextCompat.checkSelfPermission(this, Manifest.permission.READ_MEDIA_AUDIO) == PackageManager.PERMISSION_GRANTED
+                    && ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED;
+        }
     }
 
     private boolean hasGalleryPermission() {
@@ -813,11 +874,24 @@ public class DemoSliderActivity extends Activity {
                 // Permission was granted
                 // You can now use the camera in your app
                 Log.e("camera","20");
+//                Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+//                out = createFolder();
+//                imgPath = out.getAbsolutePath();
+//                Uri photoURI = FileProvider.getUriForFile(DemoSliderActivity.this, BuildConfig.APPLICATION_ID + ".fileprovider", out);
+//                cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
+//                startActivityForResult(cameraIntent, CAMERA_PIC_REQUEST);
+                ContentResolver contentResolver = getContentResolver();
+                ContentValues values = new ContentValues();
+                //values.put(MediaStore.Images.Media.TITLE, "EFC");
+                values.put(MediaStore.Images.Media.DISPLAY_NAME, "EFC" + System.currentTimeMillis());
+                values.put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg");
+                //values.put(MediaStore.Images.Media.RELATIVE_PATH, Environment.DIRECTORY_PICTURES);
+                String relativePath = Environment.DIRECTORY_PICTURES + File.separator + "Emotional FC";
+                values.put(MediaStore.Images.Media.RELATIVE_PATH, relativePath);
+                Uri uri = contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
+                imgPath = getRealPathFromUri(uri);
                 Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                out = createFolder();
-                imgPath = out.getAbsolutePath();
-                Uri photoURI = FileProvider.getUriForFile(DemoSliderActivity.this, BuildConfig.APPLICATION_ID + ".fileprovider", out);
-                cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
+                cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
                 startActivityForResult(cameraIntent, CAMERA_PIC_REQUEST);
 
             } else {
@@ -865,11 +939,24 @@ public class DemoSliderActivity extends Activity {
         }else if(requestCode==201){
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 Log.e("Permission cam", "Granted");
+//                Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+//                out = createFolder1();
+//                imgPath = out.getAbsolutePath();
+//                Uri photoURI = FileProvider.getUriForFile(DemoSliderActivity.this, BuildConfig.APPLICATION_ID + ".fileprovider", out);
+//                cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
+//                startActivityForResult(cameraIntent, CAMERA_PIC_REQUEST);
+                ContentResolver contentResolver = getContentResolver();
+                ContentValues values = new ContentValues();
+               // values.put(MediaStore.Images.Media.TITLE, "EFC");
+                values.put(MediaStore.Images.Media.DISPLAY_NAME, "EFC" + System.currentTimeMillis());
+                values.put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg");
+               // values.put(MediaStore.Images.Media.RELATIVE_PATH, Environment.DIRECTORY_PICTURES);
+                String relativePath = Environment.DIRECTORY_PICTURES + File.separator + "Emotional FC";
+                values.put(MediaStore.Images.Media.RELATIVE_PATH, relativePath);
+                Uri uri = contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
+                imgPath = getRealPathFromUri(uri);
                 Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                out = createFolder1();
-                imgPath = out.getAbsolutePath();
-                Uri photoURI = FileProvider.getUriForFile(DemoSliderActivity.this, BuildConfig.APPLICATION_ID + ".fileprovider", out);
-                cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
+                cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
                 startActivityForResult(cameraIntent, CAMERA_PIC_REQUEST);
 
             } else {
@@ -999,6 +1086,7 @@ public class DemoSliderActivity extends Activity {
         if (onLineBitMap == null) {
             myBitmap = decodeSampledBitmapFromFile(imgPath, ViewGroup.LayoutParams.FILL_PARENT, height);
             try {
+
                 cropImageView.setImageBitmap(Util.getImage(myBitmap, imgPath));
             } catch (IOException e) {
                 e.printStackTrace();
@@ -1026,13 +1114,13 @@ public class DemoSliderActivity extends Activity {
                    bitimage = cropImageView.getCroppedImage(); //need check
                     Log.e(" height After crop--->", bitimage.getHeight() + "");
                     Log.e(" height After crop--->", bitimage.getHeight() + "");
-                    imgBackgroundPicTOP.setImageBitmap(null);
-                    imgBackgroundPicTOP.setAdjustViewBounds(true);
-                    imgBackgroundPicTOP.setImageBitmap(bitimage);
+                   // imgBackgroundPicTOP.setImageBitmap(null);
+                    //imgBackgroundPicTOP.setAdjustViewBounds(true);
+                   // imgBackgroundPicTOP.setImageBitmap(bitimage);
                     dialogcrop.dismiss();
                     //Uri tempUri = getImageUri(getActivity(), bitimage);
                     //String cropPath = getRealPathFromURI(tempUri);
-                    String cropPath = storeImage(bitimage);
+                   String cropPath = storeImage(bitimage);
                     preaprePictureForUpload(cropPath);
                 } catch (Exception e) {
                     Log.e(" done click catch", e+ "");
@@ -1046,7 +1134,8 @@ public class DemoSliderActivity extends Activity {
                 try {
                     Bitmap myBitmapCancel = decodeSampledBitmapFromFile(imgPath, ViewGroup.LayoutParams.FILL_PARENT, height);
                     imgBackgroundPicTOP.setImageBitmap(myBitmapCancel);
-                    preaprePictureForUpload(imgPath);
+                    String cropPath = storeImage(myBitmapCancel);
+                    preaprePictureForUpload(cropPath);
                     dialogcrop.dismiss(); //need to check
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -1057,54 +1146,123 @@ public class DemoSliderActivity extends Activity {
         dialogcrop.show();
     }
 
+//old code
+//    private void preaprePictureForUpload(String cropPath) {
+//        try {
+//            File file = new File(cropPath);
+//            FileInputStream imageInFile = new FileInputStream(file);
+//            byte[] imageData = new byte[(int) file.length()];
+//            imageInFile.read(imageData);
+//            stringImg = encodeImage(imageData);
+//            Log.e("BASE64STRING", stringImg);
+//            sharedPreference.write("GRATITUDEIMAGE", "", stringImg);
+//            mFile = file;
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+//            imgBackgroundPicTOP.setBackgroundResource(0);
+//        }
+//        imgBackgroundPicTOP.setImageBitmap(BitmapFactory.decodeFile(cropPath));
+//        cardViewBackgroundPicTOP.setVisibility(View.VISIBLE);
+//        imgBackgroundPicTOP.setVisibility(View.VISIBLE);
+//        //llAddPicTOP.setVisibility(View.GONE);
+//        //buttonChangeBackgroundImageTOP.setVisibility(View.VISIBLE);
+//        if (strDialogSelectionType.equals("textOverPic")) {
+//           // buttonMoveTextBoxTOP.setVisibility(View.VISIBLE);
+//        }
+//
+//    }
+
+    //add jp
+    public  File getFileFromContentUri(ContentResolver contentResolver, Uri contentUri) {
+        String[] projection = {MediaStore.Images.Media.DATA};
+        Cursor cursor = contentResolver.query(contentUri, projection, null, null, null);
+
+        if (cursor != null && cursor.moveToFirst()) {
+            int columnIndex = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+            String filePath = cursor.getString(columnIndex);
+
+            // Now you have the actual file path
+            cursor.close();
+            return new File(filePath);
+        } else {
+            // Handle the case where the cursor is null or empty
+            if (cursor != null) {
+                cursor.close();
+            }
+            return null;
+        }
+    }
     private void preaprePictureForUpload(String cropPath) {
         try {
-            File file = new File(cropPath);
-            FileInputStream imageInFile = new FileInputStream(file);
+            ContentResolver contentResolver = getContentResolver();
+            Uri contentUri = Uri.parse(cropPath);
+            File file =getFileFromContentUri(contentResolver, contentUri);
+
+            InputStream imageInFile =  contentResolver.openInputStream(Uri.parse(cropPath));
             byte[] imageData = new byte[(int) file.length()];
             imageInFile.read(imageData);
             stringImg = encodeImage(imageData);
             Log.e("BASE64STRING", stringImg);
             sharedPreference.write("GRATITUDEIMAGE", "", stringImg);
             mFile = file;
-        } catch (IOException e) {
+            Log.e("mfile",""+mFile);
+
+        } catch (Exception e) {
             e.printStackTrace();
         }
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-            imgBackgroundPicTOP.setBackgroundResource(0);
-        }
-        imgBackgroundPicTOP.setImageBitmap(BitmapFactory.decodeFile(cropPath));
+        imgBackgroundPicTOP.setImageURI(Uri.parse(cropPath));
         cardViewBackgroundPicTOP.setVisibility(View.VISIBLE);
         imgBackgroundPicTOP.setVisibility(View.VISIBLE);
-        //llAddPicTOP.setVisibility(View.GONE);
-        //buttonChangeBackgroundImageTOP.setVisibility(View.VISIBLE);
-        if (strDialogSelectionType.equals("textOverPic")) {
-           // buttonMoveTextBoxTOP.setVisibility(View.VISIBLE);
-        }
-        /*rlTextOverPicInnerTOP.setVisibility(View.GONE);
-        rlTextOverPicInnerTOP.setVisibility(View.VISIBLE);*/
-    }//need to check
-
-    private String storeImage(Bitmap image) {
-        File pictureFile = getOutputMediaFile();
-
-        if (pictureFile == null) {
-            Log.d("TAG",
-                    "Error creating media file, check storage permissions: ");// e.getMessage());
-            return "";
-        }
-        try {
-            FileOutputStream fos = new FileOutputStream(pictureFile);
-            image.compress(Bitmap.CompressFormat.PNG, 40, fos);
-            fos.close();
-        } catch (FileNotFoundException e) {
-            Log.d("TAG", "File not found: " + e.getMessage());
-        } catch (IOException e) {
-            Log.d("TAG", "Error accessing file: " + e.getMessage());
-        }
-        return pictureFile.getAbsolutePath();
     }
+//    private String storeImage(Bitmap image) {
+//        File pictureFile = getOutputMediaFile();
+//
+//        if (pictureFile == null) {
+//            Log.d("TAG",
+//                    "Error creating media file, check storage permissions: ");// e.getMessage());
+//            return "";
+//        }
+//        try {
+//            FileOutputStream fos = new FileOutputStream(pictureFile);
+//            image.compress(Bitmap.CompressFormat.PNG, 40, fos);
+//            fos.close();
+//        } catch (FileNotFoundException e) {
+//            Log.d("TAG", "File not found: " + e.getMessage());
+//        } catch (IOException e) {
+//            Log.d("TAG", "Error accessing file: " + e.getMessage());
+//        }
+//        return pictureFile.getAbsolutePath();
+//    }
+private String storeImage(Bitmap image) {
+    ContentValues values = new ContentValues();
+    values.put(MediaStore.Images.Media.DISPLAY_NAME, "EFC_CROPPED" + System.currentTimeMillis());
+    values.put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg");
+   // values.put(MediaStore.Images.Media.RELATIVE_PATH, Environment.DIRECTORY_PICTURES);
+    String relativePath = Environment.DIRECTORY_PICTURES + File.separator + "Emotional FC";
+    values.put(MediaStore.Images.Media.RELATIVE_PATH, relativePath);
+    Uri imageUri = getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
+
+    if (imageUri == null) {
+        Log.e("TAG", "Error creating media file");
+        return "";
+    }
+
+    try {
+        OutputStream outputStream = getContentResolver().openOutputStream(imageUri);
+        image.compress(Bitmap.CompressFormat.JPEG, 90, outputStream);
+        if (outputStream != null) {
+            outputStream.close();
+        }
+    } catch (IOException e) {
+        Log.e("TAG", "Error accessing file: " + e.getMessage());
+    }
+
+    return imageUri.toString();
+}
+
 
     private File getOutputMediaFile() {
 

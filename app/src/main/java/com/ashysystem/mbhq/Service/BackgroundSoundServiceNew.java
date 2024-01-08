@@ -119,7 +119,7 @@ public class BackgroundSoundServiceNew extends Service{
     MeditationCourseModel.Webinar meditationData;
     Bundle programData;
     Chat liveChatData;
-    MeditationCourseModel.Webinar liveChatData1;
+    MeditationCourseModel.Webinar liveChatData1=null;
     String TAG = "BackgroundSoundServiceNew";
     public static final String ACTION_PLAY = "actionplay"; ///
     public static final String CHANNEL_ID = "channel1";///
@@ -150,6 +150,7 @@ public class BackgroundSoundServiceNew extends Service{
     public enum FromPage {
         MEDITATION,
         PROGRAM,
+        MEDITATION_VIDEO,
         LIVE_CHAT,
         NONE
     }
@@ -271,13 +272,7 @@ public class BackgroundSoundServiceNew extends Service{
 
     public void startMedia() {
         Log.e("SRTTTTTTT", "startMedia: "  + "STARTM");
-
-
         try {
-
-
-
-
             mediaPlayer.start();
             try{
                 if (mediaStateListener != null) {
@@ -291,6 +286,7 @@ public class BackgroundSoundServiceNew extends Service{
                     case MEDITATION: {
                         Util.boolBackGroundServiceRunningMeditation = true;
                         Util.strMeditationDetailsForBackground = new Gson().toJson(this.meditationData);
+
                         mediaPlayerHandler.removeCallbacks(mediaUpdateTimeTask);
                         if(!isThisMeditationTimeRecorded){
                             mediaPlayerHandler.postDelayed(mediaUpdateTimeTask, 1000);
@@ -302,6 +298,11 @@ public class BackgroundSoundServiceNew extends Service{
                     case PROGRAM: {
                         Util.boolBackGroundServiceRunningProgram = true;
                         Util.bundleProgramDetailsForBackground = this.programData;
+                        mediaPlayerHandler.removeCallbacks(mediaUpdateTimeTask);
+                        break;
+                    }   case MEDITATION_VIDEO: {
+                        Util.boolBackGroundServiceRunningProgram_video = true;
+                        Util.bundleProgramDetailsForBackground_vedio = this.liveChatData1;
                         mediaPlayerHandler.removeCallbacks(mediaUpdateTimeTask);
                         break;
                     }
@@ -331,6 +332,8 @@ public class BackgroundSoundServiceNew extends Service{
             Util.strMeditationDetailsForBackground = "";
             Util.boolBackGroundServiceRunningProgram = false;
             Util.bundleProgramDetailsForBackground = null;
+            Util.boolBackGroundServiceRunningProgram_video = false;
+            Util.bundleProgramDetailsForBackground_vedio = null;
             //  stopForeground(true);
             startForeground(9876, createNotification("Pause"));
             mediaPlayer.pause();
@@ -352,6 +355,9 @@ public class BackgroundSoundServiceNew extends Service{
             } else if (this.fromPage == FromPage.PROGRAM) {
                 Util.boolBackGroundServiceRunningProgram = false;
                 Util.bundleProgramDetailsForBackground = null;
+            }else if (this.fromPage == FromPage.MEDITATION_VIDEO) {
+                Util.boolBackGroundServiceRunningProgram_video = false;
+                Util.bundleProgramDetailsForBackground_vedio = null;
             }
             stopForeground(true);
             mediaPlayer.stop();
@@ -1000,7 +1006,7 @@ public class BackgroundSoundServiceNew extends Service{
     }
 
     public void createMediaPlayer1_(String videoName, FromPage pageName, Uri videoUrl, MediaType mediaType, int videoCurrentPosition, MeditationCourseModel.Webinar liveChatData, OnMediaStateListener listener) {
-
+        Log.i("called_block_media","2");
 
         this.mediaStateListener = listener;
 
@@ -1039,7 +1045,7 @@ public class BackgroundSoundServiceNew extends Service{
     }
 
     public void createMediaPlayer1(String videoName, FromPage pageName, String videoUrl, MediaType mediaType, int videoCurrentPosition, MeditationCourseModel.Webinar liveChatData, OnMediaStateListener listener) {
-
+        Log.i("called_block_media","1");
         Log.i(TAG, "prev video =" + this.videoName);
         Log.i(TAG, "curr video =" + videoName);
         Log.i(TAG, "curr video url=" + videoUrl);
@@ -1238,6 +1244,14 @@ public class BackgroundSoundServiceNew extends Service{
                 }else{
                     return createNotificationForLiveChat(R.drawable.ic_baseline_play);///
                 }
+            case MEDITATION_VIDEO:
+                // return createNotificationForLiveChat();
+                if(tag.equals("Play")){
+                    return createNotificationForLiveChat(R.drawable.ic_baseline_pause);///
+                }else{
+                    return createNotificationForLiveChat(R.drawable.ic_baseline_play);///
+                }
+
             default:
                 return null;
         }

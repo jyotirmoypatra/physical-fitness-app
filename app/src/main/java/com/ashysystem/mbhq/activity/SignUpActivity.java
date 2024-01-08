@@ -203,9 +203,13 @@ public class SignUpActivity extends AppCompatActivity implements OnClickListener
                 }
             } else {
                 Log.i("called_mainactivity","13");
-                intent = new Intent(SignUpActivity.this, LogInActivity.class);
-            }
+               // intent = new Intent(SignUpActivity.this, LogInActivity.class);
+                Util.withfilterlist_afterbackfrommeditationdetails.clear();
+                intent = new Intent(mContext, MainActivity.class);//
+                intent.putExtra("FROM_LOGIN", "TRUE");
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
 
+            }
             startActivity(intent);
             finish();
         } else {
@@ -292,11 +296,10 @@ public class SignUpActivity extends AppCompatActivity implements OnClickListener
         rlCreateFreeAccount = (RelativeLayout) findViewById(R.id.rlCreateFreeAccount);
         txtAlreadyHaveAccount = (TextView) findViewById(R.id.txtAlreadyHaveAccount);
 
-
         rlLogInNew = findViewById(R.id.rlLogInNew);
 
         rlLogInNew.setVisibility(View.VISIBLE);
-        rlCreateFreeAccount.setVisibility(View.VISIBLE);
+        rlCreateFreeAccount.setVisibility(View.GONE);
         rlLogInNew.setOnClickListener(view -> {
             Intent intent = new Intent(SignUpActivity.this, UserPaidStatusActivity.class);
             startActivity(intent);

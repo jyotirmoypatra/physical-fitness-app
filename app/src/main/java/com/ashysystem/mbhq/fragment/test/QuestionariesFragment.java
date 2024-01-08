@@ -221,7 +221,8 @@ public class QuestionariesFragment extends Fragment {
            // ((MainActivity)getActivity()).funDrawer();
             ((MainActivity)getActivity()).funTabBarforProgram();
         }
-
+        Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
+        toolbar.setNavigationIcon(R.drawable.logo1);
 
     }
     @Override

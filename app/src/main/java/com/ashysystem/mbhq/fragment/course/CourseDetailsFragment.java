@@ -1260,6 +1260,10 @@ public class CourseDetailsFragment extends Fragment {
                 return false;
             }
         });
+
+        Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
+        toolbar.setNavigationIcon(R.drawable.logo1);
+
     }
 
 }

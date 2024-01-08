@@ -27,6 +27,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.os.Handler;
 import android.os.Looper;
+import android.os.SystemClock;
 import android.preference.PreferenceManager;
 import android.text.SpannableString;
 import android.text.Spanned;
@@ -511,7 +512,9 @@ public class MbhqTodayTwoFragment extends Fragment {
                 img_notaccess.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        Uri uri = Uri.parse("https://mindbodyhq.com/products/habit-transformer"); // missing 'http://' will cause crashed
+                        String url=sharedPreference.read("HabitPurchaseUrl","");
+
+                        Uri uri = Uri.parse(url); // missing 'http://' will cause crashed
                         Intent intent = new Intent(Intent.ACTION_VIEW, uri);
                         startActivity(intent);
                     }
@@ -3734,10 +3737,7 @@ public class MbhqTodayTwoFragment extends Fragment {
                         Log.i("7777777700",Test_acess);
                         Log.i("8888888800",Course_access);
 
-                        if(null!=getActivity()){
-                            ((MainActivity) getActivity()).clearCacheForParticularFragment(new MbhqTodayTwoFragment());
-                            ((MainActivity) getActivity()).loadFragment(new MbhqTodayTwoFragment(), "MbhqTodayTwo", null);
-                        }
+                        showpopup_upgrade();
 
 
                     }
@@ -3752,6 +3752,27 @@ public class MbhqTodayTwoFragment extends Fragment {
         } else {
             Util.showToast(getActivity(), Util.networkMsg);
         }
+
+    }
+    private void showpopup_upgrade( ){
+        AlertDialogCustom alertDialogCustom = new AlertDialogCustom(getActivity());
+        alertDialogCustom.ShowDialog("Efc", "Your Access Check has been Completed.", false);
+        alertDialogCustom.setAlertAction(new AlertDialogCustom.AlertResponse() {
+            @Override
+            public void onDone(String title) {
+
+                if(null!=getActivity()){
+                    ((MainActivity) getActivity()).clearCacheForParticularFragment(new MbhqTodayTwoFragment());
+                    ((MainActivity) getActivity()).loadFragment(new MbhqTodayTwoFragment(), "MbhqTodayTwo", null);
+                }
+
+            }
+
+            @Override
+            public void onCancel(String title) {
+
+            }
+        });
 
     }
 

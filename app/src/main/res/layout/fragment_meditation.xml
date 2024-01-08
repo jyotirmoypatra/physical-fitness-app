@@ -805,9 +805,10 @@
                     android:layout_gravity="bottom"
                     android:gravity="center"
                     android:textAllCaps="true"
-                    android:textSize="20sp"
+                    android:textSize="15sp"
+                    android:textColor="#FC191717"
                     android:layout_marginBottom="60dp"
-                    android:text="Updrade Now">
+                    android:text="I’ve upgraded, update my access please">
 
                 </com.ashysystem.mbhq.view.ButtonOswaldRegular>
 

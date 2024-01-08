@@ -315,6 +315,7 @@ public class LogInActivity extends Activity implements View.OnClickListener {
     private void performLogin() {
 
         if (Connection.checkConnection(this)) {
+            final ProgressDialog progressDialog = ProgressDialog.show(this, "", "Please wait...");
 
             HashMap<String, Object> loginJson = new HashMap<>();
 
@@ -382,6 +383,10 @@ public class LogInActivity extends Activity implements View.OnClickListener {
                             Log.i("777777",String.valueOf( Util. LiveChatAccess));
                             Log.i("888888",String.valueOf( Util. TestsAccess));
 
+                            sharedPreference.write("EQJournalPurchaseUrl", "", responseBody.getEQJournalPurchaseUrl());
+                            sharedPreference.write("HabitPurchaseUrl", "", responseBody.getHabitPurchaseUrl());
+                            sharedPreference.write("MeditationPurchaseUrl", "", responseBody.getMeditationPurchaseUrl());
+                            sharedPreference.write("TestsPurchaseUrl", "", responseBody.getTestsPurchaseUrl());
 
                             long savedMillis = System.currentTimeMillis();
                             if (sharedPreference.read("logintime", "").equals("")) {
@@ -584,8 +589,8 @@ public class LogInActivity extends Activity implements View.OnClickListener {
 
                                     SharedPreference sharedPreference = new SharedPreference(mContext);
                                     Intent intent = null;
-//                                    intent = new Intent(mContext, DemoSliderActivity.class);
-                                    if (!responseBody.getIsSubscribed() && responseBody.getPurchasedPrograms().size()>0) { Util.withfilterlist_afterbackfrommeditationdetails.clear();
+                                    intent = new Intent(mContext, DemoSliderActivity.class);
+                                   /* if (!responseBody.getIsSubscribed() && responseBody.getPurchasedPrograms().size()>0) { Util.withfilterlist_afterbackfrommeditationdetails.clear();
                                         sharedPreference.write("PROGRAM_PURCHASE_ONLY", "", "TRUE");
                                         intent = new Intent(mContext, MainActivity.class);
                                         intent.putExtra("FROM_LOGIN", "TRUE");
@@ -599,7 +604,7 @@ public class LogInActivity extends Activity implements View.OnClickListener {
                                             intent = new Intent(mContext, MainActivity.class);//
                                             intent.putExtra("FROM_LOGIN", "TRUE");
                                         }
-                                    }
+                                    }*/
 
                                     intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                     intent.putExtra("FROMLOGIN", "TRUE");

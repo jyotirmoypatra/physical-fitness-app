@@ -335,6 +335,18 @@ public class CourseFragment extends Fragment {
 
                boolean shouldCourseRenew = sharedPreference.readBoolean("COURSE_LIST_SHOULD_RENEW", "");
 
+
+
+
+
+               sharedPreference = new SharedPreference(getActivity());
+               sharedPreference.clear("med");
+               sharedPreference.clear("medT");
+               LinearLayout llTabView = (LinearLayout) getActivity().findViewById(R.id.llTabView);
+               llTabView.setVisibility(View.VISIBLE);
+               initView(vi);
+
+
                if (courseViewModel.lstTotalDataM.isEmpty() || courseViewModel.allTags.isEmpty() || shouldCourseRenew) {
                    Log.i("course_print","1");
                    sharedPreference.writeBoolean("COURSE_LIST_SHOULD_RENEW", "", false);
@@ -347,15 +359,6 @@ public class CourseFragment extends Fragment {
                    //loadAllAdapters();
 
                }
-
-
-
-               sharedPreference = new SharedPreference(getActivity());
-               sharedPreference.clear("med");
-               sharedPreference.clear("medT");
-               LinearLayout llTabView = (LinearLayout) getActivity().findViewById(R.id.llTabView);
-               llTabView.setVisibility(View.VISIBLE);
-               initView(vi);
                if (getArguments() != null) {
                    if (getArguments().containsKey("origin")) {
                        origin = getArguments().getString("origin");
@@ -1310,10 +1313,14 @@ public class CourseFragment extends Fragment {
 
     private void loadMyPrgramsAdapter(List<AvailableCourseModel.Course> lstData, int Size) {
         if (Size > 0) {
-             myProgramsContainer.setVisibility(View.VISIBLE);
-             availableCourseAdapter = new AvailableCourseAdapter(getActivity(), lstData, AvailableCourseAdapter.ProgramType.MY_PROGRAMS, origin, PLAY_EPISODE_ONE, FROMSETPROGRAM, FROMTODAYPAGE, Size);
-             rvMyPrograms.setAdapter(availableCourseAdapter);
+            if(null!=myProgramsContainer){
+                myProgramsContainer.setVisibility(View.VISIBLE);
+                availableCourseAdapter = new AvailableCourseAdapter(getActivity(), lstData, AvailableCourseAdapter.ProgramType.MY_PROGRAMS, origin, PLAY_EPISODE_ONE, FROMSETPROGRAM, FROMTODAYPAGE, Size);
+                rvMyPrograms.setAdapter(availableCourseAdapter);
+            }
+
         } else {
+            if(null!=myProgramsContainer)
             myProgramsContainer.setVisibility(View.GONE);
         }
 
@@ -1321,40 +1328,56 @@ public class CourseFragment extends Fragment {
 
     private void loadPaidProgramsAdapter(List<AvailableCourseModel.Course> lstData, int Size) {
         if (Size > 0) {
-            paidProgramsContainer.setVisibility(View.VISIBLE);
-             availableCourseAdapter = new AvailableCourseAdapter(getActivity(), lstData, AvailableCourseAdapter.ProgramType.PAID_PROGRAMS, origin, PLAY_EPISODE_ONE, FROMSETPROGRAM, FROMTODAYPAGE, Size);
-            rvPaidPrograms.setAdapter(availableCourseAdapter);
+            if(null!=paidProgramsContainer){
+                paidProgramsContainer.setVisibility(View.VISIBLE);
+                availableCourseAdapter = new AvailableCourseAdapter(getActivity(), lstData, AvailableCourseAdapter.ProgramType.PAID_PROGRAMS, origin, PLAY_EPISODE_ONE, FROMSETPROGRAM, FROMTODAYPAGE, Size);
+                rvPaidPrograms.setAdapter(availableCourseAdapter);
+            }
+
         } else {
+            if(null!=paidProgramsContainer)
             paidProgramsContainer.setVisibility(View.GONE);
         }
     }
 
     private void loadLiveProgramsAdapter(List<AvailableCourseModel.Course> lstData, int Size) {
         if (Size > 0) {
-            liveProgramsContainer.setVisibility(View.VISIBLE);
-             availableCourseAdapter = new AvailableCourseAdapter(getActivity(), lstData, AvailableCourseAdapter.ProgramType.LIVE_PROGRAM, origin, PLAY_EPISODE_ONE, FROMSETPROGRAM, FROMTODAYPAGE, Size);
-            rvLivePrograms.setAdapter(availableCourseAdapter);
+            if(null!=liveProgramsContainer){
+                liveProgramsContainer.setVisibility(View.VISIBLE);
+                availableCourseAdapter = new AvailableCourseAdapter(getActivity(), lstData, AvailableCourseAdapter.ProgramType.LIVE_PROGRAM, origin, PLAY_EPISODE_ONE, FROMSETPROGRAM, FROMTODAYPAGE, Size);
+                rvLivePrograms.setAdapter(availableCourseAdapter);
+            }
+
         } else {
+            if(null!=liveProgramsContainer)
             liveProgramsContainer.setVisibility(View.GONE);
         }
     }
 
     private void loadMasterclassProgramsAdapter(List<AvailableCourseModel.Course> lstData, int Size) {
         if (Size > 0) {
-            masterclassProgramsContainer.setVisibility(View.VISIBLE);
-             availableCourseAdapter = new AvailableCourseAdapter(getActivity(), lstData, AvailableCourseAdapter.ProgramType.MASTERCLASS_PROGRAMS, origin, PLAY_EPISODE_ONE, FROMSETPROGRAM, FROMTODAYPAGE, Size);
-            rvMasterclassPrograms.setAdapter(availableCourseAdapter);
+            if(null!=masterclassProgramsContainer){
+                masterclassProgramsContainer.setVisibility(View.VISIBLE);
+                availableCourseAdapter = new AvailableCourseAdapter(getActivity(), lstData, AvailableCourseAdapter.ProgramType.MASTERCLASS_PROGRAMS, origin, PLAY_EPISODE_ONE, FROMSETPROGRAM, FROMTODAYPAGE, Size);
+                rvMasterclassPrograms.setAdapter(availableCourseAdapter);
+            }
+
         } else {
+            if(null!=masterclassProgramsContainer)
             masterclassProgramsContainer.setVisibility(View.GONE);
         }
     }
 
     private void loadPaidMasterclassProgramsAdapter(List<AvailableCourseModel.Course> lstData, int Size) {
         if (Size > 0) {
-            paidMasterclassProgramsContainer.setVisibility(View.VISIBLE);
-             availableCourseAdapter = new AvailableCourseAdapter(getActivity(), lstData, AvailableCourseAdapter.ProgramType.PAID_MASTERCLASS_PROGRAMS, origin, PLAY_EPISODE_ONE, FROMSETPROGRAM, FROMTODAYPAGE, Size);
-            rvPaidMasterclassPrograms.setAdapter(availableCourseAdapter);
+            if(null!=paidMasterclassProgramsContainer){
+                paidMasterclassProgramsContainer.setVisibility(View.VISIBLE);
+                availableCourseAdapter = new AvailableCourseAdapter(getActivity(), lstData, AvailableCourseAdapter.ProgramType.PAID_MASTERCLASS_PROGRAMS, origin, PLAY_EPISODE_ONE, FROMSETPROGRAM, FROMTODAYPAGE, Size);
+                rvPaidMasterclassPrograms.setAdapter(availableCourseAdapter);
+            }
+
         } else {
+            if(null!=paidMasterclassProgramsContainer)
             paidMasterclassProgramsContainer.setVisibility(View.GONE);
         }
     }
@@ -1362,19 +1385,27 @@ public class CourseFragment extends Fragment {
     private void loadPodcastProgramsAdapter(List<AvailableCourseModel.Course> lstData, int Size) {
       Log.e("pod",String.valueOf(lstData.size()));
         if (Size > 0) {
-            podcastProgramsContainer.setVisibility(View.VISIBLE);
-             availableCourseAdapter = new AvailableCourseAdapter(getActivity(), lstData, AvailableCourseAdapter.ProgramType.PODCAST_PROGRAMS, origin, PLAY_EPISODE_ONE, FROMSETPROGRAM, FROMTODAYPAGE, Size);
-            rvPodcastPrograms.setAdapter(availableCourseAdapter);
+            if(null!=podcastProgramsContainer){
+                podcastProgramsContainer.setVisibility(View.VISIBLE);
+                availableCourseAdapter = new AvailableCourseAdapter(getActivity(), lstData, AvailableCourseAdapter.ProgramType.PODCAST_PROGRAMS, origin, PLAY_EPISODE_ONE, FROMSETPROGRAM, FROMTODAYPAGE, Size);
+                rvPodcastPrograms.setAdapter(availableCourseAdapter);
+            }
+
         } else {
+            if(null!=podcastProgramsContainer)
             podcastProgramsContainer.setVisibility(View.GONE);
         }
     }
 
     private void loadMemberProgramsAdapter(List<AvailableCourseModel.Course> lstData, int Size) {
         if (Size > 0) {
-             availableCourseAdapter = new AvailableCourseAdapter(getActivity(), lstData, AvailableCourseAdapter.ProgramType.MEMBER_ONLY_PROGRAMS, origin, PLAY_EPISODE_ONE, FROMSETPROGRAM, FROMTODAYPAGE, Size);
-            rvMemberPrograms.setAdapter(availableCourseAdapter);
+            if(null!=memberOnlyProgramsContainer){
+                availableCourseAdapter = new AvailableCourseAdapter(getActivity(), lstData, AvailableCourseAdapter.ProgramType.MEMBER_ONLY_PROGRAMS, origin, PLAY_EPISODE_ONE, FROMSETPROGRAM, FROMTODAYPAGE, Size);
+                rvMemberPrograms.setAdapter(availableCourseAdapter);
+            }
+
         } else {
+            if(null!=memberOnlyProgramsContainer)
             memberOnlyProgramsContainer.setVisibility(View.GONE);
         }
     }
@@ -2250,14 +2281,14 @@ loadAllAdapters();
             Log.i("course_print","12");
             chkBoxShowAllCheck.setChecked(true);
             Log.i("course_filter","1");
-            imgFilter.setImageResource(R.drawable.mbhq_filter);
+           // imgFilter.setImageResource(R.drawable.mbhq_filter);
 
         }else{
 
             Log.i("course_print","13");
             if (filters.get(FILTER_KEY_STATUS).isEmpty() && filters.get(FILTER_KEY_TYPE).isEmpty() && filters.get(FILTER_KEY_TAGS).isEmpty()) {
                 Log.i("course_print","14");
-                imgFilter.setImageResource(R.drawable.mbhq_filter);
+              //  imgFilter.setImageResource(R.drawable.mbhq_filter);
                 chkBoxShowAllCheck.setChecked(true);
             } else {
                 Log.i("course_print","15");
@@ -2393,14 +2424,40 @@ loadAllAdapters();
 
             if (!filteredMyPrograms.isEmpty() || !filteredLivePrograms.isEmpty() || !filteredPaidPrograms.isEmpty() || !filteredMasterclassPrograms.isEmpty()) {
                 Log.i("course_print","18");
-                loadMyPrgramsAdapter(filteredMyPrograms, filteredMyPrograms.size());
+
+                if (filters.get(FILTER_KEY_STATUS).isEmpty() && filters.get(FILTER_KEY_TYPE).isEmpty() && filters.get(FILTER_KEY_TAGS).isEmpty()) {
+                    Log.i("course_print","38");
+                    loadMyPrgramsAdapter(filteredMyPrograms, filteredMyPrograms.size());
+
+                    loadLiveProgramsAdapter(filteredLivePrograms, filteredLivePrograms.size());
+
+                    loadPaidProgramsAdapter(filteredPaidPrograms, filteredPaidPrograms.size());
+
+                    loadMasterclassProgramsAdapter(filteredMasterclassPrograms, filteredMasterclassPrograms.size());
+                    loadPodcastProgramsAdapter(courseViewModel.allPodcastPrograms, courseViewModel.allPodcastPrograms.size());
+
+                }else{
+                    Log.i("course_print","39");
+
+
+                    loadMyPrgramsAdapter(filteredMyPrograms, filteredMyPrograms.size());
+
+                    loadLiveProgramsAdapter(filteredLivePrograms, filteredLivePrograms.size());
+
+                    loadPaidProgramsAdapter(filteredPaidPrograms, filteredPaidPrograms.size());
+
+                    loadMasterclassProgramsAdapter(filteredMasterclassPrograms, filteredMasterclassPrograms.size());
+                    loadPodcastProgramsAdapter(courseViewModel.allPodcastPrograms, 0);
+                }
+
+               /* loadMyPrgramsAdapter(filteredMyPrograms, filteredMyPrograms.size());
 
                 loadLiveProgramsAdapter(filteredLivePrograms, filteredLivePrograms.size());
 
                 loadPaidProgramsAdapter(filteredPaidPrograms, filteredPaidPrograms.size());
 
                 loadMasterclassProgramsAdapter(filteredMasterclassPrograms, filteredMasterclassPrograms.size());
-
+*/
 
             } else {
                 Util.showToast(getActivity(), "No Program Data Found");
@@ -2419,6 +2476,7 @@ loadAllAdapters();
 
         edtSearch.setText(searchFilterText);
 
+/*
         rlShowResults.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -2694,6 +2752,8 @@ loadAllAdapters();
 
                         }else{
                             Log.i("course_print","28");
+
+
                             loadMyPrgramsAdapter(filteredMyPrograms, filteredMyPrograms.size());
 
                             loadLiveProgramsAdapter(filteredLivePrograms, filteredLivePrograms.size());
@@ -2721,6 +2781,7 @@ loadAllAdapters();
 
             }
         });
+*/
 
 
         if (filterSelectedvalue == 0) {
@@ -3205,7 +3266,39 @@ loadAllAdapters();
             }
 
             if (!filteredMyPrograms.isEmpty() || !filteredLivePrograms.isEmpty() || !filteredPaidPrograms.isEmpty() || !filteredMasterclassPrograms.isEmpty()) {
-                Log.i("course_print","18");
+
+
+                if (filters.get(FILTER_KEY_STATUS).isEmpty() && filters.get(FILTER_KEY_TYPE).isEmpty() && filters.get(FILTER_KEY_TAGS).isEmpty()) {
+                    Log.i("course_print","18");
+                    loadMyPrgramsAdapter(filteredMyPrograms, filteredMyPrograms.size());
+
+                    loadLiveProgramsAdapter(filteredLivePrograms, filteredLivePrograms.size());
+
+                    loadPaidProgramsAdapter(filteredPaidPrograms, filteredPaidPrograms.size());
+
+                    loadMasterclassProgramsAdapter(filteredMasterclassPrograms, filteredMasterclassPrograms.size());
+                    loadPodcastProgramsAdapter(courseViewModel.allPodcastPrograms, courseViewModel.allPodcastPrograms.size());
+
+                }else{
+                    Log.i("course_print","30");
+
+
+                    loadMyPrgramsAdapter(filteredMyPrograms, filteredMyPrograms.size());
+
+                    loadLiveProgramsAdapter(filteredLivePrograms, filteredLivePrograms.size());
+
+                    loadPaidProgramsAdapter(filteredPaidPrograms, filteredPaidPrograms.size());
+
+                    loadMasterclassProgramsAdapter(filteredMasterclassPrograms, filteredMasterclassPrograms.size());
+                    loadPodcastProgramsAdapter(courseViewModel.allPodcastPrograms, 0);
+                }
+
+
+
+
+
+
+             /*   Log.i("course_print","18");
                 loadMyPrgramsAdapter(filteredMyPrograms, filteredMyPrograms.size());
 
                 loadLiveProgramsAdapter(filteredLivePrograms, filteredLivePrograms.size());
@@ -3213,7 +3306,7 @@ loadAllAdapters();
                 loadPaidProgramsAdapter(filteredPaidPrograms, filteredPaidPrograms.size());
 
                 loadMasterclassProgramsAdapter(filteredMasterclassPrograms, filteredMasterclassPrograms.size());
-
+*/
 
             } else {
                 Util.showToast(getActivity(), "No Program Data Found");
@@ -3768,7 +3861,13 @@ loadAllAdapters();
                 } else {
 
                     if (!Settings.System.canWrite((MainActivity) getActivity())) {
-                        ((MainActivity) getActivity()).requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.RECORD_AUDIO}, 289);
+
+                        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                            ((MainActivity) getActivity()).requestPermissions(new String[]{Manifest.permission.READ_MEDIA_IMAGES,Manifest.permission.READ_MEDIA_AUDIO,Manifest.permission.READ_MEDIA_VIDEO,}, 289);
+                        }else{
+                            ((MainActivity) getActivity()).requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.READ_EXTERNAL_STORAGE}, 289);
+                        }
+                      //  ((MainActivity) getActivity()).requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.RECORD_AUDIO}, 289);
                     }
                 }
 
@@ -3825,9 +3924,19 @@ loadAllAdapters();
     }
 
     private boolean hasWritePermission() {
-        int hasPermissionWrite = ContextCompat.checkSelfPermission((MainActivity) getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE);
-        int hasPermissionRead = ContextCompat.checkSelfPermission((MainActivity) getActivity(), Manifest.permission.READ_EXTERNAL_STORAGE);
-        return hasPermissionWrite == PackageManager.PERMISSION_GRANTED && hasPermissionRead == PackageManager.PERMISSION_GRANTED;
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.R) {
+            // For Android versions below API level 30
+            return ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
+                    && ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
+        } else {
+            // For Android versions R (API level 30) and above
+            return ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_MEDIA_IMAGES) == PackageManager.PERMISSION_GRANTED
+                    && ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_MEDIA_VIDEO) == PackageManager.PERMISSION_GRANTED
+                    && ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_MEDIA_AUDIO) == PackageManager.PERMISSION_GRANTED;
+        }
+//        int hasPermissionWrite = ContextCompat.checkSelfPermission((MainActivity) getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE);
+//        int hasPermissionRead = ContextCompat.checkSelfPermission((MainActivity) getActivity(), Manifest.permission.READ_EXTERNAL_STORAGE);
+//        return hasPermissionWrite == PackageManager.PERMISSION_GRANTED && hasPermissionRead == PackageManager.PERMISSION_GRANTED;
     }
 
     private boolean hasRecordPermission() {

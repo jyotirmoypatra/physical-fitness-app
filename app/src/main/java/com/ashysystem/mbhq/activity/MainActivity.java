@@ -92,6 +92,7 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageButton;
@@ -282,7 +283,7 @@ public class MainActivity extends AppCompatActivity implements OnLoadFragmentReq
     int SlowDownThreshold = 300;
     boolean currentlyTouching = false;
     boolean currentlyScrolling = false;
-    ImageView imgGratitude, imgMeditation, imgToday, imgHabits, imgCourses;
+    public static ImageView imgGratitude, imgMeditation, imgToday, imgHabits, imgCourses;
     ImageView imgLogo;
     ImageView imgLeftBack;
     ImageView imgRightBack;
@@ -571,6 +572,7 @@ public class MainActivity extends AppCompatActivity implements OnLoadFragmentReq
 
 
                         } else if (currentFragmentTab instanceof QuestionariesFragment || currentFragmentTab instanceof QuestionResultFragment || currentFragmentTab instanceof CohenQuestion) {
+                            funDrawer1();
                             new SharedPreference(MainActivity.this).write("learn_nav_pos", "", 0 + "");
                             loadFragment(new CourseFragment(), "Course", null);
                         } else if (currentFragmentTab instanceof CourseFragment || currentFragmentTab instanceof ProgramDetailsFragment || currentFragmentTab instanceof CourseDetailsFragment) {
@@ -4551,14 +4553,12 @@ public class MainActivity extends AppCompatActivity implements OnLoadFragmentReq
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.eq_folder);
         ImageView imgCross1 = (ImageView) dialog.findViewById(R.id.imgCross1);
-        EditTextOswaldRegular textF1= (EditTextOswaldRegular)  dialog.findViewById(R.id.textF1);
-        EditTextOswaldRegular textF2= (EditTextOswaldRegular)  dialog.findViewById(R.id.textF2);
-        EditTextOswaldRegular textF3= (EditTextOswaldRegular)  dialog.findViewById(R.id.textF3);
-
-        textF1.setSelection(textF1.getText().length());
-        textF2.setSelection(textF2.getText().length());
-        textF3.setSelection(textF3.getText().length());
-
+        EditText textF1= (EditText)  dialog.findViewById(R.id.textF1);
+        EditText textF2= (EditText)  dialog.findViewById(R.id.textF2);
+        EditText textF3= (EditText)  dialog.findViewById(R.id.textF3);
+LinearLayout ll_1=(LinearLayout)  dialog.findViewById(R.id.ll_1);
+        LinearLayout ll_2=(LinearLayout)  dialog.findViewById(R.id.ll_2);
+        LinearLayout ll_3=(LinearLayout)  dialog.findViewById(R.id.ll_3);
         InputFilter[] filters = new InputFilter[1];
         filters[0] = new InputFilter.LengthFilter(10); // Sets the maximum length to 10 characters
 
@@ -4566,6 +4566,9 @@ public class MainActivity extends AppCompatActivity implements OnLoadFragmentReq
         textF2.setFilters(filters);
         textF3.setFilters(filters);
 
+        textF1.setCursorVisible(false);
+        textF2.setCursorVisible(false);
+        textF3.setCursorVisible(false);
         textF1.setFocusable(false);
         textF1.setFocusableInTouchMode(false); // user touches widget on phone with touch screen
         textF1.setClickable(false);
@@ -4614,7 +4617,7 @@ public class MainActivity extends AppCompatActivity implements OnLoadFragmentReq
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
+                textF1.setSelection(textF1.getText().length());
 
             }
 
@@ -4623,11 +4626,11 @@ public class MainActivity extends AppCompatActivity implements OnLoadFragmentReq
 
             }
         });
-
         imgF1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if(f1){
+                    ll_1.setBackground(getResources().getDrawable(R.drawable.capsule_grey2));
 
                     f1=false;
 
@@ -4635,7 +4638,7 @@ public class MainActivity extends AppCompatActivity implements OnLoadFragmentReq
                     textF1.setFocusable(false);
                     textF1.setFocusableInTouchMode(false); // user touches widget on phone with touch screen
                     textF1.setClickable(false);
-
+                    textF1.setCursorVisible(false);
                     if(textF1.getText().toString().equalsIgnoreCase("")){
                         showpopup();
                     }else{
@@ -4644,6 +4647,8 @@ public class MainActivity extends AppCompatActivity implements OnLoadFragmentReq
                     }
 
                 }else{
+
+                    ll_1.setBackground(getResources().getDrawable(R.drawable.capsule_grey3));
                     f1=true;
 
                     f2=false;
@@ -4667,6 +4672,7 @@ public class MainActivity extends AppCompatActivity implements OnLoadFragmentReq
                     textF1.setFocusable(true);
                     textF1.setFocusableInTouchMode(true); // user touches widget on phone with touch screen
                     textF1.setClickable(true);
+                    textF1.setCursorVisible(true);
 
                     textF2.setFocusable(false);
                     textF2.setFocusableInTouchMode(false); // user touches widget on phone with touch screen
@@ -4679,18 +4685,19 @@ public class MainActivity extends AppCompatActivity implements OnLoadFragmentReq
                 }
             }
         });
-
         imgF2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if(f2){
+                    ll_2.setBackground(getResources().getDrawable(R.drawable.capsule_grey2));
+
                     f2=false;
 
 
                     textF2.setFocusable(false);
                     textF2.setFocusableInTouchMode(false); // user touches widget on phone with touch screen
                     textF2.setClickable(false);
-
+                    textF2.setCursorVisible(false);
                     if(textF2.getText().toString().equalsIgnoreCase("")){
                         showpopup();
                     }else{
@@ -4699,6 +4706,7 @@ public class MainActivity extends AppCompatActivity implements OnLoadFragmentReq
                     }
 
                 }else{
+                    ll_2.setBackground(getResources().getDrawable(R.drawable.capsule_grey3));
                     f2=true;
 
                     f1=false;
@@ -4720,6 +4728,7 @@ public class MainActivity extends AppCompatActivity implements OnLoadFragmentReq
                     textF2.setFocusable(true);
                     textF2.setFocusableInTouchMode(true); // user touches widget on phone with touch screen
                     textF2.setClickable(true);
+                    textF2.setCursorVisible(true);
 
                     textF1.setFocusable(false);
                     textF1.setFocusableInTouchMode(false); // user touches widget on phone with touch screen
@@ -4731,17 +4740,18 @@ public class MainActivity extends AppCompatActivity implements OnLoadFragmentReq
                 }
             }
         });
-
         imgF3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if(f3){
+                    ll_3.setBackground(getResources().getDrawable(R.drawable.capsule_grey2));
                     f3=false;
 
 
                     textF3.setFocusable(false);
                     textF3.setFocusableInTouchMode(false); // user touches widget on phone with touch screen
                     textF3.setClickable(false);
+                    textF3.setCursorVisible(false);
                     if(textF3.getText().toString().equalsIgnoreCase("")){
                         showpopup();
                     }else{
@@ -4749,6 +4759,7 @@ public class MainActivity extends AppCompatActivity implements OnLoadFragmentReq
                         updateEqName(textF3.getText().toString(),habitSwapList_.get(2).getUserEqFolderId(),dialog);
                     }
                 }else{
+                    ll_3.setBackground(getResources().getDrawable(R.drawable.capsule_grey3));
                     f3=true;
 
                     f1=false;
@@ -4769,7 +4780,7 @@ public class MainActivity extends AppCompatActivity implements OnLoadFragmentReq
                     textF3.setFocusable(true);
                     textF3.setFocusableInTouchMode(true); // user touches widget on phone with touch screen
                     textF3.setClickable(true);
-
+                    textF3.setCursorVisible(true);
                     textF1.setFocusable(false);
                     textF1.setFocusableInTouchMode(false); // user touches widget on phone with touch screen
                     textF1.setClickable(false);
