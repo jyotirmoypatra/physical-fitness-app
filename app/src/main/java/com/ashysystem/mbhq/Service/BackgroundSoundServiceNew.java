@@ -119,6 +119,7 @@ public class BackgroundSoundServiceNew extends Service{
     MeditationCourseModel.Webinar meditationData;
     Bundle programData;
     Chat liveChatData;
+    MeditationCourseModel.Webinar m_liveChatData;
     MeditationCourseModel.Webinar liveChatData1=null;
     String TAG = "BackgroundSoundServiceNew";
     public static final String ACTION_PLAY = "actionplay"; ///
@@ -300,9 +301,9 @@ public class BackgroundSoundServiceNew extends Service{
                         Util.bundleProgramDetailsForBackground = this.programData;
                         mediaPlayerHandler.removeCallbacks(mediaUpdateTimeTask);
                         break;
-                    }   case MEDITATION_VIDEO: {
+                    }   case LIVE_CHAT: {
                         Util.boolBackGroundServiceRunningProgram_video = true;
-                        Util.bundleProgramDetailsForBackground_vedio = this.liveChatData1;
+                        Util.bundleProgramDetailsForBackground_vedio = this.m_liveChatData;
                         mediaPlayerHandler.removeCallbacks(mediaUpdateTimeTask);
                         break;
                     }
@@ -1073,6 +1074,51 @@ public class BackgroundSoundServiceNew extends Service{
                     mediaPlayer.reset();
                 }
 
+                mediaPlayer = new MediaPlayer();
+                mediaPlayer.setDataSource(getApplicationContext(), VIDEOURI);
+                mediaPlayer.setLooping(false);
+                attachMediaStateListener();
+                mediaPlayer.prepareAsync();
+                setNextMeditation("", NextPlayableMediaType.NONE);
+                resetOtherMeditation();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+    }
+    public void createMediaPlayer_meditationvideo(String videoName, FromPage pageName, String videoUrl, MediaType mediaType, int videoCurrentPosition, MeditationCourseModel.Webinar liveChatData, OnMediaStateListener listener) {
+
+        Log.i(TAG, "prev video =" + this.videoName);
+        Log.i(TAG, "curr video =" + videoName);
+        Log.i(TAG, "curr video url=" + videoUrl);
+
+
+        this.mediaStateListener = listener;
+
+        if (this.videoName.equals(videoName)) {
+
+            attachMediaStateListener();
+
+        } else {
+
+            this.videoName = videoName;
+            this.mediaType = mediaType;
+            this.fromPage = pageName;
+            this.m_liveChatData = liveChatData;
+            this.playingNonCued = false;
+            this.isThisMeditationTimeRecorded = false;
+
+            try {
+                Uri VIDEOURI = Uri.parse(videoUrl);
+                if (mediaPlayer == null) {
+                    mediaPlayer = new MediaPlayer();
+                } else {
+                    mediaPlayer.reset();
+                }
+                /*if (mediaPlayer != null && mediaPlayer.isPlaying()) {
+                    mediaPlayer = null;
+                }*/
                 mediaPlayer = new MediaPlayer();
                 mediaPlayer.setDataSource(getApplicationContext(), VIDEOURI);
                 mediaPlayer.setLooping(false);

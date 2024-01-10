@@ -36,7 +36,6 @@ import com.ashysystem.mbhq.util.AlertDialogCustom;
 import com.ashysystem.mbhq.util.SharedPreference;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 
@@ -78,6 +77,7 @@ public class MyAchievementsListAdapter extends RecyclerView.Adapter<MyAchievemen
         setHasStableIds(true);
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     public void loaddata(ArrayList<MyAchievementsListInnerModel> details) {
        /* List<MyAchievementsListInnerModel> tmp= new ArrayList<>();
         if ( details.size() < 50 ) {
@@ -96,6 +96,7 @@ public class MyAchievementsListAdapter extends RecyclerView.Adapter<MyAchievemen
         notifyDataSetChanged();
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     public void search(String searchString) {
        // lstMyAchievementListModelInners.clear();
         //dynamicSize = 0;
@@ -139,8 +140,13 @@ public class MyAchievementsListAdapter extends RecyclerView.Adapter<MyAchievemen
        /* if(viewHolder==null){
             viewHolder = new ViewHolder(itemLayoutView);
         }*/
-        View itemLayoutView = LayoutInflater.from(parent.getContext()).inflate(R.layout.adapter_gratitudemylist, null);
-        viewHolder = new ViewHolder(itemLayoutView);
+
+        View view = LayoutInflater.from(context)
+                .inflate(R.layout.adapter_gratitudemylist, parent, false);
+      //  return new MyAdapter.MyViewHolder(view);
+
+       // View itemLayoutView = LayoutInflater.from(parent.getContext()).inflate(R.layout.adapter_gratitudemylist, false);
+        viewHolder = new ViewHolder(view);
         return viewHolder;
     }
 
@@ -158,7 +164,7 @@ public class MyAchievementsListAdapter extends RecyclerView.Adapter<MyAchievemen
                 String sourceString = "";
                 if(null==lstMyAchievementListModelInners.get(position).getPromptOfDay()){
                     sourceString = "<b>" + lstMyAchievementListModelInners.get(position).getPrompt() + "</b>" + " " + lstMyAchievementListModelInners.get(position).getAchievement();
-                    holder.txtGratitudeDate.setText("Today");
+                    holder.txtGratitudeDate.setText(context.getResources().getText(R.string.Today));
 
                 }else{
                     holder.txtGratitudeDate.setText(lstMyAchievementListModelInners.get(position).getDateValue());
@@ -275,6 +281,7 @@ public class MyAchievementsListAdapter extends RecyclerView.Adapter<MyAchievemen
 
                    // new DownloadImageTask_(holder.journalImg, holder.imgCardView,holder.loadImageJournal).execute(lstMyAchievementListModelInners.get(position).getPictureDevicePath());
                   //  new DownloadImageTask(holder.journalImg, holder.imgCardView,holder.loadImageJournal).execute(lstMyAchievementListModelInners.get(position).getPicture());
+/*
                     Glide.with(context)
                             .load(lstMyAchievementListModelInners.get(position).getPicture())
                             .placeholder(R.drawable.empty_image_old)
@@ -304,6 +311,7 @@ public class MyAchievementsListAdapter extends RecyclerView.Adapter<MyAchievemen
                                 }
                             })
                             .into( holder.journalImg);
+*/
 
 
                 } else {
@@ -333,6 +341,7 @@ if (!lstMyAchievementListModelInners.get(position).getPicture().equals("")) {
         holder.loadImageJournal.setVisibility(View.VISIBLE);
 
         // new DownloadImageTask(holder.journalImg, holder.imgCardView,holder.loadImageJournal).execute(lstMyAchievementListModelInners.get(position).getPicture());
+/*
         Glide.with(context)
                 .load(lstMyAchievementListModelInners.get(position).getPicture())
                 .placeholder(R.drawable.empty_image_old)
@@ -362,6 +371,7 @@ if (!lstMyAchievementListModelInners.get(position).getPicture().equals("")) {
                     }
                 })
                 .into( holder.journalImg);
+*/
     }
 
 }else if(lstMyAchievementListModelInners.get(position).getPicture().equals("")){
@@ -385,6 +395,7 @@ if (!lstMyAchievementListModelInners.get(position).getPicture().equals("")) {
                             bitmap.compress(Bitmap.CompressFormat.JPEG, 30, bytes);
                             String path = MediaStore.Images.Media.insertImage(context.getContentResolver(), bitmap, "Title", null);
                             Uri image= Uri.parse(path);
+/*
                             Glide.with(context)
                                     .load(image)
                                     .placeholder(R.drawable.empty_image_old)
@@ -412,6 +423,7 @@ if (!lstMyAchievementListModelInners.get(position).getPicture().equals("")) {
                                         }
                                     })
                                     .into(holder.journalImg);
+*/
 
 
                         }
@@ -545,6 +557,7 @@ if (!lstMyAchievementListModelInners.get(position).getPicture().equals("")) {
         bitmap.compress(Bitmap.CompressFormat.JPEG, 50, stream);
         return BitmapFactory.decodeStream(new ByteArrayInputStream(stream.toByteArray()));
     }
+    @SuppressLint("StaticFieldLeak")
     private class DownloadImageTask extends AsyncTask<String, Void, String> {
         ImageView bmImage;
         CardView cardView;
@@ -585,6 +598,7 @@ if (!lstMyAchievementListModelInners.get(position).getPicture().equals("")) {
         protected void onPostExecute(String result) {
 
 
+/*
                         Glide.with(context)
                                 .load(result)
                                 .placeholder(R.drawable.empty_image_old)
@@ -614,12 +628,14 @@ if (!lstMyAchievementListModelInners.get(position).getPicture().equals("")) {
                                     }
                                 })
                                 .into(bmImage);
+*/
 
 
 
         }
     }
 
+    @SuppressLint("StaticFieldLeak")
     private class DownloadImageTask_ extends AsyncTask<String, Void, Uri> {
         ImageView bmImage;
         CardView cardView;
@@ -662,6 +678,7 @@ if (!lstMyAchievementListModelInners.get(position).getPicture().equals("")) {
         }
 
         protected void onPostExecute(Uri result) {
+/*
             Glide.with(context)
                     .load(result)
                     .placeholder(R.drawable.empty_image_old)
@@ -689,6 +706,7 @@ if (!lstMyAchievementListModelInners.get(position).getPicture().equals("")) {
                         }
                     })
                     .into(bmImage);
+*/
         }
     }
 

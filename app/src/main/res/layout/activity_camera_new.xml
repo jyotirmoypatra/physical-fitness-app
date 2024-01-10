@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:background="@color/black">
+
+	<LinearLayout
+		android:id="@+id/topLayout"
+		android:layout_width="match_parent"
+		android:layout_height="20dp"
+		android:orientation="horizontal">
+
+	</LinearLayout>
+
+	<com.otaliastudios.cameraview.CameraView
+		android:id="@+id/cameraView"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:layout_above="@+id/bottomLayout"
+		android:layout_below="@+id/topLayout"
+		android:keepScreenOn="true" />
+
+	<RelativeLayout
+		android:id="@+id/bottomLayout"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_alignParentBottom="true"
+		android:padding="12dp">
+
+		<ImageView
+			android:id="@+id/captureButton"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_centerInParent="true"
+			android:background="@drawable/camera_button_icon_65" />
+
+		<TextView
+			android:id="@+id/cancel"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_centerVertical="true"
+			android:padding="8dp"
+			android:text="@string/cancel"
+			android:textColor="@color/white"
+			android:textSize="15sp" />
+	</RelativeLayout>
+
+</RelativeLayout>

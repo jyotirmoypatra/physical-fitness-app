@@ -18,6 +18,7 @@
     <dimen name="spacing_4dp">4dp</dimen>
     <dimen name="spacing_6dp">6dp</dimen>
     <dimen name="spacing_12dp">12dp</dimen>
+    <dimen name="spacing_12sp">12sp</dimen>
     <dimen name="spacing_16dp">16dp</dimen>
     <dimen name="dialog_rounded_corner">2dp</dimen>
 

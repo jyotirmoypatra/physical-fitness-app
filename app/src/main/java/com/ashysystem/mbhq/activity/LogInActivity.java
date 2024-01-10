@@ -589,8 +589,8 @@ public class LogInActivity extends Activity implements View.OnClickListener {
 
                                     SharedPreference sharedPreference = new SharedPreference(mContext);
                                     Intent intent = null;
-                                    intent = new Intent(mContext, DemoSliderActivity.class);
-                                   /* if (!responseBody.getIsSubscribed() && responseBody.getPurchasedPrograms().size()>0) { Util.withfilterlist_afterbackfrommeditationdetails.clear();
+//                                    intent = new Intent(mContext, DemoSliderActivity.class);
+                                    if (!responseBody.getIsSubscribed() && responseBody.getPurchasedPrograms().size()>0) { Util.withfilterlist_afterbackfrommeditationdetails.clear();
                                         sharedPreference.write("PROGRAM_PURCHASE_ONLY", "", "TRUE");
                                         intent = new Intent(mContext, MainActivity.class);
                                         intent.putExtra("FROM_LOGIN", "TRUE");
@@ -604,7 +604,7 @@ public class LogInActivity extends Activity implements View.OnClickListener {
                                             intent = new Intent(mContext, MainActivity.class);//
                                             intent.putExtra("FROM_LOGIN", "TRUE");
                                         }
-                                    }*/
+                                    }
 
                                     intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                     intent.putExtra("FROMLOGIN", "TRUE");

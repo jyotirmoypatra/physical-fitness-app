@@ -9,6 +9,15 @@
     <string name="action_settings">Settings</string>
 
     <string name="video">Video</string>
+    <string name="Today">Today</string>
+    <string name="Next">Next</string>
+    <string name="back">back</string>
+    <string name="Photo_count_message">Photo count message</string>
+
+
+
+
+
 
     <string name="audio">Audio</string>
 
@@ -272,6 +281,10 @@
     <string name="menu_activity">Use Activity</string>
 
     <string name="save_as">Save as…</string>
+    <string name="save1">Save with crop</string>
+    <string name="done">done</string>
+    <string name="failed_to_upload">failed to upload</string>
+
     <string name="save_as_success">Text saved as %s</string>
     <string name="save_as_failure">Text could not be saved: %s</string>
     <string name="load_failure_1">This isn\'t a valid rich text editor file</string>

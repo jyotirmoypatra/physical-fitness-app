@@ -30,6 +30,8 @@ import com.ashysystem.mbhq.activity.MainActivity;
 import com.ashysystem.mbhq.activity.PlaySoundActivity;
 import com.ashysystem.mbhq.fragment.course.CourseDetailsFragment;
 
+import com.ashysystem.mbhq.fragment.live_chat.LiveChatPlayerFragment;
+import com.ashysystem.mbhq.fragment.live_chat.LiveChatPlayerFragment_video;
 import com.ashysystem.mbhq.fragment.meditation.MeditationDetailsNew;
 
 import com.ashysystem.mbhq.fragment.meditation.MeditationDetailsNew_video;
@@ -345,8 +347,13 @@ public class MeditationCourseAdapter extends RecyclerView.Adapter<MeditationCour
 
                     Util.clearMeditation_onpause="no";
 if(lstData.get(position).getEventItemVideoDetails().get(0).getMediaType().equalsIgnoreCase("VIDEO")){
-   ((MainActivity) context).clearCacheForParticularFragment(MeditationDetailsNew_video.newInstance(lstData.get(position)));
-                   ((MainActivity) context).loadFragment(MeditationDetailsNew_video.newInstance(lstData.get(position)), "LiveChatPlayer", null);//temporary bt jyoti
+//   ((MainActivity) context).clearCacheForParticularFragment(MeditationDetailsNew_video.newInstance(lstData.get(position)));
+//                   ((MainActivity) context).loadFragment(MeditationDetailsNew_video.newInstance(lstData.get(position)), "LiveChatPlayer", null);//temporary bt jyoti
+    Util.openliveplayer1="yes";
+    Util.chat1=lstData.get(position);
+    ((MainActivity) context).clearCacheForParticularFragment(LiveChatPlayerFragment_video.newInstance(lstData.get(position)));
+    ((MainActivity) context).loadFragment(LiveChatPlayerFragment_video.newInstance(lstData.get(position)), "LiveChatPlayer", null);
+
 }else{
     Util.backto="";
     ((MainActivity) context).clearCacheForParticularFragment(new MeditationDetailsNew());
@@ -463,8 +470,13 @@ if(lstData.get(position).getEventItemVideoDetails().get(0).getMediaType().equals
 
                 Util.clearMeditation_onpause="no";
                 if(lstData.get(position).getEventItemVideoDetails().get(0).getMediaType().equalsIgnoreCase("VIDEO")){
-                   ((MainActivity) context).clearCacheForParticularFragment(MeditationDetailsNew_video.newInstance(lstData.get(position)));
-                   ((MainActivity) context).loadFragment(MeditationDetailsNew_video.newInstance(lstData.get(position)), "LiveChatPlayer", null);//temporary bt jyoti
+//                   ((MainActivity) context).clearCacheForParticularFragment(MeditationDetailsNew_video.newInstance(lstData.get(position)));
+//                   ((MainActivity) context).loadFragment(MeditationDetailsNew_video.newInstance(lstData.get(position)), "LiveChatPlayer", null);//temporary bt jyoti
+                    Util.openliveplayer1="yes";
+                    Util.chat1=lstData.get(position);
+                    ((MainActivity) context).clearCacheForParticularFragment(LiveChatPlayerFragment_video.newInstance(lstData.get(position)));
+                    ((MainActivity) context).loadFragment(LiveChatPlayerFragment_video.newInstance(lstData.get(position)), "LiveChatPlayer", null);
+
                 }else{
                     Util.backto="";
                     ((MainActivity) context).clearCacheForParticularFragment(new MeditationDetailsNew());

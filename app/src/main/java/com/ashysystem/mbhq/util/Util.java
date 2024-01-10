@@ -158,11 +158,13 @@ public class Util {
 
     public static String prompt = "";
     public static String openliveplayer = "";
+    public static String openliveplayer1 = "";
     public static String edittext = "";
     public static String opengratitudeforfirstuser = "";
     public static String backto = "";
     public static String clearMeditation_onpause = "yes";
     public static Chat chat = new Chat();
+    public static MeditationCourseModel.Webinar chat1 = new MeditationCourseModel.Webinar();
 //
     public static ArrayList<Meditations> meditationsArrayList = new ArrayList<>();
     public static ArrayList<String> week = new ArrayList<String>();

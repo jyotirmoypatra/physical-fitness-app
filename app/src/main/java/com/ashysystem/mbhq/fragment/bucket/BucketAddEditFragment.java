@@ -72,7 +72,6 @@ import com.ashysystem.mbhq.util.SharedPreference;
 import com.ashysystem.mbhq.util.Util;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.edmodo.cropper.CropImageView;
 import com.google.gson.Gson;
@@ -572,6 +571,7 @@ public class BucketAddEditFragment extends Fragment {
                         .dontAnimate()
                         .into(imgGratitudeMain);*/
 
+/*
                 Glide.with(getActivity())
                         .load(largeImage)
                         .asBitmap()
@@ -593,6 +593,7 @@ public class BucketAddEditFragment extends Fragment {
                                 imgGratitudeMain.setImageBitmap(resource);
                             }
                         });
+*/
 
             }
             if (globalGetGratitudeListModelInner.getPushNotification() != null && globalGetGratitudeListModelInner.getPushNotification()) {

@@ -56,6 +56,8 @@ import com.ashysystem.mbhq.adapter.MeditationCourseAdapter;
 import com.ashysystem.mbhq.fragment.achievement.MyAchievementsFragment;
 import com.ashysystem.mbhq.fragment.habit_hacker.MbhqTodayMainFragment;
 import com.ashysystem.mbhq.fragment.habit_hacker.MbhqTodayTwoFragment;
+import com.ashysystem.mbhq.fragment.live_chat.LiveChatPlayerFragment;
+import com.ashysystem.mbhq.fragment.live_chat.LiveChatPlayerFragment_video;
 import com.ashysystem.mbhq.model.GetMeditationCacheExpiryTimeResponse;
 import com.ashysystem.mbhq.model.GetUserPaidStatusModel;
 import com.ashysystem.mbhq.model.MeditationCourseModel;
@@ -1871,18 +1873,10 @@ void init(View view){
         bundle.putString("data", Util.strMeditationDetailsForBackground);
         meditationDetails.setArguments(bundle);
         ((MainActivity) requireActivity()).loadFragment(meditationDetails, "MeditationDetailsNew", null);
-    }else if (Util.boolBackGroundServiceRunningProgram_video && Util.bundleProgramDetailsForBackground_vedio != null && !fromDetailsPage) {
-        Log.i(TAG, "UTILVALUEEEEEE" + Util.strMeditationDetailsForBackground + ">>>>>");
-        Util.backto="";
-//        ((MainActivity) requireActivity()).clearCacheForParticularFragment(new MeditationDetailsNew());
-//        MeditationDetailsNew meditationDetails = new MeditationDetailsNew();
-//        Bundle bundle = new Bundle();
-//        bundle.putString("data", Util.strMeditationDetailsForBackground);
-//        meditationDetails.setArguments(bundle);
-//        ((MainActivity) requireActivity()).loadFragment(meditationDetails, "MeditationDetailsNew", null);
-
-        ((MainActivity) requireActivity()).clearCacheForParticularFragment(MeditationDetailsNew_video.newInstance(Util.bundleProgramDetailsForBackground_vedio));
-        ((MainActivity) requireActivity()).loadFragment(MeditationDetailsNew_video.newInstance(Util.bundleProgramDetailsForBackground_vedio), "LiveChatPlayer", null);//temporary bt jyoti
+    }if(Util.openliveplayer1.equalsIgnoreCase("yes")){
+        Util.openliveplayer1="yes";
+        ((MainActivity) requireActivity()).clearCacheForParticularFragment(LiveChatPlayerFragment_video.newInstance(Util.chat1));
+        ((MainActivity) requireActivity()).loadFragment(LiveChatPlayerFragment_video.newInstance(Util.chat1), "LiveChatPlayer", null);
 
     } else {
         // fromDetailsPage = false;

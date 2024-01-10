@@ -23,9 +23,9 @@ import android.view.ViewGroup;
 
 import com.ashysystem.mbhq.R;
 
+import static com.ashysystem.mbhq.activity.MainActivity.decodeSampledBitmapFromFile;
 import static com.ashysystem.mbhq.activity.MainActivity.imgGratitude;
 import static com.ashysystem.mbhq.activity.MainActivity.imgHabits;
-import static com.ashysystem.mbhq.fragment.MyAchievementsListAddEditFragment.decodeSampledBitmapFromFile;
 import static com.ashysystem.mbhq.fragment.allSettingsFragment.KEY_DAILY_POPUP_JOURNAL;
 
 
@@ -105,7 +105,7 @@ import com.ashysystem.mbhq.Service.impl.FinisherServiceImpl;
 import com.ashysystem.mbhq.Service.impl.ProgressRequestBody;
 import com.ashysystem.mbhq.activity.MainActivity;
 import com.ashysystem.mbhq.adapter.MyAchievementsListAdapter;
-import com.ashysystem.mbhq.adapter.MyAchievementsListAdapter_new;
+//import com.ashysystem.mbhq.adapter.MyAchievementsListAdapter_new;
 import com.ashysystem.mbhq.adapter.MyAdapter;
 import com.ashysystem.mbhq.adapter.MyAdapter1;
 import com.ashysystem.mbhq.dialog.CustomReminderDialogForEditAchievement;
@@ -147,7 +147,6 @@ import com.ashysystem.mbhq.util.SharedPreference;
 import com.ashysystem.mbhq.util.Util;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.edmodo.cropper.CropImageView;
@@ -338,7 +337,7 @@ public class MyAchievementsFragment extends Fragment {
     public int position = 0;
     public int count = 300;
     public MyAchievementsListAdapter myAchievementsListAdapter = null;
-    public MyAchievementsListAdapter_new myAchievementsListAdapter_new = null;
+  //  public MyAchievementsListAdapter_new myAchievementsListAdapter_new = null;
 
     private NestedScrollView nestedSV;
     private long mLastClickTime = 0;
@@ -9831,6 +9830,7 @@ public class MyAchievementsFragment extends Fragment {
 
                         imgJournalLoadingBar.setVisibility(View.VISIBLE);
 
+/*
                         Glide.with(getActivity())
                                 .load(globalmMyAchievementsListInnerModel.getPicture())
                                 .placeholder(R.drawable.empty_image_old)
@@ -9860,6 +9860,7 @@ public class MyAchievementsFragment extends Fragment {
                                     }
                                 })
                                 .into(imgGratitudeMain);
+*/
 
 
                     } else {
@@ -9869,6 +9870,7 @@ public class MyAchievementsFragment extends Fragment {
                             Log.e("block","01");
                             imgJournalLoadingBar.setVisibility(View.VISIBLE);
 
+/*
                             Glide.with(getActivity())
                                     .load(globalmMyAchievementsListInnerModel.getPicture())
                                     .placeholder(R.drawable.empty_image_old)
@@ -9898,6 +9900,7 @@ public class MyAchievementsFragment extends Fragment {
                                         }
                                     })
                                     .into(imgGratitudeMain);
+*/
                         }else{
                             Log.e("block","02");
                             String filePath = path + globalmMyAchievementsListInnerModel.getPictureDevicePath();
@@ -9916,6 +9919,7 @@ public class MyAchievementsFragment extends Fragment {
                                 Uri imageUri= Uri.parse(path);
 
                                 Log.e("imgurl", "imgurl------->" + imageUri);
+/*
                                 Glide.with(getActivity())
                                         .load(imageUri)
                                         .placeholder(R.drawable.empty_image_old)
@@ -9940,6 +9944,7 @@ public class MyAchievementsFragment extends Fragment {
                                             }
                                         })
                                         .into(imgGratitudeMain);
+*/
 
 
                             }
@@ -11042,6 +11047,7 @@ public class MyAchievementsFragment extends Fragment {
         });
 
         dialog.show();
+
     }
     private void funcForShareImageGratitudeSharability1(RelativeLayout rlPicSection, Integer gratitudeID, EditText edtGratitudeName,Dialog dialog1,MyAchievementsListInnerModel globalmMyAchievementsListInnerModel) {
         rlPicSection.setDrawingCacheEnabled(true);
@@ -11065,12 +11071,15 @@ public class MyAchievementsFragment extends Fragment {
         dialogOpenOnceForEdit = true;
 
         rootJsonInner = new JSONObject();
+        int userfolderid=globalmMyAchievementsListInnerModel.getUserFolderId();
 
         if (dialogOpenOnceForEdit) {
 
             try {
                 if (!edtGratitudeName.getText().toString().equals("")) {
                     rootJsonInner.put("Id", globalmMyAchievementsListInnerModel.getId());
+                    rootJsonInner.put("UserFolderId", userfolderid);
+
                     Log.e("journalId", "journal update id>>>>>" + globalmMyAchievementsListInnerModel.getId());
                     rootJsonInner.put("DueDate", globalmMyAchievementsListInnerModel.getDueDate());
                     rootJsonInner.put("Achievement", journalName);
@@ -11141,6 +11150,8 @@ public class MyAchievementsFragment extends Fragment {
                 } else {
                     // MyAchievementsListInnerModel globalmMyAchievementsListInnerModel = new MyAchievementsListInnerModel();
                     globalmMyAchievementsListInnerModel.setId(globalmMyAchievementsListInnerModel.getId());
+                    globalmMyAchievementsListInnerModel.setUserFolderId(userfolderid);
+
                     globalmMyAchievementsListInnerModel.setAchievement(journalName);
                     //globalmMyAchievementsListInnerModel.setDescription(edtGrateful.getText().toString());
                     globalmMyAchievementsListInnerModel.setUploadPictureImgFileName(globalmMyAchievementsListInnerModel.getUploadPictureImgFileName());

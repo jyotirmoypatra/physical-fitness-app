@@ -87,15 +87,21 @@
         <activity
             android:name=".activity.PlaySoundActivity"
             android:exported="true" />
+        <activity
+            android:name=".activity.ImageCropperActivity"
+            android:exported="true" />
+        <activity
+            android:name=".activity.CameraNewActivity"
+            android:exported="true" />
 
 
         <service android:name=".Service.BackgroundSoundServiceNew"
             android:enabled="true"
-            android:exported="true"/>
+            />
         <service
             android:name=".Service.AudioService"
             android:enabled="true"
-            android:exported="true" />
+           />
         <service android:name=".Service.OnClearFromRecentService"/>
         <service
             android:name=".util.NetworkSchedulerService"
