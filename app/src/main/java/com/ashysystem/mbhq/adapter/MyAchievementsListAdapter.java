@@ -7,6 +7,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Environment;
@@ -25,6 +26,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 
+import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -35,7 +37,9 @@ import com.ashysystem.mbhq.model.response.MyAchievementsListInnerModel;
 import com.ashysystem.mbhq.util.AlertDialogCustom;
 import com.ashysystem.mbhq.util.SharedPreference;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 
@@ -79,17 +83,6 @@ public class MyAchievementsListAdapter extends RecyclerView.Adapter<MyAchievemen
 
     @SuppressLint("NotifyDataSetChanged")
     public void loaddata(ArrayList<MyAchievementsListInnerModel> details) {
-       /* List<MyAchievementsListInnerModel> tmp= new ArrayList<>();
-        if ( details.size() < 50 ) {
-            tmp = details;
-        } else {
-            tmp = details.subList(this.__detail_previous_size, details.size());
-        }
-        Log.e(TAG, "tmp: " + tmp.size());
-        this.lstMyAchievementListModelInners.addAll(tmp);
-        Log.e(TAG, "lstMyAchievementListModelInners: " + lstMyAchievementListModelInners.size());
-
-        this.__detail_previous_size = details.size();*/
         this.lstMyAchievementListModelInners.addAll(details);
         this.fullData.addAll(lstMyAchievementListModelInners);
 
@@ -143,9 +136,6 @@ public class MyAchievementsListAdapter extends RecyclerView.Adapter<MyAchievemen
 
         View view = LayoutInflater.from(context)
                 .inflate(R.layout.adapter_gratitudemylist, parent, false);
-      //  return new MyAdapter.MyViewHolder(view);
-
-       // View itemLayoutView = LayoutInflater.from(parent.getContext()).inflate(R.layout.adapter_gratitudemylist, false);
         viewHolder = new ViewHolder(view);
         return viewHolder;
     }
@@ -279,9 +269,6 @@ public class MyAchievementsListAdapter extends RecyclerView.Adapter<MyAchievemen
                     Log.e("block_b","00");
                     holder.loadImageJournal.setVisibility(View.VISIBLE);
 
-                   // new DownloadImageTask_(holder.journalImg, holder.imgCardView,holder.loadImageJournal).execute(lstMyAchievementListModelInners.get(position).getPictureDevicePath());
-                  //  new DownloadImageTask(holder.journalImg, holder.imgCardView,holder.loadImageJournal).execute(lstMyAchievementListModelInners.get(position).getPicture());
-/*
                     Glide.with(context)
                             .load(lstMyAchievementListModelInners.get(position).getPicture())
                             .placeholder(R.drawable.empty_image_old)
@@ -291,27 +278,24 @@ public class MyAchievementsListAdapter extends RecyclerView.Adapter<MyAchievemen
                             .thumbnail(0.5f)
                             .diskCacheStrategy(DiskCacheStrategy.ALL)
                             .dontAnimate()
-                            .listener(new RequestListener<String, GlideDrawable>() {
+                            .listener(new RequestListener<Drawable>() {
                                 @Override
-                                public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
+                                public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
                                     holder.imgCardView.setVisibility(View.GONE);
                                     holder.journalImg.setVisibility(View.GONE);
-
-
                                     return false;
                                 }
 
                                 @Override
-                                public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
+                                public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
                                     holder.imgCardView.setVisibility(View.VISIBLE);
                                     holder.journalImg.setVisibility(View.VISIBLE);
                                     holder.loadImageJournal.setVisibility(View.GONE);
-
                                     return false;
                                 }
+
                             })
                             .into( holder.journalImg);
-*/
 
 
                 } else {
@@ -340,8 +324,6 @@ if (!lstMyAchievementListModelInners.get(position).getPicture().equals("")) {
         Log.e("block_b","003");
         holder.loadImageJournal.setVisibility(View.VISIBLE);
 
-        // new DownloadImageTask(holder.journalImg, holder.imgCardView,holder.loadImageJournal).execute(lstMyAchievementListModelInners.get(position).getPicture());
-/*
         Glide.with(context)
                 .load(lstMyAchievementListModelInners.get(position).getPicture())
                 .placeholder(R.drawable.empty_image_old)
@@ -351,9 +333,10 @@ if (!lstMyAchievementListModelInners.get(position).getPicture().equals("")) {
                 .thumbnail(0.5f)
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .dontAnimate()
-                .listener(new RequestListener<String, GlideDrawable>() {
+
+                .listener(new RequestListener<Drawable>() {
                     @Override
-                    public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
+                    public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
                         holder.imgCardView.setVisibility(View.GONE);
                         holder.journalImg.setVisibility(View.GONE);
 
@@ -362,7 +345,7 @@ if (!lstMyAchievementListModelInners.get(position).getPicture().equals("")) {
                     }
 
                     @Override
-                    public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
+                    public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
                         holder.imgCardView.setVisibility(View.VISIBLE);
                         holder.journalImg.setVisibility(View.VISIBLE);
                         holder.loadImageJournal.setVisibility(View.GONE);
@@ -370,8 +353,8 @@ if (!lstMyAchievementListModelInners.get(position).getPicture().equals("")) {
                         return false;
                     }
                 })
+
                 .into( holder.journalImg);
-*/
     }
 
 }else if(lstMyAchievementListModelInners.get(position).getPicture().equals("")){
@@ -382,7 +365,6 @@ if (!lstMyAchievementListModelInners.get(position).getPicture().equals("")) {
     Log.e("block_b","004");
     holder.loadImageJournal.setVisibility(View.VISIBLE);
 
-                       // new DownloadImageTask_(holder.journalImg, holder.imgCardView,holder.loadImageJournal).execute(lstMyAchievementListModelInners.get(position).getPictureDevicePath());
                         String filePath = path + lstMyAchievementListModelInners.get(position).getPictureDevicePath();
                         File file = new File(filePath);
                         if (file.exists()) {
@@ -395,7 +377,6 @@ if (!lstMyAchievementListModelInners.get(position).getPicture().equals("")) {
                             bitmap.compress(Bitmap.CompressFormat.JPEG, 30, bytes);
                             String path = MediaStore.Images.Media.insertImage(context.getContentResolver(), bitmap, "Title", null);
                             Uri image= Uri.parse(path);
-/*
                             Glide.with(context)
                                     .load(image)
                                     .placeholder(R.drawable.empty_image_old)
@@ -403,9 +384,10 @@ if (!lstMyAchievementListModelInners.get(position).getPicture().equals("")) {
                                     .fitCenter()
                                     .thumbnail(0.5f)
                                     .diskCacheStrategy(DiskCacheStrategy.ALL)
-                                    .listener(new RequestListener<Uri, GlideDrawable>() {
+
+                                    .listener(new RequestListener<Drawable>() {
                                         @Override
-                                        public boolean onException(Exception e, Uri model, Target<GlideDrawable> target, boolean isFirstResource) {
+                                        public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
                                             holder.imgCardView.setVisibility(View.GONE);
                                             holder.journalImg.setVisibility(View.GONE);
 
@@ -414,7 +396,7 @@ if (!lstMyAchievementListModelInners.get(position).getPicture().equals("")) {
                                         }
 
                                         @Override
-                                        public boolean onResourceReady(GlideDrawable resource, Uri model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
+                                        public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
                                             holder.imgCardView.setVisibility(View.VISIBLE);
                                             holder.journalImg.setVisibility(View.VISIBLE);
                                             holder.loadImageJournal.setVisibility(View.GONE);
@@ -423,15 +405,11 @@ if (!lstMyAchievementListModelInners.get(position).getPicture().equals("")) {
                                         }
                                     })
                                     .into(holder.journalImg);
-*/
 
 
                         }
 
-
-
-                        //holder.imgCardView.setVisibility(View.GONE);
-                    }
+}
                 }
             }
             else {
@@ -557,158 +535,7 @@ if (!lstMyAchievementListModelInners.get(position).getPicture().equals("")) {
         bitmap.compress(Bitmap.CompressFormat.JPEG, 50, stream);
         return BitmapFactory.decodeStream(new ByteArrayInputStream(stream.toByteArray()));
     }
-    @SuppressLint("StaticFieldLeak")
-    private class DownloadImageTask extends AsyncTask<String, Void, String> {
-        ImageView bmImage;
-        CardView cardView;
-        ProgressBar progressBar;
-        public DownloadImageTask(ImageView bmImage,CardView cardView,ProgressBar progressBar) {
-            this.bmImage = bmImage;
-            this.cardView = cardView;
-            this.progressBar = progressBar;
-        }
 
-        protected String doInBackground(String... urls) {
-
-            String url1 = urls[0];
-            ByteArrayOutputStream outputStream=null;
-
-            try {
-             /*   URL url = new URL(url1);
-                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-                connection.setDoInput(true);
-                connection.connect();
-                InputStream input = connection.getInputStream();
-                Bitmap bitmap = BitmapFactory.decodeStream(input);
-                int bitmapSize = bitmap.getByteCount();
-                Log.e("bitmap",String.valueOf(bitmapSize));
-                 outputStream = new ByteArrayOutputStream();
-                bitmap.compress(Bitmap.CompressFormat.JPEG, 10, outputStream);
-                byte[] compressedImage = outputStream.toByteArray();
-                int compressedSize = compressedImage.length;
-                Log.e("compress_bitmap",String.valueOf(compressedSize));*/
-
-            } catch (Exception e) {
-              /*  Log.e("Error", e.getMessage());
-                e.printStackTrace();*/
-            }
-            return url1;
-        }
-
-        protected void onPostExecute(String result) {
-
-
-/*
-                        Glide.with(context)
-                                .load(result)
-                                .placeholder(R.drawable.empty_image_old)
-                                .error(R.drawable.notfound)
-                                .fitCenter()
-                               // .override(200, 200) // resize the image to 200x200 pixels
-                                .thumbnail(0.5f)
-                                .diskCacheStrategy(DiskCacheStrategy.ALL)
-                                .dontAnimate()
-                                .listener(new RequestListener<String, GlideDrawable>() {
-                                    @Override
-                                    public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
-                                        cardView.setVisibility(View.GONE);
-                                        bmImage.setVisibility(View.GONE);
-
-
-                                        return false;
-                                    }
-
-                                    @Override
-                                    public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
-                                        cardView.setVisibility(View.VISIBLE);
-                                        bmImage.setVisibility(View.VISIBLE);
-                                        progressBar.setVisibility(View.GONE);
-
-                                        return false;
-                                    }
-                                })
-                                .into(bmImage);
-*/
-
-
-
-        }
-    }
-
-    @SuppressLint("StaticFieldLeak")
-    private class DownloadImageTask_ extends AsyncTask<String, Void, Uri> {
-        ImageView bmImage;
-        CardView cardView;
-        ProgressBar progressBar;
-        public DownloadImageTask_(ImageView bmImage,CardView cardView,ProgressBar progressBar) {
-            this.bmImage = bmImage;
-            this.cardView = cardView;
-            this.progressBar = progressBar;
-        }
-
-        protected Uri doInBackground(String... urls) {
-
-            String url = urls[0];
-            // Bitmap image = null;
-            Uri image = null;
-
-            try {
-                cardView.setVisibility(View.VISIBLE);
-
-                String filePath = path + url;
-                File file = new File(filePath);
-                if (file.exists()) {
-
-                    BitmapFactory.Options options = new BitmapFactory.Options();
-                    options.inSampleSize = 4; // This will reduce the image resolution by a factor of 4
-                    Bitmap bitmap = BitmapFactory.decodeFile(file.getAbsolutePath(), options);
-
-                    ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-                    bitmap.compress(Bitmap.CompressFormat.JPEG, 30, bytes);
-                    String path = MediaStore.Images.Media.insertImage(context.getContentResolver(), bitmap, "Title", null);
-                    image= Uri.parse(path);
-
-
-                }
-            } catch (Exception e) {
-                Log.e("Error", e.getMessage());
-                e.printStackTrace();
-            }
-            return image;
-        }
-
-        protected void onPostExecute(Uri result) {
-/*
-            Glide.with(context)
-                    .load(result)
-                    .placeholder(R.drawable.empty_image_old)
-                    .dontAnimate()
-                    .fitCenter()
-                    .thumbnail(0.5f)
-                    .diskCacheStrategy(DiskCacheStrategy.ALL)
-                    .listener(new RequestListener<Uri, GlideDrawable>() {
-                        @Override
-                        public boolean onException(Exception e, Uri model, Target<GlideDrawable> target, boolean isFirstResource) {
-                            cardView.setVisibility(View.GONE);
-                            bmImage.setVisibility(View.GONE);
-
-
-                            return false;
-                        }
-
-                        @Override
-                        public boolean onResourceReady(GlideDrawable resource, Uri model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
-                            cardView.setVisibility(View.VISIBLE);
-                            bmImage.setVisibility(View.VISIBLE);
-                            progressBar.setVisibility(View.GONE);
-
-                            return false;
-                        }
-                    })
-                    .into(bmImage);
-*/
-        }
-    }
 
 
 

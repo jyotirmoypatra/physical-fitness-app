@@ -2,6 +2,7 @@ package com.ashysystem.mbhq.fragment.achievement;
 
 import android.content.ContentResolver;
 import android.content.ContentValues;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
@@ -146,7 +147,9 @@ import com.ashysystem.mbhq.util.SetLocalNotificationForAchievement;
 import com.ashysystem.mbhq.util.SharedPreference;
 import com.ashysystem.mbhq.util.Util;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.edmodo.cropper.CropImageView;
@@ -9830,7 +9833,6 @@ public class MyAchievementsFragment extends Fragment {
 
                         imgJournalLoadingBar.setVisibility(View.VISIBLE);
 
-/*
                         Glide.with(getActivity())
                                 .load(globalmMyAchievementsListInnerModel.getPicture())
                                 .placeholder(R.drawable.empty_image_old)
@@ -9840,27 +9842,26 @@ public class MyAchievementsFragment extends Fragment {
                                 .thumbnail(0.5f)
                                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                                 .dontAnimate()
-                                .listener(new RequestListener<String, GlideDrawable>() {
+                                .listener(new RequestListener<Drawable>() {
                                     @Override
-                                    public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
-
+                                    public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
                                         imgJournalLoadingBar.setVisibility(View.GONE);
                                         imgGratitudeMainCard.setVisibility(View.GONE);
 
                                         return false;
-
                                     }
 
                                     @Override
-                                    public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
+                                    public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
                                         imgJournalLoadingBar.setVisibility(View.GONE);
                                         imgGratitudeMainCard.setVisibility(View.VISIBLE);
 
                                         return false;
                                     }
+
                                 })
+
                                 .into(imgGratitudeMain);
-*/
 
 
                     } else {
@@ -9870,7 +9871,6 @@ public class MyAchievementsFragment extends Fragment {
                             Log.e("block","01");
                             imgJournalLoadingBar.setVisibility(View.VISIBLE);
 
-/*
                             Glide.with(getActivity())
                                     .load(globalmMyAchievementsListInnerModel.getPicture())
                                     .placeholder(R.drawable.empty_image_old)
@@ -9880,10 +9880,9 @@ public class MyAchievementsFragment extends Fragment {
                                     .thumbnail(0.5f)
                                     .diskCacheStrategy(DiskCacheStrategy.ALL)
                                     .dontAnimate()
-                                    .listener(new RequestListener<String, GlideDrawable>() {
+                                    .listener(new RequestListener<Drawable>() {
                                         @Override
-                                        public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
-
+                                        public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
                                             imgJournalLoadingBar.setVisibility(View.GONE);
                                             imgGratitudeMainCard.setVisibility(View.GONE);
 
@@ -9892,15 +9891,15 @@ public class MyAchievementsFragment extends Fragment {
                                         }
 
                                         @Override
-                                        public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
+                                        public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
                                             imgJournalLoadingBar.setVisibility(View.GONE);
                                             imgGratitudeMainCard.setVisibility(View.VISIBLE);
 
                                             return false;
                                         }
+
                                     })
                                     .into(imgGratitudeMain);
-*/
                         }else{
                             Log.e("block","02");
                             String filePath = path + globalmMyAchievementsListInnerModel.getPictureDevicePath();
@@ -9919,32 +9918,33 @@ public class MyAchievementsFragment extends Fragment {
                                 Uri imageUri= Uri.parse(path);
 
                                 Log.e("imgurl", "imgurl------->" + imageUri);
-/*
                                 Glide.with(getActivity())
                                         .load(imageUri)
                                         .placeholder(R.drawable.empty_image_old)
                                         .error(R.drawable.notfound)
                                         .dontAnimate()
                                         .diskCacheStrategy(DiskCacheStrategy.ALL)
-                                        .listener(new RequestListener<Uri, GlideDrawable>() {
+
+                                        .listener(new RequestListener<Drawable>() {
                                             @Override
-                                            public boolean onException(Exception e, Uri model, Target<GlideDrawable> target, boolean isFirstResource) {
+                                            public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
                                                 imgJournalLoadingBar.setVisibility(View.GONE);
                                                 imgGratitudeMainCard.setVisibility(View.GONE);
 
                                                 return false;
+
                                             }
 
                                             @Override
-                                            public boolean onResourceReady(GlideDrawable resource, Uri model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
+                                            public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
                                                 imgJournalLoadingBar.setVisibility(View.GONE);
                                                 imgGratitudeMainCard.setVisibility(View.VISIBLE);
 
                                                 return false;
                                             }
+
                                         })
                                         .into(imgGratitudeMain);
-*/
 
 
                             }
@@ -11680,21 +11680,14 @@ public class MyAchievementsFragment extends Fragment {
                     imgGratitudeMain.setVisibility(View.VISIBLE);
                     imgGratitudeMainCard.setVisibility(View.VISIBLE);
                     fram_.setVisibility(View.VISIBLE);
+                    imgJournalLoadingBar.setVisibility(View.GONE);
                     bitimage = cropImageView.getCroppedImage();
                     Log.e(" height After crop--->", bitimage.getHeight() + "");
                     Log.e(" height After crop--->", bitimage.getHeight() + "");
-                    //  imgGratitudeMain.setImageBitmap(null);
-                    //  imgGratitudeMain.setAdjustViewBounds(true);
-                    //  imgGratitudeMain.setImageBitmap(bitimage);
                     dialogcrop.dismiss();
-                    // new ImageloadAsyn(bitimage).execute();
-                    //Uri tempUri = getImageUri(getActivity(), bitimage);
-                    //String cropPath = getRealPathFromURI(tempUri);
-//                    Uri uri = getImageUri(Objects.requireNonNull(getActivity()),bitimage);
-//                    String cropPath = Util.getFilePathFromUri(Objects.requireNonNull(getActivity()),uri);
                     String cropPath = storeImage(bitimage);
                     preaprePictureForUpload1(cropPath);
-                    imgJournalLoadingBar.setVisibility(View.GONE);
+
                 } catch (Exception e) {
                     e.printStackTrace();
                     imgJournalLoadingBar.setVisibility(View.GONE);

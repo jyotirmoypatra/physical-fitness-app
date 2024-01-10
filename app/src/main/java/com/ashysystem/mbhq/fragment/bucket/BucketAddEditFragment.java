@@ -19,11 +19,13 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
@@ -72,7 +74,9 @@ import com.ashysystem.mbhq.util.SharedPreference;
 import com.ashysystem.mbhq.util.Util;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.target.CustomTarget;
 import com.bumptech.glide.request.target.SimpleTarget;
+import com.bumptech.glide.request.transition.Transition;
 import com.edmodo.cropper.CropImageView;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
@@ -570,6 +574,36 @@ public class BucketAddEditFragment extends Fragment {
                         .error(R.drawable.empty_image)
                         .dontAnimate()
                         .into(imgGratitudeMain);*/
+
+
+                Glide.with(getActivity())
+                        .asBitmap()
+                        .load(largeImage)
+                        .fitCenter()
+                        .diskCacheStrategy(DiskCacheStrategy.ALL)
+                        .placeholder(R.drawable.empty_image_old)
+                        .error(R.drawable.empty_image_old)
+                        .into(new CustomTarget<Bitmap>() {
+
+
+                            @Override
+                            public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+                                ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+                                resource.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
+                                byte[] byteArray = byteArrayOutputStream.toByteArray();
+                                stringImg = encodeImage(byteArray);
+                                Log.e("BASE64STRING", stringImg);
+                                //sharedPreference.write("BUCKETIMAGE","",stringImg);
+                                imgGratitudeMain.setImageBitmap(resource);
+                            }
+
+                            @Override
+                            public void onLoadCleared(@Nullable Drawable placeholder) {
+                                // Implement if needed
+                            }
+                        });
+
+
 
 /*
                 Glide.with(getActivity())
