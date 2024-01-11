@@ -10,11 +10,12 @@ import android.view.ViewGroup;
 
 import com.ashysystem.mbhq.R;
 
-/**
+ /**
  * A simple {@link Fragment} subclass.
  * Use the {@link AccountabilityBuddyListFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
+
 public class AccountabilityBuddyListFragment extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match

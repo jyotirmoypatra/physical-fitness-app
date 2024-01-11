@@ -13,6 +13,7 @@ import android.provider.MediaStore;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -31,6 +32,9 @@ import com.otaliastudios.cameraview.SessionType;
 import com.otaliastudios.cameraview.WhiteBalance;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 
 public class CameraNewActivity extends AppCompatActivity {
 
@@ -106,13 +110,46 @@ public class CameraNewActivity extends AppCompatActivity {
         }
     }
 
-    private Uri getImageUri(Bitmap inImage) {
+   /* private Uri getImageUri(Bitmap inImage) {
         ByteArrayOutputStream bytes = new ByteArrayOutputStream();
         inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
         String path = MediaStore.Images.Media.insertImage(getContentResolver(), inImage, "Title", null);
         return Uri.parse(path);
-    }
+    }*/
 
+
+    private File saveBitmapToFile(ByteArrayOutputStream bytes) {
+        File filesDir = getFilesDir();
+        File imageFile = new File(filesDir, "image.jpg");
+
+        try (FileOutputStream fos = new FileOutputStream(imageFile)) {
+            // Compress the bitmap to a JPEG with compression factor 80 (adjust as needed)
+            Bitmap compressedBitmap = BitmapFactory.decodeByteArray(bytes.toByteArray(), 0, bytes.size());
+            compressedBitmap.compress(Bitmap.CompressFormat.JPEG, 80, fos);
+
+            return imageFile;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+    private Uri getImageUri(Bitmap inImage) {
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+//        String path = MediaStore.Images.Media.insertImage(getContentResolver(), inImage, "Title", null);
+//        return Uri.parse(path);
+        // Save the bitmap to a file
+        File imageFile = saveBitmapToFile(bytes);
+
+        if (imageFile != null) {
+            // Get the Uri from the file
+            return Uri.fromFile(imageFile);
+        } else {
+            // Handle the case where imageFile is null
+            Log.e("YourTag", "Failed to save bitmap to file.");
+            return null;
+        }
+    }
     /*private Bitmap getImageBitmap(String photoPath) {
         ExifInterface ei = null;
         Bitmap rotatedBitmap = null;

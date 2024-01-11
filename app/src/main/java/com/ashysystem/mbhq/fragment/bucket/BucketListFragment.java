@@ -670,6 +670,7 @@ public class BucketListFragment extends Fragment implements StartDragListener {
                     if (hasCameraPermission() && hasGalleryPermission()) {
                         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                         if (takePictureIntent.resolveActivity(requireActivity().getPackageManager()) != null) {
+
                             openCustomCamera();
 
                         }
@@ -727,9 +728,9 @@ public class BucketListFragment extends Fragment implements StartDragListener {
                     }
 
                 } else {
-                    Intent galleryIntent = new Intent(Intent.ACTION_PICK,
-                            MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                    Intent galleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                     getActivity().startActivityForResult(galleryIntent, ((MainActivity) getActivity()).PICK_IMAGE_FROM_GALLERY_CODE_ACTIVITY_RESULT_FROM_GRATITUDE_LIST);
+
                 }
 
             }
@@ -2633,32 +2634,6 @@ public class BucketListFragment extends Fragment implements StartDragListener {
                     Log.e("PICTURE Gal---->", "123");
 
                     Uri selectedImage = data.getData();
-//                    String[] filePathColumn = {MediaStore.Images.Media.DATA};
-//                    // Get the cursor
-//                    if (getActivity() != null) {
-//                        Cursor cursor = ((MainActivity) getActivity()).getContentResolver().query(selectedImage,
-//                                filePathColumn, null, null, null);
-//
-//                    }
-//                    Cursor cursor = ((MainActivity) getActivity()).getContentResolver().query(selectedImage,
-//                            filePathColumn, null, null, null);
-//                    // Move to first row
-//                    cursor.moveToFirst();
-//                    int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-//                    imgDecodableString = cursor.getString(columnIndex);
-//                    File comImg = null;
-//                    try {
-//                        if (getContext() != null) {
-//                            comImg = new Compressor(getContext()).compressToFile(new File(imgDecodableString));
-//
-//                        }
-//                    } catch (IOException e) {
-//                        e.printStackTrace();
-//                    }
-//                    long bitmapLengthSize = comImg.length();
-//                    Log.e("gal compress img", "gallery compress img size>>>>>>>>>" + (bitmapLengthSize * 0.001) + " KB");
-//                    cursor.close();
-//                    cropPhoto(BitmapFactory.decodeFile(imgDecodableString), comImg.getAbsolutePath());
                     setImageToCropper(selectedImage);
                 } else if (requestCode == ((MainActivity) getActivity()).CAMERA_PIC_REQUEST_CODE_ACTIVITY_RESULT_FROM_GRATITUDE_LIST && resultCode == getActivity().RESULT_OK && null != data) {
                     Log.e("camera", "05");
@@ -2695,15 +2670,9 @@ public class BucketListFragment extends Fragment implements StartDragListener {
         if(requestCode==203){
             if (grantResults.length > 0
                     && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                // Permission was granted
-                // You can now use the camera in your app
+
                 Log.e("camera","20");
-//                Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-//                out = createFolder();
-//                imgPath = out.getAbsolutePath();
-//                Uri photoURI = FileProvider.getUriForFile(DemoSliderActivity.this, BuildConfig.APPLICATION_ID + ".fileprovider", out);
-//                cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
-//                startActivityForResult(cameraIntent, CAMERA_PIC_REQUEST);
+
                 openCustomCamera();
 
 

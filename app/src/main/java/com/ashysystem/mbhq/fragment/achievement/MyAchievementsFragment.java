@@ -104,6 +104,8 @@ import com.ashysystem.mbhq.BuildConfig;
 import com.ashysystem.mbhq.R;
 import com.ashysystem.mbhq.Service.impl.FinisherServiceImpl;
 import com.ashysystem.mbhq.Service.impl.ProgressRequestBody;
+import com.ashysystem.mbhq.activity.CameraNewActivity;
+import com.ashysystem.mbhq.activity.ImageCropperActivity;
 import com.ashysystem.mbhq.activity.MainActivity;
 import com.ashysystem.mbhq.adapter.MyAchievementsListAdapter;
 //import com.ashysystem.mbhq.adapter.MyAchievementsListAdapter_new;
@@ -156,6 +158,7 @@ import com.edmodo.cropper.CropImageView;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
+import com.theartofdev.edmodo.cropper.CropImage;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -426,6 +429,7 @@ public class MyAchievementsFragment extends Fragment {
     private boolean modelupdated=false;
     private String foldernametoshow="";
     private Integer userfolderid=0;
+    private final int REQUEST_IMAGE_CAPTURE = 304;
 
     private void calldatabase_wheninternatecome(int position_, int count_) {
         lstShowAll.clear();
@@ -1568,6 +1572,23 @@ public class MyAchievementsFragment extends Fragment {
         });
         dialog.show();
     }
+    private void setImageToCropper(Uri selectedImageUri) {
+        try {
+            if (selectedImageUri != null) {
+                Intent intent = new Intent(getActivity(), ImageCropperActivity.class);
+                intent.putExtra("crop_ratio", 43);
+                intent.putExtra("image_uri", true);
+                intent.setData(selectedImageUri);
+                startActivityForResult(intent, CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE);
+            } else
+                Toast.makeText(getActivity(), getString(R.string.failed_to_upload), Toast.LENGTH_SHORT).show();
+        } catch (Exception e) {
+            Toast.makeText(getActivity(), getString(R.string.failed_to_upload), Toast.LENGTH_SHORT).show();
+        }
+    }
+    public void uploadImageToServer(File file){
+        mFile=file;
+    }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -1580,62 +1601,51 @@ public class MyAchievementsFragment extends Fragment {
                 } else {
                     ((MainActivity) requireActivity()).rlGratitude.performClick();
                 }
-            } else if(requestCode == CAMERA_PIC_REQUEST && resultCode == RESULT_OK){
-//                if (imgPath != null) {
-//                    Bitmap imageBitmap = BitmapFactory.decodeFile(photoFile.getAbsolutePath());
-//                    cropPhoto(imageBitmap,photoFile.getAbsolutePath());
-//                }
-                if (!imgPath.equals("")) {
+            }
+            /********works for camera*********/
+            else if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+                //Uri selectedImageUri = intent.getData();
+                Uri selectedImageUri = data.getParcelableExtra("CAMERA_URI");
+                setImageToCropper(selectedImageUri);
+            }
+            /********works for camera*********/
+            else if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
+                String imagePath = data.getStringExtra("image_path");
+                try {
+                    /*cardViewBackgroundPicTOP.setVisibility(View.VISIBLE);
+                    imgBackgroundPicTOP.setVisibility(View.VISIBLE);
+                    if (null != imagePath) {
+                        Log.e("CRPPPPPP", "preaprePictureForUpload: " + imagePath );
+                        imgBackgroundPicTOP.setImageBitmap(BitmapFactory.decodeFile(imagePath));
 
-                    Log.e("camera", "03");
-                    File selectedImagePath = new File(imgPath);
-                    imgDecodableString = selectedImagePath.getAbsolutePath();
-                    cropPhoto(BitmapFactory.decodeFile(selectedImagePath.getAbsolutePath()), imgDecodableString);
+                    }*/
+
+                    cardViewBackgroundPicTOP.setVisibility(View.VISIBLE);
+                    imgBackgroundPicTOP.setImageBitmap(BitmapFactory.decodeFile(imagePath));
+                   // imgBackgroundPicTOP.setImageURI(Uri.parse(imagePath));
+                    cardViewBackgroundPicTOP.setVisibility(View.VISIBLE);
+                    imgBackgroundPicTOP.setVisibility(View.VISIBLE);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    Log.e("CROPPPP", "preaprePictureForUpload: " + e.getMessage());
                 }
+                uploadImageToServer(new File(imagePath));
+                // preaprePictureForUpload(imagePath);
             }
             else {
                 if (resultCode != 0) {
 
                     Log.e("camera", "01");
-                    if (data == null) {
-
-
-                    }
-                    else if (requestCode == ((MainActivity) getActivity()).PICK_IMAGE_FROM_GALLERY_CODE_ACTIVITY_RESULT_FROM_GRATITUDE_LIST && resultCode == getActivity().RESULT_OK
+                  if (requestCode == ((MainActivity) getActivity()).PICK_IMAGE_FROM_GALLERY_CODE_ACTIVITY_RESULT_FROM_GRATITUDE_LIST && resultCode == getActivity().RESULT_OK
                             && null != data) {
                         Log.e("camera", "04");
-                        // Get the Image from data
-                        Log.e("PICTURE Gal---->", "123");
 
                         Uri selectedImage = data.getData();
-                        String[] filePathColumn = {MediaStore.Images.Media.DATA};
-                        // Get the cursor
-                        if (getActivity() != null) {
-                            Cursor cursor = ((MainActivity) getActivity()).getContentResolver().query(selectedImage,
-                                    filePathColumn, null, null, null);
+                        setImageToCropper(selectedImage);
 
-                        }
-                        Cursor cursor = ((MainActivity) getActivity()).getContentResolver().query(selectedImage,
-                                filePathColumn, null, null, null);
-                        // Move to first row
-                        cursor.moveToFirst();
-                        int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-                        imgDecodableString = cursor.getString(columnIndex);
-                        File comImg = null;
-                        try {
-                            if (getContext() != null) {
-                                comImg = new Compressor(getContext()).compressToFile(new File(imgDecodableString));
-
-                            }
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                        long bitmapLengthSize = comImg.length();
-                        Log.e("gal compress img", "gallery compress img size>>>>>>>>>" + (bitmapLengthSize * 0.001) + " KB");
-                        cursor.close();
-                        cropPhoto(BitmapFactory.decodeFile(imgDecodableString), comImg.getAbsolutePath());
-
-                    } else if (requestCode == ((MainActivity) getActivity()).CAMERA_PIC_REQUEST_CODE_ACTIVITY_RESULT_FROM_GRATITUDE_LIST && resultCode == getActivity().RESULT_OK && null != data) {
+                    }
+/*
+                  else if (requestCode == ((MainActivity) getActivity()).CAMERA_PIC_REQUEST_CODE_ACTIVITY_RESULT_FROM_GRATITUDE_LIST && resultCode == getActivity().RESULT_OK && null != data) {
                         Log.e("camera", "05");
                         imgDecodableString = out.getPath();
                         Bitmap bit = BitmapFactory.decodeFile(imgDecodableString);
@@ -1643,7 +1653,9 @@ public class MyAchievementsFragment extends Fragment {
                             Log.e("camera", "06");
                             cropPhoto(bit, imgDecodableString);
                         }
-                    } else if (requestCode == CAMERA_PIC_REQUEST && resultCode == getActivity().RESULT_OK && null != data) {
+                    }
+*/
+/*                  else if (requestCode == CAMERA_PIC_REQUEST && resultCode == getActivity().RESULT_OK && null != data) {
                         // Log.e("camera", "07");
                         Log.e("CMMMRRRR", "onActivityResult: " + "CPRQ1" );
                         imgDecodableString = out.getPath();
@@ -1653,7 +1665,7 @@ public class MyAchievementsFragment extends Fragment {
                             cropPhoto(bit, imgDecodableString);
 
                         }
-                    } else {
+                    }*/ else {
                         Toast.makeText(getContext(), "You haven't picked Image",
                                 Toast.LENGTH_LONG).show();
                     }
@@ -1670,10 +1682,7 @@ public class MyAchievementsFragment extends Fragment {
                     //  if (!songPath.equals(""))
                     // PlayMusic(songPath);
                 } else if(requestCode == CAMERA_PIC_REQUEST && resultCode == RESULT_OK){
-//                    if (photoFile != null) {
-//                        Bitmap imageBitmap = BitmapFactory.decodeFile(photoFile.getAbsolutePath());
-//                        cropPhoto1(imageBitmap,photoFile.getAbsolutePath());
-//                    }
+
                     if (!imgPath.equals("")) {
 
                         Log.e("camera", "03");
@@ -1683,44 +1692,89 @@ public class MyAchievementsFragment extends Fragment {
                     }
 
                 }
-                else {
-                    if (data == null) {
+                /********works for camera*********/
+                else if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+                    //Uri selectedImageUri = intent.getData();
+                    Uri selectedImageUri = data.getParcelableExtra("CAMERA_URI");
+                    setImageToCropper(selectedImageUri);
+                }
+                else if (requestCode == ((MainActivity) getActivity()).PICK_IMAGE_FROM_GALLERY_CODE_ACTIVITY_RESULT_FROM_GRATITUDE_LIST && resultCode == getActivity().RESULT_OK
+                        && null != data) {
+                    Log.e("camera", "04");
+                    // Get the Image from data
+                    Log.e("PICTURE Gal---->", "123");
 
-                    } else if (requestCode == RESULT_LOAD_IMG && resultCode == getActivity().RESULT_OK
+                    Uri selectedImage = data.getData();
+                    setImageToCropper(selectedImage);
+                }
+                /********works for camera*********/
+                else if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
+                    String imagePath = data.getStringExtra("image_path");
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                        imgGratitudeMain.setBackgroundResource(0);
+                    }
+                    imgGratitudeMain.setImageBitmap(BitmapFactory.decodeFile(imagePath));
+
+
+                    if (gratitudeStatus.equals("EDIT")) {
+                        //sendPicInfoToserver();
+                    }
+                    Log.e("ANNUAL_CROP_PATH", imagePath + ">>>>>>");
+
+                    ANNUAL_CROP_PATH = imagePath;
+
+                    /** Edited by Amit dated on 5/03/2020 **/
+
+                    String[] split_path = imagePath.split("/");
+                    ANNUAL_CROP_PATH = split_path[split_path.length - 1];
+
+                    //added by jyotirmoy->j7
+                    try {
+                        if (globalPickImageFromGratitudeShareDialog) {
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                                imgBackgroundPicTOP.setBackgroundResource(0);
+                            }
+                            Log.e("add img direct", "add img direct---->" + imagePath);
+
+                            imgBackgroundPicTOP.setImageBitmap(BitmapFactory.decodeFile(imagePath));
+                            cardViewBackgroundPicTOP.setVisibility(View.VISIBLE);
+                            imgBackgroundPicTOP.setVisibility(View.VISIBLE);
+                            llAddPicTOP.setVisibility(View.GONE);
+                            buttonChangeBackgroundImageTOP.setVisibility(View.VISIBLE);
+                            if (strDialogSelectionType.equals("textOverPic")) {
+                                buttonMoveTextBoxTOP.setVisibility(View.VISIBLE);
+                            }
+
+                        }
+                    } catch (Exception e) {
+
+                        e.printStackTrace();
+
+                    }
+                    uploadImageToServer(new File(imagePath));
+                    // preaprePictureForUpload(imagePath);
+                }
+                else {
+                   if (requestCode == RESULT_LOAD_IMG && resultCode == getActivity().RESULT_OK
                             && null != data) {
 
                         // Get the Image from data
                         Log.e("PICTURE Gal---->", "123");
 
                         Uri selectedImage = data.getData();
-                        // if (Build.VERSION.SDK_INT < 19)
-                        {
-                            String[] filePathColumn = {MediaStore.Images.Media.DATA};
+                        setImageToCropper(selectedImage);
 
-                            // Get the cursor
-                            Cursor cursor = getActivity().getContentResolver().query(selectedImage,
-                                    filePathColumn, null, null, null);
-                            // Move to first row
-                            cursor.moveToFirst();
-                            int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-                            imgDecodableString = cursor.getString(columnIndex);
+                    }  else if (requestCode == ((MainActivity) getActivity()).PICK_IMAGE_FROM_GALLERY_CODE_ACTIVITY_RESULT_FROM_GRATITUDE_LIST && resultCode == getActivity().RESULT_OK
+                            && null != data) {
+                        Log.e("camera", "04");
+                        // Get the Image from data
+                        Log.e("PICTURE Gal---->", "123");
 
-                            File compressImg = null;
-                            try {
-                                compressImg = new Compressor(getContext()).compressToFile(new File(imgDecodableString));
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
-                            long bitmapLengthSize = compressImg.length();
-                            Log.e("galcompress img", "Gal com img size>>>>>>>>>" + (bitmapLengthSize * 0.001) + " KB");
-
-                            cursor.close();
-                            cropPhoto1(BitmapFactory.decodeFile(imgDecodableString), compressImg.getAbsolutePath());
-
-
-                        }
-
-                    } else if (requestCode == CAMERA_PIC_REQUEST && resultCode == getActivity().RESULT_OK && null != data) {
+                        Uri selectedImage = data.getData();
+                        setImageToCropper(selectedImage);
+                    }
+/*
+                    else if (requestCode == CAMERA_PIC_REQUEST && resultCode == getActivity().RESULT_OK && null != data) {
                         Log.e("CMMMRRRR", "onActivityResult: " + "CPRQ2" );
                         imgDecodableString = out.getPath();
                         Bitmap bit = BitmapFactory.decodeFile(imgDecodableString);
@@ -1728,6 +1782,7 @@ public class MyAchievementsFragment extends Fragment {
                             cropPhoto1(bit, imgDecodableString);
                         }
                     }
+*/
                     else {
                         Toast.makeText(getActivity(), "You haven't picked Image",
                                 Toast.LENGTH_LONG).show();
@@ -2698,10 +2753,6 @@ public class MyAchievementsFragment extends Fragment {
                                     boolIChooseToKnow = growthSaveFilterModel.getBool_I_choose_To_Know();
                                     boolOnlyPic = growthSaveFilterModel.getBool_only_pic();
                                     boolShowImg = growthSaveFilterModel.getBool_show_img();
-
-
-
-
 
 
                                     boolTheStory = growthSaveFilterModel.getBool_the_story();
@@ -4853,7 +4904,8 @@ public class MyAchievementsFragment extends Fragment {
                         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                         if (takePictureIntent.resolveActivity(Objects.requireNonNull(getActivity()).getPackageManager()) != null) {
                             // Create the File where the photo should go
-                            openCam();
+                           // openCam();
+                            openCustomCamera();
                         }
 
                     } else {
@@ -4869,7 +4921,8 @@ public class MyAchievementsFragment extends Fragment {
                     }
 
                 } else {
-                    openCam();
+                  //  openCam();
+                    openCustomCamera();
                 }
 
             }
@@ -4907,9 +4960,9 @@ public class MyAchievementsFragment extends Fragment {
                     }
 
                 } else {
-                    Intent galleryIntent = new Intent(Intent.ACTION_PICK,
-                            MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                    Intent galleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                     getActivity().startActivityForResult(galleryIntent, ((MainActivity) getActivity()).PICK_IMAGE_FROM_GALLERY_CODE_ACTIVITY_RESULT_FROM_GRATITUDE_LIST);
+
                 }
 
             }
@@ -5184,582 +5237,10 @@ public class MyAchievementsFragment extends Fragment {
         alert.show();
 
     }
-    //added by jyotirmoy-j151
+
 
     //add by jyotirmoy-j151
-    private void openDialogForTextOverPicOption(String gratitudeName, Integer gratitudeID, String TYPE) {
-        final Dialog dialog = new Dialog(getActivity(), R.style.DialogTheme);
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setCancelable(false);
-        dialog.setContentView(R.layout.dialog_text_over_pic_shareability);
 
-        RelativeLayout rlSharableSectionTOP = dialog.findViewById(R.id.rlSharableSection);
-        RelativeLayout rlPicSectionTOP = dialog.findViewById(R.id.rlPicSection);
-        cardViewBackgroundPicTOP = dialog.findViewById(R.id.cardViewBackgroundPic);
-        imgBackgroundPicTOP = dialog.findViewById(R.id.imgBackgroundPic);
-        llAddPicTOP = dialog.findViewById(R.id.llAddPic);
-        buttonChangeBackgroundImageTOP = dialog.findViewById(R.id.buttonChangeBackgroundImage);
-        buttonMoveTextBoxTOP = dialog.findViewById(R.id.buttonMoveTextBox);
-        RelativeLayout rlBorderTOP = dialog.findViewById(R.id.rlBorder);
-        CheckBox chkBorderNoBorderTOP = dialog.findViewById(R.id.chkBorderNoBorder);
-        Spinner spTextSizeTOP = dialog.findViewById(R.id.spTextSize);
-        Button btnLeftAlignmentTOP = dialog.findViewById(R.id.btnLeftAlignment);
-        Button btnCenterAlignmentTOP = dialog.findViewById(R.id.btnCenterAlignment);
-        Button btnRightAlignmentTOP = dialog.findViewById(R.id.btnRightAlignment);
-        RelativeLayout rlWhiteBackgroundBlackTextTOP = dialog.findViewById(R.id.rlWhiteBackgroundBlackText);
-        RelativeLayout rlBlackBackgroundWhiteTextTOP = dialog.findViewById(R.id.rlBlackBackgroundWhiteText);
-        RelativeLayout rlTransparentBackgroundBlackTextTOP = dialog.findViewById(R.id.rlTransparentBackgroundBlackText);
-        RelativeLayout rlTransparentBackgroundWhiteTextTOP = dialog.findViewById(R.id.rlTransparentBackgroundWhiteText);
-        ImageView imgWhiteBackgroundBlackTextTOP = dialog.findViewById(R.id.imgWhiteBackgroundBlackText);
-        ImageView imgBlackBackgroundWhiteTextTOP = dialog.findViewById(R.id.imgBlackBackgroundWhiteText);
-        ImageView imgTransparentBackgroundBlackTextTOP = dialog.findViewById(R.id.imgTransparentBackgroundBlackText);
-        ImageView imgTransparentBackgroundWhiteTextTOP = dialog.findViewById(R.id.imgTransparentBackgroundWhiteText);
-        rlTextOverPicInnerTOP = dialog.findViewById(R.id.rlTextOverPicInner);
-        EditText edtTextOverPicInnerTOP = dialog.findViewById(R.id.edtTextOverPicInner);
-        TextView txtGratefulFor = dialog.findViewById(R.id.txtGratefulFor);
-        CustomScrollView scroll_view = dialog.findViewById(R.id.scroll_view);
-        FrameLayout frameLayout = dialog.findViewById(R.id.frameLayout);
-        RelativeLayout rootlayout = dialog.findViewById(R.id.rootlayout);
-        TextView txtTextOverPicOwner = dialog.findViewById(R.id.txtTextOverPicOwner);
-        ImageView imgMindBodyHq = dialog.findViewById(R.id.imgMindBodyHq);
-        RelativeLayout rlShareGratitude = dialog.findViewById(R.id.rlShareGratitude);
-        RelativeLayout rlCancelGratitude = dialog.findViewById(R.id.rlCancelGratitude);
-        RelativeLayout rlTextAndPic = dialog.findViewById(R.id.rlTextAndPic);
-        EditText edtTextANDPic = dialog.findViewById(R.id.edtTextANDPic);
-
-        final boolean[] boolWhiteBackgroundBlackText = {true};
-        final boolean[] boolBlackBackgroundWhiteText = {false};
-        final boolean[] boolTransparentBackgroundBlackText = {false};
-        final boolean[] boolTransparentBackgroundWhiteText = {false};
-
-        if (TYPE.equals("textAndPic")) {
-            rlTextOverPicInnerTOP.setVisibility(View.GONE);
-            rlTextAndPic.setVisibility(View.VISIBLE);
-            rlWhiteBackgroundBlackTextTOP.setVisibility(View.GONE);
-            rlBlackBackgroundWhiteTextTOP.setVisibility(View.GONE);
-            rlTransparentBackgroundBlackTextTOP.setVisibility(View.GONE);
-            rlTransparentBackgroundWhiteTextTOP.setVisibility(View.GONE);
-        } else if (TYPE.equals("textOnly")) {
-            rlTextOverPicInnerTOP.setVisibility(View.GONE);
-            rlTextAndPic.setVisibility(View.VISIBLE);
-            rlWhiteBackgroundBlackTextTOP.setVisibility(View.GONE);
-            rlBlackBackgroundWhiteTextTOP.setVisibility(View.GONE);
-            rlTransparentBackgroundBlackTextTOP.setVisibility(View.GONE);
-            rlTransparentBackgroundWhiteTextTOP.setVisibility(View.GONE);
-            rlPicSectionTOP.setVisibility(View.GONE);
-        }
-
-
-
-        edtTextOverPicInnerTOP.setText(gratitudeName);
-        txtTextOverPicOwner.setText(gratitudeName);
-        edtTextANDPic.setText(gratitudeName);
-
-
-        rlBorderTOP.setOnClickListener(view -> {
-            if (chkBorderNoBorderTOP.isChecked()) {
-                chkBorderNoBorderTOP.setChecked(false);
-            } else {
-                chkBorderNoBorderTOP.setChecked(true);
-            }
-        });
-        chkBorderNoBorderTOP.setOnCheckedChangeListener((compoundButton, b) -> {
-            if (b) {
-                if (strDialogSelectionType.equals("textAndPic") || strDialogSelectionType.equals("textOnly")) {
-                    rlPicSectionTOP.setBackgroundResource(R.drawable.round_corner_black);
-                    rlTextAndPic.setBackgroundResource(R.drawable.edittext_background_black_border);
-                } else {
-                    rlPicSectionTOP.setBackgroundResource(R.drawable.round_corner_black);
-                    if (boolWhiteBackgroundBlackText[0]) {
-                        rlTextOverPicInnerTOP.setBackgroundResource(R.drawable.round_corner_black);
-                    } else if (boolBlackBackgroundWhiteText[0]) {
-
-                    } else if (boolTransparentBackgroundBlackText[0]) {
-                        rlTextOverPicInnerTOP.setBackgroundResource(R.drawable.round_corner_black_transparent_inside);
-                    } else {
-                        rlTextOverPicInnerTOP.setBackgroundResource(R.drawable.round_corner_black_transparent_inside);
-                    }
-                }
-            } else {
-                if (strDialogSelectionType.equals("textAndPic") || strDialogSelectionType.equals("textOnly")) {
-                    rlPicSectionTOP.setBackgroundResource(R.drawable.rounded_corner_white);
-                    rlTextAndPic.setBackgroundResource(R.drawable.edittext_background_white_border);
-                } else {
-                    rlPicSectionTOP.setBackgroundResource(R.drawable.rounded_corner_white);
-                    if (boolWhiteBackgroundBlackText[0]) {
-                        rlTextOverPicInnerTOP.setBackgroundResource(R.drawable.rounded_corner_white);
-                    } else if (boolBlackBackgroundWhiteText[0]) {
-
-                    } else if (boolTransparentBackgroundBlackText[0]) {
-                        rlTextOverPicInnerTOP.setBackgroundResource(R.drawable.rounde_corner_filled_transparent);
-                    } else {
-                        rlTextOverPicInnerTOP.setBackgroundResource(R.drawable.rounde_corner_filled_transparent);
-                    }
-                }
-            }
-        });
-        rlBorderTOP.performClick();
-        llAddPicTOP.setOnClickListener(view -> {
-            Log.e("direct add", "direct add image-line-1206");
-            pickImageFromGallery();
-        });
-        buttonChangeBackgroundImageTOP.setOnClickListener(view -> {
-            pickImageFromGallery();
-        });
-        ArrayList<Integer> lstTextSize = new ArrayList<>();
-        for (int i = 12; i <= 48; i = i + 2) {
-            lstTextSize.add(i);
-        }
-        ArrayAdapter<Integer> adapterFlag = new ArrayAdapter<Integer>(getActivity(), android.R.layout.simple_spinner_item, lstTextSize);
-        adapterFlag.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spTextSizeTOP.setAdapter(adapterFlag);
-        spTextSizeTOP.setSelection(4);
-
-        spTextSizeTOP.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                if (i == 0) {
-                    edtTextOverPicInnerTOP.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.fab_twelve));
-                    edtTextANDPic.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.fab_twelve));
-                    txtTextOverPicOwner.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.fab_twelve));
-                } else if (i == 1) {
-                    edtTextOverPicInnerTOP.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.fab_fourteen));
-                    edtTextANDPic.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.fab_fourteen));
-                    txtTextOverPicOwner.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.fab_fourteen));
-                } else if (i == 2) {
-                    edtTextOverPicInnerTOP.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.fab_sixteen));
-                    edtTextANDPic.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.fab_sixteen));
-                    txtTextOverPicOwner.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.fab_sixteen));
-                } else if (i == 3) {
-                    edtTextOverPicInnerTOP.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.fab_eighteen));
-                    edtTextANDPic.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.fab_eighteen));
-                    txtTextOverPicOwner.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.fab_eighteen));
-                } else if (i == 4) {
-                    edtTextOverPicInnerTOP.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.fab_twenty));
-                    edtTextANDPic.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.fab_twenty));
-                    txtTextOverPicOwner.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.fab_twenty));
-                } else if (i == 5) {
-                    edtTextOverPicInnerTOP.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.fab_twenty_two));
-                    edtTextANDPic.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.fab_twenty_two));
-                    txtTextOverPicOwner.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.fab_twenty_two));
-                } else if (i == 6) {
-                    edtTextOverPicInnerTOP.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.fab_twenty_four));
-                    edtTextANDPic.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.fab_twenty_four));
-                    txtTextOverPicOwner.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.fab_twenty_four));
-                } else if (i == 7) {
-                    edtTextOverPicInnerTOP.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.fab_twenty_six));
-                    edtTextANDPic.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.fab_twenty_six));
-                    txtTextOverPicOwner.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.fab_twenty_six));
-                } else if (i == 8) {
-                    edtTextOverPicInnerTOP.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.fab_twenty_eight));
-                    edtTextANDPic.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.fab_twenty_eight));
-                    txtTextOverPicOwner.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.fab_twenty_eight));
-                } else if (i == 9) {
-                    edtTextOverPicInnerTOP.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.fab_thirty));
-                    edtTextANDPic.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.fab_thirty));
-                    txtTextOverPicOwner.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.fab_thirty));
-                } else if (i == 10) {
-                    edtTextOverPicInnerTOP.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.fab_thirtyTwo));
-                    edtTextANDPic.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.fab_thirtyTwo));
-                    txtTextOverPicOwner.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.fab_thirtyTwo));
-                } else if (i == 11) {
-                    edtTextOverPicInnerTOP.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.fab_thirtyFour));
-                    edtTextANDPic.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.fab_thirtyFour));
-                    txtTextOverPicOwner.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.fab_thirtyFour));
-                } else if (i == 12) {
-                    edtTextOverPicInnerTOP.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.fab_thirtySix));
-                    edtTextANDPic.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.fab_thirtySix));
-                    txtTextOverPicOwner.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.fab_thirtySix));
-                } else if (i == 13) {
-                    edtTextOverPicInnerTOP.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.fab_thirtyEight));
-                    edtTextANDPic.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.fab_thirtyEight));
-                    txtTextOverPicOwner.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.fab_thirtyEight));
-                } else if (i == 14) {
-                    edtTextOverPicInnerTOP.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.fab_forty));
-                    edtTextANDPic.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.fab_forty));
-                    txtTextOverPicOwner.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.fab_forty));
-                } else if (i == 15) {
-                    edtTextOverPicInnerTOP.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.fab_fortyTwo));
-                    edtTextANDPic.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.fab_fortyTwo));
-                    txtTextOverPicOwner.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.fab_fortyTwo));
-                } else if (i == 16) {
-                    edtTextOverPicInnerTOP.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.fab_fortyFour));
-                    edtTextANDPic.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.fab_fortyFour));
-                    txtTextOverPicOwner.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.fab_fortyFour));
-                } else if (i == 17) {
-                    edtTextOverPicInnerTOP.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.fab_fortySix));
-                    edtTextANDPic.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.fab_fortySix));
-                    txtTextOverPicOwner.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.fab_fortySix));
-                } else if (i == 18) {
-                    edtTextOverPicInnerTOP.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.fab_fortyEight));
-                    edtTextANDPic.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.fab_fortyEight));
-                    txtTextOverPicOwner.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.fab_fortyEight));
-                }
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-
-            }
-        });
-
-        btnLeftAlignmentTOP.setOnClickListener(view -> {
-            edtTextOverPicInnerTOP.setGravity(Gravity.LEFT);
-            edtTextANDPic.setGravity(Gravity.LEFT);
-            txtTextOverPicOwner.setGravity(Gravity.LEFT);
-        });
-
-        btnCenterAlignmentTOP.setOnClickListener(view -> {
-            edtTextOverPicInnerTOP.setGravity(Gravity.CENTER);
-            edtTextANDPic.setGravity(Gravity.CENTER);
-            txtTextOverPicOwner.setGravity(Gravity.CENTER);
-        });
-
-        btnRightAlignmentTOP.setOnClickListener(view -> {
-            edtTextOverPicInnerTOP.setGravity(Gravity.RIGHT);
-            edtTextANDPic.setGravity(Gravity.RIGHT);
-            txtTextOverPicOwner.setGravity(Gravity.RIGHT);
-        });
-
-        rlWhiteBackgroundBlackTextTOP.setOnClickListener(view -> {
-            imgWhiteBackgroundBlackTextTOP.setImageResource(R.drawable.mbhq_green_check);
-            imgBlackBackgroundWhiteTextTOP.setImageResource(R.drawable.mbhq_circle_green);
-            imgTransparentBackgroundBlackTextTOP.setImageResource(R.drawable.mbhq_circle_green);
-            imgTransparentBackgroundWhiteTextTOP.setImageResource(R.drawable.mbhq_circle_green);
-            rlSharableSectionTOP.setBackgroundColor(getResources().getColor(R.color.white));
-            txtGratefulFor.setTextColor(getResources().getColor(R.color.black));
-            edtTextOverPicInnerTOP.setTextColor(getResources().getColor(R.color.black));
-            txtTextOverPicOwner.setTextColor(getResources().getColor(R.color.black));
-            if (chkBorderNoBorderTOP.isChecked()) {
-                rlTextOverPicInnerTOP.setBackgroundResource(R.drawable.round_corner_black);
-            } else {
-                rlTextOverPicInnerTOP.setBackgroundResource(R.drawable.rounded_corner_white);
-            }
-            //MIND BODY HQ IMAGE RELATED WORK
-            imgMindBodyHq.setImageResource(R.drawable.logo_mbhq);
-            boolWhiteBackgroundBlackText[0] = true;
-            boolBlackBackgroundWhiteText[0] = false;
-            boolTransparentBackgroundBlackText[0] = false;
-            boolTransparentBackgroundWhiteText[0] = false;
-        });
-        rlBlackBackgroundWhiteTextTOP.setOnClickListener(view -> {
-            imgWhiteBackgroundBlackTextTOP.setImageResource(R.drawable.mbhq_circle_green);
-            imgBlackBackgroundWhiteTextTOP.setImageResource(R.drawable.mbhq_green_check);
-            imgTransparentBackgroundBlackTextTOP.setImageResource(R.drawable.mbhq_circle_green);
-            imgTransparentBackgroundWhiteTextTOP.setImageResource(R.drawable.mbhq_circle_green);
-            rlSharableSectionTOP.setBackgroundColor(getResources().getColor(R.color.black));
-            txtGratefulFor.setTextColor(getResources().getColor(R.color.white));
-            edtTextOverPicInnerTOP.setTextColor(getResources().getColor(R.color.white));
-            txtTextOverPicOwner.setTextColor(getResources().getColor(R.color.white));
-            rlTextOverPicInnerTOP.setBackgroundResource(R.drawable.round_corner_filled_black);
-            //MIND BODY HQ IMAGE RELATED WORK
-            imgMindBodyHq.setImageResource(R.drawable.mndbody_logo_white);
-            boolWhiteBackgroundBlackText[0] = false;
-            boolBlackBackgroundWhiteText[0] = true;
-            boolTransparentBackgroundBlackText[0] = false;
-            boolTransparentBackgroundWhiteText[0] = false;
-        });
-        rlTransparentBackgroundBlackTextTOP.setOnClickListener(view -> {
-            imgWhiteBackgroundBlackTextTOP.setImageResource(R.drawable.mbhq_circle_green);
-            imgBlackBackgroundWhiteTextTOP.setImageResource(R.drawable.mbhq_circle_green);
-            imgTransparentBackgroundBlackTextTOP.setImageResource(R.drawable.mbhq_green_check);
-            imgTransparentBackgroundWhiteTextTOP.setImageResource(R.drawable.mbhq_circle_green);
-            rlSharableSectionTOP.setBackgroundColor(getResources().getColor(R.color.white));
-            txtGratefulFor.setTextColor(getResources().getColor(R.color.black));
-            edtTextOverPicInnerTOP.setTextColor(getResources().getColor(R.color.black));
-            txtTextOverPicOwner.setTextColor(getResources().getColor(R.color.black));
-            if (chkBorderNoBorderTOP.isChecked()) {
-                rlTextOverPicInnerTOP.setBackgroundResource(R.drawable.round_corner_black_transparent_inside);
-            } else {
-                rlTextOverPicInnerTOP.setBackgroundResource(R.drawable.rounde_corner_filled_transparent);
-            }
-            //MIND BODY HQ IMAGE RELATED WORK
-            imgMindBodyHq.setImageResource(R.drawable.logo_mbhq);
-            boolWhiteBackgroundBlackText[0] = false;
-            boolBlackBackgroundWhiteText[0] = false;
-            boolTransparentBackgroundBlackText[0] = true;
-            boolTransparentBackgroundWhiteText[0] = false;
-        });
-        rlTransparentBackgroundWhiteTextTOP.setOnClickListener(view -> {
-            imgWhiteBackgroundBlackTextTOP.setImageResource(R.drawable.mbhq_circle_green);
-            imgBlackBackgroundWhiteTextTOP.setImageResource(R.drawable.mbhq_circle_green);
-            imgTransparentBackgroundBlackTextTOP.setImageResource(R.drawable.mbhq_circle_green);
-            imgTransparentBackgroundWhiteTextTOP.setImageResource(R.drawable.mbhq_green_check);
-            rlSharableSectionTOP.setBackgroundColor(getResources().getColor(R.color.black));
-            txtGratefulFor.setTextColor(getResources().getColor(R.color.white));
-            edtTextOverPicInnerTOP.setTextColor(getResources().getColor(R.color.white));
-            txtTextOverPicOwner.setTextColor(getResources().getColor(R.color.white));
-            if (chkBorderNoBorderTOP.isChecked()) {
-                rlTextOverPicInnerTOP.setBackgroundResource(R.drawable.round_corner_black_transparent_inside);
-            } else {
-                rlTextOverPicInnerTOP.setBackgroundResource(R.drawable.rounde_corner_filled_transparent);
-            }
-            //MIND BODY HQ IMAGE RELATED WORK
-            imgMindBodyHq.setImageResource(R.drawable.mndbody_logo_white);
-            boolWhiteBackgroundBlackText[0] = false;
-            boolBlackBackgroundWhiteText[0] = false;
-            boolTransparentBackgroundBlackText[0] = false;
-            boolTransparentBackgroundWhiteText[0] = true;
-        });
-
-        final boolean[] boolMoveText = {false};
-        buttonMoveTextBoxTOP.setOnClickListener(view -> {
-            if (!boolMoveText[0]) {
-                boolMoveText[0] = true;
-                scroll_view.setEnableScrolling(false);
-                scroll_view.setFocusableInTouchMode(false);
-                buttonMoveTextBoxTOP.setText("lock text box");
-                buttonMoveTextBoxTOP.setBackgroundResource(R.drawable.rounded_corner_green);
-                buttonMoveTextBoxTOP.setTextColor(getResources().getColor(R.color.white));
-                txtTextOverPicOwner.setText(edtTextOverPicInnerTOP.getText().toString());
-                edtTextOverPicInnerTOP.setVisibility(View.GONE);
-                txtTextOverPicOwner.setVisibility(View.VISIBLE);
-                rlTextOverPicInnerTOP.setOnTouchListener(new OnDragTouchListener(rlTextOverPicInnerTOP, frameLayout));
-            } else {
-                boolMoveText[0] = false;
-                scroll_view.setEnableScrolling(true);
-                scroll_view.setFocusableInTouchMode(true);
-                buttonMoveTextBoxTOP.setText("move text box");
-                buttonMoveTextBoxTOP.setBackgroundResource(R.drawable.rounded_corner_green_border_white_inside);
-                buttonMoveTextBoxTOP.setTextColor(getResources().getColor(R.color.colorPrimary));
-                edtTextOverPicInnerTOP.setVisibility(View.VISIBLE);
-                txtTextOverPicOwner.setVisibility(View.GONE);
-                rlTextOverPicInnerTOP.setOnTouchListener(null);
-            }
-        });
-
-        rlCancelGratitude.setOnClickListener(view -> {
-            dialog.dismiss();
-            ((MainActivity) getActivity()).loadFragment(new MyAchievementsFragment(), "GratitudeMyList", null);
-        });
-
-        rlShareGratitude.setOnClickListener(view -> {
-            if (mFile == null) {
-                final AlertDialogCustom alertDialogCustom = new AlertDialogCustom(getActivity());
-                alertDialogCustom.ShowDialog("Alert!", "Please add your pic to share", true);
-                alertDialogCustom.setAlertAction(new AlertDialogCustom.AlertResponse() {
-                    @Override
-                    public void onDone(String title) {
-
-                    }
-
-                    @Override
-                    public void onCancel(String title) {
-
-                    }
-                });
-            } else {
-                dialog.dismiss();
-                if (strDialogSelectionType.equals("textOverPic")) {
-                    // funcForShareImageGratitudeSharability(rlSharableSectionTOP, gratitudeID, edtTextOverPicInnerTOP);
-                    funcForShareImageGratitudeSharability(rlSharableSectionTOP, gratitudeID, edtTextOverPicInnerTOP.getText().toString());
-                } else {
-                    //funcForShareImageGratitudeSharability(rlSharableSectionTOP, gratitudeID, edtTextANDPic);
-                    funcForShareImageGratitudeSharability(rlSharableSectionTOP, gratitudeID, edtTextANDPic.getText().toString());
-                }
-            }
-        });
-
-        dialog.show();
-    }
-
-    //add by jyotirmoy-j151
-    private void pickImageFromGallery() {
-        final Dialog dlg = new Dialog(getActivity());
-        dlg.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dlg.getWindow().getDecorView().setBackgroundResource(android.R.color.transparent);
-        dlg.setContentView(R.layout.dialog_browse_bottom);
-
-        Window window = dlg.getWindow();
-        window.setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
-        WindowManager.LayoutParams wlp = window.getAttributes();
-
-        wlp.gravity = Gravity.BOTTOM;
-        //wlp.flags &= ~WindowManager.LayoutParams.FLAG_DIM_BEHIND;
-        window.setAttributes(wlp);
-        RelativeLayout rlGal = (RelativeLayout) dlg.findViewById(R.id.rlGal);
-        RelativeLayout rlCancel = (RelativeLayout) dlg.findViewById(R.id.rlCancel);
-        RelativeLayout rlCam = (RelativeLayout) dlg.findViewById(R.id.rlCam);
-        rlCam.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                dlg.dismiss();
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-
-                    if (hasCameraPermission()) {
-
-                        Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                        out = createFolder();
-                        imgPath = out.getAbsolutePath();
-                        Uri photoURI = FileProvider.getUriForFile(getActivity(), BuildConfig.APPLICATION_ID + ".fileprovider", out);
-                        cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
-                        getActivity().startActivityForResult(cameraIntent, CAMERA_PIC_REQUEST);
-
-                    } else {
-                        if (!Settings.System.canWrite(getActivity())) {
-                            requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                                    Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.CAMERA}, 203);
-                        }
-                    }
-
-                } else {
-                    Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                    out = createFolder();
-                    imgPath = out.getAbsolutePath();
-                    Uri photoURI = FileProvider.getUriForFile(getActivity(), BuildConfig.APPLICATION_ID + ".fileprovider", out);
-                    cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
-                    getActivity().startActivityForResult(cameraIntent, CAMERA_PIC_REQUEST);
-                }
-
-
-
-            }
-        });
-        rlCancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                dlg.dismiss();
-            }
-        });
-
-        rlGal.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                dlg.dismiss();
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-
-                    if (hasGalleryPermission()) {
-                        Intent galleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                        getActivity().startActivityForResult(galleryIntent, ((MainActivity) getActivity()).PICK_IMAGE_FROM_GALLERY_CODE_ACTIVITY_RESULT_FROM_GRATITUDE_LIST);
-
-                    } else {
-
-                        if (!Settings.System.canWrite(getActivity())) {
-//                            requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,
-//                                    Manifest.permission.READ_EXTERNAL_STORAGE}, 202);
-                            if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-                                requestPermissions(new String[]{Manifest.permission.READ_MEDIA_IMAGES,Manifest.permission.READ_MEDIA_AUDIO,Manifest.permission.READ_MEDIA_VIDEO,}, 202);
-                            }else{
-                                requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.READ_EXTERNAL_STORAGE}, 202);
-                            }
-                        }
-                        // openAppSettings();
-                    }
-
-                } else {
-                    Intent galleryIntent = new Intent(Intent.ACTION_PICK,
-                            MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                    getActivity().startActivityForResult(galleryIntent, ((MainActivity) getActivity()).PICK_IMAGE_FROM_GALLERY_CODE_ACTIVITY_RESULT_FROM_GRATITUDE_LIST);
-                }
-
-            }
-        });
-        dlg.show();
-
-    }
-
-    private void pickImageFromGalleryNew(TextView addPicButton, ImageView imgBackgroundPicTOP) {
-        final Dialog dlg = new Dialog(getActivity());
-        dlg.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dlg.getWindow().getDecorView().setBackgroundResource(android.R.color.transparent);
-        dlg.setContentView(R.layout.dialog_browse_bottom);
-
-        Window window = dlg.getWindow();
-        window.setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
-        WindowManager.LayoutParams wlp = window.getAttributes();
-
-        wlp.gravity = Gravity.BOTTOM;
-        //wlp.flags &= ~WindowManager.LayoutParams.FLAG_DIM_BEHIND;
-        window.setAttributes(wlp);
-        RelativeLayout rlGal = (RelativeLayout) dlg.findViewById(R.id.rlGal);
-        RelativeLayout rlCancel = (RelativeLayout) dlg.findViewById(R.id.rlCancel);
-        RelativeLayout rlCam = (RelativeLayout) dlg.findViewById(R.id.rlCam);
-        rlCam.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                dlg.dismiss();
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-
-                    if (hasCameraPermission()) {
-
-                        Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                        out = createFolder();
-                        imgPath = out.getAbsolutePath();
-                        Uri photoURI = FileProvider.getUriForFile(getActivity(), BuildConfig.APPLICATION_ID + ".fileprovider", out);
-                        cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
-                        getActivity().startActivityForResult(cameraIntent, CAMERA_PIC_REQUEST);
-
-                    } else {
-                        if (!Settings.System.canWrite(getActivity())) {
-                            requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                                    Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.CAMERA}, 203);
-                        }
-                    }
-
-                } else {
-                    Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                    out = createFolder();
-                    imgPath = out.getAbsolutePath();
-                    Uri photoURI = FileProvider.getUriForFile(getActivity(), BuildConfig.APPLICATION_ID + ".fileprovider", out);
-                    cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
-                    getActivity().startActivityForResult(cameraIntent, CAMERA_PIC_REQUEST);
-                }
-
-          /*  if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-
-            } else {
-                Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                out = createFolder();
-                Uri photoURI = FileProvider.getUriForFile(getActivity(), BuildConfig.APPLICATION_ID + ".fileprovider", out);
-                cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
-                getActivity().startActivityForResult(cameraIntent, CAMERA_PIC_REQUEST);
-            }*/
-
-            }
-        });
-        rlCancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                addPicButton.setText("ADD PIC");
-                dlg.dismiss();
-            }
-        });
-
-        rlGal.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                dlg.dismiss();
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-
-                    if (hasGalleryPermission()) {
-                        Intent galleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                        getActivity().startActivityForResult(galleryIntent, ((MainActivity) getActivity()).PICK_IMAGE_FROM_GALLERY_CODE_ACTIVITY_RESULT_FROM_GRATITUDE_LIST);
-
-                    } else {
-
-                        if (!Settings.System.canWrite(getActivity())) {
-//                            requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,
-//                                    Manifest.permission.READ_EXTERNAL_STORAGE}, 202);
-                            if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-                                requestPermissions(new String[]{Manifest.permission.READ_MEDIA_IMAGES,Manifest.permission.READ_MEDIA_AUDIO,Manifest.permission.READ_MEDIA_VIDEO,}, 202);
-                            }else{
-                                requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.READ_EXTERNAL_STORAGE}, 202);
-                            }
-                        }
-                        // openAppSettings();
-                    }
-
-                } else {
-                    Intent galleryIntent = new Intent(Intent.ACTION_PICK,
-                            MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                    getActivity().startActivityForResult(galleryIntent, ((MainActivity) getActivity()).PICK_IMAGE_FROM_GALLERY_CODE_ACTIVITY_RESULT_FROM_GRATITUDE_LIST);
-                }
-
-            }
-        });
-        dlg.show();
-
-    }
 
     @Override
     public void onRequestPermissionsResult(int requestCode,
@@ -5773,7 +5254,7 @@ public class MyAchievementsFragment extends Fragment {
                 // You can now use the camera in your app
                 Log.e("camera", "20");
 
-                openCam();
+                openCustomCamera();
 
 
             } else {
@@ -5784,35 +5265,45 @@ public class MyAchievementsFragment extends Fragment {
             }
         } else if (requestCode == 202) {
 
+            Log.e("gallery permision req-", String.valueOf(requestCode));
+            Log.e("gallery permision req-", String.valueOf(requestCode));
+            for (int i = 0; i < grantResults.length; i++) {
+                Log.d("gallery permision req array list", "Permission result[" + i + "]: " + grantResults[i]);
+            } //jyoti
             if (grantResults.length > 0
                     && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 // Permission was granted
                 // You can now use the camera in your app
-                Log.e("camera", "22");
+                Log.e("camera","22");
                 Intent galleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                 getActivity().startActivityForResult(galleryIntent, ((MainActivity) getActivity()).PICK_IMAGE_FROM_GALLERY_CODE_ACTIVITY_RESULT_FROM_GRATITUDE_LIST);
 
             } else {
-                Log.e("camera", "23");
+                Log.e("camera","23");
                 openAppSettings();
                 // Permission was denied
                 // You can disable the feature that requires the camera permission
             }
 
         } else if (requestCode == 200) {
-            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                Log.e("Permission Gal", "Granted");
-                try {
+            Log.e("gallery permision req-", String.valueOf(requestCode));
+            Log.e("gallery permision req-", String.valueOf(requestCode));
+            for (int i = 0; i < grantResults.length; i++) {
+                Log.d("gallery permision req array list", "Permission result[" + i + "]: " + grantResults[i]);
+            } //jyoti
+            if (grantResults.length > 0
+                    && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                // Permission was granted
+                // You can now use the camera in your app
+                Log.e("camera","22");
+                Intent galleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                getActivity().startActivityForResult(galleryIntent, ((MainActivity) getActivity()).PICK_IMAGE_FROM_GALLERY_CODE_ACTIVITY_RESULT_FROM_GRATITUDE_LIST);
 
-                    Intent galleryIntent = new Intent(Intent.ACTION_PICK,
-                            MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                    getActivity().startActivityForResult(galleryIntent, RESULT_LOAD_IMG);
-
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
             } else {
-                Log.e("Permission Gal", "Denied");
+                Log.e("camera","23");
+                openAppSettings();
+                // Permission was denied
+                // You can disable the feature that requires the camera permission
             }
         }
     }
@@ -9184,7 +8675,7 @@ public class MyAchievementsFragment extends Fragment {
 
                     if (hasCameraPermission() && hasGalleryPermission()) {
 
-                        openCam();
+                        openCustomCamera();
 
                     } else {
 //                        if (!Settings.System.canWrite(getActivity())) {
@@ -9199,7 +8690,7 @@ public class MyAchievementsFragment extends Fragment {
                     }
 
                 } else {
-                    openCam();
+                    openCustomCamera();
                 }
                 rlSaveAchievement.setImageDrawable(getResources().getDrawable(R.drawable.ic_check));
             }
@@ -9212,9 +8703,9 @@ public class MyAchievementsFragment extends Fragment {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
 
                     if (hasGalleryPermission()) {
-                        Intent galleryIntent = new Intent(Intent.ACTION_PICK,
-                                MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                        getActivity().startActivityForResult(galleryIntent, RESULT_LOAD_IMG);
+                        Intent galleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                        getActivity().startActivityForResult(galleryIntent, ((MainActivity) getActivity()).PICK_IMAGE_FROM_GALLERY_CODE_ACTIVITY_RESULT_FROM_GRATITUDE_LIST);
+
                     } else {
                         if (!Settings.System.canWrite(getActivity())) {
 //                            requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,
@@ -9228,9 +8719,9 @@ public class MyAchievementsFragment extends Fragment {
                     }
 
                 } else {
-                    Intent galleryIntent = new Intent(Intent.ACTION_PICK,
-                            MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                    getActivity().startActivityForResult(galleryIntent, RESULT_LOAD_IMG);
+                    Intent galleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                    getActivity().startActivityForResult(galleryIntent, ((MainActivity) getActivity()).PICK_IMAGE_FROM_GALLERY_CODE_ACTIVITY_RESULT_FROM_GRATITUDE_LIST);
+
                 }
                 rlSaveAchievement.setImageDrawable(getResources().getDrawable(R.drawable.ic_check));
             }
@@ -11505,14 +10996,8 @@ public class MyAchievementsFragment extends Fragment {
 
                     if (hasCameraPermission()) {
 
-//                        Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-//                        out = createFolder1();
-//                        imgPath = out.getAbsolutePath();
-//                        Uri photoURI = FileProvider.getUriForFile(getActivity(), BuildConfig.APPLICATION_ID + ".fileprovider", out);
-//                        cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
-//                        getActivity().startActivityForResult(cameraIntent, CAMERA_PIC_REQUEST);
-                        openCam();
-
+//                        openCam();
+                        openCustomCamera();
                     } else {
                         if (!Settings.System.canWrite(getActivity())) {
                             if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
@@ -11524,7 +11009,8 @@ public class MyAchievementsFragment extends Fragment {
                     }
 
                 } else {
-                    openCam();
+                    //openCam();
+                    openCustomCamera();
                 }
             }
         });
@@ -11543,9 +11029,9 @@ public class MyAchievementsFragment extends Fragment {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
 
                     if (hasGalleryPermission()) {
-                        Intent galleryIntent = new Intent(Intent.ACTION_PICK,
-                                MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                        getActivity().startActivityForResult(galleryIntent, RESULT_LOAD_IMG);
+                        Intent galleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                        getActivity().startActivityForResult(galleryIntent, ((MainActivity) getActivity()).PICK_IMAGE_FROM_GALLERY_CODE_ACTIVITY_RESULT_FROM_GRATITUDE_LIST);
+
                     } else {
                         if (!Settings.System.canWrite(getActivity())) {
 //                            requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,
@@ -11559,15 +11045,20 @@ public class MyAchievementsFragment extends Fragment {
                     }
 
                 } else {
-                    Intent galleryIntent = new Intent(Intent.ACTION_PICK,
-                            MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                    getActivity().startActivityForResult(galleryIntent, RESULT_LOAD_IMG);
+                    Intent galleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                    getActivity().startActivityForResult(galleryIntent, ((MainActivity) getActivity()).PICK_IMAGE_FROM_GALLERY_CODE_ACTIVITY_RESULT_FROM_GRATITUDE_LIST);
+
                 }
 
             }
         });
         dlg.show();
 
+    }
+
+    private void openCustomCamera() {
+        Intent intent = new Intent(getActivity(), CameraNewActivity.class);
+        startActivityForResult(intent, REQUEST_IMAGE_CAPTURE);
     }
     private File createFolder1() {
 
@@ -11775,8 +11266,8 @@ public class MyAchievementsFragment extends Fragment {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
             imgGratitudeMain.setBackgroundResource(0);
         }
-       // imgGratitudeMain.setImageBitmap(BitmapFactory.decodeFile(cropPath));
-        imgGratitudeMain.setImageURI(Uri.parse(cropPath));
+        imgGratitudeMain.setImageBitmap(BitmapFactory.decodeFile(cropPath));
+
 
         if (gratitudeStatus.equals("EDIT")) {
             //sendPicInfoToserver();
@@ -11797,14 +11288,6 @@ public class MyAchievementsFragment extends Fragment {
                     imgBackgroundPicTOP.setBackgroundResource(0);
                 }
                 Log.e("add img direct", "add img direct---->" + cropPath);
-//                imgBackgroundPicTOP.setImageBitmap(BitmapFactory.decodeFile(cropPath));
-//                cardViewBackgroundPicTOP.setVisibility(View.VISIBLE);
-//                imgBackgroundPicTOP.setVisibility(View.VISIBLE);
-//                llAddPicTOP.setVisibility(View.GONE);
-//                buttonChangeBackgroundImageTOP.setVisibility(View.VISIBLE);
-//                if (strDialogSelectionType.equals("textOverPic")) {
-//                    buttonMoveTextBoxTOP.setVisibility(View.VISIBLE);
-//                }
 
                 imgBackgroundPicTOP.setImageURI(Uri.parse(cropPath));
                 cardViewBackgroundPicTOP.setVisibility(View.VISIBLE);

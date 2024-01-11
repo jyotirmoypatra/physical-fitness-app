@@ -63,6 +63,7 @@ import com.ashysystem.mbhq.util.AlertDialogCustom;
 import com.ashysystem.mbhq.util.SharedPreference;
 import com.ashysystem.mbhq.util.Util;
 import com.edmodo.cropper.CropImageView;
+import com.theartofdev.edmodo.cropper.CropImage;
 import com.viewpagerindicator.CirclePageIndicator;
 
 
@@ -94,6 +95,7 @@ public class DemoSliderActivity extends Activity {
     private static final Integer[] IMAGES= {R.drawable.welcome_overview1,R.drawable.img11,R.drawable.img21,R.drawable.img31,
             R.drawable.img41,R.drawable.img51,R.drawable.overview_slide61,R.drawable.img71/*,R.drawable.overview_slide7*/};
     private ArrayList<Integer> ImagesArray = new ArrayList<Integer>();
+    private final int REQUEST_IMAGE_CAPTURE = 304;
 
     ArrayList<String> arrAchieveOptions = new ArrayList<>(); ///////// added ///////
     SharedPreference sharedPreference; ///////// added ///////
@@ -629,7 +631,7 @@ public class DemoSliderActivity extends Activity {
 //                        Uri photoURI = FileProvider.getUriForFile(DemoSliderActivity.this, BuildConfig.APPLICATION_ID + ".fileprovider", out);
 //                        cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
 //                        startActivityForResult(cameraIntent, CAMERA_PIC_REQUEST);
-                        ContentResolver contentResolver = getContentResolver();
+                     /*   ContentResolver contentResolver = getContentResolver();
                         ContentValues values = new ContentValues();
                         //values.put(MediaStore.Images.Media.TITLE, "EFC");
                         values.put(MediaStore.Images.Media.DISPLAY_NAME, "EFC" + System.currentTimeMillis());
@@ -642,8 +644,8 @@ public class DemoSliderActivity extends Activity {
                         imgPath = getRealPathFromUri(uri);
                         Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                         cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
-                        startActivityForResult(cameraIntent, CAMERA_PIC_REQUEST);
-
+                        startActivityForResult(cameraIntent, CAMERA_PIC_REQUEST);*/
+                        openCustomCamera();
                     } else {
                         if (!Settings.System.canWrite(DemoSliderActivity.this)) {
 //                            requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,
@@ -663,7 +665,7 @@ public class DemoSliderActivity extends Activity {
 //                    Uri photoURI = FileProvider.getUriForFile(DemoSliderActivity.this, BuildConfig.APPLICATION_ID + ".fileprovider", out);
 //                    cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
 //                    startActivityForResult(cameraIntent, CAMERA_PIC_REQUEST);
-                    ContentResolver contentResolver = getContentResolver();
+                /*    ContentResolver contentResolver = getContentResolver();
                     ContentValues values = new ContentValues();
                    // values.put(MediaStore.Images.Media.TITLE, "EFC");
                     values.put(MediaStore.Images.Media.DISPLAY_NAME, "EFC" + System.currentTimeMillis());
@@ -675,7 +677,9 @@ public class DemoSliderActivity extends Activity {
                     imgPath = getRealPathFromUri(uri);
                     Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                     cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
-                    startActivityForResult(cameraIntent, CAMERA_PIC_REQUEST);
+                    startActivityForResult(cameraIntent, CAMERA_PIC_REQUEST);*/
+
+                    openCustomCamera();
                 }
 
               /*  if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -711,23 +715,22 @@ public class DemoSliderActivity extends Activity {
 
 
                         if (!Settings.System.canWrite(DemoSliderActivity.this)) {
-
-                            //add jyotirmoy
+//                            requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,
+//                                    Manifest.permission.READ_EXTERNAL_STORAGE}, 202);
                             if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-                                requestPermissions(new String[]{Manifest.permission.READ_MEDIA_IMAGES,Manifest.permission.READ_MEDIA_AUDIO,Manifest.permission.READ_MEDIA_VIDEO,}, 202);
+                                    requestPermissions(new String[]{Manifest.permission.READ_MEDIA_IMAGES,Manifest.permission.READ_MEDIA_AUDIO,Manifest.permission.READ_MEDIA_VIDEO,}, 202);
+
                             }else{
                                 requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.READ_EXTERNAL_STORAGE}, 202);
                             }
-
-                           // requestPermissions(new String[]{Manifest.permission.READ_MEDIA_IMAGES,Manifest.permission.READ_MEDIA_AUDIO,Manifest.permission.READ_MEDIA_VIDEO,}, 202);
                         }
                         // openAppSettings();
                     }
 
                 } else {
-                    Intent galleryIntent = new Intent(Intent.ACTION_PICK,
-                      MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                  startActivityForResult(galleryIntent, MainActivity.PICK_IMAGE_FROM_GALLERY_CODE_ACTIVITY_RESULT_FROM_GRATITUDE_LIST);//need check
+                    Intent galleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                    startActivityForResult(galleryIntent, MainActivity.PICK_IMAGE_FROM_GALLERY_CODE_ACTIVITY_RESULT_FROM_GRATITUDE_LIST);//need to check
+
                 }
 
             }
@@ -735,7 +738,10 @@ public class DemoSliderActivity extends Activity {
         dlg.show();
 
     }
-
+    private void openCustomCamera() {
+        Intent intent = new Intent(DemoSliderActivity.this, CameraNewActivity.class);
+        startActivityForResult(intent, REQUEST_IMAGE_CAPTURE);
+    }
     private File createFolder() {
 
         File mediaStorageDir = new File(Environment.getExternalStoragePublicDirectory(
@@ -869,38 +875,23 @@ public class DemoSliderActivity extends Activity {
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if(requestCode==203){
-            if (grantResults.length > 0
-                    && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                // Permission was granted
-                // You can now use the camera in your app
-                Log.e("camera","20");
-//                Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-//                out = createFolder();
-//                imgPath = out.getAbsolutePath();
-//                Uri photoURI = FileProvider.getUriForFile(DemoSliderActivity.this, BuildConfig.APPLICATION_ID + ".fileprovider", out);
-//                cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
-//                startActivityForResult(cameraIntent, CAMERA_PIC_REQUEST);
-                ContentResolver contentResolver = getContentResolver();
-                ContentValues values = new ContentValues();
-                //values.put(MediaStore.Images.Media.TITLE, "EFC");
-                values.put(MediaStore.Images.Media.DISPLAY_NAME, "EFC" + System.currentTimeMillis());
-                values.put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg");
-                //values.put(MediaStore.Images.Media.RELATIVE_PATH, Environment.DIRECTORY_PICTURES);
-                String relativePath = Environment.DIRECTORY_PICTURES + File.separator + "Emotional FC";
-                values.put(MediaStore.Images.Media.RELATIVE_PATH, relativePath);
-                Uri uri = contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
-                imgPath = getRealPathFromUri(uri);
-                Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
-                startActivityForResult(cameraIntent, CAMERA_PIC_REQUEST);
 
-            } else {
-                Log.e("camera","21");
-               openAppSettings();
-                // Permission was denied
-                // You can disable the feature that requires the camera permission
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+                    Log.e("camera","20");
+
+                    openCustomCamera();
+
+
+                } else {
+                    Log.e("camera","21");
+                    openAppSettings();
+                    // Permission was denied
+                    // You can disable the feature that requires the camera permission
+                }
             }
-        }else if(requestCode==202){
+        else if(requestCode==202){
             Log.e("gallery permision req-", String.valueOf(requestCode));
             Log.e("gallery permision req-", String.valueOf(requestCode));
             for (int i = 0; i < grantResults.length; i++) {
@@ -921,7 +912,8 @@ public class DemoSliderActivity extends Activity {
                 // You can disable the feature that requires the camera permission
             }
 
-        }else if(requestCode==200){
+        }
+        /*else if(requestCode==200){
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 Log.e("Permission Gal", "Granted");
                 try {
@@ -936,7 +928,8 @@ public class DemoSliderActivity extends Activity {
             } else {
                 Log.e("Permission Gal", "Denied");
             }
-        }else if(requestCode==201){
+        }*/
+        /*else if(requestCode==201){
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 Log.e("Permission cam", "Granted");
 //                Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
@@ -962,9 +955,11 @@ public class DemoSliderActivity extends Activity {
             } else {
                 Log.e("Permission cam", "Denied");
             }
-        }
+        }*/
     }
-
+    public void uploadImageToServer(File file){
+        mFile=file;
+    }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -973,7 +968,7 @@ public class DemoSliderActivity extends Activity {
                 if (resultCode != 0) {
 
                     Log.e("camera","01");
-                    if (data == null) {
+                   /* if (data == null) {
                         progressDialog = ProgressDialog.show(DemoSliderActivity.this, "", "Please wait...");
 
                         Log.e("camera","02");
@@ -995,7 +990,34 @@ public class DemoSliderActivity extends Activity {
                                 Toast.makeText(this, "An error occured", Toast.LENGTH_SHORT).show();
                             }
                         }
-                    } else if (requestCode == MainActivity.PICK_IMAGE_FROM_GALLERY_CODE_ACTIVITY_RESULT_FROM_GRATITUDE_LIST && resultCode == RESULT_OK
+                    }*/
+                    if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+                        //Uri selectedImageUri = intent.getData();
+                        Uri selectedImageUri = data.getParcelableExtra("CAMERA_URI");
+                        setImageToCropper(selectedImageUri);
+                    }
+                    else if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
+                        String imagePath = data.getStringExtra("image_path");
+                        try {
+                            imgBackgroundPicTOP.setImageBitmap(BitmapFactory.decodeFile(imagePath));
+                            cardViewBackgroundPicTOP.setVisibility(View.VISIBLE);
+                            imgBackgroundPicTOP.setVisibility(View.VISIBLE);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            Log.e("CROPPPP", "preaprePictureForUpload: " + e.getMessage());
+                        }
+                        uploadImageToServer(new File(imagePath));
+                        // preaprePictureForUpload(imagePath);
+                    }else if (requestCode == MainActivity.PICK_IMAGE_FROM_GALLERY_CODE_ACTIVITY_RESULT_FROM_GRATITUDE_LIST && resultCode == RESULT_OK
+                            && null != data) {
+                        Log.e("camera", "04");
+                        // Get the Image from data
+                        Log.e("PICTURE Gal---->", "123");
+
+                        Uri selectedImage = data.getData();
+                        setImageToCropper(selectedImage);
+                    }
+                   /* else if (requestCode == MainActivity.PICK_IMAGE_FROM_GALLERY_CODE_ACTIVITY_RESULT_FROM_GRATITUDE_LIST && resultCode == RESULT_OK
                             && null != data) {
                         Log.e("camera","04");
                         // Get the Image from data
@@ -1037,7 +1059,7 @@ public class DemoSliderActivity extends Activity {
                             Log.e("camera","08");
                             cropPhoto(bit, imgDecodableString);
                         }
-                    }else {
+                    }*/else {
                         Toast.makeText(this, "You haven't picked Image",
                                 Toast.LENGTH_LONG).show();
                     }
@@ -1048,6 +1070,20 @@ public class DemoSliderActivity extends Activity {
 
         }
     }//need to check
+    private void setImageToCropper(Uri selectedImageUri) {
+        try {
+            if (selectedImageUri != null) {
+                Intent intent = new Intent(DemoSliderActivity.this, ImageCropperActivity.class);
+                intent.putExtra("crop_ratio", 43);
+                intent.putExtra("image_uri", true);
+                intent.setData(selectedImageUri);
+                startActivityForResult(intent, CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE);
+            } else
+                Toast.makeText(DemoSliderActivity.this, getString(R.string.failed_to_upload), Toast.LENGTH_SHORT).show();
+        } catch (Exception e) {
+            Toast.makeText(DemoSliderActivity.this, getString(R.string.failed_to_upload), Toast.LENGTH_SHORT).show();
+        }
+    }
 
     private void cropPhoto(final Bitmap bitmap, final String imgPath) {
         final Dialog dialogcrop = new Dialog(this, android.R.style.Theme);

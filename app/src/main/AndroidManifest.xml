@@ -90,10 +90,10 @@
         <activity
             android:name=".activity.ImageCropperActivity"
             android:exported="true" />
+
         <activity
             android:name=".activity.CameraNewActivity"
             android:exported="true" />
-
 
         <service android:name=".Service.BackgroundSoundServiceNew"
             android:enabled="true"

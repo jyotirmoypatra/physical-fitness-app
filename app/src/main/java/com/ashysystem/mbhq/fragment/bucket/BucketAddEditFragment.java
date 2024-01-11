@@ -2,6 +2,8 @@ package com.ashysystem.mbhq.fragment.bucket;
 
 import static android.app.Activity.RESULT_OK;
 
+import com.ashysystem.mbhq.activity.CameraNewActivity;
+import com.ashysystem.mbhq.activity.ImageCropperActivity;
 import com.ashysystem.mbhq.fragment.CustomReminderDialog;
 import com.ashysystem.mbhq.fragment.CustomReminderDialogForEdit;
 import com.ashysystem.mbhq.fragment.CustomReminderDialogForEditBucket;
@@ -80,6 +82,7 @@ import com.bumptech.glide.request.transition.Transition;
 import com.edmodo.cropper.CropImageView;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+import com.theartofdev.edmodo.cropper.CropImage;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -116,6 +119,8 @@ public class BucketAddEditFragment extends Fragment {
     View view12,view13;
     BucketListModelInner globalGetGratitudeListModelInner;
     private String imgPath = "";
+    private final int REQUEST_IMAGE_CAPTURE = 304;
+
     private String imgDecodableString = "";
     String stringImg = "";
     private static int RESULT_LOAD_IMG = 1434;
@@ -167,7 +172,10 @@ public class BucketAddEditFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
-
+    private void openCustomCamera() {
+        Intent intent = new Intent(getActivity(), CameraNewActivity.class);
+        startActivityForResult(intent, REQUEST_IMAGE_CAPTURE);
+    }
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -236,7 +244,6 @@ public class BucketAddEditFragment extends Fragment {
             }
         });
         /*commented by sahenita (temporary)*/
-/*
         clickPhoto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -255,24 +262,24 @@ public class BucketAddEditFragment extends Fragment {
 
                     if (hasCameraPermission() && hasGalleryPermission()) {
 
-                        openCam();
+                        openCustomCamera();
 
                     } else {
-                        if (!Settings.System.canWrite(getActivity())) {
-                            requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                                    Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.CAMERA}, 203);
+                        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                            requestPermissions(new String[]{Manifest.permission.READ_MEDIA_IMAGES,Manifest.permission.READ_MEDIA_AUDIO,Manifest.permission.READ_MEDIA_VIDEO,Manifest.permission.CAMERA}, 203);
+                        }else{
+                            requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.CAMERA}, 203);
                         }
                     }
 
                 } else {
-                    openCam();
+                    openCustomCamera();
                 }
                 rlSaveAchievement.setImageResource(R.drawable.ic_check);
                 //  rlSaveAchievement.setImageDrawable(getResources().getDrawable(R.drawable.ic_check));
 
             }
         });
-*/
         /*commented by sahenita (temporary)*/
 
         galleryPhoto.setOnClickListener(new View.OnClickListener() {
@@ -290,14 +297,13 @@ public class BucketAddEditFragment extends Fragment {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
 
                     if (hasGalleryPermission()) {
-                        Intent galleryIntent = new Intent(Intent.ACTION_PICK,
-                                MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                        getActivity().startActivityForResult(galleryIntent, RESULT_LOAD_IMG);
+                        Intent galleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                        getActivity().startActivityForResult(galleryIntent, ((MainActivity) getActivity()).PICK_IMAGE_FROM_GALLERY_CODE_ACTIVITY_RESULT_FROM_GRATITUDE_LIST);
+
                     } else {
                         if (!Settings.System.canWrite(getActivity())) {
 //                            requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,
 //                                    Manifest.permission.READ_EXTERNAL_STORAGE}, 200);
-                            //add jyotirmoy
                             if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
                                 requestPermissions(new String[]{Manifest.permission.READ_MEDIA_IMAGES,Manifest.permission.READ_MEDIA_AUDIO,Manifest.permission.READ_MEDIA_VIDEO,}, 200);
                             }else{
@@ -307,9 +313,9 @@ public class BucketAddEditFragment extends Fragment {
                     }
 
                 } else {
-                    Intent galleryIntent = new Intent(Intent.ACTION_PICK,
-                            MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                    getActivity().startActivityForResult(galleryIntent, RESULT_LOAD_IMG);
+                    Intent galleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                    getActivity().startActivityForResult(galleryIntent, ((MainActivity) getActivity()).PICK_IMAGE_FROM_GALLERY_CODE_ACTIVITY_RESULT_FROM_GRATITUDE_LIST);
+
                 }
                 rlSaveAchievement.setImageResource(R.drawable.ic_check);
             }
@@ -438,7 +444,7 @@ public class BucketAddEditFragment extends Fragment {
         txtSongBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-/*commented by sahenita*/
+             /*commented by sahenita*/
                /* stopMusic();
                 FragmentManager manager = getFragmentManager();
                 final SongSelectionFragment mydialog = new SongSelectionFragment();
@@ -1877,20 +1883,30 @@ public class BucketAddEditFragment extends Fragment {
             case 200: {
                 if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     Log.e("Permission Gal", "Granted");
-                    try {
+                    Log.e("gallery permision req-", String.valueOf(requestCode));
+                    Log.e("gallery permision req-", String.valueOf(requestCode));
+                    for (int i = 0; i < grantResults.length; i++) {
+                        Log.d("gallery permision req array list", "Permission result[" + i + "]: " + grantResults[i]);
+                    } //jyoti
+                    if (grantResults.length > 0
+                            && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                        // Permission was granted
+                        // You can now use the camera in your app
+                        Log.e("camera","22");
+                        Intent galleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                        getActivity().startActivityForResult(galleryIntent, ((MainActivity) getActivity()).PICK_IMAGE_FROM_GALLERY_CODE_ACTIVITY_RESULT_FROM_GRATITUDE_LIST);
 
-                        Intent galleryIntent = new Intent(Intent.ACTION_PICK,
-                                MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                        getActivity().startActivityForResult(galleryIntent, RESULT_LOAD_IMG);
-
-                    } catch (Exception e) {
-                        e.printStackTrace();
+                    } else {
+                        Log.e("camera","23");
+                        openAppSettings();
+                        // Permission was denied
+                        // You can disable the feature that requires the camera permission
                     }
                 } else {
                     Log.e("Permission Gal", "Denied");
                 }
             }
-            case 201: {
+          /*  case 201: {
                 if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     Log.e("Permission cam", "Granted");
                     Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
@@ -1904,7 +1920,7 @@ public class BucketAddEditFragment extends Fragment {
                     Log.e("Permission cam", "Denied");
                 }
                 return;
-            }
+            }*/
             case 203: {
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
@@ -1912,7 +1928,7 @@ public class BucketAddEditFragment extends Fragment {
                     // You can now use the camera in your app
                     Log.e("camera", "20");
 
-                    openCam();
+                    openCustomCamera();
 
 
                 } else {
@@ -1923,16 +1939,21 @@ public class BucketAddEditFragment extends Fragment {
                 }
             }
             case 202: {
+                Log.e("gallery permision req-", String.valueOf(requestCode));
+                Log.e("gallery permision req-", String.valueOf(requestCode));
+                for (int i = 0; i < grantResults.length; i++) {
+                    Log.d("gallery permision req array list", "Permission result[" + i + "]: " + grantResults[i]);
+                } //jyoti
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     // Permission was granted
                     // You can now use the camera in your app
-                    Log.e("camera", "22");
+                    Log.e("camera","22");
                     Intent galleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                     getActivity().startActivityForResult(galleryIntent, ((MainActivity) getActivity()).PICK_IMAGE_FROM_GALLERY_CODE_ACTIVITY_RESULT_FROM_GRATITUDE_LIST);
 
                 } else {
-                    Log.e("camera", "23");
+                    Log.e("camera","23");
                     openAppSettings();
                     // Permission was denied
                     // You can disable the feature that requires the camera permission
@@ -2048,13 +2069,19 @@ public class BucketAddEditFragment extends Fragment {
     }
 
     private boolean hasCameraPermission() {
-        int hasPermissionWrite = ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE);
-        int hasPermissionRead = ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_EXTERNAL_STORAGE);
-        int hasPermissionCamera = ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.CAMERA);
-        if (hasPermissionWrite == PackageManager.PERMISSION_GRANTED && hasPermissionRead == PackageManager.PERMISSION_GRANTED && hasPermissionCamera == PackageManager.PERMISSION_GRANTED) {
-            return true;
-        } else
-            return false;
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.R) {
+            // For Android versions below API level 30
+            return ContextCompat.checkSelfPermission(getContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
+                    && ContextCompat.checkSelfPermission(getContext(), Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
+                    && ContextCompat.checkSelfPermission(getContext(), Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED;
+
+        } else {
+            // For Android versions R (API level 30) and above
+            return ContextCompat.checkSelfPermission(getContext(), Manifest.permission.READ_MEDIA_IMAGES) == PackageManager.PERMISSION_GRANTED
+                    && ContextCompat.checkSelfPermission(getContext(), Manifest.permission.READ_MEDIA_VIDEO) == PackageManager.PERMISSION_GRANTED
+                    && ContextCompat.checkSelfPermission(getContext(), Manifest.permission.READ_MEDIA_AUDIO) == PackageManager.PERMISSION_GRANTED
+                    && ContextCompat.checkSelfPermission(getContext(), Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED;
+        }
     }
 
     private boolean hasGalleryPermission() {
@@ -2196,7 +2223,9 @@ public class BucketAddEditFragment extends Fragment {
 
     public static final String TAG = BucketAddEditFragment.class.getSimpleName();
     private UploadCallback uploadCallback;
-
+    public void uploadImageToServer(File file){
+        mFile=file;
+    }
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         Log.e("PICTURE FRAGMENT", "trueeeeeeeee");
         if (resultCode != 0) {
@@ -2211,10 +2240,57 @@ public class BucketAddEditFragment extends Fragment {
                     cropPhoto1(imageBitmap,photoFile.getAbsolutePath());
                 }
 
-            } else {
-                if (data == null) {
+            }
 
-                } else if (requestCode == RESULT_LOAD_IMG && resultCode == getActivity().RESULT_OK
+            /********works for camera*********/
+            else if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+                //Uri selectedImageUri = intent.getData();
+                Uri selectedImageUri = data.getParcelableExtra("CAMERA_URI");
+                setImageToCropper(selectedImageUri);
+            }
+
+            else if (requestCode == ((MainActivity) getActivity()).PICK_IMAGE_FROM_GALLERY_CODE_ACTIVITY_RESULT_FROM_GRATITUDE_LIST && resultCode == getActivity().RESULT_OK
+                    && null != data) {
+                Log.e("camera", "04");
+                // Get the Image from data
+                Log.e("PICTURE Gal---->", "123");
+
+                Uri selectedImage = data.getData();
+                setImageToCropper(selectedImage);
+            }
+            /********works for camera*********/
+            else if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
+                String imagePath = data.getStringExtra("image_path");
+                try {
+
+
+                    imgGratitudeMain.setVisibility(View.VISIBLE);
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                        imgGratitudeMain.setBackgroundResource(0);
+                    }
+                    imgGratitudeMain.setImageBitmap(BitmapFactory.decodeFile(imagePath));
+
+                    if (gratitudeStatus.equals("EDIT")) {
+                        //sendPicInfoToserver();
+                    }
+                    Log.e("ANNUAL_CROP_PATH", imagePath + ">>>>>>");
+
+                    ANNUAL_CROP_PATH = imagePath;
+
+                    /** Edited by Amit dated on 5/03/2020 **/
+
+                    String[] split_path = imagePath.split("/");
+                    ANNUAL_CROP_PATH = split_path[split_path.length - 1];
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    Log.e("CROPPPP", "preaprePictureForUpload: " + e.getMessage());
+                }
+                uploadImageToServer(new File(imagePath));
+                // preaprePictureForUpload(imagePath);
+            }
+            else {
+                /*if (requestCode == RESULT_LOAD_IMG && resultCode == getActivity().RESULT_OK
                         && null != data) {
 
                     // Get the Image from data
@@ -2248,16 +2324,20 @@ public class BucketAddEditFragment extends Fragment {
 
                     }
 
-                } else if (requestCode == CAMERA_PIC_REQUEST && resultCode == getActivity().RESULT_OK && null != data) {    Log.e("CMMMRRRR", "onActivityResult: " + "CPRQ2" );
-                    imgDecodableString = out.getPath();
-                    Bitmap bit = BitmapFactory.decodeFile(imgDecodableString);
-                    if (bit != null) {
-                        cropPhoto1(bit, imgDecodableString);
-                    }
-                } else {
+                }
+                else if (requestCode == ((MainActivity) getActivity()).PICK_IMAGE_FROM_GALLERY_CODE_ACTIVITY_RESULT_FROM_GRATITUDE_LIST && resultCode == getActivity().RESULT_OK
+                        && null != data) {
+                    Log.e("camera", "04");
+                    // Get the Image from data
+                    Log.e("PICTURE Gal---->", "123");
+
+                    Uri selectedImage = data.getData();
+                    setImageToCropper(selectedImage);
+                }
+               else {
                     Toast.makeText(getActivity(), "You haven't picked Image",
                             Toast.LENGTH_LONG).show();
-                }
+                }*/
 
 
             }
@@ -2271,6 +2351,20 @@ public class BucketAddEditFragment extends Fragment {
         super.onActivityResult(requestCode, resultCode, data);
     }
 
+    private void setImageToCropper(Uri selectedImageUri) {
+        try {
+            if (selectedImageUri != null) {
+                Intent intent = new Intent(getActivity(), ImageCropperActivity.class);
+                intent.putExtra("crop_ratio", 43);
+                intent.putExtra("image_uri", true);
+                intent.setData(selectedImageUri);
+                startActivityForResult(intent, CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE);
+            } else
+                Toast.makeText(getActivity(), getString(R.string.failed_to_upload), Toast.LENGTH_SHORT).show();
+        } catch (Exception e) {
+            Toast.makeText(getActivity(), getString(R.string.failed_to_upload), Toast.LENGTH_SHORT).show();
+        }
+    }
 
 
     private void openCam(){
