@@ -5493,6 +5493,45 @@ public class MyAchievementsFragment extends Fragment {
         return Uri.parse(path);
     }
 
+
+    private File saveBitmapToFile(ByteArrayOutputStream bytes) {
+        File filesDir = getActivity().getFilesDir();
+        File imageFile = new File(filesDir, "image.jpg");
+
+        try (FileOutputStream fos = new FileOutputStream(imageFile)) {
+            // Compress the bitmap to a JPEG with compression factor 80 (adjust as needed)
+            Bitmap compressedBitmap = BitmapFactory.decodeByteArray(bytes.toByteArray(), 0, bytes.size());
+            compressedBitmap.compress(Bitmap.CompressFormat.JPEG, 80, fos);
+
+            return imageFile;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    private File getImageFile(Bitmap inImage) {
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+//        String path = MediaStore.Images.Media.insertImage(getContentResolver(), inImage, "Title", null);
+//        return Uri.parse(path);
+        // Save the bitmap to a file
+        File imageFile = saveBitmapToFile(bytes);
+
+        if (imageFile != null) {
+            // Get the Uri from the file
+            return imageFile;
+        } else {
+            // Handle the case where imageFile is null
+            Log.e("YourTag", "Failed to save bitmap to file.");
+            return null;
+        }
+    }
+
+
+
+
+
 //    private void preaprePictureForUpload(String cropPath) {
 //        try {
 //            File file = new File(cropPath);
@@ -10540,23 +10579,24 @@ public class MyAchievementsFragment extends Fragment {
         dialog.show();
 
     }
+    public  Bitmap captureScreenshot(Context context, View view) {
+        view.setDrawingCacheEnabled(true);
+        Bitmap bitmap = Bitmap.createBitmap(view.getDrawingCache());
+        view.setDrawingCacheEnabled(false);
+
+        return bitmap;
+        // Save the bitmap using ContentResolver
+        //saveBitmap(context, bitmap);
+    }
     private void funcForShareImageGratitudeSharability1(RelativeLayout rlPicSection, Integer gratitudeID, EditText edtGratitudeName,Dialog dialog1,MyAchievementsListInnerModel globalmMyAchievementsListInnerModel) {
         rlPicSection.setDrawingCacheEnabled(true);
-        Bitmap bitmap = getScreenShot1(rlPicSection);
-        File shareFile = createFolder1();
-        try {
-            if (!shareFile.exists()) {
-                shareFile.createNewFile();
-            }
-            FileOutputStream ostream = new FileOutputStream(shareFile);
-            bitmap.compress(Bitmap.CompressFormat.PNG, 10, ostream);
-            ostream.close();
-            rlPicSection.invalidate();
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            rlPicSection.setDrawingCacheEnabled(false);
-        }
+
+        Bitmap bitmap =captureScreenshot(getContext(),rlPicSection);
+        File shareFile= getImageFile(bitmap);
+
+       // String imgPath = storeImage(bitmap);
+
+        rlPicSection.setDrawingCacheEnabled(false);
 
         String journalName = edtGratitudeName.getText().toString().trim();
         dialogOpenOnceForEdit = true;
@@ -11411,13 +11451,50 @@ public class MyAchievementsFragment extends Fragment {
                 ((MainActivity) getActivity()).loadFragment(new MyAchievementsFragment(), "GratitudeMyList", null);
 
 
-                Intent share = new Intent(Intent.ACTION_SEND);
+               /* Intent share = new Intent(Intent.ACTION_SEND);
                 share.setType("image/jpeg");
                 Log.e("FILE_PATH", shareFile.getPath() + ">>>>");
                 Uri photoURI = FileProvider.getUriForFile(getActivity(), "com.ashysystem.mbhq" + ".fileprovider", shareFile);
                 share.putExtra(Intent.EXTRA_STREAM, photoURI);
                 startActivity(Intent.createChooser(share, "Share Image"));
+*/
 
+
+                Intent share = new Intent(Intent.ACTION_SEND);
+                share.setType("image/jpeg");
+
+// Assuming 'shareFile' is the File object representing your image file
+                String filePath = shareFile.getAbsolutePath();
+                Log.e("FILE_PATH", filePath + ">>>>");
+
+// Convert file path to Uri using ContentResolver
+                ContentResolver contentResolver = getActivity().getContentResolver();
+                Uri photoURI = null;
+                Cursor cursor = null;
+                try {
+                    cursor = contentResolver.query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+                            new String[]{MediaStore.Images.Media._ID},
+                            MediaStore.Images.Media.DATA + "=? ",
+                            new String[]{filePath}, null);
+
+                    if (cursor != null && cursor.moveToFirst()) {
+                        int id = cursor.getInt(cursor.getColumnIndex(MediaStore.Images.Media._ID));
+                        photoURI = Uri.withAppendedPath(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "" + id);
+                    }
+                } finally {
+                    if (cursor != null) {
+                        cursor.close();
+                    }
+                }
+
+// Add the image Uri to the intent
+                if (photoURI != null) {
+                    share.putExtra(Intent.EXTRA_STREAM, photoURI);
+                    startActivity(Intent.createChooser(share, "Share Image"));
+                } else {
+                    // Handle case where image URI could not be retrieved
+                    // Maybe show an error message
+                }
             }
 
             @Override
