@@ -650,7 +650,7 @@ public class DemoSliderActivity extends Activity {
                         if (!Settings.System.canWrite(DemoSliderActivity.this)) {
 //                            requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,
 //                                    Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.CAMERA}, 203);
-                            if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                            if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
                                 requestPermissions(new String[]{Manifest.permission.READ_MEDIA_IMAGES,Manifest.permission.READ_MEDIA_AUDIO,Manifest.permission.READ_MEDIA_VIDEO,Manifest.permission.CAMERA}, 203);
                             }else{
                                 requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.CAMERA}, 203);
@@ -717,7 +717,7 @@ public class DemoSliderActivity extends Activity {
                         if (!Settings.System.canWrite(DemoSliderActivity.this)) {
 //                            requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,
 //                                    Manifest.permission.READ_EXTERNAL_STORAGE}, 202);
-                            if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                            if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
                                     requestPermissions(new String[]{Manifest.permission.READ_MEDIA_IMAGES,Manifest.permission.READ_MEDIA_AUDIO,Manifest.permission.READ_MEDIA_VIDEO,}, 202);
 
                             }else{
@@ -823,7 +823,7 @@ public class DemoSliderActivity extends Activity {
 //        } else
 //
 //        return false;
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.R) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
             // For Android versions below API level 30
             return ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
                     && ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
@@ -850,7 +850,7 @@ public class DemoSliderActivity extends Activity {
         //need to check
 
         //add jyotirmoy
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.R) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
             // For Android versions below API level 30
             return ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
                     && ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;

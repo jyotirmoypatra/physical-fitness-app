@@ -3862,7 +3862,7 @@ loadAllAdapters();
 
                     if (!Settings.System.canWrite((MainActivity) getActivity())) {
 
-                        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
                             ((MainActivity) getActivity()).requestPermissions(new String[]{Manifest.permission.READ_MEDIA_IMAGES,Manifest.permission.READ_MEDIA_AUDIO,Manifest.permission.READ_MEDIA_VIDEO,}, 289);
                         }else{
                             ((MainActivity) getActivity()).requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.READ_EXTERNAL_STORAGE}, 289);
@@ -3924,7 +3924,7 @@ loadAllAdapters();
     }
 
     private boolean hasWritePermission() {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.R) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
             // For Android versions below API level 30
             return ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
                     && ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;

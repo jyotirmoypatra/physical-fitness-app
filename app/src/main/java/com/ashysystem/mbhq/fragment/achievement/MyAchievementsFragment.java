@@ -169,6 +169,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.lang.reflect.Type;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -4912,7 +4914,7 @@ public class MyAchievementsFragment extends Fragment {
                         if (!Settings.System.canWrite(getActivity())) {
 //                            requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,
 //                                    Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.CAMERA}, 203);
-                            if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                            if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
                                 requestPermissions(new String[]{Manifest.permission.READ_MEDIA_IMAGES,Manifest.permission.READ_MEDIA_AUDIO,Manifest.permission.READ_MEDIA_VIDEO,Manifest.permission.CAMERA}, 203);
                             }else{
                                 requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.CAMERA}, 203);
@@ -4950,7 +4952,7 @@ public class MyAchievementsFragment extends Fragment {
                         if (!Settings.System.canWrite(getActivity())) {
 //                            requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,
 //                                    Manifest.permission.READ_EXTERNAL_STORAGE}, 202);
-                            if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                            if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
                                 requestPermissions(new String[]{Manifest.permission.READ_MEDIA_IMAGES,Manifest.permission.READ_MEDIA_AUDIO,Manifest.permission.READ_MEDIA_VIDEO,}, 202);
                             }else{
                                 requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.READ_EXTERNAL_STORAGE}, 202);
@@ -5330,7 +5332,7 @@ public class MyAchievementsFragment extends Fragment {
 //            Log.e("camera","11");
 //
 //        return false;
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.R) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
             // For Android versions below API level 30
             return ContextCompat.checkSelfPermission(getContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
                     && ContextCompat.checkSelfPermission(getContext(), Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
@@ -5352,7 +5354,7 @@ public class MyAchievementsFragment extends Fragment {
 //            return true;
 //        } else
 //            return false;
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.R) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
             // For Android versions below API level 30
             return ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
                     && ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
@@ -5604,6 +5606,8 @@ public class MyAchievementsFragment extends Fragment {
 
 }
     private String storeImage(Bitmap image) {
+
+
         ContentValues values = new ContentValues();
         values.put(MediaStore.Images.Media.DISPLAY_NAME, "EFC_EQ_CROPPED" + System.currentTimeMillis());
         values.put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg");
@@ -8721,7 +8725,7 @@ public class MyAchievementsFragment extends Fragment {
 //                            requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,
 //                                    Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.CAMERA}, 203);
 //                        }
-                        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
                             requestPermissions(new String[]{Manifest.permission.READ_MEDIA_IMAGES,Manifest.permission.READ_MEDIA_AUDIO,Manifest.permission.READ_MEDIA_VIDEO,Manifest.permission.CAMERA}, 203);
                         }else{
                             requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.CAMERA}, 203);
@@ -8749,7 +8753,7 @@ public class MyAchievementsFragment extends Fragment {
                         if (!Settings.System.canWrite(getActivity())) {
 //                            requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,
 //                                    Manifest.permission.READ_EXTERNAL_STORAGE}, 200);
-                            if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                            if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
                                 requestPermissions(new String[]{Manifest.permission.READ_MEDIA_IMAGES,Manifest.permission.READ_MEDIA_AUDIO,Manifest.permission.READ_MEDIA_VIDEO,}, 200);
                             }else{
                                 requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.READ_EXTERNAL_STORAGE}, 200);
@@ -11040,7 +11044,7 @@ public class MyAchievementsFragment extends Fragment {
                         openCustomCamera();
                     } else {
                         if (!Settings.System.canWrite(getActivity())) {
-                            if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                            if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
                                 requestPermissions(new String[]{Manifest.permission.READ_MEDIA_IMAGES,Manifest.permission.READ_MEDIA_AUDIO,Manifest.permission.READ_MEDIA_VIDEO,Manifest.permission.CAMERA}, 203);
                             }else{
                                 requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.CAMERA}, 203);
@@ -11076,7 +11080,7 @@ public class MyAchievementsFragment extends Fragment {
                         if (!Settings.System.canWrite(getActivity())) {
 //                            requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,
 //                                    Manifest.permission.READ_EXTERNAL_STORAGE}, 200);
-                            if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                            if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
                                 requestPermissions(new String[]{Manifest.permission.READ_MEDIA_IMAGES,Manifest.permission.READ_MEDIA_AUDIO,Manifest.permission.READ_MEDIA_VIDEO,}, 200);
                             }else{
                                 requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.READ_EXTERNAL_STORAGE}, 200);
@@ -11459,42 +11463,13 @@ public class MyAchievementsFragment extends Fragment {
                 startActivity(Intent.createChooser(share, "Share Image"));
 */
 
-
+                Uri contentUri = saveImageToMediaStore(shareFile);
                 Intent share = new Intent(Intent.ACTION_SEND);
                 share.setType("image/jpeg");
+                share.putExtra(Intent.EXTRA_STREAM, contentUri);
 
-// Assuming 'shareFile' is the File object representing your image file
-                String filePath = shareFile.getAbsolutePath();
-                Log.e("FILE_PATH", filePath + ">>>>");
-
-// Convert file path to Uri using ContentResolver
-                ContentResolver contentResolver = getActivity().getContentResolver();
-                Uri photoURI = null;
-                Cursor cursor = null;
-                try {
-                    cursor = contentResolver.query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
-                            new String[]{MediaStore.Images.Media._ID},
-                            MediaStore.Images.Media.DATA + "=? ",
-                            new String[]{filePath}, null);
-
-                    if (cursor != null && cursor.moveToFirst()) {
-                        int id = cursor.getInt(cursor.getColumnIndex(MediaStore.Images.Media._ID));
-                        photoURI = Uri.withAppendedPath(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "" + id);
-                    }
-                } finally {
-                    if (cursor != null) {
-                        cursor.close();
-                    }
-                }
-
-// Add the image Uri to the intent
-                if (photoURI != null) {
-                    share.putExtra(Intent.EXTRA_STREAM, photoURI);
-                    startActivity(Intent.createChooser(share, "Share Image"));
-                } else {
-                    // Handle case where image URI could not be retrieved
-                    // Maybe show an error message
-                }
+                share.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                startActivity(Intent.createChooser(share, "Share Image"));
             }
 
             @Override
@@ -11504,7 +11479,35 @@ public class MyAchievementsFragment extends Fragment {
         });
 
     }
+    private Uri saveImageToMediaStore(File imageFile) {
+        ContentValues values = new ContentValues();
+        values.put(MediaStore.Images.Media.DISPLAY_NAME, "shared_image.jpg");
+        values.put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg");
+        values.put(MediaStore.Images.Media.RELATIVE_PATH, Environment.DIRECTORY_PICTURES);
 
+        ContentResolver contentResolver = getActivity().getContentResolver();
+        Uri contentUri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
+
+        Uri resultUri = contentResolver.insert(contentUri, values);
+        try {
+            if (resultUri != null) {
+                try (OutputStream outputStream = contentResolver.openOutputStream(resultUri);
+                     InputStream inputStream = new FileInputStream(imageFile)) {
+                    if (outputStream != null) {
+                        byte[] buffer = new byte[1024];
+                        int bytesRead;
+                        while ((bytesRead = inputStream.read(buffer)) != -1) {
+                            outputStream.write(buffer, 0, bytesRead);
+                        }
+                    }
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return resultUri;
+    }
     private void showpopup1( Dialog previousDialog){
         AlertDialogCustom alertDialogCustom = new AlertDialogCustom(getActivity());
         alertDialogCustom.ShowDialog("Efc", "Data successfully saved", false);

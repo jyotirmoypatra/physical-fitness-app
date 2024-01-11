@@ -1771,7 +1771,7 @@ public class MeditationDetailsNew extends Fragment {
                     if (!Settings.System.canWrite(getActivity())) {
                         requestingPermission = true;
                      //   requestPermissions(new String[]{android.Manifest.permission.WRITE_EXTERNAL_STORAGE, android.Manifest.permission.RECORD_AUDIO}, 289);
-                        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
                             requestPermissions(new String[]{ android.Manifest.permission.READ_MEDIA_AUDIO}, 289);
                         }else{
                             requestPermissions(new String[]{android.Manifest.permission.WRITE_EXTERNAL_STORAGE,android.Manifest.permission.READ_MEDIA_AUDIO}, 289);
@@ -1970,7 +1970,7 @@ public class MeditationDetailsNew extends Fragment {
 //        return hasPermissionWrite == PackageManager.PERMISSION_GRANTED && hasPermissionRead == PackageManager.PERMISSION_GRANTED;
 
 
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.R) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
             // For Android versions below API level 30
             return ContextCompat.checkSelfPermission(requireContext(), android.Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
                     && ContextCompat.checkSelfPermission(requireContext(), android.Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
