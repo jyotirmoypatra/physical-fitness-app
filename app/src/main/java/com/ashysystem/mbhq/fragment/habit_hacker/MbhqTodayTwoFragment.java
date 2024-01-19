@@ -605,30 +605,6 @@ public class MbhqTodayTwoFragment extends Fragment {
                     lstOneYearAgo = new ArrayList<>();
                     lstPicture = new ArrayList<>();
 
-        /*    if ("no".equalsIgnoreCase(Util.calldstatic)) {
-                Util.calldstatic="";
-            }else{
-                 setInteractionDisabled(true);
-                 addItemsFromJSON();
-            }*/
-
-                    //  getGrowthHomapageApiCall();
-
-                    // getGrowthHomapageApiCall();
-/*
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    try{
-                        getGrowthHomapageApiCall();
-
-                    }catch(Exception e){
-                        e.printStackTrace();
-                    }
-                }
-
-            }, 100);
-*/
 
                     try {
 

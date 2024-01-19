@@ -49,6 +49,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
 import java.io.IOException;
+import java.lang.ref.WeakReference;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -315,7 +316,15 @@ public class LogInActivity extends Activity implements View.OnClickListener {
     private void performLogin() {
 
         if (Connection.checkConnection(this)) {
-            final ProgressDialog progressDialog = ProgressDialog.show(this, "", "Please wait...");
+            WeakReference<LogInActivity> activityReference = new WeakReference<>(this);
+
+// ...
+
+            if (activityReference.get() != null && !activityReference.get().isFinishing()) {
+                progressDialog.show();            }
+            /*if (!isFinishing()) {
+                 progressDialog = ProgressDialog.show(this, "", "Please wait...");
+            }*/
 
             HashMap<String, Object> loginJson = new HashMap<>();
 
@@ -873,5 +882,11 @@ if (!url.startsWith("https://docs.google.com/gview")&&url.contains(".pdf")) {
         super.onResume();
 
     }
-
+    @Override
+    protected void onDestroy() {
+        if (progressDialog != null && progressDialog.isShowing()) {
+            progressDialog.dismiss();
+        }
+        super.onDestroy();
+    }
 }

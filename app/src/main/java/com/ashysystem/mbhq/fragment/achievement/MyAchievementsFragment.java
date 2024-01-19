@@ -25,8 +25,6 @@ import android.view.ViewGroup;
 import com.ashysystem.mbhq.R;
 
 import static com.ashysystem.mbhq.activity.MainActivity.decodeSampledBitmapFromFile;
-import static com.ashysystem.mbhq.activity.MainActivity.imgGratitude;
-import static com.ashysystem.mbhq.activity.MainActivity.imgHabits;
 import static com.ashysystem.mbhq.fragment.allSettingsFragment.KEY_DAILY_POPUP_JOURNAL;
 
 
@@ -45,7 +43,6 @@ import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
-import android.database.Observable;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -58,7 +55,6 @@ import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
-import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.SystemClock;
@@ -77,13 +73,9 @@ import android.util.TypedValue;
 import android.view.Display;
 import android.view.Gravity;
 import android.view.KeyEvent;
-import android.view.LayoutInflater;
 import android.view.MotionEvent;
-import android.view.View;
-import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
-import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -100,8 +92,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.VideoView;
 
-import com.ashysystem.mbhq.BuildConfig;
-import com.ashysystem.mbhq.R;
 import com.ashysystem.mbhq.Service.impl.FinisherServiceImpl;
 import com.ashysystem.mbhq.Service.impl.ProgressRequestBody;
 import com.ashysystem.mbhq.activity.CameraNewActivity;
@@ -112,11 +102,10 @@ import com.ashysystem.mbhq.adapter.MyAchievementsListAdapter;
 import com.ashysystem.mbhq.adapter.MyAdapter;
 import com.ashysystem.mbhq.adapter.MyAdapter1;
 import com.ashysystem.mbhq.dialog.CustomReminderDialogForEditAchievement;
-import com.ashysystem.mbhq.fragment.CustomReminderDialog;
-import com.ashysystem.mbhq.fragment.CustomReminderDialogForEdit;
+import com.ashysystem.mbhq.dialog.CustomReminderDialog;
+import com.ashysystem.mbhq.dialog.CustomReminderDialogForEdit;
 import com.ashysystem.mbhq.fragment.MyAchievementsListAddEditFragment;
 import com.ashysystem.mbhq.fragment.habit_hacker.MbhqTodayMainFragment;
-import com.ashysystem.mbhq.fragment.meditation.MeditationFragment;
 import com.ashysystem.mbhq.model.GetGratitudeCacheExpiryTimeResponse;
 import com.ashysystem.mbhq.model.GetPrompt;
 import com.ashysystem.mbhq.model.GetUserPaidStatusModel;
@@ -131,11 +120,14 @@ import com.ashysystem.mbhq.model.response.AddUpdateMyAchievementModel;
 import com.ashysystem.mbhq.model.response.MyAchievementsListInnerModel;
 import com.ashysystem.mbhq.roomDatabase.Injection;
 import com.ashysystem.mbhq.roomDatabase.MbhqDatabse;
+import com.ashysystem.mbhq.roomDatabase.dao.GratitudeListDao;
 import com.ashysystem.mbhq.roomDatabase.entity.GratitudeEntity;
 import com.ashysystem.mbhq.roomDatabase.entity.GrowthEntity;
+import com.ashysystem.mbhq.roomDatabase.modelFactory.GratitudeViewModelFactory;
 import com.ashysystem.mbhq.roomDatabase.modelFactory.ViewModelFactoryForGratitude;
 import com.ashysystem.mbhq.roomDatabase.modelFactory.ViewModelFactoryForGrowth;
 import com.ashysystem.mbhq.roomDatabase.viewModel.GratitudeViewModel;
+import com.ashysystem.mbhq.roomDatabase.viewModel.GratitudeViewModelNew;
 import com.ashysystem.mbhq.roomDatabase.viewModel.GrowthViewModel;
 import com.ashysystem.mbhq.util.AlertDialogCustom;
 import com.ashysystem.mbhq.util.AlertDialogWithCustomButton;
@@ -169,8 +161,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.lang.reflect.Type;
-import java.nio.file.Files;
-import java.nio.file.StandardCopyOption;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -183,7 +173,6 @@ import java.util.Locale;
 import java.util.Objects;
 import java.util.concurrent.Executors;
 
-import id.zelory.compressor.Compressor;
 import io.reactivex.Completable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
@@ -318,6 +307,8 @@ public class MyAchievementsFragment extends Fragment {
     ArrayList<UserEqFolder> mymodelArrayList = new ArrayList<>();
 
     private GratitudeViewModel gratitudeViewModel1; // added by mugdho
+    private GratitudeViewModelNew gratitudeViewModenew; // added by mugdho
+
     private ViewModelFactoryForGratitude factoryForGratitude1; // added by mugdho
 
     private boolean refresh;
@@ -343,7 +334,7 @@ public class MyAchievementsFragment extends Fragment {
     public int remaining = 0;
     public int remaining_db = 0;
     public int position = 0;
-    public int count = 300;
+    public int count = 20;
     public MyAchievementsListAdapter myAchievementsListAdapter = null;
   //  public MyAchievementsListAdapter_new myAchievementsListAdapter_new = null;
 
@@ -453,6 +444,7 @@ public class MyAchievementsFragment extends Fragment {
         lstLaughed.clear();
         lstImFeeling.clear();
         lstPicture.clear();
+/*
         mDisposable.add(
                 gratitudeViewModel1.getAllAchive(position_,count_)
                         .subscribeOn(Schedulers.io())
@@ -474,22 +466,49 @@ public class MyAchievementsFragment extends Fragment {
 
                                     } else {
                                         Util.calledgratitudeafterinternatecomming = true;
-                                        // Util.showToast(getActivity(), "data in database");
 
-                                    /*    Util.showToast(getActivity(), "data in database");
-                                        position = position_;
-                                        count = count_;
-                                        pagenation_from_api = false;
-
-                                        Log.e(TAG, "getAchievementsFromDB2:" + achievements.size());
-
-                                        lstShowAll.addAll(achievements);
-                                        populateList(lstShowAll);*/
                                     }
                                 },
                                 Throwable::getMessage
                         )
         );
+*/
+
+
+
+        mDisposable.add(
+                gratitudeViewModenew.getAllAchive(position, count)
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(result -> {
+                            // Handle the result here
+                            // For example, update UI with the data
+
+
+                            if (result.size() == 0) {
+                                if(false==Util.calledgratitudeafterinternatecomming){
+                                    Util.calledgratitudeafterinternatecomming=true;
+                                    // Util.showToast(getActivity(), "no data in database");
+                                    ((MainActivity) getActivity()).clearCacheForParticularFragment(new MyAchievementsFragment());
+                                    Util.isReloadTodayMainPage = true;
+                                    ((MainActivity) getActivity()).loadFragment(new MyAchievementsFragment(), "GratitudeMyList", null);
+
+                                }
+
+
+                            } else {
+                                Util.calledgratitudeafterinternatecomming = true;
+
+                            }
+
+
+                        }, throwable -> {
+                            // Handle errors here
+                        })
+
+
+        );
+
     }
 
 
@@ -506,13 +525,10 @@ public class MyAchievementsFragment extends Fragment {
                     Util.calledgratitudeafterinternatecomming = false;
                 }else{
                     Util.calledgratitudeafterinternatecomming = false;
+//                rlDownloadedMeditations.setVisibility(View.VISIBLE);
                     ((MainActivity) getActivity()).rlDownloadedMeditations.setVisibility(View.VISIBLE);
 
                 }
-
-                Util.calledgratitudeafterinternatecomming = false;
-                ((MainActivity) getActivity()).rlDownloadedMeditations.setVisibility(View.VISIBLE);
-
             }else{
 
 
@@ -536,8 +552,13 @@ public class MyAchievementsFragment extends Fragment {
 
                             byte[] decodedString = Base64.decode(shared_getGratitudeListModelInner_nointernate.get(i).getPicture(), Base64.DEFAULT);
                             Bitmap bitmap = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
-
-                            String cropPath = storeImage(bitmap);
+                            String cropPath="";
+                           /* if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
+                                 cropPath = storeImage(bitmap);
+                            }else{
+                                 cropPath = storeImage_above30(bitmap);
+                            }*/
+                            cropPath = storeImage(bitmap);
                             //preaprePictureForUpload(cropPath);
                             File file=null;
                             if(null==cropPath){
@@ -561,6 +582,7 @@ public class MyAchievementsFragment extends Fragment {
                     calldatabase_wheninternatecome(position, count);
                 }
                 ((MainActivity) getActivity()).llBottomMenu.setVisibility(View.VISIBLE);
+//               rlDownloadedMeditations.setVisibility(View.GONE);
                 ((MainActivity) getActivity()).rlDownloadedMeditations.setVisibility(View.GONE);
 
             }
@@ -570,6 +592,7 @@ public class MyAchievementsFragment extends Fragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
+        mDisposable.clear();
         if("3".equalsIgnoreCase(accesstype)){
             if("false".equalsIgnoreCase(eq_access)){
 
@@ -636,7 +659,7 @@ public class MyAchievementsFragment extends Fragment {
                 IntentFilter filter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
                 getActivity().registerReceiver(networkChangeReceiver1, filter);
 
-
+/*
                 ConnectivityManager connectivityManager = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
                 NetworkInfo activeNetwork = connectivityManager.getActiveNetworkInfo();
                 boolean isConnected = activeNetwork != null && activeNetwork.isConnectedOrConnecting();
@@ -645,7 +668,7 @@ public class MyAchievementsFragment extends Fragment {
                     pagenation_from_api=false;
                 }else{
                     // GetJounalPromptofDay();
-                }
+                }*/
             }
         }else{
             init();
@@ -654,7 +677,7 @@ public class MyAchievementsFragment extends Fragment {
             getActivity().registerReceiver(networkChangeReceiver1, filter);
 
 
-            ConnectivityManager connectivityManager = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
+           /* ConnectivityManager connectivityManager = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
             NetworkInfo activeNetwork = connectivityManager.getActiveNetworkInfo();
             boolean isConnected = activeNetwork != null && activeNetwork.isConnectedOrConnecting();
             if (!isConnected) {
@@ -662,7 +685,7 @@ public class MyAchievementsFragment extends Fragment {
                 pagenation_from_api=false;
             }else{
                 // GetJounalPromptofDay();
-            }
+            }*/
         }
 
     }
@@ -906,7 +929,6 @@ public class MyAchievementsFragment extends Fragment {
                         ((MainActivity) getActivity()).clearCacheForParticularFragment(new MyAchievementsFragment());
                         Util.isReloadTodayMainPage = true;
                         ((MainActivity) getActivity()).loadFragment(new MyAchievementsFragment(), "GratitudeMyList", null);
-
                     }else{
                         try {
                             swipeLayout.setRefreshing(false);
@@ -1592,6 +1614,33 @@ public class MyAchievementsFragment extends Fragment {
         mFile=file;
     }
 
+
+
+
+
+    public  String convertImageToBase64(String filePath) {
+        try {
+            FileInputStream fileInputStream = new FileInputStream(filePath);
+            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+
+            byte[] buffer = new byte[1024];
+            int bytesRead;
+            while ((bytesRead = fileInputStream.read(buffer)) != -1) {
+                byteArrayOutputStream.write(buffer, 0, bytesRead);
+            }
+
+            byte[] imageData = byteArrayOutputStream.toByteArray();
+            return Base64.encodeToString(imageData, Base64.DEFAULT);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            // Handle IOException - file not found, unable to read, etc.
+            return null; // or throw an exception or return a default value
+        }
+    }
+
+
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         Log.i("MyAchievementsFragment", "request code => " + requestCode + "result code => " + resultCode);
@@ -1621,6 +1670,28 @@ public class MyAchievementsFragment extends Fragment {
                         imgBackgroundPicTOP.setImageBitmap(BitmapFactory.decodeFile(imagePath));
 
                     }*/
+                    /*ContentResolver contentResolver = getActivity().getContentResolver();
+                    Uri contentUri = Uri.parse(imagePath);
+                    File file =getFileFromContentUri(contentResolver, contentUri);
+
+                    InputStream imageInFile =  contentResolver.openInputStream(Uri.parse(imagePath));
+                    byte[] imageData = new byte[(int) file.length()];
+
+                    imageInFile.read(imageData);
+                    stringImg = encodeImage(imageData);
+                    Log.e("BASE64STRING", stringImg);
+                    sharedPreference.write("GRATITUDEIMAGE", "", stringImg);
+*/
+                    try {
+                        String stringImg = convertImageToBase64(imagePath);
+                        Log.e("BASE64STRING", stringImg);
+                        sharedPreference.write("GRATITUDEIMAGE", "", stringImg);
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        // Handle the exception, log it, or show a relevant message to the user
+                    }
+
 
                     cardViewBackgroundPicTOP.setVisibility(View.VISIBLE);
                     imgBackgroundPicTOP.setImageBitmap(BitmapFactory.decodeFile(imagePath));
@@ -2280,7 +2351,7 @@ public class MyAchievementsFragment extends Fragment {
                     if (response.body() != null) {
                         // Util.showToast(getActivity(), "Util.networkMsg11111");
                         if (response.body().getDetails() != null && response.body().getDetails().size() > 0) {
-
+                           //
                             Log.i("check_eq","21");
                             total_result = response.body().getTotalCount();
                             Log.i("total_result", String.valueOf(total_result));
@@ -2297,7 +2368,7 @@ public class MyAchievementsFragment extends Fragment {
                             haveGrowthMinimumOne = true;
 
                             lstShowAll = response.body().getDetails();
-                            Log.e(TAG, "onResponse: " + lstShowAll.toString());
+                           // Log.e(TAG, "onResponse: " + lstShowAll.toString());
                             // loadData(lstShowAll);
                             Date dtToday = null, dtThisMonth = null, dtThreeMonth = null, dtOneYear = null, dtYesterDay = null;
 
@@ -4706,10 +4777,8 @@ public class MyAchievementsFragment extends Fragment {
                     boolean isConnected = activeNetwork != null && activeNetwork.isConnectedOrConnecting();
 
                     if (!isConnected) {
-                        // Log.e("state_1","1");
 
 
-                        // getGratitudeListModelInner_nointernate=new MyAchievementsListInnerModel();
                         String json= sharedPreference.read("my_list_nointernate", "");
                         ArrayList<MyAchievementsListInnerModel> shared_getGratitudeListModelInner_nointernate = new Gson().fromJson(json, new TypeToken<ArrayList<MyAchievementsListInnerModel>>(){}.getType());
                         getGratitudeListModelInner_nointernate = makeAchieveModelForAdd_nonetwork(edtAchieve, selectedOption);
@@ -4743,7 +4812,6 @@ public class MyAchievementsFragment extends Fragment {
                         ((MainActivity) getActivity()).clearCacheForParticularFragment(new MyAchievementsFragment());
                         Util.isReloadTodayMainPage = true;
                         ((MainActivity) getActivity()).loadFragment(new MyAchievementsFragment(), "GratitudeMyList", null);
-
                     } else{
 
                         MyAchievementsListInnerModel getGratitudeListModelInner = makeAchieveModelForAdd(edtAchieve, selectedOption);
@@ -5461,7 +5529,14 @@ public class MyAchievementsFragment extends Fragment {
                     dialogcrop.dismiss();
 //                    Uri uri = getImageUri(Objects.requireNonNull(getActivity()),bitimage);
 //                    String cropPath = Util.getFilePathFromUri(Objects.requireNonNull(getActivity()),uri);
-                    String cropPath = storeImage(bitimage);
+                    //String cropPath = storeImage(bitimage);
+                    String cropPath="";
+                   /* if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
+                        cropPath = storeImage(bitmap);
+                    }else{
+                        cropPath = storeImage_above30(bitmap);
+                    }*/
+                    cropPath = storeImage(bitmap);
                     preaprePictureForUpload(cropPath);
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -5605,7 +5680,7 @@ public class MyAchievementsFragment extends Fragment {
     imgBackgroundPicTOP.setVisibility(View.VISIBLE);
 
 }
-    private String storeImage(Bitmap image) {
+    private String storeImage_above30(Bitmap image) {
 
 
         ContentValues values = new ContentValues();
@@ -5633,31 +5708,31 @@ public class MyAchievementsFragment extends Fragment {
 
         return imageUri.toString();
     }
-//    private String storeImage(Bitmap image) {
-//
-//        if(null==image){
-//
-//        }else{
-//            File pictureFile = getOutputMediaFile();
-//
-//            if (pictureFile == null) {
-//                Log.d("TAG",
-//                        "Error creating media file, check storage permissions: ");// e.getMessage());
-//                return "";
-//            }
-//            try {
-//                FileOutputStream fos = new FileOutputStream(pictureFile);
-//                image.compress(Bitmap.CompressFormat.PNG, 40, fos);
-//                fos.close();
-//            } catch (FileNotFoundException e) {
-//                Log.d("TAG", "File not found: " + e.getMessage());
-//            } catch (IOException e) {
-//                Log.d("TAG", "Error accessing file: " + e.getMessage());
-//            }
-//            return pictureFile.getAbsolutePath();
-//        }
-//        return null;
-//    }
+    private String storeImage(Bitmap image) {
+
+        if(null==image){
+
+        }else{
+            File pictureFile = getOutputMediaFile();
+
+            if (pictureFile == null) {
+                Log.d("TAG",
+                        "Error creating media file, check storage permissions: ");// e.getMessage());
+                return "";
+            }
+            try {
+                FileOutputStream fos = new FileOutputStream(pictureFile);
+                image.compress(Bitmap.CompressFormat.PNG, 40, fos);
+                fos.close();
+            } catch (FileNotFoundException e) {
+                Log.d("TAG", "File not found: " + e.getMessage());
+            } catch (IOException e) {
+                Log.d("TAG", "Error accessing file: " + e.getMessage());
+            }
+            return pictureFile.getAbsolutePath();
+        }
+        return null;
+    }
 
     private File getOutputMediaFile() {
 
@@ -8124,58 +8199,129 @@ public class MyAchievementsFragment extends Fragment {
 
     private void calldatabase_nointernate(int position_, int count_) {
         Log.i("check_eq","33");
-        lstShowAll.clear();
-        lstToday.clear();
-        lstThisMonth.clear();
-        lstThreeMonthsAgo.clear();
-        lstOneYearAgo.clear();
-        lstProudOf.clear();
-        lstAccomplish.clear();
-        lstObserved.clear();
-        lstLearned.clear();
-        lstPraised.clear();
-        lstTodayletGoOf.clear();
-        lstDreamtOf.clear();
-        lstJournalEntry.clear();
-        lstTheStory.clear();
-        lstChallengedBy.clear();
-        lstCelebrating.clear();
-        lstLaughed.clear();
-        lstImFeeling.clear();
-        lstPicture.clear();
-        mDisposable.add(
-                gratitudeViewModel1.getAllAchive(position_,count_)
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(
-                                achievements -> {
-                                    Log.e(TAG, "getAchievementsFromDB0:" + achievements.size());
 
-                                    if (achievements.size() == 0) {
-                                        Log.i("check_eq","34");
-                                        // Util.showToast(getActivity(), "no data in database");
-                                        Log.e(TAG, "getAchievementsFromDB1:" + achievements.size());
 
-                                        txtLoading.setVisibility(View.GONE);
-                                        imgBigPlus.setVisibility(View.GONE);
-                                        txtLoading.setText("no data found");
+        try{
+if(null!=lstShowAll )
+            lstShowAll.clear();
+            if(null!=lstToday )
+            lstToday.clear();
+            if(null!=lstThisMonth )
+            lstThisMonth.clear();
+            if(null!=lstThreeMonthsAgo )
+            lstThreeMonthsAgo.clear();
+            if(null!=lstOneYearAgo )
+            lstOneYearAgo.clear();
+            if(null!=lstProudOf )
+            lstProudOf.clear();
+            if(null!=lstAccomplish )
+            lstAccomplish.clear();
+            if(null!=lstObserved )
+            lstObserved.clear();
+            if(null!=lstLearned )
+            lstLearned.clear();
+            if(null!=lstPraised )
+            lstPraised.clear();
+            if(null!=lstTodayletGoOf )
+            lstTodayletGoOf.clear();
+            if(null!=lstDreamtOf )
+            lstDreamtOf.clear();
+            if(null!=lstJournalEntry )
+            lstJournalEntry.clear();
+            if(null!=lstTheStory )
+            lstTheStory.clear();
+            if(null!=lstChallengedBy )
+            lstChallengedBy.clear();
+            if(null!=lstCelebrating )
+            lstCelebrating.clear();
+            if(null!=lstLaughed )
+            lstLaughed.clear();
+            if(null!=lstImFeeling )
+            lstImFeeling.clear();
+            if(null!=lstPicture )
+            lstPicture.clear();
+/*
+            mDisposable.add(
+                    gratitudeViewModel1.getAllAchive(position_,count_)
+                            .subscribeOn(Schedulers.io())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe(
+                                    achievements -> {
+                                        Log.e(TAG, "getAchievementsFromDB0:" + achievements.size());
 
-                                    } else {
-                                        Log.i("check_eq","35");
-                                        // Util.showToast(getActivity(), "data in database");
-                                        position = position_;
-                                        count = count_;
-                                        pagenation_from_api = false;
+                                        if (achievements.size() == 0) {
+                                            Log.i("check_eq","34");
+                                            // Util.showToast(getActivity(), "no data in database");
+                                            Log.e(TAG, "getAchievementsFromDB1:" + achievements.size());
 
-                                        Log.e(TAG, "getAchievementsFromDB2:" + achievements.size());
+                                            txtLoading.setVisibility(View.GONE);
+                                            imgBigPlus.setVisibility(View.GONE);
+                                            txtLoading.setText("no data found");
 
-                                        lstShowAll.addAll(achievements);
-                                        populateList(lstShowAll);
-                                    }
-                                },
-                                Throwable::getMessage
-                        )
-        );
+                                        } else {
+                                            Log.i("check_eq","35");
+                                            // Util.showToast(getActivity(), "data in database");
+                                            position = position_;
+                                            count = count_;
+                                            pagenation_from_api = false;
+
+                                            Log.e(TAG, "getAchievementsFromDB2:" + achievements.size());
+
+                                            lstShowAll.addAll(achievements);
+                                            populateList(lstShowAll);
+                                        }
+                                    },
+                                    Throwable::getMessage
+                            )
+            );
+*/
+
+
+
+            mDisposable.add(
+                    gratitudeViewModenew.getAllAchive(position, count)
+                            .subscribeOn(Schedulers.io())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe(result -> {
+                                // Handle the result here
+                                // For example, update UI with the data
+
+
+                                if (result.size() == 0) {
+                                    Log.i("check_eq","34");
+                                    // Util.showToast(getActivity(), "no data in database");
+                                    Log.e(TAG, "getAchievementsFromDB1:" + result.size());
+
+                                    txtLoading.setVisibility(View.GONE);
+                                    imgBigPlus.setVisibility(View.GONE);
+                                    txtLoading.setText("no data found");
+
+                                } else {
+                                    Log.i("check_eq","35");
+                                    // Util.showToast(getActivity(), "data in database");
+                                    position = position_;
+                                    count = count_;
+                                    pagenation_from_api = false;
+
+                                    Log.e(TAG, "getAchievementsFromDB2:" + result.size());
+
+                                    lstShowAll.addAll(result);
+                                    populateList(lstShowAll);
+                                }
+
+
+                            }, throwable -> {
+                                // Handle errors here
+                            })
+
+
+            );
+
+
+
+        }catch (Exception e){
+           e.printStackTrace();
+        }
     }
 
 
@@ -8233,41 +8379,86 @@ public class MyAchievementsFragment extends Fragment {
                 lstImFeeling.clear();
                 lstPicture.clear();
                 Log.i("check_eq","150");
-        mDisposable.add(
-                gratitudeViewModel1.getAllAchive(position_,count_)
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(
-                                achievements -> {
-                                    Log.e(TAG, "getAchievementsFromDB0:" + achievements.size());
+try{
 
-                                    if (achievements.size() == 0) {
-                                        Log.i("check_eq","16");
-                                        pagenation_from_api = true;
-                                        Log.e(TAG, "getAchievementsFromDB1:" + achievements.size());
-                                            new MyAsyncTask().execute();
-                                            getAchievementsList(Page);
+/*
+    mDisposable.add(
+            gratitudeViewModel1.getAllAchive(position_,count_)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(
+                            achievements -> {
+                                Log.e(TAG, "getAchievementsFromDB0:" + achievements.size());
+
+                                if (achievements.size() == 0) {
+                                    Log.i("check_eq","16");
+                                    pagenation_from_api = true;
+                                    Log.e(TAG, "getAchievementsFromDB1:" + achievements.size());
+                                   // new MyAsyncTask().execute();
+                                    getAchievementsList(Page);
 
 
-                                    } else {
-                                        Log.i("check_eq","17");
-                                        position = position_;
-                                        count = count_;
-                                        pagenation_from_api = false;
+                                } else {
+                                    Log.i("check_eq","17");
+                                    position = position_;
+                                    count = count_;
+                                    pagenation_from_api = false;
 
-                                        Log.e(TAG, "getAchievementsFromDB2:" + achievements.size());
+                                    Log.e(TAG, "getAchievementsFromDB2:" + achievements.size());
 
-                                        lstShowAll.addAll(achievements);
-                                          populateList(lstShowAll);
-                                    }
-                                },
-                                Throwable::getMessage
-                        )
-        );
+                                    lstShowAll.addAll(achievements);
+                                    populateList(lstShowAll);
+                                }
+                            },
+                            Throwable::getMessage
+                    )
+    );
+*/
+    mDisposable.add(
+    gratitudeViewModenew.getAllAchive(position, count)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(result -> {
+                // Handle the result here
+                // For example, update UI with the data
+
+
+                if (result.size() == 0) {
+                    Log.i("check_eq","16");
+                    pagenation_from_api = true;
+                    Log.e(TAG, "getAchievementsFromDB1:" + result.size());
+                     new MyAsyncTask().execute();
+                    getAchievementsList(Page);
+
+
+                } else {
+                    Log.i("check_eq","17");
+                    position = position_;
+                    count = count_;
+                    pagenation_from_api = false;
+
+                    Log.e(TAG, "getAchievementsFromDB2:" + result.size());
+
+                    lstShowAll.addAll(result);
+                    populateList(lstShowAll);
+                }
+
+
+            }, throwable -> {
+                // Handle errors here
+            })
+
+
+    );
+
+
                /* pagenation_from_api = true;
                 new MyAsyncTask().execute();
                 getAchievementsList(Page);*/
 
+}catch (Exception e){
+    e.printStackTrace();
+}
 
             } else {
                 Log.i("check_eq","18");
@@ -8483,6 +8674,7 @@ public class MyAchievementsFragment extends Fragment {
         lstPicture.clear();
 
         if (Connection.checkConnection(getActivity())) {
+/*
             mDisposable.add(
                     gratitudeViewModel1.getAllAchive(position, count)
                             .subscribeOn(Schedulers.io())
@@ -8504,10 +8696,37 @@ public class MyAchievementsFragment extends Fragment {
                                     Throwable::getMessage
                             )
             );
+*/
 
+            mDisposable.add(
+                    gratitudeViewModenew.getAllAchive(position, count)
+                            .subscribeOn(Schedulers.io())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe(result -> {
+                                // Handle the result here
+                                // For example, update UI with the data
+
+
+                                if (result.size() == 0) {
+                                    Log.e(TAG, "getAchievementsFromDB1:" + result.size());
+
+                                } else {
+                                    Log.e(TAG, "getAchievementsFromD2db2:" + lstShowAll.size());
+                                    lstShowAll.addAll(result);
+                                    populateList(lstShowAll);
+                                }
+
+
+                            }, throwable -> {
+                                // Handle errors here
+                            })
+
+
+            );
 
         } else {
             Log.e("callnonetwork", "callnonetwork-9");
+/*
             mDisposable.add(
                     gratitudeViewModel1.getAllAchive(position, count)
                             .subscribeOn(Schedulers.io())
@@ -8527,6 +8746,32 @@ public class MyAchievementsFragment extends Fragment {
                                     },
                                     Throwable::getMessage
                             )
+            );
+*/
+            mDisposable.add(
+                    gratitudeViewModenew.getAllAchive(position, count)
+                            .subscribeOn(Schedulers.io())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe(result -> {
+                                // Handle the result here
+                                // For example, update UI with the data
+
+
+                                if (result.size() == 0) {
+
+                                    Log.e(TAG, "getAchievementsFromDB111:" + result.size());
+                                } else {
+                                    Log.e(TAG, "getAchievementsFromD2db112:" + lstShowAll.size());
+                                    lstShowAll.addAll(result);
+                                    populateList(lstShowAll);
+                                }
+
+
+                            }, throwable -> {
+                                // Handle errors here
+                            })
+
+
             );
 
 
@@ -11220,7 +11465,14 @@ public class MyAchievementsFragment extends Fragment {
                     Log.e(" height After crop--->", bitimage.getHeight() + "");
                     Log.e(" height After crop--->", bitimage.getHeight() + "");
                     dialogcrop.dismiss();
-                    String cropPath = storeImage(bitimage);
+                   // String cropPath = storeImage(bitimage);
+                    String cropPath="";
+                   /* if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
+                        cropPath = storeImage(bitmap);
+                    }else{
+                        cropPath = storeImage_above30(bitmap);
+                    }*/
+                    cropPath = storeImage(bitmap);
                     preaprePictureForUpload1(cropPath);
 
                 } catch (Exception e) {
@@ -11896,7 +12148,14 @@ public class MyAchievementsFragment extends Fragment {
                                             byte[] decodedString = Base64.decode(shared_getGratitudeListModelInner_nointernate.get(i).getPicture(), Base64.DEFAULT);
                                             Bitmap bitmap = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
 
-                                            String cropPath = storeImage(bitmap);
+                                           // String cropPath = storeImage(bitmap);
+                                            String cropPath="";
+                                          /*  if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
+                                                cropPath = storeImage(bitmap);
+                                            }else{
+                                                cropPath = storeImage_above30(bitmap);
+                                            }*/
+                                            cropPath = storeImage(bitmap);
                                             File file=null;
                                             if(null==cropPath){
                                                 shared_getGratitudeListModelInner_nointernate.remove(i);
@@ -11969,7 +12228,7 @@ public class MyAchievementsFragment extends Fragment {
                         mLastClickTime = SystemClock.elapsedRealtime();
 
                         pagenation_from_api=true;
-                        ((MainActivity) getActivity()).refershGamePoint(getActivity());
+                       // ((MainActivity) getActivity()).refershGamePoint(getActivity());
                         ((MainActivity) getActivity()).clearCacheForParticularFragment(new MyAchievementsFragment());
                         Util.isReloadTodayMainPage = true;
                         ((MainActivity) getActivity()).loadFragment(new MyAchievementsFragment(), "GratitudeMyList", null);
@@ -12509,15 +12768,41 @@ public class MyAchievementsFragment extends Fragment {
 
     }
 void init(){
-    imgHabits.setImageResource(0);
-    imgHabits.setImageResource(R.drawable.mbhq_habits_inactive);
-    imgGratitude.setImageResource(0);
-    imgGratitude.setImageResource(R.drawable.mbhq_gratitude_active);
+//    imgHabits.setImageResource(0);
+//    imgHabits.setImageResource(R.drawable.mbhq_habits_inactive);
+//    imgGratitude.setImageResource(0);
+//    imgGratitude.setImageResource(R.drawable.mbhq_gratitude_active);
+
+    ((MainActivity) getActivity()).imgHabits.setImageResource(0);
+    ((MainActivity) getActivity()).imgHabits.setImageResource(R.drawable.mbhq_habits_inactive);
+
+    ((MainActivity) getActivity()).imgGratitude.setImageResource(0);
+    ((MainActivity) getActivity()).imgGratitude.setImageResource(R.drawable.mbhq_gratitude_active);
 
     Log.e("state11111111111","onActivityCreated");
     ////////////////////////////////////////////// Added by mugdho///////////////////////////////////////////
     factoryForGratitude1 = Injection.provideViewModelFactoryGratitude(getActivity());
     gratitudeViewModel1 = new ViewModelProvider(this, factoryForGratitude1).get(GratitudeViewModel.class);
+
+
+
+    Context context = getContext().getApplicationContext();
+
+// Getting the database instance
+    MbhqDatabse database = MbhqDatabse.getInstance(context);
+
+// Getting the GratitudeListDao from the database
+    GratitudeListDao gratitudeListDao = database.gratitudeDao();
+
+// Creating the ViewModelProvider.Factory
+    GratitudeViewModelFactory factory = new GratitudeViewModelFactory(gratitudeListDao);
+
+// Creating GratitudeViewModel with the dao using the factory
+    gratitudeViewModenew = new ViewModelProvider(getActivity(), factory)
+            .get(GratitudeViewModelNew.class);
+
+
+
     //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //    if("yes".equalsIgnoreCase(Util.opengratitudeforfirstuser)){
@@ -12553,7 +12838,7 @@ void init(){
             if (getArguments() != null && getArguments().containsKey("ADD_GROWTH_FROM_TODAY")) {
                 Log.i("check_eq","29");
             } else if (getArguments() != null && getArguments().containsKey("openaddpopup")) {
-                Log.i("check_eq","30");
+                Log.i("check_eq","33");
                 Log.e("state11111111111","onActivityCreated");
                 checkGratitudeCacheExpiration();
                 arrAchieveOptions.add("I'm Grateful For:");
@@ -12633,7 +12918,7 @@ void init(){
                 }
 
             }else if (getArguments() != null && getArguments().containsKey("calledapi")) {
-                Log.i("check_eq","31");
+                Log.i("check_eq","37");
                 Log.e("state11111111111","onActivityCreated");
                 checkGratitudeCacheExpiration();
 

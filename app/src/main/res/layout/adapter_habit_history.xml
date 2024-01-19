@@ -10,11 +10,10 @@
 
     <com.ashysystem.mbhq.view.ButtonRaleWay
         android:id="@+id/habitHistoryBtn"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:minHeight="0dp"
         android:background="@drawable/mbhq_rounded_corner_base_color"
-        android:text="Today"
+        android:text="@string/today"
         android:textAllCaps="false"
         android:textColor="@color/white"
         android:textSize="@dimen/fab_twenty"

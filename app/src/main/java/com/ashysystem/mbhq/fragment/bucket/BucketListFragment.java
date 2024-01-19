@@ -76,6 +76,7 @@ import com.ashysystem.mbhq.model.IndividualBucketListModel;
 import com.ashysystem.mbhq.util.AlertDialogCustom;
 import com.ashysystem.mbhq.util.Connection;
 import com.ashysystem.mbhq.util.DatePickerForGratitude;
+import com.ashysystem.mbhq.util.SetLocalNotificationForBucket;
 import com.ashysystem.mbhq.util.SharedPreference;
 import com.ashysystem.mbhq.util.Util;
 import com.ashysystem.mbhq.view.drag_drop.ItemMoveCallbackBucket;
@@ -1265,9 +1266,9 @@ public class BucketListFragment extends Fragment implements StartDragListener {
         recyclerGratitudes.setAdapter(null);
         ///////////////////////
 /*commented by sahenita*/
-       /* for (int i = 0; i < details.size(); i++) {
+        for (int i = 0; i < details.size(); i++) {
             SetLocalNotificationForBucket.SetLocalNotificationForBucket(details.get(i), getActivity());
-        }*/
+        }
 
         BucketListAdapter gratitudeMyListAdapter = new BucketListAdapter(getActivity(), details, this, showManual, BucketListFragment.this);
 

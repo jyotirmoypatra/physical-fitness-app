@@ -25,18 +25,6 @@ import io.reactivex.Single;
 public abstract class GratitudeListDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    public abstract Completable insertGratitude(GratitudeEntity gratitudeEntity);
-
-    @Insert /////////////
-    public abstract Completable insertGratitudes(List<GratitudeEntity> gratitudeEntities);
-
-    /////////////////////////////////////////////////////////////////////////////////////////
-   /* @Insert
-    Completable insertGratitudesNew(GratitudeEntityNew gratitudeEntity);*/
-    /*@Insert(onConflict = OnConflictStrategy.IGNORE)
-    void insertGrat(GratitudeEntityNew gratitudeEntity);*/
-
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
     public abstract void insertAll(MyAchievementsListInnerModel myAchievementsListInnerModel);
 
     @Transaction
@@ -46,14 +34,6 @@ public abstract class GratitudeListDao {
         }
     }
 
-    // @Query("SELECT * FROM MyAchievementsListInnerModel")
-    // Single<List<MyAchievementsListInnerModel>> getAllAchive(); ////////////
-
-
-    @Query("SELECT * FROM MyAchievementsListInnerModel")
-    public abstract Single<List<MyAchievementsListInnerModel>> getAllAchievements();
-    /////////////////////////////////////////////////////////////////////////////////////////
-
     @Query("SELECT * FROM MyAchievementsListInnerModel LIMIT :position,:count")
     public abstract Single<List<MyAchievementsListInnerModel>> getAllAchive(Integer position,Integer count);
 
@@ -62,15 +42,21 @@ public abstract class GratitudeListDao {
 
     @Query("DELETE FROM MyAchievementsListInnerModel")
     public abstract void deleteAllGratitudeNew();
+
+
+
+
+
+
+
+
+    /***********************unused*************************/
+    @Query("SELECT * FROM MyAchievementsListInnerModel")
+    public abstract Single<List<MyAchievementsListInnerModel>> getAllAchievements();
     @Query("DELETE FROM MyAchievementsListInnerModel")
     public abstract Completable deleteAllGratitudeNew_();
-
-    @Query("SELECT * FROM gratitude WHERE gratitudeId = :gratitudeId LIMIT 1")
-    public abstract Single<GratitudeEntity> getGratitudeById(Integer gratitudeId);
-
-    @Query("SELECT * FROM gratitude")
-    public abstract Single<List<GratitudeEntity>> getAllGratitude();
-
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    public abstract Completable insertGratitude(GratitudeEntity gratitudeEntity);
     @Query("SELECT * FROM gratitude WHERE isSync = 0")
     public abstract Single<List<GratitudeEntity>> getAllGratitudeNotSynced();
 
@@ -79,9 +65,6 @@ public abstract class GratitudeListDao {
 
     @Query("DELETE FROM gratitude")
     public abstract void deleteAllGratitude();
-
-
-
     @Query("DELETE FROM gratitude WHERE gratitudeId = :gratitudeId")
     public abstract void deleteGratitudeById(Integer gratitudeId);
 

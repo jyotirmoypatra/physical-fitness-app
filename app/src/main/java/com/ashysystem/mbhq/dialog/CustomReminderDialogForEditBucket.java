@@ -1,4 +1,4 @@
-package com.ashysystem.mbhq.fragment;
+package com.ashysystem.mbhq.dialog;
 
 import android.app.Dialog;
 import android.graphics.Color;

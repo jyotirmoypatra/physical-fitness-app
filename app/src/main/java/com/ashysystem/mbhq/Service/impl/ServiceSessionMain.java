@@ -48,6 +48,7 @@ public class ServiceSessionMain {
     {
         //OkHttpClient.Builder httpClient = new OkHttpClient.Builder().readTimeout(60, TimeUnit.MINUTES).connectTimeout(60, TimeUnit.MINUTES).writeTimeout(60, TimeUnit.MINUTES);
         OkHttpClient.Builder httpClient = getUnsafeOkHttpClient().newBuilder().readTimeout(60, TimeUnit.MINUTES).connectTimeout(60, TimeUnit.MINUTES).writeTimeout(60, TimeUnit.MINUTES).retryOnConnectionFailure(true);
+/*
         httpClient.addInterceptor(new Interceptor() {
             @Override
             public Response intercept(Chain chain) throws IOException {
@@ -59,6 +60,7 @@ public class ServiceSessionMain {
                 return chain.proceed(request);
             }
         });
+*/
         // for logging requests and responses
         HttpLoggingInterceptor body = new HttpLoggingInterceptor();
         body.setLevel(HttpLoggingInterceptor.Level.BODY);

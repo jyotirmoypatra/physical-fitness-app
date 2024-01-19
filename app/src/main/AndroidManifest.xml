@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.ashysystem.mbhq">
 
     <supports-screens
@@ -15,6 +16,7 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <uses-permission android:name="android.permission.READ_CALENDAR" />
+    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
     <uses-permission android:name="android.permission.WRITE_CALENDAR" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
@@ -27,6 +29,9 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.USE_EXACT_ALARM" />
+
+
     <uses-permission
         android:name="android.permission.MANAGE_EXTERNAL_STORAGE"
         android:maxSdkVersion="28" />
@@ -46,6 +51,7 @@
     <uses-feature android:name="android.hardware.camera.autofocus" /> <!-- Chat -->
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="com.android.alarm.permission.SET_ALARM" />
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" /> <!-- Chat -->
     <!-- Always required on api < 21, needed to keep a wake lock while your job is running -->
@@ -97,12 +103,15 @@
 
         <service android:name=".Service.BackgroundSoundServiceNew"
             android:enabled="true"
+            android:exported="false"
             />
         <service
             android:name=".Service.AudioService"
             android:enabled="true"
+            android:exported="false"
            />
-        <service android:name=".Service.OnClearFromRecentService"/>
+        <service android:name=".Service.OnClearFromRecentService"
+            android:exported="false"/>
         <service
             android:name=".util.NetworkSchedulerService"
             android:exported="true"
@@ -121,8 +130,29 @@
 <!--                android:name="android.support.FILE_PROVIDER_PATHS"-->
 <!--                android:resource="@xml/filepaths" />-->
 <!--        </provider>-->
-        <receiver android:name=".Service.NotificationActionService"/>
+        <receiver android:name=".Service.NotificationActionService"
+            android:exported="false"/>
 
+        <receiver
+            android:name=".util.AlarmReceiver"
+            android:enabled="true"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="ACTION_HABITLIST" />
+                <action android:name="BUCKETLIST" />
+                <action android:name="android.media.action.DISPLAY_NOTIFICATION" />
+                <!-- Add more actions if needed -->
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </receiver>
+
+
+
+        <receiver
+            android:name=".AlarmReceiver"
+            android:enabled="true"
+            android:exported="false" >
+        </receiver>
     </application>
 
 </manifest>

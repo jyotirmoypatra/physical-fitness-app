@@ -1,6 +1,7 @@
 package com.ashysystem.mbhq.activity;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -11,6 +12,8 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -33,14 +36,8 @@ public class ImageCropperActivity extends AppCompatActivity {
     private CropImageView cropImageView;
     private TextView imageCropDone;
     private TextView imageCropBack;
-    private TextView imageCropDoneWithoutCrop;
-    private boolean isCommercial = false;
-    private boolean isSingle = true;
 
-    private TextView title;
-    private int position = 0;
-
-
+    private TextView editPhoto;
     //for language change
 
 
@@ -72,10 +69,7 @@ public class ImageCropperActivity extends AppCompatActivity {
         cropImageView = (CropImageView) findViewById(R.id.cropImageView);
         imageCropDone = (TextView) findViewById(R.id.imageCropDone);
         imageCropBack = (TextView) findViewById(R.id.imageCropBack);
-        //for commercial
-        imageCropDoneWithoutCrop = (TextView) findViewById(R.id.imageCropDoneWithoutCrop);
-        title = (TextView) findViewById(R.id.title);
-
+        editPhoto = (TextView) findViewById(R.id.editPhoto);
         imageCropBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -89,52 +83,153 @@ public class ImageCropperActivity extends AppCompatActivity {
             }
 
         });
-        imageCropDoneWithoutCrop.setOnClickListener(new View.OnClickListener() {
+
+        editPhoto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getCroppedImage(false);
+              openCropRatioDialog();
             }
+
         });
 
-        if (isSingle) parseData();
+       parseData();
 
     }
 
 
 
+    private void openCropRatioDialog() {
+        Dialog customDialog = new Dialog(this);
+        customDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        customDialog.setContentView(R.layout.crop_ratio_dialog);
+        customDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+        // Initialize and set up your custom UI components here
+        Button closeCropRatioDialog = customDialog.findViewById(R.id.closeCropRatioDialog);
+        closeCropRatioDialog.setOnClickListener(v -> customDialog.dismiss());
+
+        TextView original = customDialog.findViewById(R.id.original);
+        TextView square = customDialog.findViewById(R.id.square);
+        TextView _3x2 = customDialog.findViewById(R.id._3x2);
+        TextView _3x5 = customDialog.findViewById(R.id._3x5);
+        TextView _4x3 = customDialog.findViewById(R.id._4x3);
+        TextView _4x6 = customDialog.findViewById(R.id._4x6);
+        TextView _5x7 = customDialog.findViewById(R.id._5x7);
+        TextView _8x10 = customDialog.findViewById(R.id._8x10);
+        TextView _16x9 = customDialog.findViewById(R.id._16x9);
+
+        View.OnClickListener textViewClickListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String selectedRatio = ((TextView) v).getText().toString();
+
+                    handleSelectedRatio(selectedRatio);
+
+                // Dismiss the dialog if needed
+                customDialog.dismiss();
+            }
+        };
+
+        original.setOnClickListener(textViewClickListener);
+        square.setOnClickListener(textViewClickListener);
+        _3x2.setOnClickListener(textViewClickListener);
+        _3x5.setOnClickListener(textViewClickListener);
+        _4x3.setOnClickListener(textViewClickListener);
+        _4x6.setOnClickListener(textViewClickListener);
+        _5x7.setOnClickListener(textViewClickListener);
+        _8x10.setOnClickListener(textViewClickListener);
+        _16x9.setOnClickListener(textViewClickListener);
 
 
+        customDialog.show();
+    }
 
+    private void handleSelectedRatio(String selectedRatio) {
+        int width = 0;
+        int height= 0;
+
+        // Handle the special case for "Original"
+        if (selectedRatio.equalsIgnoreCase("Original")) {
+
+            width = 0;
+            height=0;
+        }else if (selectedRatio.equalsIgnoreCase("Square")) {
+            width = 1;
+            height = 1;
+        }else if (selectedRatio.equalsIgnoreCase("3 X 2")) {
+            width = 3;
+            height = 2;
+        }
+        else if (selectedRatio.equalsIgnoreCase("3 X 5")) {
+            width = 3;
+            height = 5;
+        }else if (selectedRatio.equalsIgnoreCase("4 X 3")) {
+            width = 4;
+            height = 3;
+        }else if (selectedRatio.equalsIgnoreCase("4 X 6")) {
+            width = 4;
+            height = 6;
+        }else if (selectedRatio.equalsIgnoreCase("5 X 7")) {
+            width = 5;
+            height = 7;
+        }else if (selectedRatio.equalsIgnoreCase("8 X 10")) {
+            width = 8;
+            height = 10;
+        }else if (selectedRatio.equalsIgnoreCase("16 X 9")) {
+            width = 16;
+            height = 9;
+        }
+
+        setCropRatio(width, height);
+
+    }
+    private void setCropRatio(int width, int height) {
+        _cropRatio = width * 10 + height;
+        parseData();
+    }
 
     private void parseData() {
         if (imageUri != null)
             cropImageView.setImageUriAsync(imageUri);
 
-        if (isCommercial) imageCropDoneWithoutCrop.setVisibility(View.VISIBLE);
-        else imageCropDoneWithoutCrop.setVisibility(View.GONE);
+
 
         cropImageView.setGuidelines(CropImageView.Guidelines.ON_TOUCH);
         switch (_cropRatio) {
-            case 1:
+            case 11:
                 cropImageView.setAspectRatio(1, 1);
+                cropImageView.setFixedAspectRatio(true);
+                break;
+            case 32:
+                cropImageView.setAspectRatio(3, 2);
                 cropImageView.setFixedAspectRatio(true);
                 break;
             case 43:
                 cropImageView.setAspectRatio(4, 3);
                 cropImageView.setFixedAspectRatio(true);
                 break;
-            case 16:
+            case 46:
+                cropImageView.setAspectRatio(4, 6);
+                cropImageView.setFixedAspectRatio(true);
+                break;
+            case 57:
+                cropImageView.setAspectRatio(5, 7);
+                cropImageView.setFixedAspectRatio(true);
+                break;
+            case 90:
+                cropImageView.setAspectRatio(8, 10);
+                cropImageView.setFixedAspectRatio(true);
+                break;
+            case 169:
                 cropImageView.setAspectRatio(16, 9);
                 cropImageView.setFixedAspectRatio(true);
                 break;
             default:
-                cropImageView.setAspectRatio(16, 9);
-                cropImageView.setFixedAspectRatio(false);
+               cropImageView.setFixedAspectRatio(false);
                 break;
 
         }
 
-        title.setVisibility(View.GONE);
+
         imageCropDone.setText(getString(R.string.done));
     }
 

@@ -1,5 +1,6 @@
-package com.ashysystem.mbhq.fragment.live_chat;
+package com.ashysystem.mbhq.fragment.meditation;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.app.KeyguardManager;
 import android.app.ProgressDialog;
@@ -14,6 +15,9 @@ import android.content.pm.ActivityInfo;
 import android.graphics.PorterDuff;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -44,24 +48,14 @@ import com.ashysystem.mbhq.Service.BackgroundSoundServiceNew;
 import com.ashysystem.mbhq.Service.OnClearFromRecentService;
 import com.ashysystem.mbhq.Service.impl.FinisherServiceImpl;
 import com.ashysystem.mbhq.activity.MainActivity;
-import com.ashysystem.mbhq.fragment.meditation.MeditationDetailsNew;
-import com.ashysystem.mbhq.fragment.meditation.MeditationFragment;
 import com.ashysystem.mbhq.model.MeditationCourseModel;
-import com.ashysystem.mbhq.model.livechat.Chat;
-import com.ashysystem.mbhq.model.response.suggestedmedicin.Suggestedmedicin;
 import com.ashysystem.mbhq.util.SharedPreference;
 import com.ashysystem.mbhq.util.Util;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Objects;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class LiveChatPlayerFragment_video extends Fragment implements View.OnClickListener, View.OnTouchListener {
 
@@ -104,6 +98,7 @@ public class LiveChatPlayerFragment_video extends Fragment implements View.OnCli
     TextView txtElapsedDurationOnVideo,txtTotalDurationOnVideo;
     SeekBar seekBarOnVideo;
     /////////////////////////////////////////////////
+    private Uri downloadedFileUri = null;
 
     private MeditationCourseModel.Webinar liveChatData;
     private RelativeLayout rl_suggestedmedicines;
@@ -246,6 +241,9 @@ public class LiveChatPlayerFragment_video extends Fragment implements View.OnCli
         if (getArguments() != null) {
             liveChatData = (MeditationCourseModel.Webinar) getArguments().getSerializable(ARG_LIVE_CHAT_DATA);
         }
+        downloadedFileUri = Util.getDownloadedFileUri(getContext(), liveChatData.getDownloadid());
+        Log.e("D_URI", "onReceive: " + downloadedFileUri);
+
 
     }
 
@@ -783,6 +781,7 @@ public class LiveChatPlayerFragment_video extends Fragment implements View.OnCli
                             }
 
                             Log.i(TAG, "video height: " + musicSrv.getMediaPlayer().getVideoHeight() + " width: " + musicSrv.getMediaPlayer().getVideoWidth());
+                            downloadFile();
                             mediaPlayerHandler.removeCallbacks(mediaUpdateTimeTask);
                             mediaPlayerHandler.postDelayed(mediaUpdateTimeTask, 1000);
                             musicSrv.startMedia();
@@ -877,20 +876,86 @@ public class LiveChatPlayerFragment_video extends Fragment implements View.OnCli
                 }
             };
 
-            if (musicSrv.getVideoName().equals(liveChatData.getEventName()) && musicSrv.getFromPage().equals(BackgroundSoundServiceNew.FromPage.LIVE_CHAT)) {
 
-                musicSrv.createMediaPlayer_meditationvideo(liveChatData.getEventName(), BackgroundSoundServiceNew.FromPage.LIVE_CHAT, liveChatData.getEventItemVideoDetails().get(0).getDownloadURL(), globalLinkMediaType, 0, liveChatData, stateListener);
+            ConnectivityManager connectivityManager = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
+            @SuppressLint("MissingPermission") NetworkInfo activeNetwork = connectivityManager.getActiveNetworkInfo();
+            boolean isConnected = activeNetwork != null && activeNetwork.isConnectedOrConnecting();
+
+
+
+            musicSrv.stopMedia();
+            if (progressDialog != null) {
+                progressDialog.dismiss();
+            }
+            progressDialog = ProgressDialog.show(requireContext(), "", "Please wait...", true);
+            progressDialog.setCancelable(false);
+
+           /* if(!isConnected){
+                musicSrv.createMediaPlayer1_(liveChatData.getEventName(), BackgroundSoundServiceNew.FromPage.MEDITATION_VIDEO, downloadedFileUri, globalLinkMediaType, 0, liveChatData, stateListener);
+            }else {
+                musicSrv.createMediaPlayer1(liveChatData.getEventName(), BackgroundSoundServiceNew.FromPage.MEDITATION_VIDEO, liveChatData.getEventItemVideoDetails().get(0).getDownloadURL(), globalLinkMediaType, 0, liveChatData, stateListener);
+
+            }*/
+
+
+            if(!isConnected){
+                musicSrv.createMediaPlayer_meditationvideo_(liveChatData.getEventName(), BackgroundSoundServiceNew.FromPage.MEDITATION_VIDEO, downloadedFileUri, globalLinkMediaType, 0, liveChatData, stateListener);
+            }else {
+                musicSrv.createMediaPlayer_meditationvideo(liveChatData.getEventName(), BackgroundSoundServiceNew.FromPage.MEDITATION_VIDEO, liveChatData.getEventItemVideoDetails().get(0).getDownloadURL(), globalLinkMediaType, 0, liveChatData, stateListener);
+
+            }
+
+            if (musicSrv.isMediaPlaying()) {
+
+                imgPlayPause.setBackgroundResource(R.drawable.mbhq_pause_black);
+                imgPlayPauseOnVideo.setBackgroundResource(R.drawable.mbhq_pause_black);
+            } else {
+                imgPlayPause.setBackgroundResource(R.drawable.mbhq_play_black);
+                imgPlayPauseOnVideo.setBackgroundResource(R.drawable.mbhq_play_black);
+            }
+
+            musicBound = true;
+
+           /* if (musicSrv.getVideoName().equals(liveChatData.getEventName()) && musicSrv.getFromPage().equals(BackgroundSoundServiceNew.FromPage.LIVE_CHAT)) {
+
+
+
+                ConnectivityManager connectivityManager = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
+                @SuppressLint("MissingPermission") NetworkInfo activeNetwork = connectivityManager.getActiveNetworkInfo();
+                boolean isConnected = activeNetwork != null && activeNetwork.isConnectedOrConnecting();
+
+
+
+               // musicSrv.stopMedia();
+                if (progressDialog != null) {
+                    progressDialog.dismiss();
+                }
+                progressDialog = ProgressDialog.show(requireContext(), "", "Please wait...", true);
+                progressDialog.setCancelable(false);
+
+                if(!isConnected){
+                    musicSrv.createMediaPlayer_meditationvideo_(liveChatData.getEventName(), BackgroundSoundServiceNew.FromPage.MEDITATION_VIDEO, downloadedFileUri, globalLinkMediaType, 0, liveChatData, stateListener);
+                }else {
+                    musicSrv.createMediaPlayer_meditationvideo(liveChatData.getEventName(), BackgroundSoundServiceNew.FromPage.MEDITATION_VIDEO, liveChatData.getEventItemVideoDetails().get(0).getDownloadURL(), globalLinkMediaType, 0, liveChatData, stateListener);
+
+                }
+
+
+
+
+
+              //  musicSrv.createMediaPlayer_meditationvideo(liveChatData.getEventName(), BackgroundSoundServiceNew.FromPage.LIVE_CHAT, liveChatData.getEventItemVideoDetails().get(0).getDownloadURL(), globalLinkMediaType, 0, liveChatData, stateListener);
+
+
+
+
 
                 if (musicSrv.isMediaPlaying()) {
-                    //  imgPlayPause.setImageDrawable(LiveChatPlayerFragment.this.requireContext().getDrawable(R.drawable.mbhq_pause));
-//                    imgPlayPause.setBackgroundResource(R.drawable.mbhq_pause);
-//                    imgPlayPauseOnVideo.setBackgroundResource(R.drawable.mbhq_pause);
+
                     imgPlayPause.setImageResource(R.drawable.mbhq_pause_black);
                     imgPlayPauseOnVideo.setImageResource(R.drawable.mbhq_pause_black);
                 } else {
-                    //imgPlayPause.setImageDrawable(LiveChatPlayerFragment.this.requireContext().getDrawable(R.drawable.mbhq_play));
-//                    imgPlayPause.setBackgroundResource(R.drawable.mbhq_play);
-//                    imgPlayPauseOnVideo.setBackgroundResource(R.drawable.mbhq_play);
+
                     imgPlayPause.setImageResource(R.drawable.mbhq_play_black);
                     imgPlayPauseOnVideo.setImageResource(R.drawable.mbhq_play_black);
                 }
@@ -925,14 +990,11 @@ public class LiveChatPlayerFragment_video extends Fragment implements View.OnCli
                 progressDialog.setCancelable(false);
 
                 musicSrv.createMediaPlayer_meditationvideo(liveChatData.getEventName(), BackgroundSoundServiceNew.FromPage.LIVE_CHAT, liveChatData.getEventItemVideoDetails().get(0).getDownloadURL(), globalLinkMediaType, 0, liveChatData, stateListener);
-                //   imgPlayPause.setImageDrawable(LiveChatPlayerFragment.this.requireContext().getDrawable(R.drawable.mbhq_play));
-//                imgPlayPause.setBackgroundResource(R.drawable.mbhq_play);
-//                imgPlayPauseOnVideo.setBackgroundResource(R.drawable.mbhq_pause);
                 imgPlayPause.setImageResource(R.drawable.mbhq_play_black);
                 imgPlayPauseOnVideo.setImageResource(R.drawable.mbhq_pause_black);
-            }
+            }*/
 
-            musicBound = true;
+            //musicBound = true;
 
             Log.i(TAG, "connection open");
         }
@@ -1033,7 +1095,6 @@ public class LiveChatPlayerFragment_video extends Fragment implements View.OnCli
         seekBarOnVideo = vi.findViewById(R.id.seekBarOnVideo);
 
         frameVideo.setOnTouchListener(this);
-
         imgBackwardOnVideo.setOnTouchListener(this);
         imgForwardOnVideo.setOnTouchListener(this);
         frameVideo.setEnabled(false);
@@ -1108,7 +1169,6 @@ public class LiveChatPlayerFragment_video extends Fragment implements View.OnCli
                                         editor.apply();
                                     }
 
-
                                 }
 
                                 musicSrv.startMedia();
@@ -1130,6 +1190,46 @@ public class LiveChatPlayerFragment_video extends Fragment implements View.OnCli
             }
         });
 
+    }
+
+
+    public void downloadFile(){
+        Log.e("DWNLOAD_DATA1", "onClick: " + liveChatData.getEventItemVideoDetails().get(0).getDownloadURL());
+        Log.i(TAG, "media player started");
+
+        String[] segments = liveChatData.getEventItemVideoDetails().get(0).getDownloadURL().split("/");
+        String lastSegment = segments[segments.length - 1];
+
+        long dwnldId =  Util.downloadFile(requireActivity().getBaseContext(),liveChatData.getEventItemVideoDetails().get(0).getDownloadURL(),lastSegment,""); /////////
+        List<MeditationCourseModel.Webinar> lstTotalDataM = new ArrayList<>();
+
+        List<MeditationCourseModel.Webinar> lstTotalDataM_ = new ArrayList<>();
+
+        SharedPreferences preferences = getActivity().getSharedPreferences("MyAppPrefs", Context.MODE_PRIVATE);
+        String jsonData = preferences.getString("my_downloaded_medicine", "");
+
+        if (jsonData.isEmpty()) {
+            liveChatData.setDownloadid(dwnldId);
+            lstTotalDataM.add(liveChatData);
+            SharedPreferences.Editor editor = preferences.edit();
+            editor.putString("my_downloaded_medicine", new Gson().toJson(lstTotalDataM));
+            editor.apply();
+
+        }else{
+            lstTotalDataM_ = new Gson().fromJson(jsonData, new TypeToken<List<MeditationCourseModel.Webinar>>() {}.getType());
+
+            if(0==liveChatData.getDownloadid()){
+                liveChatData.setDownloadid(dwnldId);
+                lstTotalDataM.add(liveChatData);
+                List<MeditationCourseModel.Webinar> concatinatelist = new ArrayList<>();
+                concatinatelist.addAll(lstTotalDataM_);
+                concatinatelist.addAll(lstTotalDataM);
+                SharedPreferences.Editor editor = preferences.edit();
+                editor.putString("my_downloaded_medicine", new Gson().toJson(concatinatelist));
+                editor.apply();
+            }
+
+        }
     }
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////
     BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {

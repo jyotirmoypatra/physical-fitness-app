@@ -1006,6 +1006,100 @@ public class BackgroundSoundServiceNew extends Service{
 
     }
 
+    public void createMediaPlayer_meditationvideo_(String videoName, FromPage pageName, Uri videoUrl, MediaType mediaType, int videoCurrentPosition, MeditationCourseModel.Webinar liveChatData, OnMediaStateListener listener) {
+
+        Log.i(TAG, "prev video =" + this.videoName);
+        Log.i(TAG, "curr video =" + videoName);
+        Log.i(TAG, "curr video url=" + videoUrl);
+
+
+        this.mediaStateListener = listener;
+
+        if (this.videoName.equals(videoName)) {
+
+            attachMediaStateListener();
+
+        } else {
+
+            this.videoName = videoName;
+            this.mediaType = mediaType;
+            this.fromPage = pageName;
+            this.m_liveChatData = liveChatData;
+            this.playingNonCued = false;
+            this.isThisMeditationTimeRecorded = false;
+
+            try {
+                Uri VIDEOURI = videoUrl;
+                //Uri VIDEOURI = Uri.parse(videoUrl);
+                if (mediaPlayer == null) {
+                    mediaPlayer = new MediaPlayer();
+                } else {
+                    mediaPlayer.reset();
+                }
+                /*if (mediaPlayer != null && mediaPlayer.isPlaying()) {
+                    mediaPlayer = null;
+                }*/
+                mediaPlayer = new MediaPlayer();
+                mediaPlayer.setDataSource(getApplicationContext(), VIDEOURI);
+                mediaPlayer.setLooping(false);
+                attachMediaStateListener();
+                mediaPlayer.prepareAsync();
+                setNextMeditation("", NextPlayableMediaType.NONE);
+                resetOtherMeditation();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+    }
+
+    public void createMediaPlayer_meditationvideo(String videoName, FromPage pageName, String videoUrl, MediaType mediaType, int videoCurrentPosition, MeditationCourseModel.Webinar liveChatData, OnMediaStateListener listener) {
+
+        Log.i(TAG, "prev video =" + this.videoName);
+        Log.i(TAG, "curr video =" + videoName);
+        Log.i(TAG, "curr video url=" + videoUrl);
+
+
+        this.mediaStateListener = listener;
+
+        if (this.videoName.equals(videoName)) {
+
+            attachMediaStateListener();
+
+        } else {
+
+            this.videoName = videoName;
+            this.mediaType = mediaType;
+            this.fromPage = pageName;
+            this.m_liveChatData = liveChatData;
+            this.playingNonCued = false;
+            this.isThisMeditationTimeRecorded = false;
+
+            try {
+
+                Uri VIDEOURI = Uri.parse(videoUrl);
+                if (mediaPlayer == null) {
+                    mediaPlayer = new MediaPlayer();
+                } else {
+                    mediaPlayer.reset();
+                }
+                /*if (mediaPlayer != null && mediaPlayer.isPlaying()) {
+                    mediaPlayer = null;
+                }*/
+                mediaPlayer = new MediaPlayer();
+                mediaPlayer.setDataSource(getApplicationContext(), VIDEOURI);
+                mediaPlayer.setLooping(false);
+                attachMediaStateListener();
+                mediaPlayer.prepareAsync();
+                setNextMeditation("", NextPlayableMediaType.NONE);
+                resetOtherMeditation();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+    }
+
     public void createMediaPlayer1_(String videoName, FromPage pageName, Uri videoUrl, MediaType mediaType, int videoCurrentPosition, MeditationCourseModel.Webinar liveChatData, OnMediaStateListener listener) {
         Log.i("called_block_media","2");
 
@@ -1074,51 +1168,6 @@ public class BackgroundSoundServiceNew extends Service{
                     mediaPlayer.reset();
                 }
 
-                mediaPlayer = new MediaPlayer();
-                mediaPlayer.setDataSource(getApplicationContext(), VIDEOURI);
-                mediaPlayer.setLooping(false);
-                attachMediaStateListener();
-                mediaPlayer.prepareAsync();
-                setNextMeditation("", NextPlayableMediaType.NONE);
-                resetOtherMeditation();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-
-    }
-    public void createMediaPlayer_meditationvideo(String videoName, FromPage pageName, String videoUrl, MediaType mediaType, int videoCurrentPosition, MeditationCourseModel.Webinar liveChatData, OnMediaStateListener listener) {
-
-        Log.i(TAG, "prev video =" + this.videoName);
-        Log.i(TAG, "curr video =" + videoName);
-        Log.i(TAG, "curr video url=" + videoUrl);
-
-
-        this.mediaStateListener = listener;
-
-        if (this.videoName.equals(videoName)) {
-
-            attachMediaStateListener();
-
-        } else {
-
-            this.videoName = videoName;
-            this.mediaType = mediaType;
-            this.fromPage = pageName;
-            this.m_liveChatData = liveChatData;
-            this.playingNonCued = false;
-            this.isThisMeditationTimeRecorded = false;
-
-            try {
-                Uri VIDEOURI = Uri.parse(videoUrl);
-                if (mediaPlayer == null) {
-                    mediaPlayer = new MediaPlayer();
-                } else {
-                    mediaPlayer.reset();
-                }
-                /*if (mediaPlayer != null && mediaPlayer.isPlaying()) {
-                    mediaPlayer = null;
-                }*/
                 mediaPlayer = new MediaPlayer();
                 mediaPlayer.setDataSource(getApplicationContext(), VIDEOURI);
                 mediaPlayer.setLooping(false);
@@ -1308,7 +1357,7 @@ public class BackgroundSoundServiceNew extends Service{
     private Notification createNotificationForMeditation(int resId) {
 
         String notificationChannelId = "Meditation play service";
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+       // if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationManager nm = ((NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE));
             NotificationChannel channel = new NotificationChannel(
                     notificationChannelId,
@@ -1324,7 +1373,7 @@ public class BackgroundSoundServiceNew extends Service{
             channel.setSound(null, null);
 
             nm.createNotificationChannel(channel);
-        }
+       // }
 
 
         Intent meditationPlayIntent = new Intent(this, MainActivity.class);
@@ -1411,7 +1460,7 @@ public class BackgroundSoundServiceNew extends Service{
     public  Notification createNotificationForProgram(int resId) {
 
         String notificationChannelId = "Program play service";
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+      //  if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationManager nm = ((NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE));
             NotificationChannel channel = new NotificationChannel(
                     notificationChannelId,
@@ -1427,7 +1476,7 @@ public class BackgroundSoundServiceNew extends Service{
             channel.setSound(null, null);
 
             nm.createNotificationChannel(channel);
-        }
+       // }
 
 
         Intent meditationPlayIntent = new Intent(this, MainActivity.class);
@@ -1510,7 +1559,7 @@ public class BackgroundSoundServiceNew extends Service{
     private  Notification createNotificationForLiveChat(int resId) {
 
         String notificationChannelId = "Program play service";
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+       // if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationManager nm = ((NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE));
             NotificationChannel channel = new NotificationChannel(
                     notificationChannelId,
@@ -1526,7 +1575,7 @@ public class BackgroundSoundServiceNew extends Service{
             channel.setSound(null, null);
 
             nm.createNotificationChannel(channel);
-        }
+       // }
 
 
         Intent meditationPlayIntent = new Intent(this, MainActivity.class);

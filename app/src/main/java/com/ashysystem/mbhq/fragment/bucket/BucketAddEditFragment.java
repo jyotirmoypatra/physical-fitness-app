@@ -4,9 +4,9 @@ import static android.app.Activity.RESULT_OK;
 
 import com.ashysystem.mbhq.activity.CameraNewActivity;
 import com.ashysystem.mbhq.activity.ImageCropperActivity;
-import com.ashysystem.mbhq.fragment.CustomReminderDialog;
-import com.ashysystem.mbhq.fragment.CustomReminderDialogForEdit;
-import com.ashysystem.mbhq.fragment.CustomReminderDialogForEditBucket;
+import com.ashysystem.mbhq.dialog.CustomReminderDialog;
+import com.ashysystem.mbhq.dialog.CustomReminderDialogForEdit;
+import com.ashysystem.mbhq.dialog.CustomReminderDialogForEditBucket;
 import android.Manifest;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -72,12 +72,12 @@ import com.ashysystem.mbhq.util.AlertDialogCustom;
 import com.ashysystem.mbhq.util.AlertDialogWithCustomButton;
 import com.ashysystem.mbhq.util.Connection;
 import com.ashysystem.mbhq.util.DatePickerControllerFromTextView;
+import com.ashysystem.mbhq.util.SetLocalNotificationForBucket;
 import com.ashysystem.mbhq.util.SharedPreference;
 import com.ashysystem.mbhq.util.Util;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.target.CustomTarget;
-import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.transition.Transition;
 import com.edmodo.cropper.CropImageView;
 import com.google.gson.Gson;
@@ -101,7 +101,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.regex.Pattern;
 
-import id.zelory.compressor.Compressor;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -471,7 +470,7 @@ public class BucketAddEditFragment extends Fragment {
                 Gson gson = new Gson();
                 globalGetGratitudeListModelInner = gson.fromJson(getArguments().getString("GRATITUDEDATA"), BucketListModelInner.class);
               /*commented by sahenita*/
-               // SetLocalNotificationForBucket.SetLocalNotificationForBucket(globalGetGratitudeListModelInner, getActivity());
+                SetLocalNotificationForBucket.SetLocalNotificationForBucket(globalGetGratitudeListModelInner, getActivity());
             }
             if (getArguments().containsKey("GRATITUDESTATUS")) {
                 gratitudeStatus = getArguments().getString("GRATITUDESTATUS");
@@ -1550,7 +1549,7 @@ public class BucketAddEditFragment extends Fragment {
                                    // Leanplum.track("Achieve_Android_Saved a bucket list");
                                     Toast.makeText(getActivity(), "Data successfully saved", Toast.LENGTH_SHORT).show();
                                    /*commented by sahenita*/
-                                    // SetLocalNotificationForBucket.SetLocalNotificationForBucket(globalGetGratitudeListModelInner, getActivity());
+                                     SetLocalNotificationForBucket.SetLocalNotificationForBucket(globalGetGratitudeListModelInner, getActivity());
                                     ((MainActivity) getActivity()).refershGamePoint(getActivity());
                                     ((MainActivity) getActivity()).clearCacheForParticularFragment(new BucketListFragment());
                                     ((MainActivity) getActivity()).loadFragment(new BucketListFragment(), "BucketList", null);
@@ -1977,6 +1976,9 @@ public class BucketAddEditFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
+        toolbar.setNavigationIcon(R.drawable.logo1);
+
         getView().setFocusableInTouchMode(true);
         getView().requestFocus();
         getView().setOnKeyListener(new View.OnKeyListener() {

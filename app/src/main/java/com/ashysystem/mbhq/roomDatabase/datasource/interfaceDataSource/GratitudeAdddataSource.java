@@ -15,36 +15,17 @@ import io.reactivex.Single;
 
 public interface GratitudeAdddataSource {
 
-    Completable insertGratitude(GratitudeEntity gratitudeEntity);
 
-   // Completable insertGratitudeNew(GratitudeEntityNew gratitudeEntity); //////
-
-    Completable insertGratitudes(List<GratitudeEntity> gratitudeEntities);
-
-    Single<GratitudeEntity> getGratitudeById(Integer gratitudeId);
-
-    Single<List<GratitudeEntity>> getAllGratitude();
-
-    Single<List<GratitudeEntity>> getAllGratitudeNotSynced();
-
-    Single<List<GratitudeEntity>> getAllGratitudeByDate(String gratitudeDate);
 
     Single<List<MyAchievementsListInnerModel>> getAllAchive(Integer position,Integer count);//////////
-    void deleteAllGratitudeNew();
-    Completable deleteAllGratitudeNew_();
-
-    Single<List<MyAchievementsListInnerModel>> getAllAchievements();
 
 
 
-    void deleteAllGratitude();
 
+    /***********************unused*************************/
 
-
-    void deleteGratitudeById(Integer gratitudeId);
-
-    void deleteGratitudeByTimeStamp(String timeStamp);
-
-    Single<Integer> getCount(Integer habitId);
+    Completable insertGratitude(GratitudeEntity gratitudeEntity);
+    Single<List<GratitudeEntity>> getAllGratitudeByDate(String gratitudeDate);
+    Single<List<GratitudeEntity>> getAllGratitudeNotSynced();
 
 }

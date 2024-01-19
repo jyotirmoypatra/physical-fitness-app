@@ -1,9 +1,14 @@
 package com.ashysystem.mbhq.dialog;
 
+import android.app.Activity;
 import android.app.Dialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
@@ -19,6 +24,8 @@ import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AlertDialog;
+import androidx.core.app.NotificationManagerCompat;
 import androidx.fragment.app.DialogFragment;
 
 import com.ashysystem.mbhq.R;
@@ -1553,6 +1560,14 @@ public class CustomReminderDialogForEditAchievement extends DialogFragment {
 
                 mListener.setOnSubmitListener(dataJsonReq);
                 dismiss();
+
+
+                if (NotificationManagerCompat.from(getActivity()).areNotificationsEnabled()) {
+
+                } else {
+                    // Notifications are not enabled, request the user to enable them
+                    showNotificationPermissionDialog(getActivity());
+                }
             }
         });
         chkEmailNotification.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -1610,6 +1625,37 @@ public class CustomReminderDialogForEditAchievement extends DialogFragment {
             return String.valueOf(c);
         else
             return "0" + String.valueOf(c);
+    }
+    private void showNotificationPermissionDialog(final Activity context) {
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setTitle("Enable Notifications");
+        builder.setMessage("Please enable notifications for this app in the system settings.");
+
+        // Positive button opens app settings
+        builder.setPositiveButton("Open Settings", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                openAppSettings(context);
+            }
+        });
+
+        // Negative button can be used for other actions or dismissing the dialog
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // Handle cancellation or provide additional actions
+            }
+        });
+
+        builder.show();
+    }
+    private void openAppSettings(Activity context) {
+        Intent intent = new Intent();
+        intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+        Uri uri = Uri.fromParts("package", context.getPackageName(), null);
+        intent.setData(uri);
+        context.startActivity(intent);
     }
 
 }

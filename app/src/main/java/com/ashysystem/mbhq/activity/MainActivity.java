@@ -42,6 +42,8 @@ import android.app.job.JobScheduler;
 import android.content.ActivityNotFoundException;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
+import android.content.ContentResolver;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -205,6 +207,8 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.lang.reflect.Type;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -227,7 +231,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import com.ashysystem.mbhq.Service.AudioService;
 
-public class MainActivity extends AppCompatActivity implements OnLoadFragmentRequestListener, UploadCallback {
+public class MainActivity extends AppCompatActivity implements OnLoadFragmentRequestListener/*, UploadCallback*/ {
     public static final SparseArray<String> STRING_SPARSE_ARRAY = new SparseArray<>(Util.HELP_ARRAY.length);
     public static int currentVolume = -1;
     public static String APPSFLYER_ID = "";
@@ -240,7 +244,7 @@ public class MainActivity extends AppCompatActivity implements OnLoadFragmentReq
     public static int CAMERA_PIC_REQUEST_CODE_FROM_GRATITUDE_LIST = 784;
     public static int CAMERA_PIC_REQUEST_CODE_ACTIVITY_RESULT = 781;
     public static int CAMERA_PIC_REQUEST_CODE_ACTIVITY_RESULT_FROM_GRATITUDE_LIST = 785;
-    private static MainActivity mainActivity = null;
+    private  MainActivity mainActivity = null;
 
     boolean f1=false;
     boolean f2=false;
@@ -265,7 +269,7 @@ public class MainActivity extends AppCompatActivity implements OnLoadFragmentReq
     private final CompositeDisposable mDisposable = new CompositeDisposable();
     public RelativeLayout rlGratitude, rlMeditation, rlToday, rlHabits, rlCourses, rlCoursesBackToMain, rlPersonalSetting, rlCustomProgramSetting, rlMusicSetting, rlCustomNutritionSetting;
     public LinearLayout llBottomMenu;
-    public RelativeLayout rlDownloadedMeditations;
+    public  RelativeLayout rlDownloadedMeditations;
 
     public ImageButton imgForum;
     public Toolbar toolbar;
@@ -283,7 +287,7 @@ public class MainActivity extends AppCompatActivity implements OnLoadFragmentReq
     int SlowDownThreshold = 300;
     boolean currentlyTouching = false;
     boolean currentlyScrolling = false;
-    public static ImageView imgGratitude, imgMeditation, imgToday, imgHabits, imgCourses;
+    public  ImageView imgGratitude, imgMeditation, imgToday, imgHabits, imgCourses;
     ImageView imgLogo;
     ImageView imgLeftBack;
     ImageView imgRightBack;
@@ -303,9 +307,6 @@ public class MainActivity extends AppCompatActivity implements OnLoadFragmentReq
     SharedPreference sharedPreference;
     Fragment currentFragment;
     String strGlobalPromotionArray = "";
-    SimpleDateFormat globalFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-    SimpleDateFormat globalFormatWithT = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-    SimpleDateFormat globalFormatWithOutT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     RelativeLayout rlCommunityCircle, rlNotificationCircle;
     TextView txtCommunityCounter, txtNotificationCounter;
     IntentFilter intentFilterAnother;
@@ -346,7 +347,8 @@ public class MainActivity extends AppCompatActivity implements OnLoadFragmentReq
     LinearLayout dialogLayout;
 
     ///////////////////////////  CHAT ////////////////////////////////
-    Handler mCountHandler = new Handler();
+  //  Handler mCountHandler = new Handler();
+/*
     Runnable mCountRunnable = new Runnable() {
         @Override
         public void run() {
@@ -354,13 +356,16 @@ public class MainActivity extends AppCompatActivity implements OnLoadFragmentReq
             mCountHandler.postDelayed(this, 500);
         }
     };
-    Handler mChatLoginDetect = new Handler();
+*/
+   // Handler mChatLoginDetect = new Handler();
+/*
     Runnable mChatLogin = new Runnable() {
         @Override
         public void run() {
 
         }
     };
+*/
     BroadcastReceiver meditationDownloadReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -433,6 +438,7 @@ public class MainActivity extends AppCompatActivity implements OnLoadFragmentReq
     private TextView txtGamificationCountPopUp,txt_prompt;
     /*commented by sahenita*/
 //    BillingClient billingClient;
+/*
     TouchTypeDetector.TouchTypListener touchTypListener = new TouchTypeDetector.TouchTypListener() {
         @Override
         public void onTwoFingerSingleTap() {
@@ -449,6 +455,8 @@ public class MainActivity extends AppCompatActivity implements OnLoadFragmentReq
             // Double tap
         }
 
+*/
+/*
         @Override
         public void onScroll(int scrollDirection) {
             switch (scrollDirection) {
@@ -473,6 +481,8 @@ public class MainActivity extends AppCompatActivity implements OnLoadFragmentReq
                     break;
             }
         }
+*//*
+
 
         @Override
         public void onSingleTap() {
@@ -486,14 +496,16 @@ public class MainActivity extends AppCompatActivity implements OnLoadFragmentReq
         @Override
         public void onSwipe(int swipeDirection) {
             switch (swipeDirection) {
-                case TouchTypeDetector.SWIPE_DIR_UP:
+               */
+/* case TouchTypeDetector.SWIPE_DIR_UP:
                     // Swipe Up
                     Log.e("UP", "up");
                     break;
                 case TouchTypeDetector.SWIPE_DIR_DOWN:
                     // Swipe Down
                     Log.e("DOWN", "down");
-                    break;
+                    break;*//*
+
                 case TouchTypeDetector.SWIPE_DIR_LEFT:
                     // Swipe Left
                     Log.e("print state--,", currentX + "???");
@@ -596,6 +608,7 @@ public class MainActivity extends AppCompatActivity implements OnLoadFragmentReq
 
 
     };
+*/
     BroadcastReceiver broadCastNewMessage = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -617,9 +630,11 @@ public class MainActivity extends AppCompatActivity implements OnLoadFragmentReq
                     }
 
                     ////////UPLOAD LOCAL GRATITUDE AND GROWTH//////////
+/*
                     if (!Util.isLocalUploadGrowthGratitideCalled && Util.checkConnection(MainActivity.this)) {
                        // functionToUploadLocallySavedGratitudeAndGrowth();
                     }
+*/
 
                 } else {
                     Log.e("INSIDE_BROADCAST", "FALSE");
@@ -670,6 +685,7 @@ public class MainActivity extends AppCompatActivity implements OnLoadFragmentReq
     private ImageView imgContainer;
     private Bitmap bitimage;
     ActionBarDrawerToggle toggle;
+/*
     private BroadcastReceiver refreshFCMTokenReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -684,6 +700,7 @@ public class MainActivity extends AppCompatActivity implements OnLoadFragmentReq
             }
         }
     };
+*/
     /*commentout by sahenita*/
 /*
     private retrofit.Callback accessTokenRequestListener = new retrofit.Callback<OauthAccessTokenResponse>() {
@@ -714,12 +731,14 @@ public class MainActivity extends AppCompatActivity implements OnLoadFragmentReq
     private OnApiResponseListener onApiResponseListener;
     private String day="";
     private String day1="";
+/*
     public static MainActivity getInstance() {
         if (mainActivity == null)
             mainActivity = new MainActivity();
 
         return mainActivity;
     }
+*/
 
     public static String encodeImage(byte[] imageByteArray) {
         return Base64.encodeToString(imageByteArray, Base64.DEFAULT);
@@ -975,8 +994,8 @@ public class MainActivity extends AppCompatActivity implements OnLoadFragmentReq
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-        registerReceiver(broadcastReceiver, new IntentFilter("MediaNotification"));
-        startService(new Intent(getBaseContext(), OnClearFromRecentService.class));
+       // registerReceiver(broadcastReceiver, new IntentFilter("MediaNotification"));
+        //startService(new Intent(getBaseContext(), OnClearFromRecentService.class));
 
         ////////////////////////////////////////////////////////////////////
 
@@ -1030,9 +1049,9 @@ public class MainActivity extends AppCompatActivity implements OnLoadFragmentReq
         funBottomMenu();
         /*commentout by sahenita*/
       //  funNotification();
-        funChat();
-        funRatingBar();
-        funPomotion();
+       // funChat();
+       // funRatingBar();
+      //  funPomotion();
         GetUnreadCount();
 
         funSensey();
@@ -1282,7 +1301,7 @@ public class MainActivity extends AppCompatActivity implements OnLoadFragmentReq
 
     private void funSensey() {
         Sensey.getInstance().init(this);
-        Sensey.getInstance().startTouchTypeDetection(this, touchTypListener);
+       // Sensey.getInstance().startTouchTypeDetection(this, touchTypListener);
     }
 
 
@@ -1491,7 +1510,6 @@ public class MainActivity extends AppCompatActivity implements OnLoadFragmentReq
                 sharedPreference.clear("CourseAccess");
                 sharedPreference.write("HABIT_VIEW_HIGH", "", "");
                 new MyAsyncTask1().execute();
-                chatLogout();
                 Util.clearSharedPref(MainActivity.this);
                 MainActivity.this.mDisposable.add(
                         Completable.fromAction(() -> {
@@ -1648,7 +1666,6 @@ public class MainActivity extends AppCompatActivity implements OnLoadFragmentReq
         horTab.setVisibility(View.VISIBLE);
         LinearLayout llHorTab = findViewById(R.id.llHorTab);
         llHorTab.removeAllViews();
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             horTab.setOnScrollChangeListener(new View.OnScrollChangeListener() {
                 @Override
                 public void onScrollChange(View v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
@@ -1679,12 +1696,12 @@ public class MainActivity extends AppCompatActivity implements OnLoadFragmentReq
                     }
                 }
             });
-        }
+
         ArrayList<TextView> arrTextView = new ArrayList<>();
         ArrayList<RelativeLayout> arrRelative = new ArrayList<>();
         for (int i = 0; i < arrTab.length; i++) {
             LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            View view = inflater.inflate(R.layout.layout_dynamic_tab, null);
+            View view = inflater.inflate(R.layout.layout_dynamic_tab,llHorTab, false);
             TextView textView = view.findViewById(R.id.txtTab);
             RelativeLayout rlMain = (RelativeLayout) view.findViewById(R.id.rlMain);
             textView.setId(i);
@@ -2177,50 +2194,6 @@ public class MainActivity extends AppCompatActivity implements OnLoadFragmentReq
         funTabBarforHabits();
         funTrainClick(lastPosition);
     }
-    //IT IS USED FOR GRATITUDE NOW
-    public void funGratitude() {
-        String eq_access=sharedPreference.read("EqJournalAccess","");
-        String accesstype=sharedPreference.read("accesstype","");
-
-        sharedPreference = new SharedPreference(MainActivity.this);
-        sharedPreference.write("ftimenourish", "", "true");
-
-        if("3".equalsIgnoreCase(accesstype)){
-            if("false".equalsIgnoreCase(eq_access)){
-                imgGratitude.setImageResource(0);
-                imgGratitude.setImageResource(R.drawable.mbhq_gratitude_inactive);
-                imgGratitude.setAlpha(0.5f);
-
-            }else{
-                imgGratitude.setImageResource(0);
-                imgGratitude.setImageResource(R.drawable.mbhq_gratitude_active);
-            }
-        }else{
-            imgGratitude.setImageResource(0);
-            imgGratitude.setImageResource(R.drawable.mbhq_gratitude_active);
-        }
-
-        imgMeditation.setImageResource(0);
-        imgMeditation.setImageResource(R.drawable.mbhq_meditation_inactive);
-        imgToday.setImageResource(0);
-        imgToday.setImageResource(R.drawable.mbhq_today_inactive);
-        imgHabits.setImageResource(0);
-        imgHabits.setImageResource(R.drawable.mbhq_habits_inactive);
-        imgCourses.setImageResource(0);
-        imgCourses.setImageResource(R.drawable.mbhq_learn_inactive);
-        funTabBarforGratitude();
-        Bundle bundle = new Bundle();
-        String lastKey = sharedPreference.read("appreciate_nav", "");
-        int lastPosition = 0;
-        try {
-            lastPosition = Integer.parseInt(sharedPreference.read("appreciate_nav_pos", ""));
-        } catch (Exception e) {
-            e.printStackTrace();
-            lastPosition = 0;
-        }
-        funTrainNourishClick(lastPosition);
-
-    }
 
     public void funMeditation() {
         sharedPreference = new SharedPreference(MainActivity.this);
@@ -2261,6 +2234,7 @@ public class MainActivity extends AppCompatActivity implements OnLoadFragmentReq
         }
     }
 
+/*
     private void funChat() {
         messageNotification.setVisibility(View.GONE);
         try {
@@ -2275,7 +2249,7 @@ public class MainActivity extends AppCompatActivity implements OnLoadFragmentReq
         } catch (NoSuchAlgorithmException e) {
 
         }
-        mChatLoginDetect.post(mChatLogin);
+      //  mChatLoginDetect.post(mChatLogin);
 
         if (sharedPreference.read("IsNonSubscribeUser", "").equals("true")) {
             if (sharedPreference.read("SEVENDAY_TRIAL_START", "").equals("TRUE") && Util.isSevenDayOver(MainActivity.this)) {
@@ -2306,7 +2280,9 @@ public class MainActivity extends AppCompatActivity implements OnLoadFragmentReq
             }
         });
     }
+*/
 
+/*
     private void funRatingBar() {
         if (!sharedPreference.readBoolean("ShowedRating", "Rating") && Util.getInstallTime() != null) {
             try {
@@ -2327,7 +2303,9 @@ public class MainActivity extends AppCompatActivity implements OnLoadFragmentReq
             }
         }
     }
+*/
 
+/*
     private void funPomotion() {
         globalLstPromotionalInfo = new ArrayList<>();
 
@@ -2406,6 +2384,7 @@ public class MainActivity extends AppCompatActivity implements OnLoadFragmentReq
 
 
     }
+*/
 
     private void initView() {
 
@@ -2622,10 +2601,33 @@ public class MainActivity extends AppCompatActivity implements OnLoadFragmentReq
 
     private void funMenu() {
 
-       //handleTotalAccess(); //temporary by jyoti
-       loadFragment(new MbhqTodayMainFragment(),"Today",null);
+        //handleTotalAccess(); //temporary by jyoti
+        if (getIntent().hasExtra("FROM_LOGIN")) {
+            Bundle bundle = getIntent().getExtras();
+            if (bundle.getString("FROM_LOGIN").equals("TRUE")) {
+                loadFragment(new MbhqTodayMainFragment(), "Today", null);
+            } else {
+                if (getIntent().hasExtra("NOTIFICATIONTYPE")) {
+                    if (bundle.getString("NOTIFICATIONTYPE").equals("BUCKETLIST")) {
+                        Log.e("loadfragment", "6");
+                        loadFragment(new BucketListFragment(), "BucketList", bundle);
+                    } else if (bundle.getString("NOTIFICATIONTYPE").equals("GRATITUDELIST")) {
+                        Log.e("loadfragment", "7");
+                        loadFragment(new GratitudeMyListFragment(), "GratitudeMyList", bundle);
+                    } else if (bundle.getString("NOTIFICATIONTYPE").equals("HABITLIST")) {
+                        Log.e("loadfragment", "8");
+                        Bundle bundle1 = new Bundle();
+                        bundle1.putInt("id", bundle.getInt("NOTIFICATIONID"));
+                        bundle1.putBoolean("from_notification", true);
+                        loadFragment(new HabbitDetailsCalendarFragment(), "HabbitDetailsCalendar", bundle1);
+                    }
+                }
+            }
+        }
+
     }
-/*commentout by sahenita*/
+
+    /*commentout by sahenita*/
 /*
     private void funDb() {
         DatabaseHelper db = new DatabaseHelper(this);
@@ -2639,6 +2641,7 @@ public class MainActivity extends AppCompatActivity implements OnLoadFragmentReq
     }
 */
 
+/*
     public boolean controlCheck() {
 
         if (sharedPreference.read("IsNonSubscribeUser", "").equals("true")) {
@@ -2661,6 +2664,7 @@ public class MainActivity extends AppCompatActivity implements OnLoadFragmentReq
             }
         }
     }
+*/
 
     /**
      * Handle trial notifications.
@@ -2720,6 +2724,7 @@ public class MainActivity extends AppCompatActivity implements OnLoadFragmentReq
 //        loadFragment(new ChatNewActivity(), "CHATNEW", bundle);
 //    }//commented by jyotirmoy
 
+/*
     private void handleTotalAccess() {
 
         llBottomMenu.setVisibility(View.VISIBLE);
@@ -2811,7 +2816,9 @@ public class MainActivity extends AppCompatActivity implements OnLoadFragmentReq
 
             }
         } else if (getIntent().hasExtra("FITBITACCESSTOKEN") && !getIntent().getStringExtra("FITBITACCESSTOKEN").equals("")) {
-            /*commentout by sahenita*/
+            */
+/*commentout by sahenita*//*
+
            // addFitbitDevice(getIntent().getStringExtra("FITBITACCESSTOKEN"), 1);
             //////////FITBIT//////////////////
         } else if (getIntent().hasExtra("GARMIN_OAUTHVERIFIER") && !getIntent().getStringExtra("GARMIN_OAUTHVERIFIER").equals("")) {
@@ -2996,18 +3003,25 @@ public class MainActivity extends AppCompatActivity implements OnLoadFragmentReq
         }
 
         if (!new SharedPreference(MainActivity.this).read("gcm", "strgcm").equals("1") && !new SharedPreference(MainActivity.this).read("USEREMAIL", "").equals("")) {
-            /*commentout by sahenita*/
-          /*  FirebaseApp.initializeApp(getApplicationContext());
+            */
+/*commentout by sahenita*//*
+
+          */
+/*  FirebaseApp.initializeApp(getApplicationContext());
             String tkn = FirebaseInstanceId.getInstance().getToken();
             sendRegistrationIdToServer(tkn);
-            new SharedPreference(MainActivity.this).write("FIREBASE_TOKEN", "", tkn);*/
-/*commentout by sahenita*/
+            new SharedPreference(MainActivity.this).write("FIREBASE_TOKEN", "", tkn);*//*
+
+*/
+/*commentout by sahenita*//*
+
            // performCommunityLogIn(null);
 
            // Log.e("print tkn", tkn + "?");
         }
 
     }//temporary
+*/
 //    private void handleDeepLinkType() {
 //        if (getIntent().getStringExtra("DEEPLINKTYPE").equals("today_page")) {
 //            Bundle bundle = new Bundle();
@@ -3907,7 +3921,7 @@ public class MainActivity extends AppCompatActivity implements OnLoadFragmentReq
 
     @Override
     public void onBackPressed() {
-
+        super.onBackPressed();
 
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
@@ -4061,9 +4075,8 @@ public class MainActivity extends AppCompatActivity implements OnLoadFragmentReq
                         try {
                             if (!imgPath.equals("")) {
                                 File selectedImagePath = new File(imgPath);
-                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                                     imgBackgroundPic.setBackground(null);
-                                }
+
                                 imgBackgroundPic.setImageBitmap(BitmapFactory.decodeFile(selectedImagePath.getAbsolutePath()));
                                 imgDecodableString = selectedImagePath.getAbsolutePath();
 
@@ -4077,7 +4090,7 @@ public class MainActivity extends AppCompatActivity implements OnLoadFragmentReq
                                 }
                                 cropPhoto(BitmapFactory.decodeFile(imgDecodableString), imgDecodableString);
                             } else
-                                Toast.makeText(MainActivity.this, "An error occured", Toast.LENGTH_SHORT);
+                                Toast.makeText(MainActivity.this, "An error occured", Toast.LENGTH_SHORT).show();
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
@@ -4193,7 +4206,7 @@ public class MainActivity extends AppCompatActivity implements OnLoadFragmentReq
            // functionToUploadLocallySavedGratitudeAndGrowth();
         }
 
-
+/*commented_latest by sahenita*/
        checkLocal7DayTrial(fragment, title);
         funDrawer1();
         getStreakData();
@@ -4216,8 +4229,15 @@ public class MainActivity extends AppCompatActivity implements OnLoadFragmentReq
                 Log.e("h-", "7");
                 try {
                     try {
-                        ServiceSessionMain.client.dispatcher().cancelAll();
-                        Service.client.dispatcher().cancelAll();
+                        if (ServiceSessionMain.client != null) {
+                            ServiceSessionMain.client.dispatcher().cancelAll();
+                        }
+
+                        if (Service.client != null) {
+                            Service.client.dispatcher().cancelAll();
+                        }
+                       // ServiceSessionMain.client.dispatcher().cancelAll();
+                       // Service.client.dispatcher().cancelAll();
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -4248,8 +4268,13 @@ public class MainActivity extends AppCompatActivity implements OnLoadFragmentReq
                 Log.e("calledhabit","16");
                 try {
                     try {
-                        ServiceSessionMain.client.dispatcher().cancelAll();
-                        Service.client.dispatcher().cancelAll();
+                        if (ServiceSessionMain.client != null) {
+                            ServiceSessionMain.client.dispatcher().cancelAll();
+                        }
+
+                        if (Service.client != null) {
+                            Service.client.dispatcher().cancelAll();
+                        }
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -4741,6 +4766,7 @@ LinearLayout ll_1=(LinearLayout)  dialog.findViewById(R.id.ll_1);
             }
         });
         imgF3.setOnClickListener(new View.OnClickListener() {
+            @SuppressLint("UseCompatLoadingForDrawables")
             @Override
             public void onClick(View view) {
                 if(f3){
@@ -5145,23 +5171,23 @@ LinearLayout ll_1=(LinearLayout)  dialog.findViewById(R.id.ll_1);
         Log.i("fund","fund");
         //AppEventsLogger.activateApp(this);
         funDrawer1();
-        try {
+       /* try {
             if (intentFilter == null) {
                 intentFilter = new IntentFilter();
                 intentFilter.addAction(Util.INTENT_ACTION_TOKEN_REFRESHED);
             }
-            registerReceiver(refreshFCMTokenReceiver, intentFilter);
+            //registerReceiver(refreshFCMTokenReceiver, intentFilter);
         } catch (Exception e) {
             e.printStackTrace();
-        }
-
-        IntentFilter intentFilter2 = new IntentFilter();
+        }*/
+/*commented by sahenita_latest*/
+       /* IntentFilter intentFilter2 = new IntentFilter();
         intentFilter2.addAction("com.ashysystem.mbhq.networkconnectivity");
         registerReceiver(broadCastNewMessage, intentFilter2);
 
         IntentFilter intentFilter3 = new IntentFilter();
         intentFilter3.addAction("com.ashysystem.mbhq.meditationDownloadComplete");
-        registerReceiver(meditationDownloadReceiver, intentFilter3);
+        registerReceiver(meditationDownloadReceiver, intentFilter3);*/
     }
 
     ///////////////////////////// New 8 Week Challange ///////////////////////////
@@ -5170,12 +5196,14 @@ LinearLayout ll_1=(LinearLayout)  dialog.findViewById(R.id.ll_1);
     protected void onPause() {
         super.onPause();
         //AppEventsLogger.deactivateApp(this);
+/*
         try {
             unregisterReceiver(refreshFCMTokenReceiver);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        try {
+*/
+       /* try {
             unregisterReceiver(broadCastNewMessage);
         } catch (Exception e) {
             e.printStackTrace();
@@ -5185,7 +5213,7 @@ LinearLayout ll_1=(LinearLayout)  dialog.findViewById(R.id.ll_1);
             unregisterReceiver(meditationDownloadReceiver);
         } catch (Exception e) {
             e.printStackTrace();
-        }
+        }*/
     }
 
     ////////////Gamification////////////
@@ -5257,13 +5285,6 @@ LinearLayout ll_1=(LinearLayout)  dialog.findViewById(R.id.ll_1);
     /**
      * Open a web page of a specified URL
      */
-    public void openSurvey() {
-        Uri webpage = Uri.parse("https://www.surveymonkey.com/r/VKHHVMV");
-        Intent intent = new Intent(Intent.ACTION_VIEW, webpage);
-        if (intent.resolveActivity(getPackageManager()) != null) {
-            startActivity(intent);
-        }
-    }
 
 //    public void getAvailableCourse() {
 //
@@ -5368,11 +5389,7 @@ LinearLayout ll_1=(LinearLayout)  dialog.findViewById(R.id.ll_1);
 //        }
 //    }//temporary
 
-    private String getTodayDate() {
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZZZZZ");
-        Date today = new Date();
-        return format.format(today);
-    }
+
 
     private void addCourseApi(HashMap<String, Object> queryHm, final String name, final String weekType) {
 
@@ -5644,13 +5661,15 @@ LinearLayout ll_1=(LinearLayout)  dialog.findViewById(R.id.ll_1);
     protected void onDestroy() {
         super.onDestroy();
 
-        unregisterReceiver(broadcastReceiver);
+       // unregisterReceiver(broadcastReceiver);
 
 
 
+/*
         if (mCountHandler != null) {
             mCountHandler.removeCallbacks(mCountRunnable);
         }
+*/
 
     }
 
@@ -6007,7 +6026,6 @@ LinearLayout ll_1=(LinearLayout)  dialog.findViewById(R.id.ll_1);
         llHorTab.removeAllViews();
 
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             horTab.setOnScrollChangeListener(new View.OnScrollChangeListener() {
                 @Override
                 public void onScrollChange(View v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
@@ -6038,7 +6056,7 @@ LinearLayout ll_1=(LinearLayout)  dialog.findViewById(R.id.ll_1);
                     }
                 }
             });
-        }
+
 
         ArrayList<TextView> arrTextView = new ArrayList<>();
         ArrayList<RelativeLayout> arrRelative = new ArrayList<>();
@@ -6178,7 +6196,6 @@ LinearLayout ll_1=(LinearLayout)  dialog.findViewById(R.id.ll_1);
         llHorTab.removeAllViews();
 
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
 
             horTab.setOnScrollChangeListener(new View.OnScrollChangeListener() {
                 @Override
@@ -6214,7 +6231,7 @@ LinearLayout ll_1=(LinearLayout)  dialog.findViewById(R.id.ll_1);
                     }
                 }
             });
-        }
+
 
         ArrayList<TextView> arrTextView = new ArrayList<>();
         ArrayList<RelativeLayout> arrRelative = new ArrayList<>();
@@ -6357,7 +6374,6 @@ LinearLayout ll_1=(LinearLayout)  dialog.findViewById(R.id.ll_1);
         LinearLayout llHorTab = findViewById(R.id.llHorTab);
         llHorTab.removeAllViews();
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             horTab.setOnScrollChangeListener(new View.OnScrollChangeListener() {
                 @Override
                 public void onScrollChange(View v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
@@ -6388,7 +6404,7 @@ LinearLayout ll_1=(LinearLayout)  dialog.findViewById(R.id.ll_1);
                     }
                 }
             });
-        }
+
         ArrayList<TextView> arrTextView = new ArrayList<>();
         ArrayList<RelativeLayout> arrRelative = new ArrayList<>();
 
@@ -6551,7 +6567,6 @@ LinearLayout ll_1=(LinearLayout)  dialog.findViewById(R.id.ll_1);
         horTab.setVisibility(View.VISIBLE);
         LinearLayout llHorTab = findViewById(R.id.llHorTab);
         llHorTab.removeAllViews();
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             horTab.setOnScrollChangeListener(new View.OnScrollChangeListener() {
                 @Override
                 public void onScrollChange(View v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
@@ -6582,13 +6597,13 @@ LinearLayout ll_1=(LinearLayout)  dialog.findViewById(R.id.ll_1);
                     }
                 }
             });
-        }
+
         ArrayList<TextView> arrTextView = new ArrayList<>();
         ArrayList<RelativeLayout> arrRelative = new ArrayList<>();
         for (int i = 0; i < arrTab.length; i++) {
 
             LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            View view = inflater.inflate(R.layout.layout_dynamic_tab, null);
+            View view = inflater.inflate(R.layout.layout_dynamic_tab, llHorTab,false);
             TextView textView = view.findViewById(R.id.txtTab);
             RelativeLayout rlMain = (RelativeLayout) view.findViewById(R.id.rlMain);
             textView.setId(i);
@@ -6745,6 +6760,7 @@ LinearLayout ll_1=(LinearLayout)  dialog.findViewById(R.id.ll_1);
 
     }
 
+/*
     @Override
     public boolean dispatchTouchEvent(MotionEvent event) {
         // Setup onTouchEvent for detecting type of touch gesture
@@ -6755,6 +6771,7 @@ LinearLayout ll_1=(LinearLayout)  dialog.findViewById(R.id.ll_1);
         }
         return super.dispatchTouchEvent(event);
     }
+*/
     /////////////////////
 /*commentout by sahenita*/
 /*    private boolean tabInstanceCheck() {
@@ -6929,7 +6946,6 @@ LinearLayout ll_1=(LinearLayout)  dialog.findViewById(R.id.ll_1);
             FinisherServiceImpl finisherService = new FinisherServiceImpl(this);
             Call<GetStreakDataResponse> serverCall = finisherService.getMeditationStreakData(hashReq);
             serverCall.enqueue(new Callback<GetStreakDataResponse>() {
-                @RequiresApi(api = Build.VERSION_CODES.KITKAT)
                 @Override
                 public void onResponse(Call<GetStreakDataResponse> call, Response<GetStreakDataResponse> response) {
                     //progressDialog.dismiss();
@@ -6962,6 +6978,7 @@ LinearLayout ll_1=(LinearLayout)  dialog.findViewById(R.id.ll_1);
 
 
     /////////////////////////////GRATITUDE REWARD CREW SECTION////////////////////////////////
+    @SuppressLint("SimpleDateFormat")
     private void getStreakData() {
         Log.i("gamificationString","1");
         if (Connection.checkConnection(this)) {
@@ -6978,7 +6995,6 @@ LinearLayout ll_1=(LinearLayout)  dialog.findViewById(R.id.ll_1);
             FinisherServiceImpl finisherService = new FinisherServiceImpl(this);
             Call<GetStreakDataResponse> serverCall = finisherService.getStreakData(hashReq);
             serverCall.enqueue(new Callback<GetStreakDataResponse>() {
-                @RequiresApi(api = Build.VERSION_CODES.KITKAT)
                 @Override
                 public void onResponse(Call<GetStreakDataResponse> call, Response<GetStreakDataResponse> response) {
                     if (response.isSuccessful()) {
@@ -7127,7 +7143,6 @@ LinearLayout ll_1=(LinearLayout)  dialog.findViewById(R.id.ll_1);
                     }
                 });
             } else {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                     if (hasGalleryPermission()) {
                         funcForShareImageUsingTemplateOption(rlSharableSection);
                     } else {
@@ -7137,9 +7152,7 @@ LinearLayout ll_1=(LinearLayout)  dialog.findViewById(R.id.ll_1);
                                     Manifest.permission.CAMERA}, SHARE_ONLY_READ_WRITE_CAMERA_PERMISSION_REQUEST_CODE);
                         }
                     }
-                } else {
-                    funcForShareImageUsingTemplateOption(rlSharableSection);
-                }
+
             }
         });
 
@@ -7494,9 +7507,8 @@ LinearLayout ll_1=(LinearLayout)  dialog.findViewById(R.id.ll_1);
             e.printStackTrace();
         }
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
             imgBackgroundPic.setBackgroundResource(0);
-        }
+
         llAddPic.setVisibility(View.GONE);
         rlPicSection.setBackgroundResource(R.drawable.round_corner_bg);
         imgBackgroundPic.setVisibility(View.VISIBLE);
@@ -7508,14 +7520,19 @@ LinearLayout ll_1=(LinearLayout)  dialog.findViewById(R.id.ll_1);
     }
 
     private boolean hasCameraPermission() {
-        int hasPermissionWrite = ContextCompat.checkSelfPermission(MainActivity.this,
-                Manifest.permission.WRITE_EXTERNAL_STORAGE);
-        int hasPermissionRead = ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.READ_EXTERNAL_STORAGE);
-        int hasPermissionCamera = ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.CAMERA);
-        if (hasPermissionWrite == PackageManager.PERMISSION_GRANTED && hasPermissionRead == PackageManager.PERMISSION_GRANTED && hasPermissionCamera == PackageManager.PERMISSION_GRANTED) {
-            return true;
-        } else
-            return false;
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
+            // For Android versions below API level 30
+            return ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
+                    && ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
+                    && ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED;
+
+        } else {
+            // For Android versions R (API level 30) and above
+            return ContextCompat.checkSelfPermission(this, Manifest.permission.READ_MEDIA_IMAGES) == PackageManager.PERMISSION_GRANTED
+                    && ContextCompat.checkSelfPermission(this, Manifest.permission.READ_MEDIA_VIDEO) == PackageManager.PERMISSION_GRANTED
+                    && ContextCompat.checkSelfPermission(this, Manifest.permission.READ_MEDIA_AUDIO) == PackageManager.PERMISSION_GRANTED
+                    && ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED;
+        }
     }
 
     private boolean hasGalleryPermission() {
@@ -8395,204 +8412,7 @@ LinearLayout ll_1=(LinearLayout)  dialog.findViewById(R.id.ll_1);
 //
 //    }//commented by jyotirmoy
 
-    private void saveAddGratitudeData(HashMap<String, Object> reqhash, String strTimeStamp, String date) {
 
-        if (Util.checkConnection(MainActivity.this)) {
-
-            File mFile = null;
-            ProgressRequestBody fileBody = null;
-            if (mFile != null) {
-                fileBody = new ProgressRequestBody(mFile, new ProgressRequestBody.UploadCallbacks() {
-                    @Override
-                    public void onProgressUpdate(int percentage) {
-
-                    }
-
-                    @Override
-                    public void onError() {
-
-                    }
-
-                    @Override
-                    public void onFinish() {
-
-
-                    }
-                }, 1);
-
-            }
-
-            Call<AddUpdateGratitudeModel> jsonObjectCall = finisherService.addUpdateGratitudeWithPhoto(fileBody, finisherService.createPartFromString(Util.getGsonFromObject(reqhash)));
-            jsonObjectCall.enqueue(new Callback<AddUpdateGratitudeModel>() {
-                @Override
-                public void onResponse(Call<AddUpdateGratitudeModel> call, final Response<AddUpdateGratitudeModel> response) {
-
-                    Runnable runnable = new Runnable() {
-                        @Override
-                        public void run() {
-                            if (response.body() != null) {
-                                if (response.body().getSuccessFlag()) {
-                                    factoryForGratitude = Injection.provideViewModelFactoryGratitude(MainActivity.this);
-                                    //gratitudeViewModel = ViewModelProviders.of(MainActivity.this, factoryForGratitude).get(GratitudeViewModel.class);
-                                    gratitudeViewModel = new ViewModelProvider(MainActivity.this, factoryForMeditation).get(GratitudeViewModel.class);
-
-                                    Completable.fromAction(() -> {
-                                                //  gratitudeViewModel.deleteGratitudeByTimeStamp(strTimeStamp);
-                                            }).subscribeOn(Schedulers.io())
-                                            .observeOn(AndroidSchedulers.mainThread())
-                                            .subscribe(() -> {
-
-                                                factoryForGratitude = Injection.provideViewModelFactoryGratitude(MainActivity.this);
-                                               // gratitudeViewModel = ViewModelProviders.of(MainActivity.this, factoryForGratitude).get(GratitudeViewModel.class);
-                                                gratitudeViewModel = new ViewModelProvider(MainActivity.this, factoryForMeditation).get(GratitudeViewModel.class);
-
-                                                mDisposable.add(gratitudeViewModel.getAllGratitudeNotSynced()
-                                                        .subscribeOn(Schedulers.io())
-                                                        .observeOn(AndroidSchedulers.mainThread())
-
-                                                        .subscribe(gratitudeEntities -> {
-
-                                                            if (gratitudeEntities != null && gratitudeEntities.size() > 0) {
-                                                                String strGratitude = gratitudeEntities.get(0).getGratitudeDetails();
-                                                                String strTimeStamp = gratitudeEntities.get(0).getTimeStamp();
-                                                                String strDate = gratitudeEntities.get(0).getGratitudeDate();
-                                                                Gson gson1 = new Gson();
-                                                                GetGratitudeListModelInner getGratitudeListModelInner1 = gson1.fromJson(strGratitude, GetGratitudeListModelInner.class);
-                                                                HashMap<String, Object> requestHash = new HashMap<>();
-                                                                requestHash.put("model", getGratitudeListModelInner1);
-                                                                requestHash.put("Key", Util.KEY);
-                                                                requestHash.put("UserSessionID", Integer.parseInt(new SharedPreference(MainActivity.this).read("UserSessionID", "")));
-
-                                                                saveAddGratitudeData(requestHash, strTimeStamp, strDate);
-                                                            }
-                                                        }, throwable -> {
-
-                                                        }));
-
-
-                                            }, throwable -> {
-
-                                            });
-
-
-                                }
-                            }
-                        }
-                    };
-                    new Handler().postDelayed(runnable, 500);
-
-                }
-
-                @Override
-                public void onFailure(Call<AddUpdateGratitudeModel> call, Throwable t) {
-                }
-            });
-        } else {
-        }
-
-    }
-
-    private void saveAddAchievementData(HashMap<String, Object> reqhash, String strTimeStamp, String date) {
-
-        if (Util.checkConnection(MainActivity.this)) {
-
-            File mFile = null;
-            ProgressRequestBody fileBody = null;
-            if (mFile != null) {
-                fileBody = new ProgressRequestBody(mFile, new ProgressRequestBody.UploadCallbacks() {
-                    @Override
-                    public void onProgressUpdate(int percentage) {
-
-                    }
-
-                    @Override
-                    public void onError() {
-
-                    }
-
-                    @Override
-                    public void onFinish() {
-                        progressDialog.setProgress(100);
-                    }
-                }, 1);
-
-            }
-
-            Call<AddUpdateMyAchievementModel> jsonObjectCall = finisherService.addUpdateAchievementWithPhoto(fileBody, finisherService.createPartFromString(Util.getGsonFromObject(reqhash)));
-            jsonObjectCall.enqueue(new Callback<AddUpdateMyAchievementModel>() {
-                @Override
-                public void onResponse(Call<AddUpdateMyAchievementModel> call, final Response<AddUpdateMyAchievementModel> response) {
-
-                    Runnable runnable = new Runnable() {
-                        @Override
-                        public void run() {
-
-                            if (response.body() != null) {
-                                if (response.body().getSuccessFlag()) {
-
-                                    factoryForGrowth = Injection.provideViewModelFactoryGrowth(MainActivity.this);
-//                                    growthViewModel = ViewModelProviders.of(MainActivity.this, factoryForGrowth).get(GrowthViewModel.class);
-                                    growthViewModel = new ViewModelProvider(MainActivity.this, factoryForMeditation).get(GrowthViewModel.class);
-
-                                    Completable.fromAction(() -> {
-                                                growthViewModel.deleteGrowthByTimeStamp(strTimeStamp);
-                                            }).subscribeOn(Schedulers.io())
-                                            .observeOn(AndroidSchedulers.mainThread())
-                                            .subscribe(() -> {
-
-
-
-                                                factoryForGrowth = Injection.provideViewModelFactoryGrowth(MainActivity.this);
-//                                                growthViewModel = ViewModelProviders.of(MainActivity.this, factoryForGrowth).get(GrowthViewModel.class);
-                                                growthViewModel = new ViewModelProvider(MainActivity.this, factoryForMeditation).get(GrowthViewModel.class);
-
-                                                mDisposable.add(growthViewModel.getAllGrowthNotSynced()
-                                                        .subscribeOn(Schedulers.io())
-                                                        .observeOn(AndroidSchedulers.mainThread())
-
-                                                        .subscribe(gratitudeEntities -> {
-                                                            if (gratitudeEntities != null && gratitudeEntities.size() > 0) {
-                                                                String strGratitude = gratitudeEntities.get(0).getGrowthDetails();
-                                                                String strTimeStamp = gratitudeEntities.get(0).getTimeStamp();
-                                                                String strDate = gratitudeEntities.get(0).getGrowthDate();
-                                                                Gson gson1 = new Gson();
-                                                                MyAchievementsListInnerModel getGratitudeListModelInner1 = gson1.fromJson(strGratitude, MyAchievementsListInnerModel.class);
-                                                                HashMap<String, Object> requestHash = new HashMap<>();
-                                                                requestHash.put("model", getGratitudeListModelInner1);
-                                                                requestHash.put("Key", Util.KEY);
-                                                                requestHash.put("UserSessionID", Integer.parseInt(new SharedPreference(MainActivity.this).read("UserSessionID", "")));
-
-                                                                saveAddAchievementData(requestHash, strTimeStamp, strDate);
-                                                            }
-
-                                                        }, throwable -> {
-
-                                                        }));
-
-
-                                            }, throwable -> {
-
-                                            });
-
-                                }
-                            }
-
-                        }
-                    };
-                    new Handler().postDelayed(runnable, 500);
-
-                }
-
-                @Override
-                public void onFailure(Call<AddUpdateMyAchievementModel> call, Throwable t) {
-                    progressDialog.dismiss();
-                }
-            });
-        } else {
-
-        }
-
-    }
 
     @SuppressLint("NewApi")
     private void scheduleUploadJob() {
@@ -8619,32 +8439,21 @@ LinearLayout ll_1=(LinearLayout)  dialog.findViewById(R.id.ll_1);
 
         final JobInfo jobInfo;
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             jobInfo = new JobInfo.Builder(id, name)
                     //.setMinimumLatency(interval)
                     .setMinimumLatency(5000)
                     .setRequiredNetworkType(networkType)
                     .setPersisted(isPersistent)
                     .build();
-        } else {
-            jobInfo = new JobInfo.Builder(id, name)
-                    //.setPeriodic(interval)
-                    .setRequiredNetworkType(networkType)
-                    .setPersisted(isPersistent)
-                    .setPeriodic(5000)
-                    .build();
-        }
+
 
         return jobInfo;
     }
 
-    @Override
-    public void startUpload() {
-
-    }
 
     /////////////////////////////////////////////////////
 
+/*
     @Override
     public void addInQueue(UploadEntity uploadEntity) {
         if (uploadDatabaseManager != null) {
@@ -8661,6 +8470,7 @@ LinearLayout ll_1=(LinearLayout)  dialog.findViewById(R.id.ll_1);
             }, uploadEntity);
         }
     }
+*/
 
     private void openHelp() {
         clearCacheForParticularFragment(new NewHelpFragment());
@@ -9077,10 +8887,26 @@ LinearLayout ll_1=(LinearLayout)  dialog.findViewById(R.id.ll_1);
             @Override
             public void onClick(View v) {
 
-                if (PermissionChecker.checkCallingOrSelfPermission(MainActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PermissionChecker.PERMISSION_GRANTED) {
+               /* if (PermissionChecker.checkCallingOrSelfPermission(MainActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PermissionChecker.PERMISSION_GRANTED) {
                     getScreenshotOf(mainModal);
                 } else {
                     MainActivity.this.requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 289);
+                }*/
+
+
+
+                if (hasCameraPermission()) {
+
+
+                    // getScreenshotOf(mainModal);
+                    captureScreenshot(mainModal);
+                } else {
+                    //  requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 289);
+                    if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                        requestPermissions(new String[]{Manifest.permission.READ_MEDIA_IMAGES,Manifest.permission.READ_MEDIA_AUDIO,Manifest.permission.READ_MEDIA_VIDEO,Manifest.permission.CAMERA}, 289);
+                    }else{
+                        requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.CAMERA}, 289);
+                    }
                 }
             }
         });
@@ -9583,5 +9409,83 @@ LinearLayout ll_1=(LinearLayout)  dialog.findViewById(R.id.ll_1);
         alert.show();
 
     }
+    private Uri saveImageToMediaStore(File imageFile) {
+        ContentValues values = new ContentValues();
+        values.put(MediaStore.Images.Media.DISPLAY_NAME, "shared_image.jpg");
+        values.put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg");
+        values.put(MediaStore.Images.Media.RELATIVE_PATH, Environment.DIRECTORY_PICTURES);
 
+        ContentResolver contentResolver = getContentResolver();
+        Uri contentUri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
+
+        Uri resultUri = contentResolver.insert(contentUri, values);
+        try {
+            if (resultUri != null) {
+                try (OutputStream outputStream = contentResolver.openOutputStream(resultUri);
+                     InputStream inputStream = new FileInputStream(imageFile)) {
+                    if (outputStream != null) {
+                        byte[] buffer = new byte[1024];
+                        int bytesRead;
+                        while ((bytesRead = inputStream.read(buffer)) != -1) {
+                            outputStream.write(buffer, 0, bytesRead);
+                        }
+                    }
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return resultUri;
+    }
+    public  Bitmap captureScreenshot( ViewGroup view) {
+        view.setDrawingCacheEnabled(true);
+        Bitmap bitmap = Bitmap.createBitmap(view.getDrawingCache());
+        view.setDrawingCacheEnabled(false);
+        File shareFile= getImageFile(bitmap);
+
+        Uri contentUri = saveImageToMediaStore(shareFile);
+        Intent share = new Intent(Intent.ACTION_SEND);
+        share.setType("image/jpeg");
+        share.putExtra(Intent.EXTRA_STREAM, contentUri);
+
+        share.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        startActivity(Intent.createChooser(share, "Share Image"));
+
+        return bitmap;
+        // Save the bitmap using ContentResolver
+        //saveBitmap(context, bitmap);
+    }
+    private File saveBitmapToFile(ByteArrayOutputStream bytes) {
+        File filesDir =getFilesDir();
+        File imageFile = new File(filesDir, "image.jpg");
+
+        try (FileOutputStream fos = new FileOutputStream(imageFile)) {
+            // Compress the bitmap to a JPEG with compression factor 80 (adjust as needed)
+            Bitmap compressedBitmap = BitmapFactory.decodeByteArray(bytes.toByteArray(), 0, bytes.size());
+            compressedBitmap.compress(Bitmap.CompressFormat.JPEG, 80, fos);
+
+            return imageFile;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+    private File getImageFile(Bitmap inImage) {
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+//        String path = MediaStore.Images.Media.insertImage(getContentResolver(), inImage, "Title", null);
+//        return Uri.parse(path);
+        // Save the bitmap to a file
+        File imageFile = saveBitmapToFile(bytes);
+
+        if (imageFile != null) {
+            // Get the Uri from the file
+            return imageFile;
+        } else {
+            // Handle the case where imageFile is null
+            Log.e("YourTag", "Failed to save bitmap to file.");
+            return null;
+        }
+    }
 }

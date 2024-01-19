@@ -30,11 +30,9 @@ import com.ashysystem.mbhq.activity.MainActivity;
 import com.ashysystem.mbhq.activity.PlaySoundActivity;
 import com.ashysystem.mbhq.fragment.course.CourseDetailsFragment;
 
-import com.ashysystem.mbhq.fragment.live_chat.LiveChatPlayerFragment;
-import com.ashysystem.mbhq.fragment.live_chat.LiveChatPlayerFragment_video;
+import com.ashysystem.mbhq.fragment.meditation.LiveChatPlayerFragment_video;
 import com.ashysystem.mbhq.fragment.meditation.MeditationDetailsNew;
 
-import com.ashysystem.mbhq.fragment.meditation.MeditationDetailsNew_video;
 import com.ashysystem.mbhq.model.AvailableCourseModel;
 import com.ashysystem.mbhq.model.MeditationCourseModel;
 import com.ashysystem.mbhq.model.response.AddCourseResponseModel;

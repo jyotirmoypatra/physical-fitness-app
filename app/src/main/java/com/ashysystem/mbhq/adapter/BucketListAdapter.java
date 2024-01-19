@@ -180,6 +180,7 @@ public class BucketListAdapter extends RecyclerView.Adapter<BucketListAdapter.Vi
             }
         });
 
+/*
         holder.imgManual.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -190,6 +191,7 @@ public class BucketListAdapter extends RecyclerView.Adapter<BucketListAdapter.Vi
                 return false;
             }
         });
+*/
 
         if(showManual)
         {

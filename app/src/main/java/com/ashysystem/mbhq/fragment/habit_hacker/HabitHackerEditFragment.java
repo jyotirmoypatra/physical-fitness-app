@@ -1,7 +1,11 @@
 package com.ashysystem.mbhq.fragment.habit_hacker;
 
+import android.app.AlarmManager;
 import android.app.Dialog;
+import android.app.PendingIntent;
 import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 
@@ -39,9 +43,11 @@ import com.ashysystem.mbhq.roomDatabase.modelFactory.ViewModelFactory;
 import com.ashysystem.mbhq.roomDatabase.modelFactory.ViewModelFactoryForHabitCalendar;
 import com.ashysystem.mbhq.roomDatabase.viewModel.HabitCalendarViewModel;
 import com.ashysystem.mbhq.roomDatabase.viewModel.HabitEditViewModel;
+import com.ashysystem.mbhq.util.AlarmReceiver;
 import com.ashysystem.mbhq.util.Connection;
 import com.ashysystem.mbhq.util.Constants;
 import com.ashysystem.mbhq.util.MyTimePickerDialog;
+import com.ashysystem.mbhq.util.SetLocalNotificationForHabit;
 import com.ashysystem.mbhq.util.SharedPreference;
 import com.ashysystem.mbhq.util.TimePicker;
 import com.ashysystem.mbhq.util.TimePickerControllerWithTextView;
@@ -1794,10 +1800,13 @@ public class HabitHackerEditFragment extends Fragment {
                         if(chkSetReminder.isChecked())
                         {
                             /*commented by sahenita temporary*/
-//                            SetLocalNotificationForHabit.setNotificationForHabit(globalHabitSwap.getHabitSwap(),getActivity());
+                            SetLocalNotificationForHabit.setNotificationForHabit(globalHabitSwap.getHabitSwap(),getActivity());
+
+                          //  SetLocalNotificationForHabit.setAlarm(getActivity());
+
                         }else {
                             /*commented by sahenita temporary*/
-                           /* try {
+                            try {
                                 AlarmManager am = (AlarmManager)getActivity().getSystemService(Context.ALARM_SERVICE);
                                 Intent intent = new Intent(getContext(), AlarmReceiver.class);
                                 intent.setAction(globalHabitSwap.getHabitSwap().getNewAction().getId()+"HABIT");
@@ -1805,7 +1814,7 @@ public class HabitHackerEditFragment extends Fragment {
                                 am.cancel(sender);
                             } catch (Exception e) {
                                 e.printStackTrace();
-                            }*/
+                            }
                         }
 
                         Gson gson = new Gson();

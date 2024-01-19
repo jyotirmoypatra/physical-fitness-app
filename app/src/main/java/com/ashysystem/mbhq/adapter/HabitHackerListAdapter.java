@@ -245,6 +245,7 @@ public class HabitHackerListAdapter extends RecyclerView.Adapter<HabitHackerList
                 ((MainActivity) context).loadFragment(habbitDetailsCalendarFragment, "HabbitCalendara", bundle);
             }
         });
+/*
         holder.imgManual.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -255,6 +256,7 @@ public class HabitHackerListAdapter extends RecyclerView.Adapter<HabitHackerList
                 return false;
             }
         });
+*/
 
         holder.imgHabit1.setOnClickListener(view -> {
             if (habitSwaps.get(position).getNewAction().getCurrentDayTask() != null && habitSwaps.get(position).getNewAction().getCurrentDayTask2() != null) {

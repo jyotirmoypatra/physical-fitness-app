@@ -8,7 +8,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
-import android.media.MediaPlayer;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
@@ -24,7 +23,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import android.os.SystemClock;
 import android.provider.Settings;
 import android.text.Editable;
 import android.text.SpannableString;
@@ -42,22 +40,15 @@ import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.MediaController;
-import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.VideoView;
 
 import com.ashysystem.mbhq.R;
 import com.ashysystem.mbhq.Service.impl.FinisherServiceImpl;
 import com.ashysystem.mbhq.activity.MainActivity;
 import com.ashysystem.mbhq.adapter.MeditationCourseAdapter;
-import com.ashysystem.mbhq.fragment.achievement.MyAchievementsFragment;
 import com.ashysystem.mbhq.fragment.habit_hacker.MbhqTodayMainFragment;
-import com.ashysystem.mbhq.fragment.habit_hacker.MbhqTodayTwoFragment;
-import com.ashysystem.mbhq.fragment.live_chat.LiveChatPlayerFragment;
-import com.ashysystem.mbhq.fragment.live_chat.LiveChatPlayerFragment_video;
 import com.ashysystem.mbhq.model.GetMeditationCacheExpiryTimeResponse;
 import com.ashysystem.mbhq.model.GetUserPaidStatusModel;
 import com.ashysystem.mbhq.model.MeditationCourseModel;
@@ -95,7 +86,6 @@ import java.util.Locale;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.schedulers.Schedulers;
-import kotlin.reflect.KFunction;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -244,11 +234,11 @@ if("3".equalsIgnoreCase(accesstype)){
         testViewModel = new ViewModelProvider(requireActivity()).get(MeditationDataViewModel.class);
 
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+       /* if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (!Settings.System.canWrite(getActivity())) {
                 requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.RECORD_AUDIO}, 289);
             }
-        }
+        }*/
 
         sharedPreference = new SharedPreference(getActivity());
         medi_access=sharedPreference.read("MeditationAccess","");
@@ -440,6 +430,7 @@ if("3".equalsIgnoreCase(accesstype)){
                             e.printStackTrace();
                         }
                         try {
+                            Log.i("medi_tation","500");
                             populateTags();
                         } catch (JSONException e) {
                             throw new RuntimeException(e);
@@ -971,6 +962,7 @@ if("3".equalsIgnoreCase(accesstype)){
                             }
                             testViewModel.arrJson.put(jsonArray);
                             new SharedPreference(getActivity()).write("MEDITATION_TAGS", "", new Gson().toJson(tagArrayList));
+                            Log.i("medi_tation","600");
                             onGetEventTagsListSuccess();
                             // onGetEventTagsListSuccess();
 
@@ -1360,15 +1352,24 @@ if("3".equalsIgnoreCase(accesstype)){
         Log.i(TAG, "MEDITATION_INSERTION_DATE_TIME => " + meditationInsertionTime);
 
         boolean shouldMeditationsRenew = true;//false;
-        try {
-            if (
-                    !dateFormatter.parse(meditationExpirationTime).after(dateFormatter.parse(meditationInsertionTime))
-            ) {
-                shouldMeditationsRenew = false;//true;
+        if("".equalsIgnoreCase(meditationExpirationTime)||"".equalsIgnoreCase(meditationInsertionTime)||null==meditationInsertionTime||null==meditationExpirationTime){
+            Log.i("medi_tation","100");
+             shouldMeditationsRenew = true;
+        }else{
+            try {
+
+                if (
+                        !dateFormatter.parse(meditationExpirationTime).after(dateFormatter.parse(meditationInsertionTime))
+                ) {
+                    Log.i("medi_tation","200");
+                    shouldMeditationsRenew = false;//true;
+                }
+            } catch (Exception ex) {
+                ex.printStackTrace();
             }
-        } catch (Exception ex) {
-            ex.printStackTrace();
         }
+
+
         Log.i("medi_tation","1");
 //        if (Connection.checkConnection(requireContext()) && !shouldMeditationsRenew) {
         if (!shouldMeditationsRenew) {
@@ -1437,6 +1438,7 @@ if("3".equalsIgnoreCase(accesstype)){
                                             }
                                         },
                                         throwable -> {
+                                            Log.i("medi_tation","900");
                                             getMeditation();
                                         }
                                 )
@@ -1444,6 +1446,7 @@ if("3".equalsIgnoreCase(accesstype)){
             }
 
         } else {
+            Log.i("medi_tation","1000");
             getMeditation();
         }
     }
@@ -1600,6 +1603,8 @@ if("3".equalsIgnoreCase(accesstype)){
     if("false".equalsIgnoreCase(medi_access)){
 
     }else{
+        Log.i("medi_tation", "call_onRESUME_1");
+
         ((MainActivity) getActivity()).funDrawer1();
         Log.i(TAG, "onResume");
         ConnectivityManager connectivityManager = (ConnectivityManager)getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -1625,6 +1630,7 @@ if("3".equalsIgnoreCase(accesstype)){
         llTabView.setVisibility(View.GONE);
     }
 }else{
+    Log.i("medi_tation", "call_onRESUME_2");
         ((MainActivity) getActivity()).funDrawer1();
         Log.i(TAG, "onResume");
         ConnectivityManager connectivityManager = (ConnectivityManager)getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);

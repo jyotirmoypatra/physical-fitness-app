@@ -69,17 +69,17 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_alignParentLeft="true"
+                                android:layout_alignParentStart="true"
                                 android:layout_centerInParent="true"
-                                android:text="EDIT"
+                                android:text="@string/edit_"
                                 android:textColor="@color/black"
                                 android:textSize="20sp" />
 
                             <ImageView
                                 android:layout_width="25dp"
                                 android:layout_height="25dp"
-                                android:layout_alignParentRight="true"
-                                android:layout_marginRight="12dp"
+                                android:layout_alignParentEnd="true"
+                                android:layout_marginEnd="12dp"
                                 android:src="@drawable/ic_edit_gray" />
                         </RelativeLayout>
 
@@ -94,9 +94,9 @@
                                 android:id="@+id/tv_status"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_alignParentLeft="true"
+                                android:layout_alignParentStart="true"
                                 android:layout_centerInParent="true"
-                                android:text="SHARE"
+                                android:text="@string/share"
                                 android:textColor="@color/black"
                                 android:textSize="20sp" />
 
@@ -105,10 +105,11 @@
                                 android:id="@+id/img_status"
                                 android:layout_width="25dp"
                                 android:layout_height="35dp"
-                                android:layout_alignParentRight="true"
-                                android:layout_marginRight="12dp"
+                                android:layout_alignParentEnd="true"
+                                android:layout_marginEnd="12dp"
                                 android:src="@drawable/fb_share"
-                                app:tint="@color/body_grey" />
+                                app:tint="@color/body_grey"
+                                 />
                         </RelativeLayout>
                         <RelativeLayout
                             android:id="@+id/rl_folder"
@@ -122,9 +123,9 @@
                                 android:id="@+id/tv_foldername"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_alignParentLeft="true"
+                                android:layout_alignParentStart="true"
                                 android:layout_centerInParent="true"
-                                android:text="Folder"
+                                android:text="@string/folder"
                                 android:textColor="@color/black"
                                 android:textSize="20sp" />
 
@@ -133,8 +134,8 @@
                                 android:id="@+id/img_editfolder"
                                 android:layout_width="25dp"
                                 android:layout_height="35dp"
-                                android:layout_alignParentRight="true"
-                                android:layout_marginRight="12dp"
+                                android:layout_alignParentEnd="true"
+                                android:layout_marginEnd="12dp"
                                 android:src="@drawable/ic_edit_gray"
                                 app:tint="@color/body_grey" />
                         </RelativeLayout>
@@ -148,17 +149,17 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_alignParentLeft="true"
+                                android:layout_alignParentStart="true"
                                 android:layout_centerInParent="true"
-                                android:text="DELETE"
+                                android:text="@string/delete_"
                                 android:textColor="@color/black"
                                 android:textSize="20sp" />
 
                             <ImageView
                                 android:layout_width="25dp"
                                 android:layout_height="25dp"
-                                android:layout_alignParentRight="true"
-                                android:layout_marginRight="12dp"
+                                android:layout_alignParentEnd="true"
+                                android:layout_marginEnd="12dp"
                                 android:src="@drawable/delete" />
                         </RelativeLayout>
                     </LinearLayout>

@@ -1,10 +1,9 @@
-package com.ashysystem.mbhq.fragment;
+package com.ashysystem.mbhq.dialog;
 
 import android.app.Dialog;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -23,34 +22,28 @@ import androidx.fragment.app.DialogFragment;
 
 import com.ashysystem.mbhq.R;
 
-import com.ashysystem.mbhq.model.GetGratitudeListModelInner;
-import com.ashysystem.mbhq.util.TimePickerControllerWithTextView;
-import com.google.gson.Gson;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Calendar;
 import java.util.List;
 
 /**
  * Created by android-arindam on 9/3/17.
  */
 
-public class CustomReminderDialogForEdit extends DialogFragment {
+public class CustomReminderDialog extends DialogFragment {
     Button mButton;
     EditText mEditText;
     public onSubmitListener mListener;
-    private RelativeLayout btnApply;
     String text = "";
     //////////////////////
+    RelativeLayout btnApply;
     private TextView txtReminderFrequencyType,txtReminderDayFrequencyMonth,txtAmPmUp,txtAmPmDownwn;
     private Spinner spReminderFrequency,spMonth,spAmPm,spBtwn,spAmPmDown;
     View vwLLReminder,vwDay,vwYear,vwWK,vwDown;
-    private LinearLayout llWk,llDay,llDaily,llYear,llAmPmUp,llAmPmDown,llBtwnDown,llReminderFrequencySpinner,llBtwnUp;
+    private LinearLayout llWk,llDay,llDaily,llYear,llAmPmUp,llAmPmDown,llBtwnDown,llReminderFrequencySpinner;
     private boolean twiceDailyBool=false,betweenTwiceBetween=false;
     private Button buttonS,buttonM,buttonT,buttonW,buttonTH,buttonF,buttonSa,buttonJan,buttonFeb,buttonMar,buttonApr,buttonMay,buttonJun,buttonJul,buttonAug,buttonSep,buttonOct,buttonNov,buttonDec;
     private boolean boolS=false,boolM=false,boolT=false,boolW=false,boolTH=false,boolF=false,boolSa=false,boolJan=false,boolFeb=false,boolMar=false,boolApr=false,boolMay=false,boolJun=false,boolJul=false,boolAug=false,boolSep=false,boolOct=false,boolNov=false,boolDec=false;
@@ -58,16 +51,8 @@ public class CustomReminderDialogForEdit extends DialogFragment {
     private CheckBox chkPushNotification,chkEmailNotification;
     private String jsonString="";
     RelativeLayout rlBack;
-
-    String receiveModel="";
-    GetGratitudeListModelInner globalGratitudeModel;
-    String[] arrFreq={/*"Daily","Twice Daily",*/"Weekly","Fortnightly","Monthly","Yearly","This time next year"};
-    String[] arrBtwn={"At","Between","Twice Between"};
-    List<String> lstReminderMonth;
-    List<String> lstAmPm;
-
     int reminderFrequencyCheck=0;
-    TextView txtTimePicker,txtTimePickerDown;
+
 
     public interface onSubmitListener {
         void setOnSubmitListener(JSONObject arg);
@@ -80,33 +65,20 @@ public class CustomReminderDialogForEdit extends DialogFragment {
         dialog.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         dialog.setContentView(R.layout.dialog_custom_reminder);
-        dialog.getWindow().setBackgroundDrawable(
+       dialog.getWindow().setBackgroundDrawable(
                 new ColorDrawable(Color.TRANSPARENT));
         dialog.show();
+        initJson();
         initView(dialog);
-
-        if(getArguments()!=null)
-        {
-            if(getArguments().containsKey("MODEL"))
-            {
-                receiveModel=getArguments().getString("MODEL");
-                populateJsonForGratitude(receiveModel);
-            }else {
-                initJson();
-            }
-        }else {
-            initJson();
-        }
-
         return dialog;
     }
 
     private void initJson() {
         try {
             dataJsonReq.put("FrequencyId",1);
-            dataJsonReq.put("MonthReminder",1);
+            dataJsonReq.put("MonthReminder",0);
             dataJsonReq.put("ReminderOption",1);
-            dataJsonReq.put("ReminderAt1",43200);
+            dataJsonReq.put("ReminderAt1","12");
             dataJsonReq.put("ReminderAt2",0);
             dataJsonReq.put("Email",false);
             dataJsonReq.put("PushNotification",true);
@@ -121,7 +93,6 @@ public class CustomReminderDialogForEdit extends DialogFragment {
             dataJsonReq.put("February",false);
             dataJsonReq.put("March",false);
             dataJsonReq.put("April",false);
-            dataJsonReq.put("April",false);
             dataJsonReq.put("May",false);
             dataJsonReq.put("June",false);
             dataJsonReq.put("July",false);
@@ -130,334 +101,6 @@ public class CustomReminderDialogForEdit extends DialogFragment {
             dataJsonReq.put("October",false);
             dataJsonReq.put("November",false);
             dataJsonReq.put("December",false);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void populateJsonForGratitude(String receiveModel)
-    {
-        Gson gson=new Gson();
-        globalGratitudeModel=gson.fromJson(receiveModel,GetGratitudeListModelInner.class);
-        try {
-            dataJsonReq.put("FrequencyId",globalGratitudeModel.getFrequencyId());
-            dataJsonReq.put("PushNotification",true);
-            if(globalGratitudeModel.getFrequencyId()!=null && globalGratitudeModel.getFrequencyId()!=0)
-            {
-                if(globalGratitudeModel.getFrequencyId()-1==0)
-                {
-                    txtReminderFrequencyType.setText("Daily");
-
-                }
-                else if(globalGratitudeModel.getFrequencyId()-1==1)
-                {
-                    txtReminderFrequencyType.setText("Twice Daily");
-                    twiceDailyBool=true;
-                    llBtwnDown.setVisibility(View.VISIBLE);
-                    vwDown.setVisibility(View.VISIBLE);
-                }
-                else if(globalGratitudeModel.getFrequencyId()-1==2)
-                {
-                    spReminderFrequency.setSelection(0);
-                    txtReminderFrequencyType.setText(arrFreq[0]);
-
-                    vwLLReminder.setVisibility(View.VISIBLE);
-                    llWk.setVisibility(View.VISIBLE);
-                    txtReminderFrequencyType.setText("Weekly");
-                }
-                else if(globalGratitudeModel.getFrequencyId()-1==3)
-                {
-                    spReminderFrequency.setSelection(1);
-                    txtReminderFrequencyType.setText(arrFreq[1]);
-
-                    vwLLReminder.setVisibility(View.VISIBLE);
-                    llWk.setVisibility(View.VISIBLE);
-                    txtReminderFrequencyType.setText("Fortnightly");
-                }
-                else if(globalGratitudeModel.getFrequencyId()-1==4)
-                {
-                    spReminderFrequency.setSelection(2);
-                    txtReminderFrequencyType.setText(arrFreq[2]);
-
-                    vwYear.setVisibility(View.VISIBLE);
-                    vwDay.setVisibility(View.VISIBLE);
-                    llDay.setVisibility(View.VISIBLE);
-                    txtReminderFrequencyType.setText("Monthly");
-                }
-                else if(globalGratitudeModel.getFrequencyId()-1==5)
-                {
-                    spReminderFrequency.setSelection(3);
-                    txtReminderFrequencyType.setText(arrFreq[3]);
-
-                    vwWK.setVisibility(View.VISIBLE);
-                    vwYear.setVisibility(View.VISIBLE);
-                    llYear.setVisibility(View.VISIBLE);
-                    llDay.setVisibility(View.VISIBLE);
-                    txtReminderFrequencyType.setText("Yearly");
-                }
-
-            }
-
-            dataJsonReq.put("MonthReminder",globalGratitudeModel.getMonthReminder());
-            if(globalGratitudeModel.getMonthReminder()!=null && globalGratitudeModel.getMonthReminder()!=0)
-            {
-                spMonth.setSelection(globalGratitudeModel.getMonthReminder()-1);
-                txtReminderDayFrequencyMonth.setText(lstReminderMonth.get(globalGratitudeModel.getMonthReminder()-1));
-            }
-
-            dataJsonReq.put("ReminderOption",globalGratitudeModel.getReminderOption());
-            if(globalGratitudeModel.getReminderOption()!=null && globalGratitudeModel.getReminderOption()!=0)
-            {
-                spBtwn.setSelection(globalGratitudeModel.getReminderOption()-1);
-                if(globalGratitudeModel.getReminderOption()-1!=0)
-                {
-                    betweenTwiceBetween=true;
-                }
-                if(betweenTwiceBetween)
-                {
-                    llBtwnDown.setVisibility(View.VISIBLE);
-                    vwDown.setVisibility(View.VISIBLE);
-                }else {
-                    llBtwnDown.setVisibility(View.GONE);
-                    vwDown.setVisibility(View.GONE);
-                }
-            }
-            if(globalGratitudeModel.getReminderAt1()!=null)
-            {
-                dataJsonReq.put("ReminderAt1",globalGratitudeModel.getReminderAt1());
-            }else {
-                dataJsonReq.put("ReminderAt1",43200);
-            }
-            if(globalGratitudeModel.getReminderAt1()!=null)
-            {
-                //spAmPm.setSelection(Integer.parseInt(globalGratitudeModel.getReminderAt1())-1);
-                //txtAmPmUp.setText(lstAmPm.get(Integer.parseInt(globalGratitudeModel.getReminderAt1())-1));
-
-                Integer at1Hour = 0;
-                Integer at1Minute = 0;
-                Integer at1Second = 0;
-
-                at1Second = (Integer.parseInt(globalGratitudeModel.getReminderAt1()) % 60);
-                Integer totalMinute = (Integer.parseInt(globalGratitudeModel.getReminderAt1()) / 60);
-                at1Minute = totalMinute % 60;
-                at1Hour = totalMinute / 60;
-
-                String strTime ="";
-                boolean boolPm = false;
-                if(at1Hour == 12)
-                {
-                    at1Hour = 12;
-                    boolPm = true;
-                }else if(at1Hour>12)
-                {
-                    at1Hour = at1Hour - 12;
-                    boolPm = true;
-                }
-
-                strTime = pad(at1Hour) + ":" + pad(at1Minute);
-
-                if(boolPm)
-                {
-                    strTime = strTime + " PM";
-                }else {
-                    strTime = strTime + " AM";
-                }
-                txtTimePicker.setText(strTime);
-
-            }
-            if(globalGratitudeModel.getReminderAt2()!=null)
-            {
-                dataJsonReq.put("ReminderAt2",globalGratitudeModel.getReminderAt2());
-            }else {
-                dataJsonReq.put("ReminderAt2",0);
-            }
-            if(globalGratitudeModel.getReminderAt2()!=null)
-            {
-                //spAmPmDown.setSelection(Integer.parseInt(globalGratitudeModel.getReminderAt2())-1);
-                //txtAmPmDownwn.setText(lstAmPm.get(Integer.parseInt(globalGratitudeModel.getReminderAt2())-1));
-
-                Integer at2Hour = 0;
-                Integer at2Minute = 0;
-                Integer at2Second = 0;
-
-                if(globalGratitudeModel.getReminderAt2()!=null)
-                {
-                    at2Second = (Integer.parseInt(globalGratitudeModel.getReminderAt2()) % 60);
-                    Integer totalMinute = (Integer.parseInt(globalGratitudeModel.getReminderAt2()) / 60);
-                    at2Minute = totalMinute % 60;
-                    at2Hour = totalMinute / 60;
-                }
-
-                String strTime ="";
-                boolean boolPm = false;
-                if(at2Hour == 12)
-                {
-                    at2Hour = 12;
-                    boolPm = true;
-                }else if(at2Hour>12)
-                {
-                    at2Hour = at2Hour - 12;
-                    boolPm = true;
-                }
-
-                strTime = pad(at2Hour) + ":" + pad(at2Minute);
-
-                if(boolPm)
-                {
-                    strTime = strTime + " PM";
-                }else {
-                    strTime = strTime + " AM";
-                }
-                txtTimePickerDown.setText(strTime);
-
-            }
-
-            dataJsonReq.put("Email",globalGratitudeModel.getEmail());
-            if(globalGratitudeModel.getEmail()!=null && globalGratitudeModel.getEmail())
-            {
-                chkEmailNotification.setChecked(true);
-            }
-
-            dataJsonReq.put("PushNotification",globalGratitudeModel.getPushNotification());
-            if(globalGratitudeModel.getPushNotification()!=null && globalGratitudeModel.getPushNotification())
-            {
-                chkPushNotification.setChecked(true);
-            }
-
-            dataJsonReq.put("Sunday",globalGratitudeModel.getSunday());
-            if(globalGratitudeModel.getSunday()!=null && globalGratitudeModel.getSunday())
-            {
-                boolS=true;
-                buttonS.setBackground(null);
-                buttonS.setBackgroundResource(R.drawable.circle_blue_month);
-            }
-
-            dataJsonReq.put("Monday",globalGratitudeModel.getMonday());
-            if(globalGratitudeModel.getMonday()!=null && globalGratitudeModel.getMonday())
-            {
-                boolM=true;
-                buttonM.setBackgroundResource(R.drawable.circle_blue_month);
-            }
-
-            dataJsonReq.put("Tuesday",globalGratitudeModel.getTuesday());
-            if(globalGratitudeModel.getTuesday()!=null && globalGratitudeModel.getTuesday())
-            {
-                boolT=true;
-                buttonT.setBackgroundResource(R.drawable.circle_blue_month);
-            }
-
-            dataJsonReq.put("Wednesday",globalGratitudeModel.getWednesday());
-            if(globalGratitudeModel.getWednesday()!=null && globalGratitudeModel.getWednesday())
-            {
-                boolW=true;
-                buttonW.setBackgroundResource(R.drawable.circle_blue_month);
-            }
-
-            dataJsonReq.put("Thursday",globalGratitudeModel.getThursday());
-            if(globalGratitudeModel.getThursday()!=null && globalGratitudeModel.getThursday())
-            {
-                boolTH=true;
-                buttonTH.setBackgroundResource(R.drawable.circle_blue_month);
-            }
-
-            dataJsonReq.put("Friday",globalGratitudeModel.getFriday());
-            if(globalGratitudeModel.getFriday()!=null && globalGratitudeModel.getFriday())
-            {
-                boolF=true;
-                buttonF.setBackgroundResource(R.drawable.circle_blue_month);
-            }
-
-            dataJsonReq.put("Saturday",globalGratitudeModel.getSaturday());
-            if(globalGratitudeModel.getSaturday()!=null && globalGratitudeModel.getSaturday())
-            {
-                boolSa=true;
-                buttonSa.setBackgroundResource(R.drawable.circle_blue_month);
-            }
-
-            dataJsonReq.put("January",globalGratitudeModel.getJanuary());
-            if(globalGratitudeModel.getJanuary()!=null && globalGratitudeModel.getJanuary())
-            {
-                boolJan=true;
-                buttonJan.setBackgroundResource(R.drawable.circle_blue_month);
-            }
-
-            dataJsonReq.put("February",globalGratitudeModel.getFebruary());
-            if(globalGratitudeModel.getFebruary()!=null && globalGratitudeModel.getFebruary())
-            {
-                boolFeb=true;
-                buttonFeb.setBackgroundResource(R.drawable.circle_blue_month);
-            }
-
-            dataJsonReq.put("March",globalGratitudeModel.getMarch());
-            if(globalGratitudeModel.getMarch()!=null && globalGratitudeModel.getMarch())
-            {
-                boolMar=true;
-                buttonMar.setBackgroundResource(R.drawable.circle_blue_month);
-            }
-
-            dataJsonReq.put("April",globalGratitudeModel.getApril());
-            if(globalGratitudeModel.getApril()!=null && globalGratitudeModel.getApril())
-            {
-                boolApr=true;
-                buttonApr.setBackgroundResource(R.drawable.circle_blue_month);
-            }
-
-            dataJsonReq.put("May",globalGratitudeModel.getMay());
-            if(globalGratitudeModel.getMay()!=null && globalGratitudeModel.getMay())
-            {
-                boolMay=true;
-                buttonMay.setBackgroundResource(R.drawable.circle_blue_month);
-            }
-
-            dataJsonReq.put("June",globalGratitudeModel.getJune());
-            if(globalGratitudeModel.getJune()!=null && globalGratitudeModel.getJune())
-            {
-                boolJun=true;
-                buttonJun.setBackgroundResource(R.drawable.circle_blue_month);
-            }
-
-            dataJsonReq.put("July",globalGratitudeModel.getJuly());
-            if(globalGratitudeModel.getJuly()!=null && globalGratitudeModel.getJuly())
-            {
-                boolJul=true;
-                buttonJul.setBackgroundResource(R.drawable.circle_blue_month);
-            }
-
-            dataJsonReq.put("August",globalGratitudeModel.getAugust());
-            if(globalGratitudeModel.getAugust()!=null && globalGratitudeModel.getAugust())
-            {
-                boolAug=true;
-                buttonAug.setBackgroundResource(R.drawable.circle_blue_month);
-            }
-
-            dataJsonReq.put("September",globalGratitudeModel.getSeptember());
-            if(globalGratitudeModel.getSeptember()!=null && globalGratitudeModel.getSeptember())
-            {
-                boolSep=true;
-                buttonSep.setBackgroundResource(R.drawable.circle_blue_month);
-            }
-
-            dataJsonReq.put("October",globalGratitudeModel.getOctober());
-            if(globalGratitudeModel.getOctober()!=null && globalGratitudeModel.getOctober())
-            {
-                boolOct=true;
-                buttonOct.setBackgroundResource(R.drawable.circle_blue_month);
-            }
-
-            dataJsonReq.put("November",globalGratitudeModel.getNovember());
-            if(globalGratitudeModel.getNovember()!=null && globalGratitudeModel.getNovember())
-            {
-                boolNov=true;
-                buttonNov.setBackgroundResource(R.drawable.circle_blue_month);
-            }
-
-            dataJsonReq.put("December",globalGratitudeModel.getDecember());
-            if(globalGratitudeModel.getDecember()!=null && globalGratitudeModel.getDecember())
-            {
-                boolDec=true;
-                buttonDec.setBackgroundResource(R.drawable.circle_blue_month);
-            }
-
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -478,7 +121,7 @@ public class CustomReminderDialogForEdit extends DialogFragment {
         llDaily=(LinearLayout)dialog.findViewById(R.id.llDaily);
         llBtwnDown=(LinearLayout)dialog.findViewById(R.id.llBtwnDown);
         llAmPmUp=(LinearLayout)dialog.findViewById(R.id.llAmPmUp);
-        llReminderFrequencySpinner=(LinearLayout)dialog.findViewById(R.id.llReminderFrequencySpinner);
+        llReminderFrequencySpinner = (LinearLayout) dialog.findViewById(R.id.llReminderFrequencySpinner);
         txtReminderDayFrequencyMonth=(TextView)dialog.findViewById(R.id.txtReminderDayFrequencyMonth);
         txtAmPmDownwn=(TextView)dialog.findViewById(R.id.txtAmPmDownwn);
         spMonth=(Spinner)dialog.findViewById(R.id.spMonth);
@@ -509,9 +152,6 @@ public class CustomReminderDialogForEdit extends DialogFragment {
         buttonDec=(Button) dialog.findViewById(R.id.buttonDec);
         btnApply=(RelativeLayout) dialog.findViewById(R.id.btnApply);
         rlBack=(RelativeLayout)dialog.findViewById(R.id.rlBack);
-        txtTimePicker = dialog.findViewById(R.id.txtTimePicker);
-        txtTimePickerDown = dialog.findViewById(R.id.txtTimePickerDown);
-        llBtwnUp = dialog.findViewById(R.id.llBtwnUp);
 
         rlBack.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -520,8 +160,17 @@ public class CustomReminderDialogForEdit extends DialogFragment {
             }
         });
 
-        lstReminderMonth=new ArrayList<>();
-        lstAmPm=new ArrayList<>();
+        chkPushNotification.setChecked(true);
+        try {
+            dataJsonReq.put("PushNotification",true);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        String[] arrFreq={"Daily","Twice Daily","Weekly","Fortnightly","Monthly","Yearly"};
+        String[] arrBtwn={"At","Between","Twice Between"};
+        List<String> lstReminderMonth=new ArrayList<>();
+        final List<String> lstAmPm=new ArrayList<>();
         for(int p=1;p<=30;p++)
         {
             lstReminderMonth.add(p+" Day of Month");
@@ -537,19 +186,14 @@ public class CustomReminderDialogForEdit extends DialogFragment {
         }
         lstAmPm.add(12+" am");
         List<String> lstBtwn=Arrays.asList(arrBtwn);
-
         ArrayAdapter<String> adapterReminderFreq = new ArrayAdapter<String>(getActivity(), R.layout.custom_spinner_textbold, arrFreq);
         adapterReminderFreq.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
         ArrayAdapter<String> adapterReminderFreqMonth = new ArrayAdapter<String>(getActivity(), R.layout.custom_spinner_textbold, lstReminderMonth);
         adapterReminderFreqMonth.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
         ArrayAdapter<String> adapterBetween = new ArrayAdapter<String>(getActivity(), R.layout.custom_spinner_textbold, lstBtwn);
         adapterBetween.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
         ArrayAdapter<String> adapterAmPm = new ArrayAdapter<String>(getActivity(), R.layout.custom_spinner_textbold, lstAmPm);
         adapterAmPm.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
         spReminderFrequency.setAdapter(adapterReminderFreq);
         spMonth.setAdapter(adapterReminderFreqMonth);
         spBtwn.setAdapter(adapterBetween);
@@ -558,11 +202,12 @@ public class CustomReminderDialogForEdit extends DialogFragment {
         spReminderFrequency.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
+                /*spReminderFrequency.setVisibility(View.GONE);
+                txtReminderFrequencyType.setVisibility(View.VISIBLE);*/
                 if(reminderFrequencyCheck!=0)
                 {
-                    spReminderFrequency.setVisibility(View.VISIBLE);
                     llReminderFrequencySpinner.setVisibility(View.VISIBLE);
+                    spReminderFrequency.setVisibility(View.VISIBLE);
                     txtReminderFrequencyType.setVisibility(View.VISIBLE);
                 }
                 reminderFrequencyCheck++;
@@ -574,7 +219,7 @@ public class CustomReminderDialogForEdit extends DialogFragment {
                 vwWK.setVisibility(View.GONE);
                 vwYear.setVisibility(View.GONE);
                 twiceDailyBool=false;
-                /*if(position==0)
+                if(position==0)
                 {
                     txtReminderFrequencyType.setText("Daily");
                     twiceDailyBool=false;
@@ -606,11 +251,11 @@ public class CustomReminderDialogForEdit extends DialogFragment {
                         e.printStackTrace();
                     }
                 }
-                else*/ if(position==0)
+                else if(position==2)
                 {
                     vwLLReminder.setVisibility(View.VISIBLE);
                     llWk.setVisibility(View.VISIBLE);
-                    llBtwnUp.setVisibility(View.VISIBLE);
+                    txtReminderFrequencyType.setText("Weekly");
                     twiceDailyBool=false;
                     if(betweenTwiceBetween)
                     {
@@ -621,18 +266,17 @@ public class CustomReminderDialogForEdit extends DialogFragment {
                         llBtwnDown.setVisibility(View.GONE);
                         vwDown.setVisibility(View.GONE);
                     }
-                    txtReminderFrequencyType.setText("Weekly");
                     try {
                         dataJsonReq.put("FrequencyId",3);
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
                 }
-                else if(position==1)
+                else if(position==3)
                 {
                     vwLLReminder.setVisibility(View.VISIBLE);
                     llWk.setVisibility(View.VISIBLE);
-                    llBtwnUp.setVisibility(View.VISIBLE);
+                    txtReminderFrequencyType.setText("Fortnightly");
                     twiceDailyBool=false;
                     if(betweenTwiceBetween)
                     {
@@ -643,18 +287,18 @@ public class CustomReminderDialogForEdit extends DialogFragment {
                         llBtwnDown.setVisibility(View.GONE);
                         vwDown.setVisibility(View.GONE);
                     }
-                    txtReminderFrequencyType.setText("Fortnightly");
                     try {
                         dataJsonReq.put("FrequencyId",4);
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
                 }
-                else if(position==2)
+                else if(position==4)
                 {
                     vwYear.setVisibility(View.VISIBLE);
                     vwDay.setVisibility(View.VISIBLE);
-                    llBtwnUp.setVisibility(View.VISIBLE);
+                    llDay.setVisibility(View.VISIBLE);
+                    txtReminderFrequencyType.setText("Monthly");
                     twiceDailyBool=false;
                     if(betweenTwiceBetween)
                     {
@@ -665,21 +309,18 @@ public class CustomReminderDialogForEdit extends DialogFragment {
                         llBtwnDown.setVisibility(View.GONE);
                         vwDown.setVisibility(View.GONE);
                     }
-                    llDay.setVisibility(View.VISIBLE);
-                    txtReminderFrequencyType.setText("Monthly");
                     try {
                         dataJsonReq.put("FrequencyId",5);
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
                 }
-                else if(position==3)
+                else if(position==5)
                 {
                     vwWK.setVisibility(View.VISIBLE);
                     vwYear.setVisibility(View.VISIBLE);
                     llYear.setVisibility(View.VISIBLE);
-                    llDay.setVisibility(View.VISIBLE);
-                    llBtwnUp.setVisibility(View.VISIBLE);
+                    txtReminderFrequencyType.setText("Yearly");
                     twiceDailyBool=false;
                     if(betweenTwiceBetween)
                     {
@@ -690,137 +331,11 @@ public class CustomReminderDialogForEdit extends DialogFragment {
                         llBtwnDown.setVisibility(View.GONE);
                         vwDown.setVisibility(View.GONE);
                     }
-                    txtReminderFrequencyType.setText("Yearly");
                     try {
                         dataJsonReq.put("FrequencyId",6);
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-                }else if(position == 4)
-                {
-                    vwWK.setVisibility(View.GONE);
-                    vwYear.setVisibility(View.GONE);
-                    llYear.setVisibility(View.GONE);
-                    llDay.setVisibility(View.GONE);
-                    llBtwnDown.setVisibility(View.GONE);
-                    vwDown.setVisibility(View.GONE);
-                    llBtwnUp.setVisibility(View.GONE);
-
-                    Calendar calendar = Calendar.getInstance();
-                    int thisMonth = calendar.get(Calendar.MONTH);
-                    if(thisMonth == 0)
-                    {
-                        try {
-                            dataJsonReq.put("January",true);
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    }else if(thisMonth == 1)
-                    {
-                        try {
-                            dataJsonReq.put("February",true);
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    }else if(thisMonth == 2)
-                    {
-                        try {
-                            dataJsonReq.put("March",true);
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    }else if(thisMonth == 3)
-                    {
-                        try {
-                            dataJsonReq.put("April",true);
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    }else if(thisMonth == 4)
-                    {
-                        try {
-                            dataJsonReq.put("May",true);
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    }else if(thisMonth == 5)
-                    {
-                        try {
-                            dataJsonReq.put("June",true);
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    }else if(thisMonth == 6)
-                    {
-                        try {
-                            dataJsonReq.put("July",true);
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    }else if(thisMonth == 7)
-                    {
-                        try {
-                            dataJsonReq.put("August",true);
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    }else if(thisMonth == 8)
-                    {
-                        try {
-                            dataJsonReq.put("September",true);
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    }else if(thisMonth == 9)
-                    {
-                        try {
-                            dataJsonReq.put("October",true);
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    }else if(thisMonth == 10)
-                    {
-                        try {
-                            dataJsonReq.put("November",true);
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    }else if(thisMonth == 11)
-                    {
-                        try {
-                            dataJsonReq.put("December",true);
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    }
-
-                    int currentDay = calendar.get(Calendar.DAY_OF_MONTH);
-                    if(currentDay >= 30)
-                    {
-                        try {
-                            dataJsonReq.put("MonthReminder",30);
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    }else {
-                        try {
-                            dataJsonReq.put("MonthReminder",currentDay);
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    }
-
-                    SimpleDateFormat dateFormat = new SimpleDateFormat("hh:mm aa");
-                    String currentTime = dateFormat.format(calendar.getTime());
-                    txtTimePicker.setText(currentTime.toUpperCase());
-
-                    txtReminderFrequencyType.setText("Yearly");
-                    try {
-                        dataJsonReq.put("FrequencyId",6);
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-
                 }
 
             }
@@ -881,7 +396,7 @@ public class CustomReminderDialogForEdit extends DialogFragment {
             @Override
             public void onClick(View v) {
                 txtAmPmDownwn.setVisibility(View.GONE);
-                //spAmPmDown.setVisibility(View.VISIBLE);
+                spAmPmDown.setVisibility(View.VISIBLE);
 
             }
         });
@@ -930,7 +445,7 @@ public class CustomReminderDialogForEdit extends DialogFragment {
 
                 txtAmPmUp.setVisibility(View.GONE);
                 txtAmPmUp.setText(lstAmPm.get(position));
-                //spAmPm.setVisibility(View.VISIBLE);
+                spAmPm.setVisibility(View.VISIBLE);
                 try {
                     dataJsonReq.put("ReminderAt1",(position+1)+"");
                 } catch (JSONException e) {
@@ -950,7 +465,7 @@ public class CustomReminderDialogForEdit extends DialogFragment {
 
                 txtAmPmDownwn.setVisibility(View.GONE);
                 txtAmPmDownwn.setText(lstAmPm.get(position));
-                //spAmPmDown.setVisibility(View.VISIBLE);
+                spAmPmDown.setVisibility(View.VISIBLE);
                 try {
                     dataJsonReq.put("ReminderAt2",(position+1)+"");
                 } catch (JSONException e) {
@@ -964,16 +479,6 @@ public class CustomReminderDialogForEdit extends DialogFragment {
 
             }
         });
-
-        txtTimePicker.setOnClickListener(view -> {
-            TimePickerControllerWithTextView pickerController = new TimePickerControllerWithTextView(getActivity(), txtTimePicker, "", "");
-
-        });
-
-        txtTimePickerDown.setOnClickListener(view -> {
-            TimePickerControllerWithTextView pickerController = new TimePickerControllerWithTextView(getActivity(), txtTimePickerDown, "", "");
-        });
-
         buttonS.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -1212,7 +717,7 @@ public class CustomReminderDialogForEdit extends DialogFragment {
 
             }
         });
-        buttonMar.setOnClickListener(new View.OnClickListener() {
+         buttonMar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(!boolMar)
@@ -1478,91 +983,7 @@ public class CustomReminderDialogForEdit extends DialogFragment {
 
             @Override
             public void onClick(View v) {
-
-                if (!txtTimePicker.getText().toString().equals("")) {
-                    int hour = 0;
-                    int minute = 0;
-                    if (txtTimePicker.getText().toString().contains("PM")) {
-                        String str = txtTimePicker.getText().toString();
-                        String[] arrTime = str.split(":");
-                        String strHour = arrTime[0];
-                        String strMinAm = arrTime[1];
-                        String[] arrMin = strMinAm.split("PM");
-                        String strMin = arrMin[0].trim();
-                        hour = Integer.parseInt(strHour);
-                        if(hour != 12)
-                        {
-                            hour = hour + 12;
-                        }
-                        minute = Integer.parseInt(strMin);
-                    } else {
-                        String str = txtTimePicker.getText().toString();
-                        String[] arrTime = str.split(":");
-                        String strHour = arrTime[0];
-                        String strMinAm = arrTime[1];
-                        String[] arrMin = strMinAm.split("AM");
-                        String strMin = arrMin[0].trim();
-                        hour = Integer.parseInt(strHour);
-                        if(hour == 12)
-                        {
-                            hour = hour + 12;
-                        }
-                        minute = Integer.parseInt(strMin);
-                    }
-                    Integer totatSecond = ((hour * 60) + minute) * 60;
-
-
-                    Log.e("REMINDERAT1",totatSecond+">>>>>>>>");
-                    try {
-                        dataJsonReq.put("ReminderAt1",totatSecond);
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-
-                }
-
-                if (txtTimePickerDown.getVisibility() == View.VISIBLE && !txtTimePickerDown.getText().toString().equals("")) {
-                    int hour = 0;
-                    int minute = 0;
-                    if (txtTimePickerDown.getText().toString().contains("PM")) {
-                        String str = txtTimePickerDown.getText().toString();
-                        String[] arrTime = str.split(":");
-                        String strHour = arrTime[0];
-                        String strMinAm = arrTime[1];
-                        String[] arrMin = strMinAm.split("PM");
-                        String strMin = arrMin[0].trim();
-                        hour = Integer.parseInt(strHour);
-                        if(hour != 12)
-                        {
-                            hour = hour + 12;
-                        }
-                        minute = Integer.parseInt(strMin);
-
-                    } else {
-                        String str = txtTimePickerDown.getText().toString();
-                        String[] arrTime = str.split(":");
-                        String strHour = arrTime[0];
-                        String strMinAm = arrTime[1];
-                        String[] arrMin = strMinAm.split("AM");
-                        String strMin = arrMin[0].trim();
-                        hour = Integer.parseInt(strHour);
-                        if(hour == 12)
-                        {
-                            hour = hour + 12;
-                        }
-                        minute = Integer.parseInt(strMin);
-                    }
-                    Integer totatSecond = ((hour * 60) + minute) * 60;
-
-                    try {
-                        dataJsonReq.put("ReminderAt2",totatSecond);
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-
-                }
-
-                mListener.setOnSubmitListener(dataJsonReq);
+                 mListener.setOnSubmitListener(dataJsonReq);
                 dismiss();
             }
         });
@@ -1604,6 +1025,7 @@ public class CustomReminderDialogForEdit extends DialogFragment {
                 }
                 else
                 {
+                    dismiss();
                     try {
                         dataJsonReq.put("PushNotification",false);
                     } catch (JSONException e) {
@@ -1617,13 +1039,6 @@ public class CustomReminderDialogForEdit extends DialogFragment {
 
 
 
-    }
-
-    private static String pad(int c) {
-        if (c >= 10)
-            return String.valueOf(c);
-        else
-            return "0" + String.valueOf(c);
     }
 
 }

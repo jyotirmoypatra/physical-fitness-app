@@ -2,13 +2,19 @@ package com.ashysystem.mbhq.fragment.habit_hacker;
 
 import android.Manifest;
 import android.app.Dialog;
+import android.content.ContentResolver;
+import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -35,10 +41,14 @@ import com.ashysystem.mbhq.adapter.WinTheWeekStreakAdapter;
 import com.ashysystem.mbhq.model.GetWinTheWeekStatsResponse;
 import com.ashysystem.mbhq.util.SharedPreference;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -100,6 +110,12 @@ public class WinTheWeekDetailsFragment extends Fragment {
         rvStreaks = view.findViewById(R.id.rvStreaks);
 
         rvStreaks.setLayoutManager(new LinearLayoutManager(getContext()));
+
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            requestPermissions(new String[]{Manifest.permission.READ_MEDIA_IMAGES,Manifest.permission.READ_MEDIA_AUDIO,Manifest.permission.READ_MEDIA_VIDEO,Manifest.permission.CAMERA}, 289);
+        }else{
+            requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.CAMERA}, 289);
+        }
 
         if (isWeekly) {
 
@@ -261,11 +277,19 @@ public class WinTheWeekDetailsFragment extends Fragment {
             @Override
             public void onClick(View v) {
 /*commented by sahenita temporary*/
-              /*  if (PermissionChecker.checkCallingOrSelfPermission(requireContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) == PermissionChecker.PERMISSION_GRANTED) {
-                    getScreenshotOf(mainModal);
+               if (hasCameraPermission()) {
+
+
+                   // getScreenshotOf(mainModal);
+                   captureScreenshot(mainModal);
                 } else {
-                    requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 289);
-                }*/
+                  //  requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 289);
+                   if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                       requestPermissions(new String[]{Manifest.permission.READ_MEDIA_IMAGES,Manifest.permission.READ_MEDIA_AUDIO,Manifest.permission.READ_MEDIA_VIDEO,Manifest.permission.CAMERA}, 289);
+                   }else{
+                       requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.CAMERA}, 289);
+                   }
+                }
 
             }
 
@@ -284,6 +308,113 @@ public class WinTheWeekDetailsFragment extends Fragment {
 
     }
 
+
+    private boolean hasCameraPermission() {
+//        int hasPermissionWrite = ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE);
+//        int hasPermissionRead = ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_EXTERNAL_STORAGE);
+//        int hasPermissionCamera = ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.CAMERA);
+//        if (hasPermissionRead == PackageManager.PERMISSION_GRANTED && hasPermissionCamera == PackageManager.PERMISSION_GRANTED && hasPermissionWrite == PackageManager.PERMISSION_GRANTED) {
+//            Log.e("camera","10");
+//
+//            return true;
+//        } else
+//
+//            Log.e("camera","11");
+//
+//        return false;
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
+            // For Android versions below API level 30
+            return ContextCompat.checkSelfPermission(getContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
+                    && ContextCompat.checkSelfPermission(getContext(), Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
+                    && ContextCompat.checkSelfPermission(getContext(), Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED;
+
+        } else {
+            // For Android versions R (API level 30) and above
+            return ContextCompat.checkSelfPermission(getContext(), Manifest.permission.READ_MEDIA_IMAGES) == PackageManager.PERMISSION_GRANTED
+                    && ContextCompat.checkSelfPermission(getContext(), Manifest.permission.READ_MEDIA_VIDEO) == PackageManager.PERMISSION_GRANTED
+                    && ContextCompat.checkSelfPermission(getContext(), Manifest.permission.READ_MEDIA_AUDIO) == PackageManager.PERMISSION_GRANTED
+                    && ContextCompat.checkSelfPermission(getContext(), Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED;
+        }
+    }
+    private Uri saveImageToMediaStore(File imageFile) {
+        ContentValues values = new ContentValues();
+        values.put(MediaStore.Images.Media.DISPLAY_NAME, "shared_image.jpg");
+        values.put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg");
+        values.put(MediaStore.Images.Media.RELATIVE_PATH, Environment.DIRECTORY_PICTURES);
+
+        ContentResolver contentResolver = getActivity().getContentResolver();
+        Uri contentUri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
+
+        Uri resultUri = contentResolver.insert(contentUri, values);
+        try {
+            if (resultUri != null) {
+                try (OutputStream outputStream = contentResolver.openOutputStream(resultUri);
+                     InputStream inputStream = new FileInputStream(imageFile)) {
+                    if (outputStream != null) {
+                        byte[] buffer = new byte[1024];
+                        int bytesRead;
+                        while ((bytesRead = inputStream.read(buffer)) != -1) {
+                            outputStream.write(buffer, 0, bytesRead);
+                        }
+                    }
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return resultUri;
+    }
+    public  Bitmap captureScreenshot( ViewGroup view) {
+        view.setDrawingCacheEnabled(true);
+        Bitmap bitmap = Bitmap.createBitmap(view.getDrawingCache());
+        view.setDrawingCacheEnabled(false);
+        File shareFile= getImageFile(bitmap);
+
+        Uri contentUri = saveImageToMediaStore(shareFile);
+        Intent share = new Intent(Intent.ACTION_SEND);
+        share.setType("image/jpeg");
+        share.putExtra(Intent.EXTRA_STREAM, contentUri);
+
+        share.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        startActivity(Intent.createChooser(share, "Share Image"));
+
+        return bitmap;
+        // Save the bitmap using ContentResolver
+        //saveBitmap(context, bitmap);
+    }
+    private File saveBitmapToFile(ByteArrayOutputStream bytes) {
+        File filesDir = getActivity().getFilesDir();
+        File imageFile = new File(filesDir, "image.jpg");
+
+        try (FileOutputStream fos = new FileOutputStream(imageFile)) {
+            // Compress the bitmap to a JPEG with compression factor 80 (adjust as needed)
+            Bitmap compressedBitmap = BitmapFactory.decodeByteArray(bytes.toByteArray(), 0, bytes.size());
+            compressedBitmap.compress(Bitmap.CompressFormat.JPEG, 80, fos);
+
+            return imageFile;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+    private File getImageFile(Bitmap inImage) {
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+//        String path = MediaStore.Images.Media.insertImage(getContentResolver(), inImage, "Title", null);
+//        return Uri.parse(path);
+        // Save the bitmap to a file
+        File imageFile = saveBitmapToFile(bytes);
+
+        if (imageFile != null) {
+            // Get the Uri from the file
+            return imageFile;
+        } else {
+            // Handle the case where imageFile is null
+            Log.e("YourTag", "Failed to save bitmap to file.");
+            return null;
+        }
+    }
     public Bitmap getScreenshotOf(View v) {
 
         Bitmap screenshot;

@@ -898,10 +898,6 @@ public class MeditationDetailsNew_video extends Fragment implements View.OnClick
                 imgPlayPause.setBackgroundResource(R.drawable.mbhq_play_black);
                 imgPlayPauseOnVideo.setBackgroundResource(R.drawable.mbhq_play_black);
             }
-//                imgPlayPause.setBackgroundResource(R.drawable.mbhq_play_black);
-//                imgPlayPauseOnVideo.setBackgroundResource(R.drawable.mbhq_play_black);
-
-
 
             musicBound = true;
 
