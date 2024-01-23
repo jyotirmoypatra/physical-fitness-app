@@ -6,6 +6,9 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
+import android.text.InputFilter;
+import android.text.Spanned;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -101,8 +104,8 @@ public class HabitHackerAddFirstPage extends Fragment {
             @Override
             public void onClick(View view) {
 
-                if (edtNewHabit.getText().toString().equals("")) {
-                    Util.showToast(getActivity(), "Please enter Habit Name");
+                if (edtNewHabit.getText().toString().trim().equals("")|| (edtNewHabit.getText().toString().trim().length()==1 && !Character.isLetterOrDigit(edtNewHabit.getText().toString().trim().charAt(0)))) {
+                    Util.showToast(getActivity(), "Please enter a valid Habit Name");
                 } else if (txtHowOftenTime.getText().toString().equals("")) {
                     Util.showToast(getActivity(), "Please enter Habit Frequency");
                 } else {
@@ -131,6 +134,11 @@ public class HabitHackerAddFirstPage extends Fragment {
                 }else{
                     CustomReminderDialogAddGratitude customReminderDialog = new CustomReminderDialogAddGratitude();
                     Bundle bundle = new Bundle();
+
+                     if(null!=rootJsonInner){
+                         bundle.putString("jsonObject", rootJsonInner.toString());
+                     }
+
                     bundle.putString("HABIT_HACKER_TASK", "TRUE");
                     bundle.putString("HABIT_NAME", edtNewHabit.getText().toString());
                     customReminderDialog.setArguments(bundle);
@@ -169,7 +177,10 @@ public class HabitHackerAddFirstPage extends Fragment {
 
         return view;
     }
-
+    private boolean isValidInput(String input) {
+        // You can add more conditions based on your requirements
+        return !TextUtils.isEmpty(input);
+    }
     private void initJson() {
         try {
             rootJsonInner[0] = new JSONObject();

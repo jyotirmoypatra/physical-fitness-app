@@ -8465,8 +8465,11 @@ try{
                 Log.e(TAG, "getAchievementsFromDB3:" + 0);
                 sharedPreference.write("GRATITUDE_EXPIRATION_DATE_TIME", "", "2020-1-1 00:00:00");
                 pagenation_from_api = true;
-                new MyAsyncTask1().execute();
-                getAchievementsList_(Page);
+//                new MyAsyncTask1().execute();
+//                getAchievementsList_(Page);
+                new MyAsyncTask().execute();
+                getAchievementsList(Page);
+
 
             }
         }else{
@@ -11627,6 +11630,8 @@ try{
             }
         }).start();
     }
+
+
     private class MyAsyncTask2 extends AsyncTask<Integer, Void, Void> {
         @Override
         protected Void doInBackground(Integer... params) {

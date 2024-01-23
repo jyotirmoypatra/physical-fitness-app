@@ -195,7 +195,16 @@ String habitname="";
             llBtwnDown1.setVisibility(View.GONE);
             txtReminderFrequency.setText("Frequency");
         }
-
+        Bundle bundle = getArguments();
+        if (bundle != null && bundle.containsKey("jsonObject")) {
+            String jsonString = bundle.getString("jsonObject");
+            try {
+                JSONObject receivedJsonObject = new JSONObject(jsonString);
+                // Now you have the JSONObject in the new fragment
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
         rlBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

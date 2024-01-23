@@ -22,6 +22,7 @@ import android.text.TextUtils;
 import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
 import android.util.Log;
+import android.util.Patterns;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -257,11 +258,11 @@ public class LogInActivity extends Activity implements View.OnClickListener {
         rlSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (!edtForgotPassword.getText().toString().equals("")) {
+                if (!edtForgotPassword.getText().toString().equals("")&& isValidEmail(edtForgotPassword.getText().toString().trim())) {
                     dialog.dismiss();
                     apiCallForForgotPassword(edtForgotPassword.getText().toString());
                 } else {
-                    Toast.makeText(LogInActivity.this, "Please enter emailid", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(LogInActivity.this, "Please enter valid email id", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -269,7 +270,10 @@ public class LogInActivity extends Activity implements View.OnClickListener {
         dialog.show();
     }
 
-
+    private boolean isValidEmail(String email) {
+        // Using Android Patterns class to validate email
+        return Patterns.EMAIL_ADDRESS.matcher(email).matches();
+    }
 
     private void apiCallForForgotPassword(String emailId) {
 
@@ -316,158 +320,162 @@ public class LogInActivity extends Activity implements View.OnClickListener {
     private void performLogin() {
 
         if (Connection.checkConnection(this)) {
-            WeakReference<LogInActivity> activityReference = new WeakReference<>(this);
+
+
+            if(!"".equalsIgnoreCase(edtPassword.getText().toString())){
+                WeakReference<LogInActivity> activityReference = new WeakReference<>(this);
 
 // ...
 
-            if (activityReference.get() != null && !activityReference.get().isFinishing()) {
-                progressDialog.show();            }
+                if (activityReference.get() != null && !activityReference.get().isFinishing()) {
+                    progressDialog.show();
+                }
             /*if (!isFinishing()) {
                  progressDialog = ProgressDialog.show(this, "", "Please wait...");
             }*/
 
-            HashMap<String, Object> loginJson = new HashMap<>();
+                HashMap<String, Object> loginJson = new HashMap<>();
 
-            try {
+                try {
 
-                loginJson.put("Key", Util.KEY);
+                    loginJson.put("Key", Util.KEY);
                     loginJson.put("Email", edtEmailAddress.getText().toString());
                     loginJson.put("Password", edtPassword.getText().toString());
                     if (edtPassword.getTag() != null)
                         loginJson.put("FacebookToken", edtPassword.getTag().toString());
 
-                loginJson.put("IncludeAbbbcOnline", true);
+                    loginJson.put("IncludeAbbbcOnline", true);
 
-                //loginJson.put("AndroidDeviceId",ANDROID_ID);
-                loginJson.put("AppsFlyerId", APPSFLYER_ID);
+                    //loginJson.put("AndroidDeviceId",ANDROID_ID);
+                    loginJson.put("AppsFlyerId", APPSFLYER_ID);
 
-                try {
-                    PackageInfo pInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
-                    loginJson.put("AppVersion", pInfo.versionCode);
-                    loginJson.put("DeviceId", ANDROID_ID); /////
-                } catch (PackageManager.NameNotFoundException e) {
+                    try {
+                        PackageInfo pInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
+                        loginJson.put("AppVersion", pInfo.versionCode);
+                        loginJson.put("DeviceId", ANDROID_ID); /////
+                    } catch (PackageManager.NameNotFoundException e) {
+                        e.printStackTrace();
+                    }
+                    //loginJson.put("AppVersion", 16);
+                    loginJson.put("AppPlatform", "Android");
+
+                } catch (Exception e) {
                     e.printStackTrace();
+                    if (progressDialog != null && progressDialog.isShowing())
+                        progressDialog.dismiss();
                 }
-                //loginJson.put("AppVersion", 16);
-                loginJson.put("AppPlatform", "Android");
-
-            } catch (Exception e) {
-                e.printStackTrace();
-                if (progressDialog != null && progressDialog.isShowing())
-                    progressDialog.dismiss();
-            }
 
 
-            FinisherServiceImpl finisherService = new FinisherServiceImpl(this);
-            Call<LoginResponse> serverCall = finisherService.getLogin(loginJson);
-            serverCall.enqueue(new Callback<LoginResponse>() {
-                @Override
-                public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
-                    //progressDialog.dismiss();
-                    LoginResponse responseBody = response.body();
-                    if (responseBody != null && responseBody.getSuccessFlag()) {
+                FinisherServiceImpl finisherService = new FinisherServiceImpl(this);
+                Call<LoginResponse> serverCall = finisherService.getLogin(loginJson);
+                serverCall.enqueue(new Callback<LoginResponse>() {
+                    @Override
+                    public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
+                        //progressDialog.dismiss();
+                        LoginResponse responseBody = response.body();
+                        if (responseBody != null && responseBody.getSuccessFlag()) {
 
-                        try {
+                            try {
 
-                            Util. accesstype=String.valueOf(responseBody.getSessionDetail().getMbhqAccessType());
-                            Util. CourseAccess=responseBody.getSessionDetail().getCourseAccess();
+                                Util. accesstype=String.valueOf(responseBody.getSessionDetail().getMbhqAccessType());
+                                Util. CourseAccess=responseBody.getSessionDetail().getCourseAccess();
 
-                            Util. HabitAccess=responseBody.getSessionDetail().getHabitAccess();
+                                Util. HabitAccess=responseBody.getSessionDetail().getHabitAccess();
 
-                            Util. EqJournalAccess=responseBody.getSessionDetail().getEqJournalAccess();
+                                Util. EqJournalAccess=responseBody.getSessionDetail().getEqJournalAccess();
 
-                            Util. MeditationAccess=responseBody.getSessionDetail().getMeditationAccess();
+                                Util. MeditationAccess=responseBody.getSessionDetail().getMeditationAccess();
 
-                            Util. ForumAccess=responseBody.getSessionDetail().getForumAccess();
+                                Util. ForumAccess=responseBody.getSessionDetail().getForumAccess();
 
-                            Util. LiveChatAccess=responseBody.getSessionDetail().getLiveChatAccess();
+                                Util. LiveChatAccess=responseBody.getSessionDetail().getLiveChatAccess();
 
-                            Util. TestsAccess=responseBody.getSessionDetail().getTestsAccess();
-                            Log.i("111111",Util. accesstype);
-                            Log.i("222222",String.valueOf(Util. CourseAccess));
-                            Log.i("333333",String.valueOf(Util. HabitAccess));
-                            Log.i("444444",String.valueOf( Util. EqJournalAccess));
-                            Log.i("555555",String.valueOf( Util. MeditationAccess));
-                            Log.i("666666",String.valueOf( Util. ForumAccess));
-                            Log.i("777777",String.valueOf( Util. LiveChatAccess));
-                            Log.i("888888",String.valueOf( Util. TestsAccess));
+                                Util. TestsAccess=responseBody.getSessionDetail().getTestsAccess();
+                                Log.i("111111",Util. accesstype);
+                                Log.i("222222",String.valueOf(Util. CourseAccess));
+                                Log.i("333333",String.valueOf(Util. HabitAccess));
+                                Log.i("444444",String.valueOf( Util. EqJournalAccess));
+                                Log.i("555555",String.valueOf( Util. MeditationAccess));
+                                Log.i("666666",String.valueOf( Util. ForumAccess));
+                                Log.i("777777",String.valueOf( Util. LiveChatAccess));
+                                Log.i("888888",String.valueOf( Util. TestsAccess));
 
-                            sharedPreference.write("EQJournalPurchaseUrl", "", responseBody.getEQJournalPurchaseUrl());
-                            sharedPreference.write("HabitPurchaseUrl", "", responseBody.getHabitPurchaseUrl());
-                            sharedPreference.write("MeditationPurchaseUrl", "", responseBody.getMeditationPurchaseUrl());
-                            sharedPreference.write("TestsPurchaseUrl", "", responseBody.getTestsPurchaseUrl());
+                                sharedPreference.write("EQJournalPurchaseUrl", "", responseBody.getEQJournalPurchaseUrl());
+                                sharedPreference.write("HabitPurchaseUrl", "", responseBody.getHabitPurchaseUrl());
+                                sharedPreference.write("MeditationPurchaseUrl", "", responseBody.getMeditationPurchaseUrl());
+                                sharedPreference.write("TestsPurchaseUrl", "", responseBody.getTestsPurchaseUrl());
 
-                            long savedMillis = System.currentTimeMillis();
-                            if (sharedPreference.read("logintime", "").equals("")) {
-                                sharedPreference.write("logintime", "", savedMillis + "");
-                            }
+                                long savedMillis = System.currentTimeMillis();
+                                if (sharedPreference.read("logintime", "").equals("")) {
+                                    sharedPreference.write("logintime", "", savedMillis + "");
+                                }
 
-                            //FOR QUOTE INITIALIZATION
-                            if (sharedPreference.read("FIRST_LOGIN_TIME", "").equals("")) {
-                                sharedPreference.clear("signupdate");
-                                sharedPreference.clear("dbquote");
-                                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy/MM/dd");
-                                Calendar calendar = Calendar.getInstance();
-                                String strDt = simpleDateFormat.format(calendar.getTime());
-                                sharedPreference.write("FIRST_LOGIN_TIME", "", strDt);
-                                sharedPreference.write("habbitFirstTime_1", "", "true");
-                                sharedPreference.write("habbitFirstTime", "", "true");
-                                sharedPreference.write("habbitFirstTime_firstpopup", "", "true");
-                                sharedPreference.write("meditationFirstTime", "", "true"); //
-                                sharedPreference.write("achievementFirstTime", "", "true"); //
-                                sharedPreference.write("courseFirstTime", "", "true"); //
-                            }
-                            Util.session =  responseBody.getSessionDetail().getUserSessionID().toString();
-                            Util.jwt = responseBody.getJwt();
-                            sharedPreference.write("jwt", "",  Util.jwt);
+                                //FOR QUOTE INITIALIZATION
+                                if (sharedPreference.read("FIRST_LOGIN_TIME", "").equals("")) {
+                                    sharedPreference.clear("signupdate");
+                                    sharedPreference.clear("dbquote");
+                                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy/MM/dd");
+                                    Calendar calendar = Calendar.getInstance();
+                                    String strDt = simpleDateFormat.format(calendar.getTime());
+                                    sharedPreference.write("FIRST_LOGIN_TIME", "", strDt);
+                                    sharedPreference.write("habbitFirstTime_1", "", "true");
+                                    sharedPreference.write("habbitFirstTime", "", "true");
+                                    sharedPreference.write("habbitFirstTime_firstpopup", "", "true");
+                                    sharedPreference.write("meditationFirstTime", "", "true"); //
+                                    sharedPreference.write("achievementFirstTime", "", "true"); //
+                                    sharedPreference.write("courseFirstTime", "", "true"); //
+                                }
+                                Util.session =  responseBody.getSessionDetail().getUserSessionID().toString();
+                                Util.jwt = responseBody.getJwt();
+                                sharedPreference.write("jwt", "",  Util.jwt);
 
 
-                            sharedPreference.write("my_list_eqfolder", "", new Gson().toJson(responseBody.getSessionDetail().getEqFolders()));
-                            Integer accesstype=responseBody.getSessionDetail().getMbhqAccessType();
-                            Log.i("printttttttttttttttttttttttttttttt",String.valueOf(accesstype));
-                            Log.i("111111",String.valueOf(accesstype));
-                            Boolean HabitAccess=responseBody.getSessionDetail().getHabitAccess();
-                            Log.i("111111",String.valueOf(HabitAccess));
-                            Boolean EqJournalAccess=responseBody.getSessionDetail().getEqJournalAccess();
-                            Log.i("111111",String.valueOf(EqJournalAccess));
-                            Boolean MeditationAccess=responseBody.getSessionDetail().getMeditationAccess();
-                            Log.i("111111",String.valueOf(MeditationAccess));
-                            Boolean ForumAccess=responseBody.getSessionDetail().getForumAccess();
-                            Log.i("111111",String.valueOf(ForumAccess));
-                            Boolean LiveChatAccess=responseBody.getSessionDetail().getLiveChatAccess();
-                            Log.i("111111",String.valueOf(LiveChatAccess));
-                            Boolean TestsAccess=responseBody.getSessionDetail().getTestsAccess();
-                            Log.i("111111",String.valueOf(TestsAccess));
-                            Boolean CourseAccess=responseBody.getSessionDetail().getCourseAccess();
-                            Log.i("111111",String.valueOf(CourseAccess));
-                            sharedPreference.write("accesstype", "", String.valueOf(accesstype));
-                            sharedPreference.write("HabitAccess", "", String.valueOf(HabitAccess));
-                            sharedPreference.write("EqJournalAccess", "", String.valueOf(EqJournalAccess));
-                            sharedPreference.write("MeditationAccess", "", String.valueOf(MeditationAccess));
-                            sharedPreference.write("ForumAccess", "", String.valueOf(ForumAccess));
-                            sharedPreference.write("LiveChatAccess", "", String.valueOf(LiveChatAccess));
-                            sharedPreference.write("TestsAccess", "", String.valueOf(TestsAccess));
-                            sharedPreference.write("CourseAccess", "", String.valueOf(CourseAccess));
-                            String accesstype1=sharedPreference.read("accesstype","");
-                            String habit_access=sharedPreference.read("HabitAccess","");
-                            String eq_access=sharedPreference.read("EqJournalAccess","");
-                            String medi_access=sharedPreference.read("MeditationAccess","");
-                            String forum_access=sharedPreference.read("ForumAccess","");
-                            String Live_access=sharedPreference.read("LiveChatAccess","");
-                            String Test_acess=sharedPreference.read("TestsAccess","");
-                            String Course_access=sharedPreference.read("CourseAccess","");
+                                sharedPreference.write("my_list_eqfolder", "", new Gson().toJson(responseBody.getSessionDetail().getEqFolders()));
+                                Integer accesstype=responseBody.getSessionDetail().getMbhqAccessType();
+                                Log.i("printttttttttttttttttttttttttttttt",String.valueOf(accesstype));
+                                Log.i("111111",String.valueOf(accesstype));
+                                Boolean HabitAccess=responseBody.getSessionDetail().getHabitAccess();
+                                Log.i("111111",String.valueOf(HabitAccess));
+                                Boolean EqJournalAccess=responseBody.getSessionDetail().getEqJournalAccess();
+                                Log.i("111111",String.valueOf(EqJournalAccess));
+                                Boolean MeditationAccess=responseBody.getSessionDetail().getMeditationAccess();
+                                Log.i("111111",String.valueOf(MeditationAccess));
+                                Boolean ForumAccess=responseBody.getSessionDetail().getForumAccess();
+                                Log.i("111111",String.valueOf(ForumAccess));
+                                Boolean LiveChatAccess=responseBody.getSessionDetail().getLiveChatAccess();
+                                Log.i("111111",String.valueOf(LiveChatAccess));
+                                Boolean TestsAccess=responseBody.getSessionDetail().getTestsAccess();
+                                Log.i("111111",String.valueOf(TestsAccess));
+                                Boolean CourseAccess=responseBody.getSessionDetail().getCourseAccess();
+                                Log.i("111111",String.valueOf(CourseAccess));
+                                sharedPreference.write("accesstype", "", String.valueOf(accesstype));
+                                sharedPreference.write("HabitAccess", "", String.valueOf(HabitAccess));
+                                sharedPreference.write("EqJournalAccess", "", String.valueOf(EqJournalAccess));
+                                sharedPreference.write("MeditationAccess", "", String.valueOf(MeditationAccess));
+                                sharedPreference.write("ForumAccess", "", String.valueOf(ForumAccess));
+                                sharedPreference.write("LiveChatAccess", "", String.valueOf(LiveChatAccess));
+                                sharedPreference.write("TestsAccess", "", String.valueOf(TestsAccess));
+                                sharedPreference.write("CourseAccess", "", String.valueOf(CourseAccess));
+                                String accesstype1=sharedPreference.read("accesstype","");
+                                String habit_access=sharedPreference.read("HabitAccess","");
+                                String eq_access=sharedPreference.read("EqJournalAccess","");
+                                String medi_access=sharedPreference.read("MeditationAccess","");
+                                String forum_access=sharedPreference.read("ForumAccess","");
+                                String Live_access=sharedPreference.read("LiveChatAccess","");
+                                String Test_acess=sharedPreference.read("TestsAccess","");
+                                String Course_access=sharedPreference.read("CourseAccess","");
 
-                            Log.i("1111111100",eq_access);
-                            Log.i("2222222200",medi_access);
-                            Log.i("3333333300",accesstype1);
-                            Log.i("4444444400",habit_access);
-                            Log.i("5555555500",forum_access);
-                            Log.i("6666666600",Live_access);
-                            Log.i("7777777700",Test_acess);
-                            Log.i("8888888800",Course_access);
+                                Log.i("1111111100",eq_access);
+                                Log.i("2222222200",medi_access);
+                                Log.i("3333333300",accesstype1);
+                                Log.i("4444444400",habit_access);
+                                Log.i("5555555500",forum_access);
+                                Log.i("6666666600",Live_access);
+                                Log.i("7777777700",Test_acess);
+                                Log.i("8888888800",Course_access);
 
-                            Util.userid = responseBody.getSessionDetail().getUserID().toString();
-                            Log.e("userid123",Util.userid+ " " +Util.session);
+                                Util.userid = responseBody.getSessionDetail().getUserID().toString();
+                                Log.e("userid123",Util.userid+ " " +Util.session);
 
 
 
@@ -510,25 +518,25 @@ public class LogInActivity extends Activity implements View.OnClickListener {
                                     sharedPreference.write("SIGNUPMETHOD", "", "WEB");
                                 }
 
-                                    Calendar calendar = Calendar.getInstance();
-                                    String lastLoginTime = Util.globalFormatWithOutT.format(calendar.getTime());
-                                    sharedPreference.write("LASTLOGINTIME", "", lastLoginTime);
+                                Calendar calendar = Calendar.getInstance();
+                                String lastLoginTime = Util.globalFormatWithOutT.format(calendar.getTime());
+                                sharedPreference.write("LASTLOGINTIME", "", lastLoginTime);
 
-                                    sharedPreference.write("USEREMAIL", "", edtEmailAddress.getText().toString());
-                                    sharedPreference.write("USERPASSWORD", "", edtPassword.getText().toString());
+                                sharedPreference.write("USEREMAIL", "", edtEmailAddress.getText().toString());
+                                sharedPreference.write("USERPASSWORD", "", edtPassword.getText().toString());
 
                                 sharedPreference.write("compChk", "", "true");
 
                                 HashMap<String, Object> map = new HashMap<>();
-                                    if (responseBody.getSessionDetail().getIsFirstLogon()) {
+                                if (responseBody.getSessionDetail().getIsFirstLogon()) {
+                                    sharedPreference.write("slider", "", "");
+                                } else {
+                                    if (sharedPreference.read("PROGRAM_PURCHASE_ONLY", "").equals("TRUE")) {
                                         sharedPreference.write("slider", "", "");
                                     } else {
-                                        if (sharedPreference.read("PROGRAM_PURCHASE_ONLY", "").equals("TRUE")) {
-                                            sharedPreference.write("slider", "", "");
-                                        } else {
-                                            sharedPreference.write("slider", "", "true");
-                                        }
+                                        sharedPreference.write("slider", "", "true");
                                     }
+                                }
 
                                 if (!TextUtils.isEmpty(responseBody.getSessionDetail().getFirstName())) {
                                     map.put("FirstName", responseBody.getSessionDetail().getFirstName());
@@ -539,7 +547,7 @@ public class LogInActivity extends Activity implements View.OnClickListener {
                                     SharedPreferences sp = getApplicationContext().getSharedPreferences("firstName",0);
                                     SharedPreferences.Editor editor=sp.edit();
                                     editor.putString("firstName",responseBody.getSessionDetail().getFirstName());
-                                    editor.commit();
+                                    editor.apply();
                                 }
 
                                 if (!TextUtils.isEmpty(responseBody.getSessionDetail().getLastName())) {
@@ -622,22 +630,32 @@ public class LogInActivity extends Activity implements View.OnClickListener {
                                 }
 
 
-                        } catch (Exception e) {
+                            } catch (Exception e) {
+                                if (progressDialog != null && progressDialog.isShowing())
+                                    progressDialog.dismiss();
+                                e.printStackTrace();
+
+                                Util.showDialog(LogInActivity.this, "Alert !", "msg", false);
+                            }
+
+                        }else{
                             if (progressDialog != null && progressDialog.isShowing())
                                 progressDialog.dismiss();
-                            e.printStackTrace();
+                            Util.showDialog(mContext, "Error", "Please give a valid password.", false);
 
-                            Util.showDialog(LogInActivity.this, "Alert !", "msg", false);
                         }
-
                     }
-                }
 
-                @Override
-                public void onFailure(Call<LoginResponse> call, Throwable t) {
-                    t.printStackTrace();
-                }
-            });
+                    @Override
+                    public void onFailure(Call<LoginResponse> call, Throwable t) {
+                        t.printStackTrace();
+                    }
+                });
+
+            }else{
+                Util.showDialog(mContext, "Error", "Password should not be blank", false);
+
+            }
 
         }
 
