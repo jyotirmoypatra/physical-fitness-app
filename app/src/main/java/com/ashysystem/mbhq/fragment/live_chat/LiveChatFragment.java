@@ -395,7 +395,9 @@ public class LiveChatFragment extends Fragment implements View.OnClickListener, 
 
     @Override
     public void onItemClicked(Chat data) {
+        Util.chat=null;
         Util.chat=data;
+        Log.e("Event name","item click"+Util.chat.getEventName());
         if(Util.meditationsArrayList.size()>0){
             Util.meditationsArrayList.clear();
             if(null==data.getMeditations() ||0==data.getMeditations().size()){

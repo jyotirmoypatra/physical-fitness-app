@@ -297,7 +297,7 @@ public class UserPaidStatusActivity extends Activity {
                             alertDialogCustom.setAlertAction(new AlertDialogCustom.AlertResponse() {
                                                                  @Override
                                                                  public void onDone(String title) {
-                                                                     Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://mindbodyhq.com/pages/emailnotrecognised"));
+                                                                     Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://web.emotionalfitnessclub.com/"));
                                                                      startActivity(browserIntent);
                                                                  }
 

@@ -1378,6 +1378,7 @@ public class BackgroundSoundServiceNew extends Service{
 
         Intent meditationPlayIntent = new Intent(this, MainActivity.class);
         meditationPlayIntent.putExtra("NOTIFICATIONTYPE", "MEDITATION_PLAYING");
+        meditationPlayIntent.putExtra("FROM_LOGIN", "FALSE");
         Gson gson = new Gson();
         meditationPlayIntent.putExtra("data", gson.toJson(this.meditationData));
 
@@ -1422,8 +1423,7 @@ public class BackgroundSoundServiceNew extends Service{
         }catch (Exception e){
             e.printStackTrace();
         }
-        @SuppressLint({"NewApi", "LocalSuppress"}) Notification.Builder builder = (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) ?
-                new Notification.Builder(getApplicationContext(), notificationChannelId) : new Notification.Builder(getApplicationContext());
+        @SuppressLint({"NewApi", "LocalSuppress"}) Notification.Builder builder = new Notification.Builder(getApplicationContext(), notificationChannelId);
 
 
         String notificationTitle = "";
@@ -1482,7 +1482,7 @@ public class BackgroundSoundServiceNew extends Service{
         Intent meditationPlayIntent = new Intent(this, MainActivity.class);
         meditationPlayIntent.putExtra("NOTIFICATIONTYPE", "PROGRAM_PLAYING");
         meditationPlayIntent.putExtra("data", this.programData);
-
+        meditationPlayIntent.putExtra("FROM_LOGIN", "FALSE");
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
         stackBuilder.addNextIntentWithParentStack(meditationPlayIntent);
 
@@ -1527,8 +1527,7 @@ public class BackgroundSoundServiceNew extends Service{
         }
 
 
-        @SuppressLint({"NewApi", "LocalSuppress"}) Notification.Builder builder = (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) ?
-                new Notification.Builder(getApplicationContext(), notificationChannelId) : new Notification.Builder(getApplicationContext());
+        @SuppressLint({"NewApi", "LocalSuppress"}) Notification.Builder builder = new Notification.Builder(getApplicationContext(), notificationChannelId);
 
 
         String notificationTitle = "Program";
@@ -1558,16 +1557,16 @@ public class BackgroundSoundServiceNew extends Service{
     /////////////////////////////////////// Modified ///////////////////////////////////////////////////////////////////////////
     private  Notification createNotificationForLiveChat(int resId) {
 
-        String notificationChannelId = "Program play service";
+        String notificationChannelId = "Program play service livechat";
        // if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationManager nm = ((NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE));
             NotificationChannel channel = new NotificationChannel(
                     notificationChannelId,
-                    "Program background playing",
+                    "Program background playing livechat",
                     NotificationManager.IMPORTANCE_HIGH
             );
 
-            channel.setDescription("Program Playing Channel");
+            channel.setDescription("Program Playing Channel livechat");
             channel.enableLights(true);
             channel.setLightColor(Color.RED);
             channel.enableVibration(false);
@@ -1580,8 +1579,9 @@ public class BackgroundSoundServiceNew extends Service{
 
         Intent meditationPlayIntent = new Intent(this, MainActivity.class);
         meditationPlayIntent.putExtra("NOTIFICATIONTYPE", "LIVE_CHAT_PLAYING");
-        meditationPlayIntent.putExtra("data", this.liveChatData);
-
+        meditationPlayIntent.putExtra("data", Util.chat);
+        Log.e("Event name","background"+Util.chat.getEventName());
+        meditationPlayIntent.putExtra("FROM_LOGIN", "FALSE");
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
         stackBuilder.addNextIntentWithParentStack(meditationPlayIntent);
 
@@ -1591,12 +1591,12 @@ public class BackgroundSoundServiceNew extends Service{
         PendingIntent pendingIntent = null;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
 
-             pendingIntent = stackBuilder.getPendingIntent(0,
+             pendingIntent = stackBuilder.getPendingIntent(1,
                  PendingIntent.FLAG_IMMUTABLE);
 
         } else {
 
-            pendingIntent = stackBuilder.getPendingIntent(0,
+            pendingIntent = stackBuilder.getPendingIntent(1,
                     PendingIntent.FLAG_CANCEL_CURRENT);
         }
         PendingIntent pendingIntentPlay=null;
@@ -1606,17 +1606,16 @@ try {
 
 
     if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.S) {
-        pendingIntentPlay = PendingIntent.getBroadcast(getApplicationContext(), 0,
+        pendingIntentPlay = PendingIntent.getBroadcast(getApplicationContext(), 1,
                 intentPlay, PendingIntent.FLAG_IMMUTABLE);
     } else {
-        pendingIntentPlay = PendingIntent.getBroadcast(getApplicationContext(), 0,
+        pendingIntentPlay = PendingIntent.getBroadcast(getApplicationContext(), 1,
                 intentPlay, PendingIntent.FLAG_UPDATE_CURRENT);
     }
 }catch (Exception e){
     e.printStackTrace();
 }
-        @SuppressLint({"NewApi", "LocalSuppress"}) Notification.Builder builder = (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) ?
-                new Notification.Builder(getApplicationContext(), notificationChannelId) : new Notification.Builder(getApplicationContext());
+        @SuppressLint({"NewApi", "LocalSuppress"}) Notification.Builder builder = new Notification.Builder(getApplicationContext(), notificationChannelId);
 
 
         String notificationTitle = "Live Chat";

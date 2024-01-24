@@ -45,9 +45,11 @@ import com.ashysystem.mbhq.util.Util;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Arrays;
 import java.util.HashMap;
 
 import retrofit2.Call;
@@ -136,7 +138,9 @@ public class HabitHackerAddFirstPage extends Fragment {
                     Bundle bundle = new Bundle();
 
                      if(null!=rootJsonInner){
-                         bundle.putString("jsonObject", rootJsonInner.toString());
+                         //bundle.putString("jsonObject", rootJsonInner.toString());
+                         JSONArray jsonArray = new JSONArray(Arrays.asList(rootJsonInner));
+                         bundle.putString("jsonArray", jsonArray.toString());
                      }
 
                     bundle.putString("HABIT_HACKER_TASK", "TRUE");

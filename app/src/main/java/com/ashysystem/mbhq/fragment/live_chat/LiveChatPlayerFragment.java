@@ -77,6 +77,7 @@ public class LiveChatPlayerFragment extends Fragment implements View.OnClickList
         LiveChatPlayerFragment fragment = new LiveChatPlayerFragment();
         Bundle args = new Bundle();
         args.putSerializable(ARG_LIVE_CHAT_DATA, liveChatData);
+        Log.e("Event name","player"+liveChatData.getEventName());
         fragment.setArguments(args);
         return fragment;
     }
@@ -259,6 +260,7 @@ public class LiveChatPlayerFragment extends Fragment implements View.OnClickList
 
         if (getArguments() != null) {
             liveChatData = (Chat) getArguments().getSerializable(ARG_LIVE_CHAT_DATA);
+            Log.e("Event name","player oncreate"+liveChatData.getEventName());
         }
     }
 

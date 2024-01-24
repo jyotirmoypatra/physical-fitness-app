@@ -537,7 +537,15 @@ public class BucketListFragment extends Fragment implements StartDragListener {
             @Override
             public void onClick(View v) {
                 try {
-                    if (!edtNote.getText().toString().equals("")) {
+                  //  if (!edtNote.getText().toString().equals("")) {
+                    if (edtNote.getText().toString().trim().equals("")|| (edtNote.getText().toString().trim().length()==1 && !Character.isLetterOrDigit(edtNote.getText().toString().trim().charAt(0)))) {
+                        Toast.makeText(getActivity(), "Please enter Valid bucket name", Toast.LENGTH_SHORT).show();
+
+
+                    } else {
+
+
+
                         JSONObject rootJson = new JSONObject();
                         try {
                             JSONObject rootJsonInner = new JSONObject();
@@ -573,9 +581,6 @@ public class BucketListFragment extends Fragment implements StartDragListener {
                         HashMap<String, Object> hashMap = (HashMap<String, Object>) Util.jsonToMap(rootJson);
 
                         saveAddGratitudeData(hashMap);
-
-                    } else {
-                        Toast.makeText(getActivity(), "Please enter bucket name", Toast.LENGTH_SHORT).show();
                     }
 
 

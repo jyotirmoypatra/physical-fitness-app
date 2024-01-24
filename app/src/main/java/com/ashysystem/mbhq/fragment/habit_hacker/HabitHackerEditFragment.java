@@ -28,6 +28,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.ashysystem.mbhq.R;
 import com.ashysystem.mbhq.Service.impl.FinisherServiceImpl;
@@ -915,7 +916,7 @@ public class HabitHackerEditFragment extends Fragment {
     private void openDialogForAddSomething(String heading,TextView txtAddValue) {
 
         final Dialog dialog=new Dialog(getActivity(),R.style.DialogThemeAnother);
-        dialog.setContentView(R.layout.dialog_achievement_add);
+        dialog.setContentView(R.layout.dialog_achievement_add_habit);
 
         TextView txtBack = dialog.findViewById(R.id.txtBack);
         TextView tstSelectedOption = dialog.findViewById(R.id.tstSelectedOption);
@@ -1795,6 +1796,10 @@ public class HabitHackerEditFragment extends Fragment {
                     progressDialog.dismiss();
                     if(response.body()!=null && response.body().get("SuccessFlag").getAsBoolean())
                     {
+                        if(response.code()==500){
+                            Toast.makeText(getContext(),"Something Went Wrong",Toast.LENGTH_SHORT);
+                            return;
+                        }
                         Constants.clicknotification=false;
                         Util.showToast(getActivity(),"Successfully Saved");
                         if(chkSetReminder.isChecked())
@@ -1892,13 +1897,15 @@ public class HabitHackerEditFragment extends Fragment {
                                     }
 
                                 });
+                    }else{
+                        Toast.makeText(getContext(),"Something Went Wrong",Toast.LENGTH_SHORT).show();
                     }
                 }
 
                 @Override
                 public void onFailure(Call<JsonObject> call, Throwable t) {
                     Constants.clicknotification=false;
-
+                    Toast.makeText(getContext(),"Something Went Wrong",Toast.LENGTH_SHORT).show();
                     progressDialog.dismiss();
                 }
             });

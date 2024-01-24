@@ -486,6 +486,10 @@ public class LogInActivity extends Activity implements View.OnClickListener {
                                 sharedPreference.write("UserID", "", userId);
 
 
+                                sharedPreference.write("ABBBCOnlineUserId", "", responseBody.getSessionDetail().getABBBCOnlineUserId().toString());
+                                sharedPreference.write("ABBBCOnlineUserSessionId", "", responseBody.getSessionDetail().getABBBCOnlineUserSessionId().toString());
+
+
                                 if (!responseBody.getSessionDetail().getToken().equals("")) {
                                     sharedPreference.write("MEDITATION_TEST_NOW_TOKEN", "", responseBody.getSessionDetail().getToken());
                                 }

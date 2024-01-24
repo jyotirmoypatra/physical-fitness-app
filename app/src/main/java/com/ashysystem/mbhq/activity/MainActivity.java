@@ -144,6 +144,7 @@ import com.ashysystem.mbhq.fragment.habit_hacker.MbhqTodayTwoFragment;
 import com.ashysystem.mbhq.fragment.habit_hacker.PopularHabitsListFragment;
 import com.ashysystem.mbhq.fragment.habit_hacker.WinTheWeekStatsFragment;
 import com.ashysystem.mbhq.fragment.live_chat.LiveChatFragment;
+import com.ashysystem.mbhq.fragment.live_chat.LiveChatPlayerFragment;
 import com.ashysystem.mbhq.fragment.live_chat.NewHelpFragment;
 import com.ashysystem.mbhq.fragment.meditation.MeditationDetails;
 import com.ashysystem.mbhq.fragment.meditation.MeditationDetailsNew;
@@ -170,6 +171,7 @@ import com.ashysystem.mbhq.model.StreakData;
 import com.ashysystem.mbhq.model.UpdateBadgeShownResponse;
 import com.ashysystem.mbhq.model.eqfolder.Eqfolder;
 import com.ashysystem.mbhq.model.eqfolder.UserEqFolder;
+import com.ashysystem.mbhq.model.livechat.Chat;
 import com.ashysystem.mbhq.model.response.AddCourseResponseModel;
 import com.ashysystem.mbhq.model.response.AddUpdateMyAchievementModel;
 import com.ashysystem.mbhq.model.response.MyAchievementsListInnerModel;
@@ -994,8 +996,8 @@ public class MainActivity extends AppCompatActivity implements OnLoadFragmentReq
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-       // registerReceiver(broadcastReceiver, new IntentFilter("MediaNotification"));
-        //startService(new Intent(getBaseContext(), OnClearFromRecentService.class));
+        registerReceiver(broadcastReceiver, new IntentFilter("MediaNotification"));
+        startService(new Intent(getBaseContext(), OnClearFromRecentService.class));
 
         ////////////////////////////////////////////////////////////////////
 
@@ -2621,6 +2623,26 @@ public class MainActivity extends AppCompatActivity implements OnLoadFragmentReq
                         bundle1.putBoolean("from_notification", true);
                         loadFragment(new HabbitDetailsCalendarFragment(), "HabbitDetailsCalendar", bundle1);
                     }
+
+                    else if (bundle.getString("NOTIFICATIONTYPE").equals("MEDITATION_PLAYING")) {
+                        Log.i(TAG, "meditation playing");
+                        Util.strMeditationDetailsForBackground = bundle.getString("data");
+                        Util.boolBackGroundServiceRunningMeditation = true;
+                        rlMeditation.performClick();
+                    } else if (bundle.getString("NOTIFICATIONTYPE").equals("PROGRAM_PLAYING")) {
+                        Log.i(TAG, "program playing");
+                        Util.bundleProgramDetailsForBackground = bundle.getBundle("data");
+                        Util.boolBackGroundServiceRunningProgram = true;
+                        rlCourses.performClick();
+                    } else if (bundle.getString("NOTIFICATIONTYPE").equals("LIVE_CHAT_PLAYING")) {
+
+                        Log.i(TAG, "live chat playing");
+                         clearCacheForParticularFragment(LiveChatPlayerFragment.newInstance(Util.chat));
+                        loadFragment(LiveChatPlayerFragment.newInstance(Util.chat), "LiveChatPlayer", null);
+
+                    }
+
+
                 }
             }
         }
@@ -5661,7 +5683,7 @@ LinearLayout ll_1=(LinearLayout)  dialog.findViewById(R.id.ll_1);
     protected void onDestroy() {
         super.onDestroy();
 
-       // unregisterReceiver(broadcastReceiver);
+        unregisterReceiver(broadcastReceiver);
 
 
 

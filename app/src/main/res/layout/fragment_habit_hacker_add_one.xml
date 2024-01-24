@@ -123,12 +123,13 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/rlNewHabitTime"
             android:text="Set Reminder?"
+            android:padding="10dp"
             android:textColor="@color/black"
             android:textSize="@dimen/fab_sixteen" />
 
         <CheckBox
             android:id="@+id/chkSetReminder"
-            android:layout_width="50dp"
+            android:layout_width="60dp"
             android:layout_height="match_parent"
             android:layout_marginLeft="20dp"
             android:background="@drawable/drawable_custom_toggle"

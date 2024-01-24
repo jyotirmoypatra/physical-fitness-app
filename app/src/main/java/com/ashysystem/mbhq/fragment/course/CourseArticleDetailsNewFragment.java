@@ -1120,6 +1120,12 @@ public class CourseArticleDetailsNewFragment extends Fragment implements AudioSe
 
     private void initView(View view) {
 
+
+
+        ((MainActivity) getActivity()).imgCourses.setImageResource(0);
+        ((MainActivity) getActivity()).imgCourses.setImageResource(R.drawable.mbhq_gratitude_active);
+
+
         mVisualizerView = (VisualizerView) view.findViewById(R.id.myvisualizerview);
         rl_suggestedmedicines= view.findViewById(R.id.rl_suggestedmedicines);
         webview = view.findViewById(R.id.webview);
@@ -1510,6 +1516,9 @@ public class CourseArticleDetailsNewFragment extends Fragment implements AudioSe
                                 imgPlayPauseOnVideo.setBackgroundResource(R.drawable.mbhq_play_black);
                             } else {
                                 Log.i(TAG, "media player started");
+                                Util.openliveplayer="";
+                                Util.chat=null;
+
                                 musicSrv.startMedia();
                                 imgPlayPause.setBackgroundResource(R.drawable.mbhq_pause_black);
                                 imgPlayPauseOnVideo.setBackgroundResource(R.drawable.mbhq_pause_black);

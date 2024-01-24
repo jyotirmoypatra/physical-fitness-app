@@ -32,6 +32,7 @@ import androidx.fragment.app.DialogFragment;
 import com.ashysystem.mbhq.R;
 import com.ashysystem.mbhq.util.TimePickerControllerWithTextView;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -195,16 +196,8 @@ String habitname="";
             llBtwnDown1.setVisibility(View.GONE);
             txtReminderFrequency.setText("Frequency");
         }
-        Bundle bundle = getArguments();
-        if (bundle != null && bundle.containsKey("jsonObject")) {
-            String jsonString = bundle.getString("jsonObject");
-            try {
-                JSONObject receivedJsonObject = new JSONObject(jsonString);
-                // Now you have the JSONObject in the new fragment
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        }
+
+
         rlBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -280,7 +273,7 @@ String habitname="";
         adapterAmPm.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spReminderFrequency.setAdapter(adapterReminderFreq);
         //spReminderFrequency.setSelection(4);
-        spReminderFrequency.setSelection(0);
+       spReminderFrequency.setSelection(0);
         spMonth.setAdapter(adapterReminderFreqMonth);
         spBtwn.setAdapter(adapterBetween);
         spAmPm.setAdapter(adapterAmPm);
@@ -1305,8 +1298,131 @@ String habitname="";
             }
         });
 
+        Bundle bundle = getArguments();
+        if (bundle != null && bundle.containsKey("jsonArray")) {
+            String jsonArrayString = bundle.getString("jsonArray");
+            try {
+                JSONArray jsonArray = new JSONArray(jsonArrayString);
 
+                // Iterate through the array and process each JSONObject
+                for (int i = 0; i < jsonArray.length(); i++) {
+                    JSONObject rootJsonInner = jsonArray.getJSONObject(i);
 
+                    // Now rootJsonInner is a JSONObject
+
+                    // Process the individual JSONObject as needed
+                    if (rootJsonInner != null && rootJsonInner.has("FrequencyId")) {
+                        try {
+                            int frequencyId = rootJsonInner.getInt("FrequencyId");
+
+                            if (frequencyId == 1) {
+                                // txtHowOftenTime.setText("Daily");
+                                spReminderFrequency.setSelection(0);
+                            } else if (frequencyId == 2) {
+                                // txtHowOftenTime.setText("Twice Daily");
+                                // spReminderFrequency.setSelection(1);
+                            } else if (frequencyId== 3) {
+                                //  txtHowOftenTime.setText("Weekly");
+                                spReminderFrequency.setSelection(1);
+                                weekChecker(rootJsonInner);
+                            } else if (frequencyId == 4) {
+                                // txtHowOftenTime.setText("Fortnightly");
+                                spReminderFrequency.setSelection(2);
+                                weekChecker(rootJsonInner);
+
+                            } else if (frequencyId == 5) {
+                                //  txtHowOftenTime.setText("Monthly");
+                                spReminderFrequency.setSelection(3);
+                                spMonth.setSelection(rootJsonInner.getInt("MonthReminder")-1);
+
+                            } else if (frequencyId== 6) {
+                                // txtHowOftenTime.setText("Yearly");
+                            }
+
+                            // Process the frequencyId as needed
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        } else {
+            // Handle the case where the array is not found in the bundle
+            spReminderFrequency.setSelection(0);
+        }
+
+    }
+
+    private  void weekChecker(JSONObject rootJsonInner){
+        try {
+            if (rootJsonInner.getBoolean("Sunday")) {
+                boolS = true;
+                buttonS.setBackgroundResource(R.drawable.circle_blue_month);
+                try {
+                    dataJsonReq.put("Sunday", true);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (rootJsonInner.getBoolean("Monday")) {
+                boolM = true;
+                buttonM.setBackgroundResource(R.drawable.circle_blue_month);
+                try {
+                    dataJsonReq.put("Monday", true);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (rootJsonInner.getBoolean("Tuesday")) {
+                boolT = true;
+                buttonT.setBackgroundResource(R.drawable.circle_blue_month);
+                try {
+                    dataJsonReq.put("Tuesday", true);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (rootJsonInner.getBoolean("Wednesday")) {
+                boolW = true;
+                buttonW.setBackgroundResource(R.drawable.circle_blue_month);
+                try {
+                    dataJsonReq.put("Wednesday", true);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (rootJsonInner.getBoolean("Thursday")) {
+                boolTH = true;
+                buttonTH.setBackgroundResource(R.drawable.circle_blue_month);
+                try {
+                    dataJsonReq.put("Thursday", true);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (rootJsonInner.getBoolean("Friday")) {
+                boolF = true;
+                buttonF.setBackgroundResource(R.drawable.circle_blue_month);
+                try {
+                    dataJsonReq.put("Friday", true);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (rootJsonInner.getBoolean("Saturday")) {
+                boolSa = true;
+                buttonSa.setBackgroundResource(R.drawable.circle_blue_month);
+                try {
+                    dataJsonReq.put("Saturday", true);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
     private void showNotificationPermissionDialog(final Activity context) {
 

@@ -214,7 +214,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:orientation="horizontal"
-                android:visibility="gone">
+                android:visibility="visible">
 
                 <com.ashysystem.mbhq.view.TextViewOswaldLight
                     android:layout_width="0dp"

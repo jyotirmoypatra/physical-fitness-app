@@ -107,7 +107,9 @@ public class LiveChatAdapter extends RecyclerView.Adapter<LiveChatAdapter.ViewHo
                 @Override
                 public void onClick(View v) {
                     if (listener != null) {
+                        Log.e("Event name","item click adapter"+dataItem.getEventName());
                         listener.onItemClicked(dataItem);
+
                     }
                 }
             });
