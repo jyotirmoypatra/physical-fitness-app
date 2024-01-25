@@ -67,7 +67,22 @@ public class HabitHackerAddFirstPage extends Fragment {
     Button btnPopularHabits;
     HabitSwap globalHabitSwapModel; //////////////////////////////////////////////
 
+    private Boolean validateText(String text) {
+        // Define your special character set
+        String specialCharacters = "!@#$%^&*()_+";
 
+        // Check if the text contains only special characters
+        boolean containsOnlySpecialChars = text.matches(".*[a-zA-Z0-9].*");
+
+       /* if (containsOnlySpecialChars) {
+            // Show validation text
+            validationText.setText("Valid: Contains only special characters");
+        } else {
+            // Hide validation text or show a different message
+            validationText.setText("");
+        }*/
+        return  containsOnlySpecialChars;
+    }
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -106,7 +121,7 @@ public class HabitHackerAddFirstPage extends Fragment {
             @Override
             public void onClick(View view) {
 
-                if (edtNewHabit.getText().toString().trim().equals("")|| (edtNewHabit.getText().toString().trim().length()==1 && !Character.isLetterOrDigit(edtNewHabit.getText().toString().trim().charAt(0)))) {
+                if (edtNewHabit.getText().toString().trim().equals("")|| !validateText(edtNewHabit.getText().toString().trim()) /*(edtNewHabit.getText().toString().trim().length()==1 && !Character.isLetterOrDigit(edtNewHabit.getText().toString().trim().charAt(0))*/) {
                     Util.showToast(getActivity(), "Please enter a valid Habit Name");
                 } else if (txtHowOftenTime.getText().toString().equals("")) {
                     Util.showToast(getActivity(), "Please enter Habit Frequency");

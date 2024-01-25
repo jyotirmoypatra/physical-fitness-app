@@ -205,6 +205,9 @@ public class ExpandableCourseListNew extends RecyclerView.Adapter<RecyclerView.V
                             fromCourseBundle.putString("AUTHOR", item.author);
                             fromCourseBundle.putString("type", courseType);
                             fromCourseBundle.putString("IMAGE_URL", imageUrl);
+                            Log.i("click_course_media","11");
+                            Util.bundleProgramDetailsForBackground=null;
+                            Util.bundleProgramDetailsForBackground=fromCourseBundle;
                             ((MainActivity) context).clearCacheForParticularFragment(new CourseArticleDetailsNewFragment());
                             ((MainActivity) context).loadFragment(new CourseArticleDetailsNewFragment(), "CourseArticleDetailsNew", fromCourseBundle);
 
@@ -226,6 +229,9 @@ public class ExpandableCourseListNew extends RecyclerView.Adapter<RecyclerView.V
                                 if (item.relatedTask.getTaskId() != null)
                                     fromCourseBundle.putInt("TASKID", item.relatedTask.getTaskId());
                             }
+                            Log.i("click_course_media","10");
+                            Util.bundleProgramDetailsForBackground=null;
+                            Util.bundleProgramDetailsForBackground=fromCourseBundle;
                             ((MainActivity) context).clearCacheForParticularFragment(new CourseArticleDetailsNewFragment());
                             ((MainActivity) context).loadFragment(new CourseArticleDetailsNewFragment(), "CourseArticleDetailsNew", fromCourseBundle);
                         }

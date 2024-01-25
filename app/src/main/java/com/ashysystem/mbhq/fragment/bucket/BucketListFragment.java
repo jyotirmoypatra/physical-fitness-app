@@ -171,6 +171,22 @@ public class BucketListFragment extends Fragment implements StartDragListener {
         this.lstManualDrag = lstManualDrag;
         return this;
     }
+    private Boolean validateText(String text) {
+        // Define your special character set
+        String specialCharacters = "!@#$%^&*()_+";
+
+        // Check if the text contains only special characters
+        boolean containsOnlySpecialChars = text.matches(".*[a-zA-Z0-9].*");
+
+       /* if (containsOnlySpecialChars) {
+            // Show validation text
+            validationText.setText("Valid: Contains only special characters");
+        } else {
+            // Hide validation text or show a different message
+            validationText.setText("");
+        }*/
+        return  containsOnlySpecialChars;
+    }
 
 
     @Nullable
@@ -538,7 +554,7 @@ public class BucketListFragment extends Fragment implements StartDragListener {
             public void onClick(View v) {
                 try {
                   //  if (!edtNote.getText().toString().equals("")) {
-                    if (edtNote.getText().toString().trim().equals("")|| (edtNote.getText().toString().trim().length()==1 && !Character.isLetterOrDigit(edtNote.getText().toString().trim().charAt(0)))) {
+                    if (edtNote.getText().toString().trim().equals("")||!validateText(edtNote.getText().toString().trim()) /*(edtNote.getText().toString().trim().length()==1 && !Character.isLetterOrDigit(edtNote.getText().toString().trim().charAt(0))*/) {
                         Toast.makeText(getActivity(), "Please enter Valid bucket name", Toast.LENGTH_SHORT).show();
 
 

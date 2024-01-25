@@ -298,10 +298,9 @@ public class LiveChatPlayerFragment_video extends Fragment implements View.OnCli
                         boolean isKeyGuardLocked = myKM.isKeyguardLocked();
                         Log.i(TAG, "isScreen On :" + isScreenAwake + "isPhoneLocked :" + isPhoneLocked + "isKeyGuardLocked :" + isKeyGuardLocked + "fragmentState :" + fragmentState);
                         if (isScreenAwake && !isPhoneLocked && !isKeyGuardLocked && fragmentState == FRAGMENT_STATE.RESUMED) {
-//                            imgPlayPause.setBackgroundResource(R.drawable.mbhq_play);
-//                            imgPlayPauseOnVideo.setBackgroundResource(R.drawable.mbhq_play);
-                            imgPlayPause.setImageResource(R.drawable.mbhq_play_black);
-                            imgPlayPauseOnVideo.setImageResource(R.drawable.mbhq_play_black);
+                           // imgPlayPause.setImageResource(R.drawable.mbhq_play_black);
+                            //imgPlayPauseOnVideo.setImageResource(R.drawable.mbhq_play_black);
+                            imgPlayPauseOnVideo.setVisibility(View.GONE);
                             musicSrv.seekMedia(0);
                             musicSrv.pauseMedia();
                         }
@@ -907,11 +906,12 @@ public class LiveChatPlayerFragment_video extends Fragment implements View.OnCli
 
             if (musicSrv.isMediaPlaying()) {
 
-                imgPlayPause.setBackgroundResource(R.drawable.mbhq_pause_black);
-                imgPlayPauseOnVideo.setBackgroundResource(R.drawable.mbhq_pause_black);
+              //  imgPlayPause.setBackgroundResource(R.drawable.mbhq_pause_black);
+               // imgPlayPauseOnVideo.setBackgroundResource(R.drawable.mbhq_pause_black);
+                imgPlayPauseOnVideo.setVisibility(View.GONE);
             } else {
-                imgPlayPause.setBackgroundResource(R.drawable.mbhq_play_black);
-                imgPlayPauseOnVideo.setBackgroundResource(R.drawable.mbhq_play_black);
+                //imgPlayPause.setBackgroundResource(R.drawable.mbhq_play_black);
+               // imgPlayPauseOnVideo.setBackgroundResource(R.drawable.mbhq_play_black);
             }
 
             musicBound = true;
@@ -1123,17 +1123,12 @@ public class LiveChatPlayerFragment_video extends Fragment implements View.OnCli
                                 Log.i(TAG, "media player stopped");
 
                                 musicSrv.pauseMedia();
-//                                imgPlayPause.setBackgroundResource(R.drawable.mbhq_play);
-//                                imgPlayPauseOnVideo.setBackgroundResource(R.drawable.mbhq_play);
                                 imgPlayPause.setImageResource(R.drawable.mbhq_play_black);
-                                imgPlayPauseOnVideo.setImageResource(R.drawable.mbhq_play_black);
+                               // imgPlayPauseOnVideo.setImageResource(R.drawable.mbhq_play_black);
+                                imgPlayPauseOnVideo.setVisibility(View.GONE);
                             } else {
                                 Log.i(TAG, "media player started");
-//                                musicSrv.startMedia();
-//                                imgPlayPause.setImageResource(R.drawable.mbhq_pause_black);
-//                                imgPlayPauseOnVideo.setImageResource(R.drawable.mbhq_pause_black);
-//                                requireActivity().setVolumeControlStream(AudioManager.STREAM_MUSIC);
-
+//
                                 Log.e("DWNLOAD_DATA1", "onClick: " + liveChatData.getEventItemVideoDetails().get(0).getDownloadURL());
                                 Log.i(TAG, "media player started");
 
@@ -1172,8 +1167,9 @@ public class LiveChatPlayerFragment_video extends Fragment implements View.OnCli
                                 }
 
                                 musicSrv.startMedia();
-                                imgPlayPause.setBackgroundResource(R.drawable.mbhq_pause_black);
-                                imgPlayPauseOnVideo.setBackgroundResource(R.drawable.mbhq_pause_black);
+                                imgPlayPause.setImageResource(R.drawable.mbhq_pause_black);
+                               // imgPlayPauseOnVideo.setBackgroundResource(R.drawable.mbhq_pause_black);
+                                imgPlayPauseOnVideo.setVisibility(View.GONE);
                                 requireActivity().setVolumeControlStream(AudioManager.STREAM_MUSIC);
 
                             }
@@ -1257,18 +1253,15 @@ public class LiveChatPlayerFragment_video extends Fragment implements View.OnCli
         //  Toast.makeText(this,"Test",Toast.LENGTH_SHORT).show();
         Log.e("MMPPLL", "onPlayPause: " + musicSrv.isMediaPlaying());
         if (musicSrv.isMediaPlaying()) {
-            //imgPlayPause.setImageDrawable(LiveChatPlayerFragment.this.requireContext().getDrawable(R.drawable.mbhq_pause));
-//            imgPlayPause.setBackgroundResource(R.drawable.mbhq_pause);
-//            imgPlayPauseOnVideo.setBackgroundResource(R.drawable.mbhq_pause);
-            imgPlayPause.setImageResource(R.drawable.mbhq_pause_black);
-            imgPlayPauseOnVideo.setImageResource(R.drawable.mbhq_pause_black);
+
+          //  imgPlayPause.setImageResource(R.drawable.mbhq_pause_black);
+           // imgPlayPauseOnVideo.setImageResource(R.drawable.mbhq_pause_black);
+            imgPlayPauseOnVideo.setVisibility(View.GONE);
         } else {
-            // imgPlayPause.setImageDrawable(LiveChatPlayerFragment.this.requireContext().getDrawable(R.drawable.mbhq_play));
-            //imgPlayPauseOnVideo.setImageDrawable(LiveChatPlayerFragment.this.requireContext().getDrawable(R.drawable.mbhq_play));
-//            imgPlayPause.setBackgroundResource(R.drawable.mbhq_play);
-//            imgPlayPauseOnVideo.setBackgroundResource(R.drawable.mbhq_play);
-            imgPlayPause.setImageResource(R.drawable.mbhq_play_black);
-            imgPlayPauseOnVideo.setImageResource(R.drawable.mbhq_play_black);
+
+          //  imgPlayPause.setImageResource(R.drawable.mbhq_play_black);
+           // imgPlayPauseOnVideo.setImageResource(R.drawable.mbhq_play_black);
+            imgPlayPauseOnVideo.setVisibility(View.GONE);
         }
 
 
@@ -1277,13 +1270,10 @@ public class LiveChatPlayerFragment_video extends Fragment implements View.OnCli
         //  Toast.makeText(this,"Test",Toast.LENGTH_SHORT).show();
         Log.e("MMPPLL", "onPlayPause: " + musicSrv.isMediaPlaying());
         if (musicSrv.isMediaPlaying()) {
-            //imgPlayPause.setImageDrawable(LiveChatPlayerFragment.this.requireContext().getDrawable(R.drawable.mbhq_pause));
-            imgPlayPause.setBackgroundResource(R.drawable.mbhq_pause_black);
-            imgPlayPauseOnVideo.setBackgroundResource(R.drawable.mbhq_pause_black);
+         //   imgPlayPause.setBackgroundResource(R.drawable.mbhq_pause_black);
+          //  imgPlayPauseOnVideo.setBackgroundResource(R.drawable.mbhq_pause_black);
         } else {
-            // imgPlayPause.setImageDrawable(LiveChatPlayerFragment.this.requireContext().getDrawable(R.drawable.mbhq_play));
-            /*   imgPlayPause.setBackgroundResource(R.drawable.mbhq_play);
-             */
+
         }
 
 

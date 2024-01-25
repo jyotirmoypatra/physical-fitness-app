@@ -487,42 +487,9 @@ public class CourseArticleDetailsNewFragment extends Fragment implements AudioSe
 
 
 
-       /* AudioManager audioManager = (AudioManager) Objects.requireNonNull(getActivity()).getSystemService(Context.AUDIO_SERVICE);
-        afChangeListener = new AudioManager.OnAudioFocusChangeListener() {
-            public void onAudioFocusChange(int focusChange) {
-                if (focusChange == AudioManager.AUDIOFOCUS_LOSS_TRANSIENT) {
-                    // Pause playback
-                    Log.i("autofocus","AUDIOFOCUS_LOSS_TRANSIENT");
-                    musicSrv.pauseMedia();
-                } else if (focusChange == AudioManager.AUDIOFOCUS_GAIN) {
-                    // Resume playback
-                    //  musicSrv.startMedia();
-                    Log.i("autofocus","AUDIOFOCUS_GAIN");
-                } else if (focusChange == AudioManager.AUDIOFOCUS_LOSS) {
-                    // Stop playback
-                    Log.i("autofocus","AUDIOFOCUS_LOSS");
-                    musicSrv.pauseMedia();
-                }else if (focusChange == AudioManager.AUDIOFOCUS_LOSS_TRANSIENT_CAN_DUCK) {
-                    // Stop playback
-                    Log.i("autofocus","AUDIOFOCUS_LOSS_TRANSIENT_CAN_DUCK");
-                    musicSrv.pauseMedia();
-                }
-            }
-        };
-
-        int result = audioManager.requestAudioFocus(afChangeListener,
-                // Use the music stream.
-                AudioManager.STREAM_MUSIC,
-                // Request permanent focus.
-                AudioManager.AUDIOFOCUS_GAIN);*/
-
-       /* if (result == AudioManager.AUDIOFOCUS_REQUEST_GRANTED) {
-            // Start playback
-           // musicSrv.startMedia();
-        }*/
-
 
         if (getArguments() != null) {
+            Log.i("click_course_media","1");
             courseDetailBundle = getArguments();
             Log.i(TAG, courseDetailBundle.toString());
             if (getArguments().containsKey("COURSEID")) {
@@ -530,6 +497,8 @@ public class CourseArticleDetailsNewFragment extends Fragment implements AudioSe
             }
             if (getArguments().containsKey("ARTICLEID")) {
                 articleId = getArguments().getInt("ARTICLEID");//
+                Log.i("click_course_media","2");
+                Log.i("click_course_media",articleId.toString());
                 ////Log.e("rcvd art id", articleId + "?");
             }
             if (getArguments().containsKey("TASKID")) {
@@ -555,8 +524,15 @@ public class CourseArticleDetailsNewFragment extends Fragment implements AudioSe
                 type = getArguments().getString("type");//
             }
         }
+        /***************************************************/
 
-        try {
+
+
+
+
+
+
+     /*   try {
             Bundle cachedBundleForBackgroundRunningProgram = Util.bundleProgramDetailsForBackground;
             int cachedCourseId = cachedBundleForBackgroundRunningProgram.getInt("COURSEID");
             int cachedArticleId = cachedBundleForBackgroundRunningProgram.getInt("ARTICLEID");
@@ -565,40 +541,13 @@ public class CourseArticleDetailsNewFragment extends Fragment implements AudioSe
             }
         } catch (Exception e) {
             e.printStackTrace();
-        }
+        }*/
 
     }
 
-    @Nullable
-    @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        Log.i(TAG, "onCreateView");
-        progressDialog = new ProgressDialog(getContext()); //////////////////////////
-        View vi = inflater.inflate(R.layout.fragment_coursearticledetails, container,false);
-        // initView(vi);
 
 
-
-        return vi;
-    }
-
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
-        Log.i(TAG, "onViewCreated");
-
-        initView(view);
-
-    }
-
-    @Override
-    public void onSaveInstanceState(@NonNull Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putBundle("data", courseDetailBundle);
-
-    }
-
+/*
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -636,7 +585,8 @@ public class CourseArticleDetailsNewFragment extends Fragment implements AudioSe
 
         }
 
-        disableMediaControls();
+      */
+/*  disableMediaControls();
 
         if (Util.boolBackGroundServiceRunningProgram) {
 
@@ -671,9 +621,42 @@ public class CourseArticleDetailsNewFragment extends Fragment implements AudioSe
         } else {
             progressDialog = ProgressDialog.show(getActivity(), "", "Please wait...");
             getArticleDetailsFromApi();
-        }
+        }*//*
+
 
     }
+*/
+
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        Log.i(TAG, "onCreateView");
+        progressDialog = new ProgressDialog(getContext()); //////////////////////////
+        View vi = inflater.inflate(R.layout.fragment_coursearticledetails, container,false);
+        // initView(vi);
+
+
+
+        return vi;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        Log.i(TAG, "onViewCreated");
+
+        initView(view);
+
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putBundle("data", courseDetailBundle);
+
+    }
+
 
     @Override
     public void onResume() {
@@ -1184,7 +1167,7 @@ public class CourseArticleDetailsNewFragment extends Fragment implements AudioSe
         vwTaskAns = view.findViewById(R.id.vwTaskAns);
         vwTodo = view.findViewById(R.id.vwTodo);
         sv_main = view.findViewById(R.id.sv_main);
-
+        disableMediaControls();
         rlFlashScreen.setVisibility(View.VISIBLE);
 
         finisherService = new FinisherServiceImpl(getActivity());
@@ -1518,7 +1501,8 @@ public class CourseArticleDetailsNewFragment extends Fragment implements AudioSe
                                 Log.i(TAG, "media player started");
                                 Util.openliveplayer="";
                                 Util.chat=null;
-
+                                Util.bundleProgramDetailsForBackground=null;
+                                Util.bundleProgramDetailsForBackground = courseDetailBundle;
                                 musicSrv.startMedia();
                                 imgPlayPause.setBackgroundResource(R.drawable.mbhq_pause_black);
                                 imgPlayPauseOnVideo.setBackgroundResource(R.drawable.mbhq_pause_black);
@@ -1619,7 +1603,41 @@ public class CourseArticleDetailsNewFragment extends Fragment implements AudioSe
         if (isMyServiceRunning(AudioService.class) && ((MainActivity) getActivity()).getMusicSrv() != null) {
             ((MainActivity) getActivity()).getMusicSrv().onDestroy();
         }
+        if (Util.boolBackGroundServiceRunningProgram) {
+            Log.i("click_course_media","3");
+            int lastArticleId = -1;
+            GetArticleDetail lastArticleDetails = null;
 
+            try {
+                Log.i("click_course_media","7");
+                lastArticleId = Integer.parseInt(sharedPreference.read("LAST_ARTICLE_ID", ""));
+
+                lastArticleDetails = new Gson().fromJson(sharedPreference.read("LAST_ARTICLE_DETAILS", ""), GetArticleDetail.class);
+
+                Log.i(TAG, "lastArticle id :" + lastArticleId + " last article details:" + new Gson().toJson(lastArticleDetails));
+
+            } catch (Exception e) {
+                e.printStackTrace();
+
+            } finally {
+
+                if (lastArticleId == articleId && lastArticleDetails != null) {
+                    Log.i("click_course_media","5");
+                    processArticleResponse(lastArticleDetails);
+
+                } else {
+                    Log.i("click_course_media","6");
+                    progressDialog = ProgressDialog.show(getActivity(), "", "Please wait...");
+                    getArticleDetailsFromApi();
+
+                }
+
+            }
+        } else {
+            Log.i("click_course_media","4");
+            progressDialog = ProgressDialog.show(getActivity(), "", "Please wait...");
+            getArticleDetailsFromApi();
+        }
     }
 
     private void handleback() {

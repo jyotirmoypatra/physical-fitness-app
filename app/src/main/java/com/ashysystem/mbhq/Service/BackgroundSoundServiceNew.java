@@ -26,8 +26,8 @@ import android.util.Log;
 
 import androidx.annotation.Nullable;
 import androidx.core.content.FileProvider;
+import androidx.multidex.BuildConfig;
 
-import com.ashysystem.mbhq.BuildConfig;
 import com.ashysystem.mbhq.R;
 import com.ashysystem.mbhq.Service.impl.FinisherServiceImpl;
 import com.ashysystem.mbhq.activity.MainActivity;
@@ -298,7 +298,9 @@ public class BackgroundSoundServiceNew extends Service{
 
                     case PROGRAM: {
                         Util.boolBackGroundServiceRunningProgram = true;
-                        Util.bundleProgramDetailsForBackground = this.programData;
+
+                        Log.i("click_course_media","9");
+                        //Util.bundleProgramDetailsForBackground = this.programData;
                         mediaPlayerHandler.removeCallbacks(mediaUpdateTimeTask);
                         break;
                     }   case LIVE_CHAT: {
