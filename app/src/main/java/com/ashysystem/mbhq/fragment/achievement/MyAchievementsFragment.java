@@ -1388,9 +1388,9 @@ public class MyAchievementsFragment extends Fragment {
         Log.i("textchange",s);
         Log.e(TAG, "loadAdapter: " + details.size());
 
-        for (int i = 0; i < details.size(); i++) {
+       /* for (int i = 0; i < details.size(); i++) {
             SetLocalNotificationForAchievement.setNotificationForAchievement(details.get(i), getActivity());
-        }
+        }*/
 
         if (haveGrowthMinimumOne) {
             if (details.size() > 0) {
@@ -1447,9 +1447,9 @@ public class MyAchievementsFragment extends Fragment {
     private void loadAdapter(ArrayList<MyAchievementsListInnerModel> details) {
         Log.e(TAG, "loadAdapter: " + details.size());
 
-        for (int i = 0; i < details.size(); i++) {
+        /*for (int i = 0; i < details.size(); i++) {
             SetLocalNotificationForAchievement.setNotificationForAchievement(details.get(i), getActivity());
-        }
+        }*/
 
         if (haveGrowthMinimumOne) {
             if (details.size() > 0) {
@@ -8524,6 +8524,29 @@ try{
             // You can update the UI or do any post-processing here
         }
     }
+    private class MyAsyncTask1_ extends AsyncTask<Void, Void, Void> {
+        @Override
+        protected Void doInBackground(Void... params) {
+            // This method runs in the background thread
+            // You can perform any background tasks here
+            Log.i("notification","1");
+            Log.e(TAG, "calleddelete:" + "yes");
+
+
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void result) {
+            //  getAchievementsList(1);
+            Log.e("saved in database", "yes");
+
+            // This method is called after the background task is completed
+            // You can update the UI or do any post-processing here
+        }
+    }
+
     private class MyAsyncTask3 extends AsyncTask<Void, Void, Void> {
         @Override
         protected Void doInBackground(Void... params) {
@@ -8906,7 +8929,7 @@ try{
         if (globalmMyAchievementsListInnerModel.getSong() != null)
             songPathSelect = globalmMyAchievementsListInnerModel.getSong();
 
-        SetLocalNotificationForAchievement.setNotificationForAchievement(globalmMyAchievementsListInnerModel, getActivity());
+       // SetLocalNotificationForAchievement.setNotificationForAchievement(globalmMyAchievementsListInnerModel, getActivity());
 
         // gratitudeStatus = gratitudeStatus
 
@@ -9161,6 +9184,72 @@ try{
                 }
             }
         });
+
+
+        rlSetReminder.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                if (gratitudeStatus.equals("EDIT")) {
+                    if (chkSetReminder.isChecked() && txtSetReminder.getText().toString().equals("View Reminder")) {
+                        CustomReminderDialogForEdit customReminderDialog = new CustomReminderDialogForEdit();
+                        Gson gson = new Gson();
+                        Bundle bundle = new Bundle();
+                        bundle.putString("MODEL", gson.toJson(globalmMyAchievementsListInnerModel));
+                        bundle.putString("MODELNAME", "GRATITUDE");
+                        customReminderDialog.setArguments(bundle);
+                        customReminderDialog.mListener = new CustomReminderDialogForEdit.onSubmitListener() {
+                            @Override
+                            public void setOnSubmitListener(JSONObject arg) {
+                                Log.e("print jj", arg.toString() + "?");
+                                dialogOpenOnceForEdit = true;
+
+                                rootJsonInner = arg;
+                                try {
+                                    globalmMyAchievementsListInnerModel.setFrequencyId(rootJsonInner.getInt("FrequencyId"));
+                                    globalmMyAchievementsListInnerModel.setMonthReminder(rootJsonInner.getInt("MonthReminder"));
+                                    globalmMyAchievementsListInnerModel.setReminderOption(rootJsonInner.getInt("ReminderOption"));
+                                    globalmMyAchievementsListInnerModel.setReminderAt1(rootJsonInner.getInt("ReminderAt1"));
+                                    globalmMyAchievementsListInnerModel.setReminderAt1Int(rootJsonInner.getInt("ReminderAt1"));
+                                    globalmMyAchievementsListInnerModel.setReminderAt2(rootJsonInner.getInt("ReminderAt2"));//...
+                                    globalmMyAchievementsListInnerModel.setReminderAt2Int(rootJsonInner.getInt("ReminderAt2"));//...
+                                    globalmMyAchievementsListInnerModel.setEmail(rootJsonInner.getBoolean("Email"));
+                                    globalmMyAchievementsListInnerModel.setPushNotification(rootJsonInner.getBoolean("PushNotification"));
+                                    globalmMyAchievementsListInnerModel.setSunday(rootJsonInner.getBoolean("Sunday"));
+                                    globalmMyAchievementsListInnerModel.setMonday(rootJsonInner.getBoolean("Monday"));
+                                    globalmMyAchievementsListInnerModel.setTuesday(rootJsonInner.getBoolean("Tuesday"));
+                                    globalmMyAchievementsListInnerModel.setWednesday(rootJsonInner.getBoolean("Wednesday"));
+                                    globalmMyAchievementsListInnerModel.setThursday(rootJsonInner.getBoolean("Thursday"));
+                                    globalmMyAchievementsListInnerModel.setFriday(rootJsonInner.getBoolean("Friday"));
+                                    globalmMyAchievementsListInnerModel.setSaturday(rootJsonInner.getBoolean("Saturday"));
+                                    globalmMyAchievementsListInnerModel.setJanuary(rootJsonInner.getBoolean("January"));
+                                    globalmMyAchievementsListInnerModel.setFebruary(rootJsonInner.getBoolean("February"));
+                                    globalmMyAchievementsListInnerModel.setMarch(rootJsonInner.getBoolean("March"));
+                                    globalmMyAchievementsListInnerModel.setApril(rootJsonInner.getBoolean("April"));
+                                    globalmMyAchievementsListInnerModel.setMay(rootJsonInner.getBoolean("May"));
+                                    globalmMyAchievementsListInnerModel.setJune(rootJsonInner.getBoolean("June"));
+                                    globalmMyAchievementsListInnerModel.setAugust(rootJsonInner.getBoolean("August"));
+                                    globalmMyAchievementsListInnerModel.setSeptember(rootJsonInner.getBoolean("September"));
+                                    globalmMyAchievementsListInnerModel.setOctober(rootJsonInner.getBoolean("October"));
+                                    globalmMyAchievementsListInnerModel.setNovember(rootJsonInner.getBoolean("November"));
+                                    globalmMyAchievementsListInnerModel.setDecember(rootJsonInner.getBoolean("December"));
+
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                                /////////////////////
+
+
+                            }
+                        };
+                        customReminderDialog.show(getFragmentManager(), "");
+                    }
+
+                }
+
+            }
+        });
+
         rlSaveAchievement.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -9296,6 +9385,7 @@ try{
                         }
 
                     }
+
                 } else if (gratitudeStatus.equals("ADD")) {
                     Log.e("add enable", "add enable");
                     if (dialogOpenOnceForAdd) {
@@ -9749,69 +9839,6 @@ try{
             }
         }
 
-        rlSetReminder.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                if (gratitudeStatus.equals("EDIT")) {
-                    if (chkSetReminder.isChecked() && txtSetReminder.getText().toString().equals("View Reminder")) {
-                        CustomReminderDialogForEdit customReminderDialog = new CustomReminderDialogForEdit();
-                        Gson gson = new Gson();
-                        Bundle bundle = new Bundle();
-                        bundle.putString("MODEL", gson.toJson(globalmMyAchievementsListInnerModel));
-                        bundle.putString("MODELNAME", "GRATITUDE");
-                        customReminderDialog.setArguments(bundle);
-                        customReminderDialog.mListener = new CustomReminderDialogForEdit.onSubmitListener() {
-                            @Override
-                            public void setOnSubmitListener(JSONObject arg) {
-                                Log.e("print jj", arg.toString() + "?");
-                                dialogOpenOnceForEdit = true;
-
-                                rootJsonInner = arg;
-                                try {
-                                    globalmMyAchievementsListInnerModel.setFrequencyId(rootJsonInner.getInt("FrequencyId"));
-                                    globalmMyAchievementsListInnerModel.setMonthReminder(rootJsonInner.getInt("MonthReminder"));
-                                    globalmMyAchievementsListInnerModel.setReminderOption(rootJsonInner.getInt("ReminderOption"));
-                                    globalmMyAchievementsListInnerModel.setReminderAt1(rootJsonInner.getInt("ReminderAt1"));
-                                    globalmMyAchievementsListInnerModel.setReminderAt1Int(rootJsonInner.getInt("ReminderAt1"));
-                                    globalmMyAchievementsListInnerModel.setReminderAt2(rootJsonInner.getInt("ReminderAt2"));//...
-                                    globalmMyAchievementsListInnerModel.setReminderAt2Int(rootJsonInner.getInt("ReminderAt2"));//...
-                                    globalmMyAchievementsListInnerModel.setEmail(rootJsonInner.getBoolean("Email"));
-                                    globalmMyAchievementsListInnerModel.setPushNotification(rootJsonInner.getBoolean("PushNotification"));
-                                    globalmMyAchievementsListInnerModel.setSunday(rootJsonInner.getBoolean("Sunday"));
-                                    globalmMyAchievementsListInnerModel.setMonday(rootJsonInner.getBoolean("Monday"));
-                                    globalmMyAchievementsListInnerModel.setTuesday(rootJsonInner.getBoolean("Tuesday"));
-                                    globalmMyAchievementsListInnerModel.setWednesday(rootJsonInner.getBoolean("Wednesday"));
-                                    globalmMyAchievementsListInnerModel.setThursday(rootJsonInner.getBoolean("Thursday"));
-                                    globalmMyAchievementsListInnerModel.setFriday(rootJsonInner.getBoolean("Friday"));
-                                    globalmMyAchievementsListInnerModel.setSaturday(rootJsonInner.getBoolean("Saturday"));
-                                    globalmMyAchievementsListInnerModel.setJanuary(rootJsonInner.getBoolean("January"));
-                                    globalmMyAchievementsListInnerModel.setFebruary(rootJsonInner.getBoolean("February"));
-                                    globalmMyAchievementsListInnerModel.setMarch(rootJsonInner.getBoolean("March"));
-                                    globalmMyAchievementsListInnerModel.setApril(rootJsonInner.getBoolean("April"));
-                                    globalmMyAchievementsListInnerModel.setMay(rootJsonInner.getBoolean("May"));
-                                    globalmMyAchievementsListInnerModel.setJune(rootJsonInner.getBoolean("June"));
-                                    globalmMyAchievementsListInnerModel.setAugust(rootJsonInner.getBoolean("August"));
-                                    globalmMyAchievementsListInnerModel.setSeptember(rootJsonInner.getBoolean("September"));
-                                    globalmMyAchievementsListInnerModel.setOctober(rootJsonInner.getBoolean("October"));
-                                    globalmMyAchievementsListInnerModel.setNovember(rootJsonInner.getBoolean("November"));
-                                    globalmMyAchievementsListInnerModel.setDecember(rootJsonInner.getBoolean("December"));
-
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
-                                }
-                                /////////////////////
-
-
-                            }
-                        };
-                        customReminderDialog.show(getFragmentManager(), "");
-                    }
-
-                }
-
-            }
-        });
 
         imgEdit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -11109,8 +11136,9 @@ try{
     }
     private void saveAddGratitudeData1(HashMap<String, Object> reqhash,Dialog dialog1,MyAchievementsListInnerModel globalmMyAchievementsListInnerModel) {
         new MyAsyncTask1().execute();
-
+       // new MyAsyncTask1_().execute();
         if (Util.checkConnection(getActivity())) {
+           // SetLocalNotificationForAchievement.setNotificationForAchievement(globalmMyAchievementsListInnerModel, getActivity());
 
             final ProgressDialog progressDialog = Util.getDeterminantProgress(getActivity(), getString(R.string.txt_upload_message));
             ProgressRequestBody fileBody = null;
@@ -11140,6 +11168,7 @@ try{
             jsonObjectCall.enqueue(new Callback<AddUpdateMyAchievementModel>() {
                 @Override
                 public void onResponse(Call<AddUpdateMyAchievementModel> call, final Response<AddUpdateMyAchievementModel> response) {
+                    SetLocalNotificationForAchievement.setNotificationForAchievement(globalmMyAchievementsListInnerModel, getActivity());
 
                     progressDialog.setProgress(100);
                     Runnable runnable = new Runnable() {
@@ -11155,17 +11184,18 @@ try{
                                     new Handler().postDelayed(new Runnable() {
                                         @Override
                                         public void run() {
+
                                             showpopup1(dialog1);
                                         }
 
-                                    }, 700);
+                                    }, 1000);
 
 
                                 }
                             }
                         }
                     };
-                    new Handler().postDelayed(runnable, 400);
+                    new Handler().postDelayed(runnable, 800);
 
                 }
 

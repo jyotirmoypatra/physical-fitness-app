@@ -1,6 +1,7 @@
 package com.ashysystem.mbhq.Service;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -21,10 +22,12 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
+import androidx.media.app.NotificationCompat.MediaStyle;
 
 import android.util.Log;
 
 import androidx.annotation.Nullable;
+import androidx.core.app.NotificationCompat;
 import androidx.core.content.FileProvider;
 import androidx.multidex.BuildConfig;
 
@@ -119,6 +122,9 @@ public class BackgroundSoundServiceNew extends Service{
     MeditationCourseModel.Webinar meditationData;
     Bundle programData;
     Chat liveChatData;
+    private static final int LIVE_CHAT_NOTIFICATION_ID = 1; // Use a unique ID for your notification
+    private static final String NOTIFICATION_CHANNEL_ID = "ProgramPlayServiceLiveChat";
+
     MeditationCourseModel.Webinar m_liveChatData;
     MeditationCourseModel.Webinar liveChatData1=null;
     String TAG = "BackgroundSoundServiceNew";
@@ -270,6 +276,62 @@ public class BackgroundSoundServiceNew extends Service{
     }
 
 
+    public void startMedia_(Activity activity) {
+        Log.e("SRTTTTTTT", "startMedia: "  + "STARTM");
+        try {
+            mediaPlayer.start();
+            try{
+                if (mediaStateListener != null) {
+                    mediaStateListener.onMediaStateChange(mediaPlayer, MediaState.MEDIA_PLAYING);
+                }
+            }catch (Exception e){
+                e.printStackTrace();
+            }finally {
+                startForeground(9876, createNotification("Play",activity));
+                switch (this.fromPage) {
+                    case MEDITATION: {
+                        Util.boolBackGroundServiceRunningMeditation = true;
+                        Util.strMeditationDetailsForBackground = new Gson().toJson(this.meditationData);
+
+                        mediaPlayerHandler.removeCallbacks(mediaUpdateTimeTask);
+                        if(!isThisMeditationTimeRecorded){
+                            mediaPlayerHandler.postDelayed(mediaUpdateTimeTask, 1000);
+                        }
+
+                        break;
+                    }
+
+                    case PROGRAM: {
+                        Util.boolBackGroundServiceRunningProgram = true;
+
+                        Log.i("click_course_media","9");
+                        //Util.bundleProgramDetailsForBackground = this.programData;
+                        mediaPlayerHandler.removeCallbacks(mediaUpdateTimeTask);
+                        break;
+                    }   case LIVE_CHAT: {
+                        Util.boolBackGroundServiceRunningProgram_video = true;
+                        Util.bundleProgramDetailsForBackground_vedio = this.m_liveChatData;
+                        mediaPlayerHandler.removeCallbacks(mediaUpdateTimeTask);
+                        break;
+                    }
+                    default: {
+                        mediaPlayerHandler.removeCallbacks(mediaUpdateTimeTask);
+                        break;
+                    }
+                }
+
+            }
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.e("EXXCCCCPPPP", "startMedia: " + e.getMessage() );
+        }
+
+
+
+
+    }
 
     public void startMedia() {
         Log.e("SRTTTTTTT", "startMedia: "  + "STARTM");
@@ -1031,6 +1093,7 @@ public class BackgroundSoundServiceNew extends Service{
             this.isThisMeditationTimeRecorded = false;
 
             try {
+
                 Uri VIDEOURI = videoUrl;
                 //Uri VIDEOURI = Uri.parse(videoUrl);
                 if (mediaPlayer == null) {
@@ -1121,6 +1184,7 @@ public class BackgroundSoundServiceNew extends Service{
 
             try {
                 Uri VIDEOURI = videoUrl;
+
                 if (mediaPlayer == null) {
                     mediaPlayer = new MediaPlayer();
                 } else {
@@ -1311,6 +1375,46 @@ public class BackgroundSoundServiceNew extends Service{
         }
 
     }
+    private Notification createNotification(String tag,Activity activity) {
+        Log.e("ISPLAYINGGGGG", "createNotification: " + tag );
+        Log.e("MDDDPLAYINGGGGG", "createNotification: " + isMediaPlaying() );
+
+        switch (fromPage) {
+            case PROGRAM:
+                if(tag.equals("Play")){
+                    return createNotificationForProgram(R.drawable.ic_baseline_pause);///
+                }else{
+                    return createNotificationForProgram(R.drawable.ic_baseline_play);///
+                }
+
+
+            case MEDITATION:
+
+                if(tag.equals("Play")){
+                    return createNotificationForMeditation(R.drawable.ic_baseline_pause);///
+                }else{
+                    return createNotificationForMeditation(R.drawable.ic_baseline_play);///
+                }
+
+            case LIVE_CHAT:
+                // return createNotificationForLiveChat();
+                if(tag.equals("Play")){
+                    return createNotificationForLiveChat(activity,R.drawable.ic_baseline_pause);///
+                }else{
+                    return createNotificationForLiveChat(activity,R.drawable.ic_baseline_play);///
+                }
+            case MEDITATION_VIDEO:
+                // return createNotificationForLiveChat();
+                if(tag.equals("Play")){
+                    return createNotificationForMeditation_vedio(R.drawable.ic_baseline_pause);///
+                }else{
+                    return createNotificationForMeditation_vedio(R.drawable.ic_baseline_play);///
+                }
+
+            default:
+                return null;
+        }
+    }
 
 
     private Notification createNotification(String tag) {
@@ -1337,16 +1441,16 @@ public class BackgroundSoundServiceNew extends Service{
             case LIVE_CHAT:
                 // return createNotificationForLiveChat();
                 if(tag.equals("Play")){
-                    return createNotificationForLiveChat(R.drawable.ic_baseline_pause);///
+                    return createNotificationForLiveChat_(R.drawable.ic_baseline_pause);///
                 }else{
-                    return createNotificationForLiveChat(R.drawable.ic_baseline_play);///
+                    return createNotificationForLiveChat_(R.drawable.ic_baseline_play);///
                 }
             case MEDITATION_VIDEO:
                 // return createNotificationForLiveChat();
                 if(tag.equals("Play")){
-                    return createNotificationForLiveChat(R.drawable.ic_baseline_pause);///
+                    return createNotificationForMeditation_vedio(R.drawable.ic_baseline_pause);///
                 }else{
-                    return createNotificationForLiveChat(R.drawable.ic_baseline_play);///
+                    return createNotificationForMeditation_vedio(R.drawable.ic_baseline_play);///
                 }
 
             default:
@@ -1557,7 +1661,89 @@ public class BackgroundSoundServiceNew extends Service{
 
 
     /////////////////////////////////////// Modified ///////////////////////////////////////////////////////////////////////////
-    private  Notification createNotificationForLiveChat(int resId) {
+
+    private  Notification createNotificationForMeditation_vedio(int resId) {
+
+        String notificationChannelId = "Program play service meditation video";
+        NotificationManager nm = ((NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE));
+        NotificationChannel channel = new NotificationChannel(
+                notificationChannelId,
+                "Program background playing meditation video",
+                NotificationManager.IMPORTANCE_HIGH
+        );
+
+        channel.setDescription("Program Playing Channel meditation video");
+        channel.enableLights(true);
+        channel.setLightColor(Color.RED);
+        channel.enableVibration(false);
+        channel.setImportance(NotificationManager.IMPORTANCE_DEFAULT);
+        channel.setSound(null, null);
+
+        nm.createNotificationChannel(channel);
+
+
+        Intent meditationPlayIntent = new Intent(this, MainActivity.class);
+        meditationPlayIntent.putExtra("NOTIFICATIONTYPE", "LIVE_CHAT_PLAYING");
+        meditationPlayIntent.putExtra("data", Util.chat);
+        Log.e("Event name","background"+Util.chat.getEventName());
+        meditationPlayIntent.putExtra("FROM_LOGIN", "FALSE");
+        TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
+        stackBuilder.addNextIntentWithParentStack(meditationPlayIntent);
+
+
+        PendingIntent pendingIntent = null;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+
+            pendingIntent = stackBuilder.getPendingIntent(1,
+                    PendingIntent.FLAG_IMMUTABLE);
+
+        } else {
+
+            pendingIntent = stackBuilder.getPendingIntent(1,
+                    PendingIntent.FLAG_CANCEL_CURRENT);
+        }
+        PendingIntent pendingIntentPlay=null;
+        try {
+            Intent intentPlay = new Intent(getApplicationContext(), NotificationActionService.class)
+                    .setAction(ACTION_PLAY);
+
+
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.S) {
+                pendingIntentPlay = PendingIntent.getBroadcast(getApplicationContext(), 1,
+                        intentPlay, PendingIntent.FLAG_IMMUTABLE);
+            } else {
+                pendingIntentPlay = PendingIntent.getBroadcast(getApplicationContext(), 1,
+                        intentPlay, PendingIntent.FLAG_UPDATE_CURRENT);
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        @SuppressLint({"NewApi", "LocalSuppress"}) Notification.Builder builder = new Notification.Builder(getApplicationContext(), notificationChannelId);
+
+
+        String notificationTitle = "Meditation";
+        String notificationContent = "Live chat is playing";
+        notificationContent = getVideoName();
+
+
+        return builder
+                .setContentTitle(notificationTitle)
+                .setContentText(notificationContent)
+                .setContentIntent(pendingIntent)
+                .setSmallIcon(R.drawable.app_icon)
+                .setPriority(Notification.PRIORITY_DEFAULT)
+                .addAction(resId,"Play",pendingIntentPlay)
+                .setStyle(new Notification.MediaStyle()
+                        .setShowActionsInCompactView(0))
+                .setOnlyAlertOnce(true) // show notification for only first time
+                .setShowWhen(false)
+                .setOngoing(true)
+                .setSound(null)
+                .build();
+    }
+
+
+    private  Notification createNotificationForLiveChat_(int resId) {
 
         String notificationChannelId = "Program play service livechat";
        // if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -1640,6 +1826,88 @@ try {
                 .setSound(null)
                 .build();
     }
+
+
+    public Notification createNotificationForLiveChat(Context context, int resId) {
+        createNotificationChannel(context);
+
+        Intent meditationPlayIntent = new Intent(context, MainActivity.class);
+        meditationPlayIntent.putExtra("NOTIFICATIONTYPE", "LIVE_CHAT_PLAYING");
+        // Add other extras as needed
+        TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
+        stackBuilder.addNextIntentWithParentStack(meditationPlayIntent);
+
+        PendingIntent pendingIntent = stackBuilder.getPendingIntent(1,
+                PendingIntent.FLAG_UPDATE_CURRENT);
+
+        PendingIntent pendingIntentPlay = createPendingIntentForAction(context);
+
+        Notification.Builder builder = new Notification.Builder(context, NOTIFICATION_CHANNEL_ID);
+
+        String notificationTitle = "Live Chat";
+        String notificationContent = "Live chat is playing";
+        // Replace the following line with your logic to get the video name
+        // notificationContent = getVideoName();
+
+        return builder
+                .setContentTitle(notificationTitle)
+                .setContentText(notificationContent)
+                .setContentIntent(pendingIntent)
+                .setSmallIcon(R.drawable.app_icon)
+                .setPriority(Notification.PRIORITY_DEFAULT)
+                .addAction(resId, "Play", pendingIntentPlay)
+                .setStyle(new Notification.MediaStyle()
+                        .setShowActionsInCompactView(0))
+                .setOnlyAlertOnce(true)
+                .setShowWhen(false)
+                .setOngoing(true)
+                .setSound(null)
+                .build();
+    }
+
+    private void createNotificationChannel(Context context) {
+      //  if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationManager notificationManager = context.getSystemService(NotificationManager.class);
+            NotificationChannel channel = new NotificationChannel(
+                    NOTIFICATION_CHANNEL_ID,
+                    "Program background playing livechat",
+                    NotificationManager.IMPORTANCE_HIGH
+            );
+
+            channel.setDescription("Program Playing Channel livechat");
+            channel.enableLights(true);
+            channel.setLightColor(Color.RED);
+            channel.enableVibration(false);
+            channel.setImportance(NotificationManager.IMPORTANCE_DEFAULT);
+            channel.setSound(null, null);
+
+            notificationManager.createNotificationChannel(channel);
+       // }
+    }
+
+    private PendingIntent createPendingIntentForAction(Context context) {
+//        Intent intent = new Intent(context, NotificationActionService.class)
+//                .setAction(action);
+        Intent intent = new Intent(getApplicationContext(), NotificationActionService.class)
+                .setAction(ACTION_PLAY);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            return PendingIntent.getBroadcast(context, 1,
+                    intent, PendingIntent.FLAG_IMMUTABLE);
+        } else {
+            return PendingIntent.getBroadcast(context, 1,
+                    intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        }
+    }
+
+    // Add a method to cancel the notification
+    public void cancelLiveChatNotification(Context context) {
+        NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+        notificationManager.cancel(LIVE_CHAT_NOTIFICATION_ID);
+    }
+
+
+
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     private void sendMeditationDataToApi() {

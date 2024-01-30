@@ -29,11 +29,13 @@ public class SetLocalNotificationForHabit {
             AlarmManager am = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
             Intent intent = new Intent(context, AlarmReceiver.class);
             intent.setAction("ACTION_HABITLIST");
+            Date now_ = new Date();
+            int id_ = Integer.parseInt(new SimpleDateFormat("SSS", Locale.getDefault()).format(now_));
             //PendingIntent sender = PendingIntent.getBroadcast(context,getGratitudeListModelInner.getId(), intent, 0);
            // PendingIntent sender = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_NO_CREATE | PendingIntent.FLAG_IMMUTABLE);
             PendingIntent sender = PendingIntent.getBroadcast(
                     context,
-                    0,
+                    id_,
                     intent,
                     PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE
             );
@@ -46,11 +48,13 @@ public class SetLocalNotificationForHabit {
             AlarmManager am1 = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
             Intent intent1 = new Intent(context, AlarmReceiver.class);
             intent.setAction("ACTION_HABITLIST");
+            Date now1_ = new Date();
+            int id1_ = Integer.parseInt(new SimpleDateFormat("SSS", Locale.getDefault()).format(now1_));
             //PendingIntent sender = PendingIntent.getBroadcast(context,getGratitudeListModelInner.getId(), intent, 0);
           //  PendingIntent sender1 = PendingIntent.getBroadcast(context,0, intent1, PendingIntent.FLAG_NO_CREATE);
             PendingIntent sender1 = PendingIntent.getBroadcast(
                     context,
-                    0,
+                    id1_,
                     intent1,
                     PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE
             );
@@ -932,7 +936,7 @@ public class SetLocalNotificationForHabit {
                // PendingIntent pendingIntent = PendingIntent.getBroadcast(context, id, alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT);
                 PendingIntent pendingIntent = PendingIntent.getBroadcast(
                         context,
-                        0,
+                        id,
                         alarmIntent,
                         PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE
                 );
@@ -962,7 +966,7 @@ public class SetLocalNotificationForHabit {
               //  PendingIntent pendingIntent = PendingIntent.getBroadcast(context, id, alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT);
                 PendingIntent pendingIntent = PendingIntent.getBroadcast(
                         context,
-                        0,
+                        id,
                         alarmIntent,
                         PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE
                 );

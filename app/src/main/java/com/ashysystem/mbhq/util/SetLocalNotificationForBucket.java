@@ -32,12 +32,14 @@ public class SetLocalNotificationForBucket {
 
             AlarmManager am = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
             Intent intent = new Intent(context, AlarmReceiver.class);
-            intent.setAction(bucketListModelInner.getId()+"BUCKET");
+            intent.setAction("ACTION_BUCKETLIST");
+            Date now_ = new Date();
+            int id_ = Integer.parseInt(new SimpleDateFormat("SSS", Locale.getDefault()).format(now_));
             //PendingIntent sender = PendingIntent.getBroadcast(context,bucketListModelInner.getId(), intent, 0);
            // PendingIntent sender = PendingIntent.getBroadcast(context,0, intent, PendingIntent.FLAG_NO_CREATE);
             PendingIntent sender = PendingIntent.getBroadcast(
                     context,
-                    0,
+                    id_,
                     intent,
                     PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE
             );
@@ -49,12 +51,14 @@ public class SetLocalNotificationForBucket {
 
             AlarmManager am1 = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
             Intent intent1 = new Intent(context, AlarmReceiver.class);
-            intent.setAction(bucketListModelInner.getId()*200000+"GRATITUDE");
+            intent.setAction("ACTION_BUCKETLIST");
+            Date now1_ = new Date();
+            int id1_ = Integer.parseInt(new SimpleDateFormat("SSS", Locale.getDefault()).format(now1_));
             //PendingIntent sender = PendingIntent.getBroadcast(context,bucketListModelInner.getId(), intent, 0);
            // PendingIntent sender1 = PendingIntent.getBroadcast(context,0, intent1, PendingIntent.FLAG_NO_CREATE);
             PendingIntent sender1 = PendingIntent.getBroadcast(
                     context,
-                    0,
+                    id1_,
                     intent1,
                     PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE
             );
@@ -158,7 +162,7 @@ public class SetLocalNotificationForBucket {
                     dailyCalendar1.add(Calendar.DATE,1);
                 }
                 Intent alarmIntent = new Intent(context, AlarmReceiver.class);
-                alarmIntent.setAction(bucketListModelInner.getId()+"BUCKET");
+                alarmIntent.setAction("ACTION_BUCKETLIST");
                 alarmIntent.putExtra("NOTIFICATIONTYPE","BUCKETLIST");
                 alarmIntent.putExtra("NOTIFICATIONID",bucketListModelInner.getId());
                 alarmIntent.putExtra("NOTIFICATIONHEADING",bucketListModelInner.getName());
@@ -175,7 +179,7 @@ public class SetLocalNotificationForBucket {
                         PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE
                 );
                 Intent alarmIntent1 = new Intent(context, AlarmReceiver.class);
-                alarmIntent1.setAction("BUCKETLIST");
+                alarmIntent1.setAction("ACTION_BUCKETLIST");
                 alarmIntent1.putExtra("NOTIFICATIONTYPE","BUCKETLIST");
                 alarmIntent1.putExtra("NOTIFICATIONID",bucketListModelInner.getId());
                 alarmIntent1.putExtra("NOTIFICATIONHEADING",bucketListModelInner.getName());
@@ -925,7 +929,7 @@ public class SetLocalNotificationForBucket {
                 calender1.set(Calendar.SECOND,at1Second);
 
                 Intent alarmIntent = new Intent(context, AlarmReceiver.class);
-                alarmIntent.setAction(bucketListModelInner.getId()+"BUCKET");
+                alarmIntent.setAction("ACTION_BUCKETLIST");
                 alarmIntent.putExtra("NOTIFICATIONTYPE","BUCKETLIST");
                 alarmIntent.putExtra("NOTIFICATIONID",ID);
                 alarmIntent.putExtra("NOTIFICATIONHEADING",bucketListModelInner.getName());
@@ -955,7 +959,7 @@ public class SetLocalNotificationForBucket {
                 calender1.set(Calendar.MINUTE, reminderOptionDiffMinutes);
                 calender1.set(Calendar.SECOND, 0);
                 Intent alarmIntent = new Intent(context, AlarmReceiver.class);
-                alarmIntent.setAction(bucketListModelInner.getId()+"BUCKET");
+                alarmIntent.setAction("ACTION_BUCKETLIST");
                 alarmIntent.putExtra("NOTIFICATIONTYPE","BUCKETLIST");
                 alarmIntent.putExtra("NOTIFICATIONID",ID);
                 alarmIntent.putExtra("NOTIFICATIONHEADING",bucketListModelInner.getName());
@@ -987,7 +991,7 @@ public class SetLocalNotificationForBucket {
                 calender2.set(Calendar.MINUTE, at2Minute);
                 calender2.set(Calendar.SECOND, at2Second);
                 Intent alarmIntent = new Intent(context, AlarmReceiver.class);
-                alarmIntent.setAction(bucketListModelInner.getId()+"BUCKET");
+                alarmIntent.setAction("ACTION_BUCKETLIST");
                 alarmIntent.putExtra("NOTIFICATIONTYPE","BUCKETLIST");
                 alarmIntent.putExtra("NOTIFICATIONID",ID);
                 alarmIntent.putExtra("NOTIFICATIONHEADING",bucketListModelInner.getName());
@@ -997,7 +1001,7 @@ public class SetLocalNotificationForBucket {
                 alarmIntent.putExtra("PENDINGINTENTID",id);
 
                 Intent alarmIntent1 = new Intent(context, AlarmReceiver.class);
-                alarmIntent1.setAction("BUCKETLIST");
+                alarmIntent1.setAction("ACTION_BUCKETLIST");
                 alarmIntent1.putExtra("NOTIFICATIONTYPE","BUCKETLIST");
                 alarmIntent1.putExtra("NOTIFICATIONID",ID);
                 alarmIntent1.putExtra("NOTIFICATIONHEADING",bucketListModelInner.getName());

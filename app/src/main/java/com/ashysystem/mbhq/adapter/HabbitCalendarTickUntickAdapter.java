@@ -372,45 +372,50 @@ public class HabbitCalendarTickUntickAdapter extends RecyclerView.Adapter<Habbit
                 @Override
                 public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
                     progressDialog.dismiss();
+if(response.code()==500){
+    Util.showToast(context, "Something went wrong");
+    dialog.dismiss();
+}else{
+    if (response.body() != null) {
+        if (response.body().get("SuccessFlag").getAsBoolean()) {
+            ((MainActivity) context).clearCacheForParticularFragment(new HabbitDetailsCalendarFragment());
+            ((MainActivity) context).clearCacheForParticularFragment(new HabitHackerListFragment());
+            habitStat.setNote(desc);
+            ((MainActivity) context).clearHashMapHabbit(habbitId);
+            Util.isReloadTodayMainPage = true;
 
-                    if (response.body() != null) {
-                        if (response.body().get("SuccessFlag").getAsBoolean()) {
-                            ((MainActivity) context).clearCacheForParticularFragment(new HabbitDetailsCalendarFragment());
-                            ((MainActivity) context).clearCacheForParticularFragment(new HabitHackerListFragment());
-                            habitStat.setNote(desc);
-                            ((MainActivity) context).clearHashMapHabbit(habbitId);
-                            Util.isReloadTodayMainPage = true;
+            Completable.fromAction(() -> {
+                        tickUntickFragment.mViewModel.deleteHabitCalendarById(habbitId);
+                    }).subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(() -> {
 
-                            Completable.fromAction(() -> {
-                                tickUntickFragment.mViewModel.deleteHabitCalendarById(habbitId);
-                            }).subscribeOn(Schedulers.io())
-                                    .observeOn(AndroidSchedulers.mainThread())
-                                    .subscribe(() -> {
+                    }, throwable -> {
 
-                                    }, throwable -> {
+                    });
 
-                                    });
+            Completable.fromAction(() -> {
+                        tickUntickFragment.mViewModelEdit.deleteByHabitId(habbitId);
+                    })
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(() -> {
+                        Log.e("DATABASE", "DELETE_SUCCESSFULL");
+                    }, throwable -> {
+                        Log.e("DATABASE", "DELETE_UN_SUCCESSFULL");
+                    });
 
-                            Completable.fromAction(() -> {
-                                tickUntickFragment.mViewModelEdit.deleteByHabitId(habbitId);
-                            })
-                                    .subscribeOn(Schedulers.io())
-                                    .observeOn(AndroidSchedulers.mainThread())
-                                    .subscribe(() -> {
-                                        Log.e("DATABASE", "DELETE_SUCCESSFULL");
-                                    }, throwable -> {
-                                        Log.e("DATABASE", "DELETE_UN_SUCCESSFULL");
-                                    });
-
-                            textview.setText(desc);
-                            imgEdit.setImageResource(R.drawable.mbhq_edit_active);
-                            Util.showToast(context, "Note Saved Successfully");
-                            dialog.dismiss();
+            textview.setText(desc);
+            imgEdit.setImageResource(R.drawable.mbhq_edit_active);
+            Util.showToast(context, "Note Saved Successfully");
+            dialog.dismiss();
 
 
-                        }
+        }
 
-                    }
+    }
+}
+
 
                 }
 

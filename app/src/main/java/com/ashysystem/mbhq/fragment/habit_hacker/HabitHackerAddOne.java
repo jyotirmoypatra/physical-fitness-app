@@ -29,6 +29,7 @@ import android.widget.TextView;
 
 import com.ashysystem.mbhq.Service.impl.FinisherServiceImpl;
 import com.ashysystem.mbhq.activity.MainActivity;
+import com.ashysystem.mbhq.dialog.CustomReminderDialogForEditHabit;
 import com.ashysystem.mbhq.dialog.HabitHackerReminderAddDialog;
 import com.ashysystem.mbhq.model.habit_hacker.HabitSwap;
 import com.ashysystem.mbhq.util.AlertDialogCustom;
@@ -38,6 +39,7 @@ import com.ashysystem.mbhq.util.MyTimePickerDialog;
 import com.ashysystem.mbhq.util.SharedPreference;
 import com.ashysystem.mbhq.util.TimePickerControllerWithTextView;
 import com.ashysystem.mbhq.util.Util;
+import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
 import org.json.JSONException;
@@ -125,7 +127,7 @@ public class HabitHackerAddOne extends Fragment {
 
         chkSetReminder.setOnCheckedChangeListener((compoundButton, b) -> {
             if (b) {
-                HabitHackerReminderAddDialog customReminderDialog = new HabitHackerReminderAddDialog();
+               /* HabitHackerReminderAddDialog customReminderDialog = new HabitHackerReminderAddDialog();
                 customReminderDialog.mListener = new HabitHackerReminderAddDialog.onSubmitListener() {
                     @Override
                     public void setOnSubmitListener(JSONObject arg) {
@@ -135,6 +137,34 @@ public class HabitHackerAddOne extends Fragment {
                             Util.pushnotification=jsonFromDialog.getBoolean("PushNotification");
                         } catch (JSONException e) {
                             e.printStackTrace();
+                        }
+                    }
+                };
+                customReminderDialog.show(getFragmentManager(), "");*/
+
+
+
+
+                CustomReminderDialogForEditHabit customReminderDialog = new CustomReminderDialogForEditHabit();
+                Bundle bundle = new Bundle();
+                Gson gson = new Gson();
+               // bundle.putString("MODEL",gson.toJson(globalHabitSwap.getHabitSwap().getNewAction()));
+               // bundle.putString("HABIT_HACKER_TASK", "TRUE");
+                customReminderDialog.setArguments(bundle);
+                customReminderDialog.mListener = new CustomReminderDialogForEditHabit.onSubmitListener() {
+                    @Override
+                    public void setOnSubmitListener(JSONObject arg) {
+
+                        if(arg!=null)
+                        {
+                            try {
+                                Log.e("HABITHACKER", arg.toString() + "?");
+                                jsonFromDialog = arg;
+                                Util.pushnotification=jsonFromDialog.getBoolean("PushNotification");
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+
                         }
                     }
                 };
@@ -390,6 +420,9 @@ public class HabitHackerAddOne extends Fragment {
         if (TYPE.equals("BACK_CLICKED")) {
             saveNewBreakHabit();
         } else {
+            if (chkSetReminder.isChecked()) {
+
+            }
            /* Gson gson = new Gson();
             Bundle bundle = new Bundle();
             bundle.putString("HABIT_HACKER_ADD_MODEL", gson.toJson(globalHabitSwapModel));

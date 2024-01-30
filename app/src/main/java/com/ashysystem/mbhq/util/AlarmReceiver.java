@@ -440,6 +440,9 @@ public class AlarmReceiver extends BroadcastReceiver {
             }else if("BUCKETLIST".equals(notificationType)){
                 show_Bucket(context, bundle,notificationHeading);
             }
+            else if("ACHIEVEMENTLIST".equals(notificationType)){
+                show_Achievement(context, bundle,notificationHeading);
+            }
         }
     }
 
@@ -478,7 +481,7 @@ public class AlarmReceiver extends BroadcastReceiver {
         String NOTIFICATION_CHANNEL_ID = "10008";
 
         int importance = NotificationManager.IMPORTANCE_DEFAULT;
-        NotificationChannel notificationChannel = new NotificationChannel(NOTIFICATION_CHANNEL_ID, "NOTIFICATION_CHANNEL_NAME_HABIT_Jyotirnmoy", importance);
+        NotificationChannel notificationChannel = new NotificationChannel(NOTIFICATION_CHANNEL_ID, "NOTIFICATION_CHANNEL_NAME_HABIT", importance);
         notificationChannel.enableLights(true);
 //        notificationChannel.setLightColor(Color.RED);
         notificationChannel.enableVibration(true);
@@ -529,7 +532,58 @@ public class AlarmReceiver extends BroadcastReceiver {
         String NOTIFICATION_CHANNEL_ID = "10008";
 
         int importance = NotificationManager.IMPORTANCE_DEFAULT;
-        NotificationChannel notificationChannel = new NotificationChannel(NOTIFICATION_CHANNEL_ID, "NOTIFICATION_CHANNEL_NAME_HABIT_Jyotirnmoy", importance);
+        NotificationChannel notificationChannel = new NotificationChannel(NOTIFICATION_CHANNEL_ID, "NOTIFICATION_CHANNEL_NAME_HABIT_BUCKET", importance);
+        notificationChannel.enableLights(true);
+//        notificationChannel.setLightColor(Color.RED);
+        notificationChannel.enableVibration(true);
+        notificationChannel.setVibrationPattern(new long[]{100, 200, 300, 400, 500, 400, 300, 200, 400});
+        assert notificationManager != null;
+        builder.setChannelId(NOTIFICATION_CHANNEL_ID);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            builder.setPriority(NotificationCompat.PRIORITY_HIGH);
+        }
+        notificationManager.createNotificationChannel(notificationChannel);
+        //////////
+
+
+        assert notificationManager != null;
+        notificationManager.notify(bundle.getInt("NOTIFICATIONID") , builder.build());
+        //////////////////
+    }
+
+    private void show_Achievement(Context context,Bundle bundle,String notificationHeading){
+        Intent notificationIntent = new Intent(context, MainActivity.class);
+        notificationIntent.putExtra("NOTIFICATIONTYPE","ACHIEVEMENTLIST");
+        notificationIntent.putExtra("NOTIFICATIONID",bundle.getInt("NOTIFICATIONID"));
+        notificationIntent.putExtra("FROM_LOGIN", "FALSE");
+        TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
+        stackBuilder.addParentStack(MainActivity.class);
+        stackBuilder.addNextIntent(notificationIntent);
+
+        PendingIntent pendingIntent = stackBuilder.getPendingIntent(bundle.getInt("NOTIFICATIONID"), PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+        //String notificationStr="ahhhh Gratitude.. Doesn’t that feel good? Please make just one minute away from your busy, busy schedule to sit and appreciate how much this means to you ";
+        String notificationStr=notificationHeading;
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
+        builder.setAutoCancel(true);
+        Uri alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+        builder.setSound(alarmSound);
+        Notification notification = builder.setContentTitle(bundle.getString("NOTIFICATIONHEADING"))
+                .setContentText(notificationStr)
+                //.setTicker("New Message Alert!")
+                .setSmallIcon(R.drawable.ic_notification_efc)
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+//                .setStyle(new NotificationCompat.BigTextStyle().bigText(notificationStr))
+                .setContentIntent(pendingIntent).build();
+
+        notification.flags |= Notification.FLAG_AUTO_CANCEL;
+        NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+        // notificationManager.notify(bundle.getInt("NOTIFICATIONID"), notification);
+        ///////////////For Oreo Change////////
+        // mNotificationManager = (NotificationManager) mContext.getSystemService(Context.NOTIFICATION_SERVICE);
+        String NOTIFICATION_CHANNEL_ID = "10008";
+
+        int importance = NotificationManager.IMPORTANCE_DEFAULT;
+        NotificationChannel notificationChannel = new NotificationChannel(NOTIFICATION_CHANNEL_ID, "NOTIFICATION_CHANNEL_NAME_ACHIEVEMENT", importance);
         notificationChannel.enableLights(true);
 //        notificationChannel.setLightColor(Color.RED);
         notificationChannel.enableVibration(true);

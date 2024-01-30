@@ -1,17 +1,22 @@
 package com.ashysystem.mbhq.fragment.meditation;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Dialog;
+import android.app.DownloadManager;
 import android.app.KeyguardManager;
 import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
+import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.graphics.PorterDuff;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
@@ -20,9 +25,12 @@ import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.PowerManager;
+import android.provider.MediaStore;
+import android.provider.Settings;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -41,12 +49,14 @@ import android.widget.VideoView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import com.ashysystem.mbhq.R;
 import com.ashysystem.mbhq.Service.BackgroundSoundServiceNew;
 import com.ashysystem.mbhq.Service.OnClearFromRecentService;
 import com.ashysystem.mbhq.Service.impl.FinisherServiceImpl;
+import com.ashysystem.mbhq.activity.DemoSliderActivity;
 import com.ashysystem.mbhq.activity.MainActivity;
 import com.ashysystem.mbhq.model.MeditationCourseModel;
 import com.ashysystem.mbhq.util.SharedPreference;
@@ -54,6 +64,7 @@ import com.ashysystem.mbhq.util.Util;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -85,7 +96,7 @@ public class LiveChatPlayerFragment_video extends Fragment implements View.OnCli
     private SeekBar seekBarForVideo;
     LayoutInflater layoutInflater;
     FinisherServiceImpl finisherService;
-
+    long downloadI=0;
     ///////////// added //////////////////////////////
     FrameLayout frameVideo;
     RelativeLayout rlFullscreen;
@@ -97,6 +108,7 @@ public class LiveChatPlayerFragment_video extends Fragment implements View.OnCli
     ImageView imgBackwardOnVideo,imgForwardOnVideo,imgPlayPauseOnVideo;
     TextView txtElapsedDurationOnVideo,txtTotalDurationOnVideo;
     SeekBar seekBarOnVideo;
+    String path="";
     /////////////////////////////////////////////////
     private Uri downloadedFileUri = null;
 
@@ -243,10 +255,35 @@ public class LiveChatPlayerFragment_video extends Fragment implements View.OnCli
         }
         downloadedFileUri = Util.getDownloadedFileUri(getContext(), liveChatData.getDownloadid());
         Log.e("D_URI", "onReceive: " + downloadedFileUri);
+         path =getVideoFilePath(getContext(),liveChatData.getEventName());
+        Log.e("D_URI", "onReceive: " + downloadedFileUri);
+    }
+    public static String getVideoFilePath(Context context, String fileName) {
+        String[] projection = {MediaStore.Video.Media.DATA};
+        String selection = MediaStore.Video.Media.DISPLAY_NAME + "=?";
+        String[] selectionArgs = {fileName};
 
+        Uri queryUri = MediaStore.Video.Media.EXTERNAL_CONTENT_URI;
 
+        ContentResolver contentResolver = context.getContentResolver();
+        Cursor cursor = contentResolver.query(queryUri, projection, selection, selectionArgs, null);
+
+        if (cursor != null && cursor.moveToFirst()) {
+            int columnIndex = cursor.getColumnIndexOrThrow(MediaStore.Video.Media.DATA);
+            String filePath = cursor.getString(columnIndex);
+
+            cursor.close();
+            return filePath;
+        } else {
+            // File not found in MediaStore, fallback to direct path
+            return Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS) + "/" + fileName;
+        }
     }
 
+    public static void logVideoFilePath(Context context, String fileName) {
+        String filePath = getVideoFilePath(context, fileName);
+        Log.d("VideoFilePath", filePath);
+    }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -447,6 +484,7 @@ public class LiveChatPlayerFragment_video extends Fragment implements View.OnCli
 
     }
     private void handleback(boolean fromBack) {
+
         Util.openliveplayer1="";
         Util.chat1=null;
         ((MainActivity) getActivity()).clearCacheForParticularFragment(new MeditationFragment());
@@ -743,10 +781,11 @@ public class LiveChatPlayerFragment_video extends Fragment implements View.OnCli
             BackgroundSoundServiceNew.OnMediaStateListener stateListener = new BackgroundSoundServiceNew.OnMediaStateListener() {
                 @Override
                 public void onMediaStateChange(MediaPlayer mediaPlayer, BackgroundSoundServiceNew.MediaState newState) {
-
+                    Log.i("start_player","1");
                     switch (newState) {
 
                         case MEDIA_NOT_PREPARED:
+                            Log.i("start_player","2");
                             Log.i(TAG, "Media Not Prepared...");
                             if (progressDialog != null) {
                                 progressDialog.dismiss();
@@ -760,7 +799,7 @@ public class LiveChatPlayerFragment_video extends Fragment implements View.OnCli
                             break;
 
                         case MEDIA_PREPARED:
-
+                            Log.i("start_player","3");
                             Log.i(TAG, "Media Prepared...");
 
                             if (progressDialog != null) {
@@ -793,6 +832,7 @@ public class LiveChatPlayerFragment_video extends Fragment implements View.OnCli
                             break;
 
                         case MEDIA_PLAYING:
+                            Log.i("start_player","4");
                             try {
 
                                 if (globalLinkMediaType == BackgroundSoundServiceNew.MediaType.VIDEO) {
@@ -808,9 +848,15 @@ public class LiveChatPlayerFragment_video extends Fragment implements View.OnCli
                             break;
 
                         case MEDIA_PAUSED:
+                            imgPlayPause.setImageResource(R.drawable.mbhq_play_black);
+                            Log.i("start_player","5");
+                            if (progressDialog != null) {
+                                progressDialog.dismiss();
+                            }
                             break;
 
                         case MEDIA_BUFFERING_START:
+                            Log.i("start_player","6");
                             Log.i(TAG, "Buffering Start...");
 
                             if (progressDialog != null) {
@@ -824,7 +870,7 @@ public class LiveChatPlayerFragment_video extends Fragment implements View.OnCli
                             break;
 
                         case MEDIA_BUFFERING_END:
-
+                            Log.i("start_player","7");
                             Log.i(TAG, "Buffering END...");
                             if (progressDialog != null) {
                                 progressDialog.dismiss();
@@ -832,7 +878,7 @@ public class LiveChatPlayerFragment_video extends Fragment implements View.OnCli
                             break;
 
                         case MEDIA_SEEK_START:
-
+                            Log.i("start_player","8");
                             Log.i(TAG, "Seek Start...");
                             if (mediaPlayer.isPlaying()) {
                                 if (progressDialog != null) {
@@ -849,7 +895,7 @@ public class LiveChatPlayerFragment_video extends Fragment implements View.OnCli
 
 
                         case MEDIA_SEEK_COMPLETE:
-
+                            Log.i("start_player","9");
                             Log.i(TAG, "Seek END...");
                             if (progressDialog != null) {
                                 progressDialog.dismiss();
@@ -857,12 +903,16 @@ public class LiveChatPlayerFragment_video extends Fragment implements View.OnCli
                             break;
 
                         case MEDIA_SIZE_CHANGED:
+                            if (progressDialog != null) {
+                                progressDialog.dismiss();
+                            }
+                            Log.i("start_player","10");
                             Log.i(TAG, "video size changed... video height: " + musicSrv.getMediaPlayer().getVideoHeight() + " width: " + musicSrv.getMediaPlayer().getVideoWidth());
                             scaleVideo();
                             break;
 
                         case MEDIA_CAN_NOT_BE_PLAYED:
-
+                            Log.i("start_player","11");
                             Log.i(TAG, "Media can not play media");
                             if (progressDialog != null) {
                                 progressDialog.dismiss();
@@ -876,7 +926,7 @@ public class LiveChatPlayerFragment_video extends Fragment implements View.OnCli
             };
 
 
-            ConnectivityManager connectivityManager = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
+          /*  ConnectivityManager connectivityManager = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
             @SuppressLint("MissingPermission") NetworkInfo activeNetwork = connectivityManager.getActiveNetworkInfo();
             boolean isConnected = activeNetwork != null && activeNetwork.isConnectedOrConnecting();
 
@@ -889,34 +939,37 @@ public class LiveChatPlayerFragment_video extends Fragment implements View.OnCli
             progressDialog = ProgressDialog.show(requireContext(), "", "Please wait...", true);
             progressDialog.setCancelable(false);
 
-           /* if(!isConnected){
+           *//* if(!isConnected){
                 musicSrv.createMediaPlayer1_(liveChatData.getEventName(), BackgroundSoundServiceNew.FromPage.MEDITATION_VIDEO, downloadedFileUri, globalLinkMediaType, 0, liveChatData, stateListener);
             }else {
                 musicSrv.createMediaPlayer1(liveChatData.getEventName(), BackgroundSoundServiceNew.FromPage.MEDITATION_VIDEO, liveChatData.getEventItemVideoDetails().get(0).getDownloadURL(), globalLinkMediaType, 0, liveChatData, stateListener);
 
-            }*/
+            }*//*
 
 
             if(!isConnected){
+                Log.i("start_player","12");
                 musicSrv.createMediaPlayer_meditationvideo_(liveChatData.getEventName(), BackgroundSoundServiceNew.FromPage.MEDITATION_VIDEO, downloadedFileUri, globalLinkMediaType, 0, liveChatData, stateListener);
             }else {
+                Log.i("start_player","13");
                 musicSrv.createMediaPlayer_meditationvideo(liveChatData.getEventName(), BackgroundSoundServiceNew.FromPage.MEDITATION_VIDEO, liveChatData.getEventItemVideoDetails().get(0).getDownloadURL(), globalLinkMediaType, 0, liveChatData, stateListener);
 
             }
 
             if (musicSrv.isMediaPlaying()) {
+                imgPlayPause.setImageResource(R.drawable.mbhq_pause_black);
 
               //  imgPlayPause.setBackgroundResource(R.drawable.mbhq_pause_black);
                // imgPlayPauseOnVideo.setBackgroundResource(R.drawable.mbhq_pause_black);
                 imgPlayPauseOnVideo.setVisibility(View.GONE);
             } else {
-                //imgPlayPause.setBackgroundResource(R.drawable.mbhq_play_black);
+                imgPlayPause.setImageResource(R.drawable.mbhq_play_black);
                // imgPlayPauseOnVideo.setBackgroundResource(R.drawable.mbhq_play_black);
             }
 
             musicBound = true;
-
-           /* if (musicSrv.getVideoName().equals(liveChatData.getEventName()) && musicSrv.getFromPage().equals(BackgroundSoundServiceNew.FromPage.LIVE_CHAT)) {
+*/
+            if (musicSrv.getVideoName().equals(liveChatData.getEventName()) && musicSrv.getFromPage().equals(BackgroundSoundServiceNew.FromPage.LIVE_CHAT)) {
 
 
 
@@ -933,14 +986,27 @@ public class LiveChatPlayerFragment_video extends Fragment implements View.OnCli
                 progressDialog = ProgressDialog.show(requireContext(), "", "Please wait...", true);
                 progressDialog.setCancelable(false);
 
-                if(!isConnected){
+          /*      if(!isConnected){
+                    Log.i("start_player","12");
                     musicSrv.createMediaPlayer_meditationvideo_(liveChatData.getEventName(), BackgroundSoundServiceNew.FromPage.MEDITATION_VIDEO, downloadedFileUri, globalLinkMediaType, 0, liveChatData, stateListener);
                 }else {
+                    Log.i("start_player","13");
                     musicSrv.createMediaPlayer_meditationvideo(liveChatData.getEventName(), BackgroundSoundServiceNew.FromPage.MEDITATION_VIDEO, liveChatData.getEventItemVideoDetails().get(0).getDownloadURL(), globalLinkMediaType, 0, liveChatData, stateListener);
 
+                }*/
+
+
+                if(!isConnected){
+                    Log.i("start_player","131");
+                    Log.i("start_player", "" + downloadedFileUri);
+                    musicSrv.createMediaPlayer1_(liveChatData.getEventName(), BackgroundSoundServiceNew.FromPage.MEDITATION_VIDEO, downloadedFileUri, globalLinkMediaType, 0, liveChatData, stateListener);
+
+                }else {
+                  //  downloadFile();
+                    Log.i("start_player","132");
+                    musicSrv.createMediaPlayer1(liveChatData.getEventName(), BackgroundSoundServiceNew.FromPage.MEDITATION_VIDEO, liveChatData.getEventItemVideoDetails().get(0).getDownloadURL(), globalLinkMediaType, 0, liveChatData, stateListener);
+
                 }
-
-
 
 
 
@@ -962,6 +1028,7 @@ public class LiveChatPlayerFragment_video extends Fragment implements View.OnCli
 
                 try {
                     if (globalLinkMediaType == BackgroundSoundServiceNew.MediaType.VIDEO) {
+                        Log.i("start_player","15");
                         musicSrv.getMediaPlayer().setDisplay(liveChatVideoView.getHolder());
                         scaleVideo();
                     }
@@ -982,25 +1049,95 @@ public class LiveChatPlayerFragment_video extends Fragment implements View.OnCli
 
 
             } else {
-                musicSrv.stopMedia();
+                Log.i("start_player","16");
+               // musicSrv.stopMedia();
                 if (progressDialog != null) {
                     progressDialog.dismiss();
                 }
                 progressDialog = ProgressDialog.show(requireContext(), "", "Please wait...", true);
                 progressDialog.setCancelable(false);
 
-                musicSrv.createMediaPlayer_meditationvideo(liveChatData.getEventName(), BackgroundSoundServiceNew.FromPage.LIVE_CHAT, liveChatData.getEventItemVideoDetails().get(0).getDownloadURL(), globalLinkMediaType, 0, liveChatData, stateListener);
-                imgPlayPause.setImageResource(R.drawable.mbhq_play_black);
-                imgPlayPauseOnVideo.setImageResource(R.drawable.mbhq_pause_black);
-            }*/
+              //  musicSrv.createMediaPlayer_meditationvideo(liveChatData.getEventName(), BackgroundSoundServiceNew.FromPage.MEDITATION_VIDEO, liveChatData.getEventItemVideoDetails().get(0).getDownloadURL(), globalLinkMediaType, 0, liveChatData, stateListener);
 
-            //musicBound = true;
+                ConnectivityManager connectivityManager = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
+                @SuppressLint("MissingPermission") NetworkInfo activeNetwork = connectivityManager.getActiveNetworkInfo();
+                boolean isConnected = activeNetwork != null && activeNetwork.isConnectedOrConnecting();
+
+
+
+                // musicSrv.stopMedia();
+                if (progressDialog != null) {
+                    progressDialog.dismiss();
+                }
+                progressDialog = ProgressDialog.show(requireContext(), "", "Please wait...", true);
+                progressDialog.setCancelable(false);
+
+            /*    if(!isConnected){
+                    Log.i("start_player","12");
+
+
+                        musicSrv.createMediaPlayer_meditationvideo_(liveChatData.getEventName(), BackgroundSoundServiceNew.FromPage.MEDITATION_VIDEO, downloadedFileUri, globalLinkMediaType, 0, liveChatData, stateListener);
+
+                }else {
+                    Log.i("start_player","13");
+                    musicSrv.createMediaPlayer_meditationvideo(liveChatData.getEventName(), BackgroundSoundServiceNew.FromPage.MEDITATION_VIDEO, liveChatData.getEventItemVideoDetails().get(0).getDownloadURL(), globalLinkMediaType, 0, liveChatData, stateListener);
+
+                }*/
+
+
+                if(!isConnected){
+
+                    Log.i("start_player","133");
+                    Log.i("start_player", "" + downloadedFileUri);
+
+                    musicSrv.createMediaPlayer1_(liveChatData.getEventName(), BackgroundSoundServiceNew.FromPage.MEDITATION_VIDEO, downloadedFileUri, globalLinkMediaType, 0, liveChatData, stateListener);
+
+                }else {
+
+                   // downloadFile();
+                    Log.i("start_player","134");
+                    musicSrv.createMediaPlayer1(liveChatData.getEventName(), BackgroundSoundServiceNew.FromPage.MEDITATION_VIDEO, liveChatData.getEventItemVideoDetails().get(0).getDownloadURL(), globalLinkMediaType, 0, liveChatData, stateListener);
+
+                }
+
+                if (musicSrv.isMediaPlaying()) {
+
+                    imgPlayPause.setImageResource(R.drawable.mbhq_pause_black);
+                    imgPlayPauseOnVideo.setImageResource(R.drawable.mbhq_pause_black);
+                } else {
+
+                    imgPlayPause.setImageResource(R.drawable.mbhq_play_black);
+                    imgPlayPauseOnVideo.setImageResource(R.drawable.mbhq_play_black);
+                }
+
+                try {
+                    if (globalLinkMediaType == BackgroundSoundServiceNew.MediaType.VIDEO) {
+                        Log.i("start_player","17");
+                        musicSrv.getMediaPlayer().setDisplay(liveChatVideoView.getHolder());
+                        scaleVideo();
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+                if (progressDialog != null) {
+                    progressDialog.dismiss();
+                }
+
+
+                mediaPlayerHandler.removeCallbacks(mediaUpdateTimeTask);
+                mediaPlayerHandler.postDelayed(mediaUpdateTimeTask, 1000);
+                enableMediaControls();
+            }
+
+            musicBound = true;
 
             Log.i(TAG, "connection open");
         }
 
         @Override
         public void onServiceDisconnected(ComponentName name) {
+            Log.i("start_player","14");
             Log.i(TAG, "connection close");
             musicBound = false;
             if (progressDialog != null) {
@@ -1008,55 +1145,6 @@ public class LiveChatPlayerFragment_video extends Fragment implements View.OnCli
             }
         }
     };
-    private void openAttachmentDialog1() {
-        Dialog dialog = new Dialog(getActivity());
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setContentView(R.layout.dialog_attachment_course);
-        LinearLayout llDynamicAttachment = dialog.findViewById(R.id.llDynamicAttachment);
-        ImageView imgCross = dialog.findViewById(R.id.imgCross);
-        imgCross.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-            }
-        });
-        ///////////////
-        if (Util.meditationsArrayList != null && Util.meditationsArrayList.size() > 0) {
-            //llAttachment.setVisibility(View.VISIBLE);
-            //txtAttachment.setText("Attachments");
-            llDynamicAttachment.removeAllViews();
-            for (int i = 0; i < Util.meditationsArrayList.size(); i++) {
-                View dynamicView = layoutInflater.inflate(R.layout.dynamic_course_attachement1, null);
-                TextView txtTipsInstructions = dynamicView.findViewById(R.id.txtTipsInstructions);
-                LinearLayout llTotal = dynamicView.findViewById(R.id.llTotal);
-                //txtTipsInstructions.setTextColor(Color.parseColor("#98B6F7"));
-                txtTipsInstructions.setText(Util.meditationsArrayList.get(i).getEventName());
-                //txtTipsInstructions.setText("Click Here");
-                final int finalI = i;
-
-                dynamicView.setId(i); // Set a unique ID for each view
-
-                dynamicView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        // Handle click event here
-                        int clickedViewId = v.getId(); // Get the ID of the clicked view
-
-                        Log.i("clicked position",String.valueOf(clickedViewId));
-                        Log.i("clicked position",String.valueOf(Util.meditationsArrayList.get(clickedViewId).getEventItemId()));
-                        // Do something based on which view was clicked
-                    }
-                });
-
-                llDynamicAttachment.addView(dynamicView);
-            }
-        } else {
-        }
-
-
-        ////////////
-        dialog.show();
-    }
 
     private void initView(View vi) {
         layoutInflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -1129,7 +1217,7 @@ public class LiveChatPlayerFragment_video extends Fragment implements View.OnCli
                             } else {
                                 Log.i(TAG, "media player started");
 //
-                                Log.e("DWNLOAD_DATA1", "onClick: " + liveChatData.getEventItemVideoDetails().get(0).getDownloadURL());
+                                /*Log.e("DWNLOAD_DATA1", "onClick: " + liveChatData.getEventItemVideoDetails().get(0).getDownloadURL());
                                 Log.i(TAG, "media player started");
 
                                 String[] segments = liveChatData.getEventItemVideoDetails().get(0).getDownloadURL().split("/");
@@ -1164,7 +1252,7 @@ public class LiveChatPlayerFragment_video extends Fragment implements View.OnCli
                                         editor.apply();
                                     }
 
-                                }
+                                }*/
 
                                 musicSrv.startMedia();
                                 imgPlayPause.setImageResource(R.drawable.mbhq_pause_black);
@@ -1187,18 +1275,200 @@ public class LiveChatPlayerFragment_video extends Fragment implements View.OnCli
         });
 
     }
+//    public void downloadFile() {
+//        Log.e("DWNLOAD_DATA1", "onClick: " + liveChatData.getEventItemVideoDetails().get(0).getDownloadURL());
+//        Log.i(TAG, "media player started");
+//
+//        String downloadUrl = liveChatData.getEventItemVideoDetails().get(0).getDownloadURL();
+//        String fileName = liveChatData.getEventName(); // Change this to your desired file name
+//
+//         downloadI = liveChatData.getDownloadid(); // Declare downloadId outside the if block
+//
+//        // Check if the file has been downloaded before
+//        if (!isFileDownloaded("meditation",fileName)) {
+//            // Download the file
+//            downloadI = downloadFile(requireActivity().getBaseContext(),"meditation", downloadUrl, fileName);
+//
+//            // Save the download information to SharedPreferences if not already present
+//            if (!isFileInSharedPreferences(liveChatData)) {
+//                liveChatData.setDownloadid(downloadI);
+//                saveDownloadedFileToPrefs(liveChatData);
+//            } else {
+//                Log.i(TAG, "File already in SharedPreferences");
+//            }
+//        } else {
+//            // File already downloaded, handle accordingly
+//            Log.i(TAG, "File already downloaded");
+//        }
+//    }
+//
+//    // ... (Other methods remain unchanged)
+//
+//    private boolean isFileInSharedPreferences(MeditationCourseModel.Webinar liveChatData) {
+//        List<MeditationCourseModel.Webinar> lstTotalDataM_ = getDownloadedFilesFromPrefs();
+//
+//        for (MeditationCourseModel.Webinar item : lstTotalDataM_) {
+//            if (item.getDownloadid() == liveChatData.getDownloadid()) {
+//                return true; // File is already in SharedPreferences
+//            }
+//        }
+//
+//        return false;
+//    }
+//    private long downloadFile(Context context, String downloadUrl, String fileName) {
+//        DownloadManager downloadManager = (DownloadManager) context.getSystemService(Context.DOWNLOAD_SERVICE);
+//
+//        Uri uri = Uri.parse(downloadUrl);
+//
+//        DownloadManager.Request request = new DownloadManager.Request(uri);
+//        request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, fileName);
+//
+//        // Enqueue the download and get the downloadId
+//        return downloadManager.enqueue(request);
+//    }
+//    private long downloadFile(Context context, String downloadUrl, String folderName, String fileName) {
+//        DownloadManager downloadManager = (DownloadManager) context.getSystemService(Context.DOWNLOAD_SERVICE);
+//
+//        // Create a folder in the Downloads directory
+//        File folder = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), folderName);
+//        if (!folder.exists()) {
+//            folder.mkdirs(); // Create the folder if it doesn't exist
+//        }
+//
+//        Uri uri = Uri.parse(downloadUrl);
+//
+//        // Specify the file path within the created folder
+//        String filePath = folder.getAbsolutePath() + File.separator + fileName;
+//
+//        DownloadManager.Request request = new DownloadManager.Request(uri);
+//        request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, filePath);
+//
+//        // Enqueue the download and get the downloadId
+//        return downloadManager.enqueue(request);
+//    }
+//    private boolean isFileDownloaded(String fileName) {
+//        File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), fileName);
+//        return file.exists();
+//    }
+//    private boolean isFileDownloaded(String folderName, String fileName) {
+//        // Create a File object for the specified folder and file
+//        File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), folderName + File.separator + fileName);
+//
+//        // Check if the file exists
+//        return file.exists();
+//    }
+//    private void saveDownloadedFileToPrefs(MeditationCourseModel.Webinar liveChatData) {
+//        List<MeditationCourseModel.Webinar> lstTotalDataM = new ArrayList<>();
+//        List<MeditationCourseModel.Webinar> lstTotalDataM_ = new ArrayList<>();
+//
+//        SharedPreferences preferences = getActivity().getSharedPreferences("MyAppPrefs", Context.MODE_PRIVATE);
+//        String jsonData = preferences.getString("my_downloaded_medicine", "");
+//
+//        if (jsonData.isEmpty()) {
+//            lstTotalDataM.add(liveChatData);
+//            SharedPreferences.Editor editor = preferences.edit();
+//            editor.putString("my_downloaded_medicine", new Gson().toJson(lstTotalDataM));
+//            editor.apply();
+//        } else {
+//            lstTotalDataM_ = new Gson().fromJson(jsonData, new TypeToken<List<MeditationCourseModel.Webinar>>() {
+//            }.getType());
+//
+//            if (liveChatData.getDownloadid() == 0) {
+//                liveChatData.setDownloadid(downloadI);
+//                lstTotalDataM.add(liveChatData);
+//
+//                // Concatenate the lists and save to SharedPreferences
+//                List<MeditationCourseModel.Webinar> concatenatedList = new ArrayList<>();
+//                concatenatedList.addAll(lstTotalDataM_);
+//                concatenatedList.addAll(lstTotalDataM);
+//
+//                SharedPreferences.Editor editor = preferences.edit();
+//                editor.putString("my_downloaded_medicine", new Gson().toJson(concatenatedList));
+//                editor.apply();
+//            }
+//        }
+//    }
+//    private List<MeditationCourseModel.Webinar> getDownloadedFilesFromPrefs() {
+//        SharedPreferences preferences = getActivity().getSharedPreferences("MyAppPrefs", Context.MODE_PRIVATE);
+//        String jsonData = preferences.getString("my_downloaded_medicine", "");
+//
+//        if (!jsonData.isEmpty()) {
+//            return new Gson().fromJson(jsonData, new TypeToken<List<MeditationCourseModel.Webinar>>() {}.getType());
+//        }
+//
+//        return new ArrayList<>();
+//    }
 
 
-    public void downloadFile(){
-        Log.e("DWNLOAD_DATA1", "onClick: " + liveChatData.getEventItemVideoDetails().get(0).getDownloadURL());
-        Log.i(TAG, "media player started");
+//    public void downloadFile(){
+//        Log.e("DWNLOAD_DATA1", "onClick: " + liveChatData.getEventItemVideoDetails().get(0).getDownloadURL());
+//        Log.i(TAG, "media player started");
+//
+//        String[] segments = liveChatData.getEventItemVideoDetails().get(0).getDownloadURL().split("/");
+//        String lastSegment = segments[segments.length - 1];
+//
+//        long dwnldId =  Util.downloadFile(requireActivity().getBaseContext(),liveChatData.getEventItemVideoDetails().get(0).getDownloadURL(),lastSegment,""); /////////
+//        List<MeditationCourseModel.Webinar> lstTotalDataM = new ArrayList<>();
+//
+//        List<MeditationCourseModel.Webinar> lstTotalDataM_ = new ArrayList<>();
+//
+//        SharedPreferences preferences = getActivity().getSharedPreferences("MyAppPrefs", Context.MODE_PRIVATE);
+//        String jsonData = preferences.getString("my_downloaded_medicine", "");
+//
+//        if (jsonData.isEmpty()) {
+//            liveChatData.setDownloadid(dwnldId);
+//            lstTotalDataM.add(liveChatData);
+//            SharedPreferences.Editor editor = preferences.edit();
+//            editor.putString("my_downloaded_medicine", new Gson().toJson(lstTotalDataM));
+//            editor.apply();
+//
+//        }else{
+//            lstTotalDataM_ = new Gson().fromJson(jsonData, new TypeToken<List<MeditationCourseModel.Webinar>>() {}.getType());
+//
+//            if(0==liveChatData.getDownloadid()){
+//                liveChatData.setDownloadid(dwnldId);
+//                lstTotalDataM.add(liveChatData);
+//                List<MeditationCourseModel.Webinar> concatinatelist = new ArrayList<>();
+//                concatinatelist.addAll(lstTotalDataM_);
+//                concatinatelist.addAll(lstTotalDataM);
+//                SharedPreferences.Editor editor = preferences.edit();
+//                editor.putString("my_downloaded_medicine", new Gson().toJson(concatinatelist));
+//                editor.apply();
+//            }
+//
+//        }
+//    }
+public void downloadFile() {
+    Log.e("DWNLOAD_DATA1", "onClick: " + liveChatData.getEventItemVideoDetails().get(0).getDownloadURL());
+    Log.i(TAG, "media player started");
 
-        String[] segments = liveChatData.getEventItemVideoDetails().get(0).getDownloadURL().split("/");
-        String lastSegment = segments[segments.length - 1];
+    String[] segments = liveChatData.getEventItemVideoDetails().get(0).getDownloadURL().split("/");
+    String lastSegment = segments[segments.length - 1];
 
-        long dwnldId =  Util.downloadFile(requireActivity().getBaseContext(),liveChatData.getEventItemVideoDetails().get(0).getDownloadURL(),lastSegment,""); /////////
+    int indexOfQuestionMark = lastSegment.indexOf('?');
+
+    // Extract the substring before the "?"
+    String FileName = (indexOfQuestionMark != -1) ? lastSegment.substring(0, indexOfQuestionMark) : lastSegment;
+
+    File downloadDirectory = new File(getDownloadDirectoryPath()); // Replace with your actual download directory path
+
+    if (isFileExistsInDirectory(downloadDirectory, FileName)) {
+
+        Log.i(TAG, "File already exists. Skipping download.");
+    } else {
+        long dwnldId=0;
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.Q) {
+            Log.i("downloadid","10");
+             dwnldId =  Util.downloadFile_12(requireActivity().getBaseContext(), liveChatData.getEventItemVideoDetails().get(0).getDownloadURL(), FileName, ""); /////////
+
+        }else{
+            Log.i("downloadid","12");
+             dwnldId =  Util.downloadFile_10(requireActivity().getBaseContext(), liveChatData.getEventItemVideoDetails().get(0).getDownloadURL(), FileName, ""); /////////
+
+        }
+        //long dwnldId =  Util.downloadFile(requireActivity().getBaseContext(), liveChatData.getEventItemVideoDetails().get(0).getDownloadURL(), FileName, ""); /////////
+
         List<MeditationCourseModel.Webinar> lstTotalDataM = new ArrayList<>();
-
         List<MeditationCourseModel.Webinar> lstTotalDataM_ = new ArrayList<>();
 
         SharedPreferences preferences = getActivity().getSharedPreferences("MyAppPrefs", Context.MODE_PRIVATE);
@@ -1211,10 +1481,10 @@ public class LiveChatPlayerFragment_video extends Fragment implements View.OnCli
             editor.putString("my_downloaded_medicine", new Gson().toJson(lstTotalDataM));
             editor.apply();
 
-        }else{
+        } else {
             lstTotalDataM_ = new Gson().fromJson(jsonData, new TypeToken<List<MeditationCourseModel.Webinar>>() {}.getType());
 
-            if(0==liveChatData.getDownloadid()){
+            if (0 == liveChatData.getDownloadid()) {
                 liveChatData.setDownloadid(dwnldId);
                 lstTotalDataM.add(liveChatData);
                 List<MeditationCourseModel.Webinar> concatinatelist = new ArrayList<>();
@@ -1224,9 +1494,39 @@ public class LiveChatPlayerFragment_video extends Fragment implements View.OnCli
                 editor.putString("my_downloaded_medicine", new Gson().toJson(concatinatelist));
                 editor.apply();
             }
-
         }
     }
+}
+
+private boolean isFileExistsInDirectory(File downloadDirectory,String lastSegment){
+    File directory = new File(downloadDirectory.toURI());
+
+    // Check if the file exists in the directory
+    File file = new File(directory, lastSegment);
+    return file.exists() && file.isFile();
+
+}
+    private String getDownloadDirectoryPath() {
+        // Replace this with the actual path to your download directory
+        if (isExternalStorageAvailable()) {
+            // Use Environment.getExternalStoragePublicDirectory on Android Q and below
+            if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.Q) {
+                  return Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS+"/EFC_MEDITATION").getAbsolutePath();
+            } else {
+                // For Android R (API level 30) and above, use MediaStore.Downloads
+                return Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS+"/EFC_MEDITATION").getAbsolutePath();
+            }
+        } else {
+            // External storage is not available, handle accordingly
+            return null;
+        }
+
+    }
+    private static boolean isExternalStorageAvailable() {
+        String state = Environment.getExternalStorageState();
+        return Environment.MEDIA_MOUNTED.equals(state);
+    }
+
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////
     BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
         @Override
@@ -1254,12 +1554,12 @@ public class LiveChatPlayerFragment_video extends Fragment implements View.OnCli
         Log.e("MMPPLL", "onPlayPause: " + musicSrv.isMediaPlaying());
         if (musicSrv.isMediaPlaying()) {
 
-          //  imgPlayPause.setImageResource(R.drawable.mbhq_pause_black);
+            imgPlayPause.setImageResource(R.drawable.mbhq_pause_black);
            // imgPlayPauseOnVideo.setImageResource(R.drawable.mbhq_pause_black);
             imgPlayPauseOnVideo.setVisibility(View.GONE);
         } else {
 
-          //  imgPlayPause.setImageResource(R.drawable.mbhq_play_black);
+            imgPlayPause.setImageResource(R.drawable.mbhq_play_black);
            // imgPlayPauseOnVideo.setImageResource(R.drawable.mbhq_play_black);
             imgPlayPauseOnVideo.setVisibility(View.GONE);
         }
@@ -1482,5 +1782,31 @@ public class LiveChatPlayerFragment_video extends Fragment implements View.OnCli
         scaleVideo();
     }
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    private boolean hasCameraPermission() {
+//        int hasPermissionWrite = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+//        int hasPermissionRead = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE);
+//        int hasPermissionCamera = ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA);
+//        if (hasPermissionRead == PackageManager.PERMISSION_GRANTED && hasPermissionCamera == PackageManager.PERMISSION_GRANTED && hasPermissionWrite == PackageManager.PERMISSION_GRANTED) {
+//            Log.e("camera","10");
+//
+//            return true;
+//        } else
+//
+//        return false;
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
+            // For Android versions below API level 30
+            return ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
+                    && ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
+
+
+        } else {
+            // For Android versions R (API level 30) and above
+            return ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_MEDIA_IMAGES) == PackageManager.PERMISSION_GRANTED
+                    && ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_MEDIA_VIDEO) == PackageManager.PERMISSION_GRANTED
+                    && ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_MEDIA_AUDIO) == PackageManager.PERMISSION_GRANTED;
+
+        }
+    }
+
 
 }

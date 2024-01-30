@@ -1095,7 +1095,7 @@ public class MeditationDetailsNew extends Fragment {
                                 imgPlayPause.setBackgroundResource(R.drawable.mbhq_play_black);
                             } else {
                                 /// link dwnld + dwnld id sp store
-                                Log.e("DWNLOAD_DATA1", "onClick: " + globalVideoLinkForBackgroundPlay);
+                               /* Log.e("DWNLOAD_DATA1", "onClick: " + globalVideoLinkForBackgroundPlay);
                                 Log.e("DWNLOAD_DATA2", "onClick: " + lstData.getUniqueName());
                                 Log.i(TAG, "media player started");
 
@@ -1133,6 +1133,10 @@ public class MeditationDetailsNew extends Fragment {
                                     }
 
                                 }
+*/
+
+
+                                downloadFile();
                                 musicSrv.startMedia();
                                 /*if (!musicSrv.isPlayingNonCued()) {
                                     setDurationTime();
@@ -1284,7 +1288,93 @@ public class MeditationDetailsNew extends Fragment {
 
     }
 
+    public void downloadFile() {
+        Log.e("DWNLOAD_DATA1", "onClick: " + lstData.getEventItemVideoDetails().get(0).getDownloadURL());
+        Log.i(TAG, "media player started");
 
+        String[] segments = lstData.getEventItemVideoDetails().get(0).getDownloadURL().split("/");
+        String lastSegment = segments[segments.length - 1];
+
+        int indexOfQuestionMark = lastSegment.indexOf('?');
+
+        // Extract the substring before the "?"
+       // String FileName = (indexOfQuestionMark != -1) ? lastSegment.substring(0, indexOfQuestionMark) : lastSegment;
+        String FileName=lstData.getEventName();
+        File downloadDirectory = new File(getDownloadDirectoryPath()); // Replace with your actual download directory path
+
+        if (isFileExistsInDirectory(downloadDirectory, FileName)) {
+
+            Log.i(TAG, "File already exists. Skipping download.");
+        } else {
+            long dwnldId=0;
+            //long dwnldId =  Util.downloadFile_(requireActivity().getBaseContext(), lstData.getEventItemVideoDetails().get(0).getDownloadURL(), FileName, ""); /////////
+            if (Build.VERSION.SDK_INT > Build.VERSION_CODES.Q) {
+                Log.i("downloadid","10");
+                dwnldId =  Util.downloadFile_12_mp3(requireActivity().getBaseContext(), lstData.getEventItemVideoDetails().get(0).getDownloadURL(), FileName, ""); /////////
+
+            }else{
+                Log.i("downloadid","12");
+                dwnldId =  Util.downloadFile_10_mp3(requireActivity().getBaseContext(), lstData.getEventItemVideoDetails().get(0).getDownloadURL(), FileName, ""); /////////
+
+            }
+            List<MeditationCourseModel.Webinar> lstTotalDataM = new ArrayList<>();
+            List<MeditationCourseModel.Webinar> lstTotalDataM_ = new ArrayList<>();
+
+            SharedPreferences preferences = getActivity().getSharedPreferences("MyAppPrefs", Context.MODE_PRIVATE);
+            String jsonData = preferences.getString("my_downloaded_medicine", "");
+
+            if (jsonData.isEmpty()) {
+                lstData.setDownloadid(dwnldId);
+                lstTotalDataM.add(lstData);
+                SharedPreferences.Editor editor = preferences.edit();
+                editor.putString("my_downloaded_medicine", new Gson().toJson(lstTotalDataM));
+                editor.apply();
+
+            } else {
+                lstTotalDataM_ = new Gson().fromJson(jsonData, new TypeToken<List<MeditationCourseModel.Webinar>>() {}.getType());
+
+                if (0 == lstData.getDownloadid()) {
+                    lstData.setDownloadid(dwnldId);
+                    lstTotalDataM.add(lstData);
+                    List<MeditationCourseModel.Webinar> concatinatelist = new ArrayList<>();
+                    concatinatelist.addAll(lstTotalDataM_);
+                    concatinatelist.addAll(lstTotalDataM);
+                    SharedPreferences.Editor editor = preferences.edit();
+                    editor.putString("my_downloaded_medicine", new Gson().toJson(concatinatelist));
+                    editor.apply();
+                }
+            }
+        }
+    }
+
+    private boolean isFileExistsInDirectory(File downloadDirectory,String lastSegment){
+        File directory = new File(downloadDirectory.toURI());
+
+        // Check if the file exists in the directory
+        File file = new File(directory, lastSegment);
+        return file.exists() && file.isFile();
+
+    }
+    private String getDownloadDirectoryPath() {
+        // Replace this with the actual path to your download directory
+        if (isExternalStorageAvailable()) {
+            // Use Environment.getExternalStoragePublicDirectory on Android Q and below
+            if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.Q) {
+                return Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS+"/EFC_MEDITATION").getAbsolutePath();
+            } else {
+                // For Android R (API level 30) and above, use MediaStore.Downloads
+                return Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS+"/EFC_MEDITATION").getAbsolutePath();
+            }
+        } else {
+            // External storage is not available, handle accordingly
+            return null;
+        }
+
+    }
+    private static boolean isExternalStorageAvailable() {
+        String state = Environment.getExternalStorageState();
+        return Environment.MEDIA_MOUNTED.equals(state);
+    }
     private void funToolBar() {
        // ((MainActivity) getActivity()).funDrawer(); //commented by jyoti
         Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);

@@ -978,7 +978,7 @@ public class MeditationDetailsNew_video extends Fragment implements View.OnClick
                                 String[] segments = liveChatData.getEventItemVideoDetails().get(0).getDownloadURL().split("/");
                                 String lastSegment = segments[segments.length - 1];
 
-                                long dwnldId =  Util.downloadFile(requireActivity().getBaseContext(),liveChatData.getEventItemVideoDetails().get(0).getDownloadURL(),lastSegment,""); /////////
+                                long dwnldId =  Util.downloadFile_10(requireActivity().getBaseContext(),liveChatData.getEventItemVideoDetails().get(0).getDownloadURL(),lastSegment,""); /////////
                                 List<MeditationCourseModel.Webinar> lstTotalDataM = new ArrayList<>();
 
                                 List<MeditationCourseModel.Webinar> lstTotalDataM_ = new ArrayList<>();

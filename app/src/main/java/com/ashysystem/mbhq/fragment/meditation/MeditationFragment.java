@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
@@ -45,6 +46,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ashysystem.mbhq.R;
+import com.ashysystem.mbhq.Service.BackgroundSoundServiceNew;
 import com.ashysystem.mbhq.Service.impl.FinisherServiceImpl;
 import com.ashysystem.mbhq.activity.MainActivity;
 import com.ashysystem.mbhq.adapter.MeditationCourseAdapter;
@@ -2674,5 +2676,34 @@ void init(View view){
 
     }
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String[] permissions, int[] grantResults) {
 
+
+        if (requestCode == 203) {
+            if (grantResults.length > 0
+                    && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                // Permission was granted
+                // You can now use the camera in your app
+                Log.e("camera", "20");
+
+
+
+
+            } else {
+                Log.e("camera", "21");
+                openAppSettings();
+                // Permission was denied
+                // You can disable the feature that requires the camera permission
+            }
+        }
+    }
+    private void openAppSettings() {
+        Intent intent = new Intent();
+        intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+        Uri uri = Uri.fromParts("package", getActivity().getPackageName(), null);
+        intent.setData(uri);
+        startActivity(intent);
+    }
 }

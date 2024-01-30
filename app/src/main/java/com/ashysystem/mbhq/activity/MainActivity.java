@@ -1057,8 +1057,8 @@ public class MainActivity extends AppCompatActivity implements OnLoadFragmentReq
         GetUnreadCount();
 
         funSensey();
-        scheduleJob();
-        scheduleUploadJob();
+       // scheduleJob();
+        //scheduleUploadJob();
 
         funMenu();
         uploadDatabaseManager = UploadDatabaseManager.getInstance(getApplicationContext());
@@ -2613,10 +2613,10 @@ public class MainActivity extends AppCompatActivity implements OnLoadFragmentReq
                     if (bundle.getString("NOTIFICATIONTYPE").equals("BUCKETLIST")) {
                         Log.e("loadfragment", "6");
                         loadFragment(new BucketListFragment(), "BucketList", bundle);
-                    } else if (bundle.getString("NOTIFICATIONTYPE").equals("GRATITUDELIST")) {
+                    } /*else if (bundle.getString("NOTIFICATIONTYPE").equals("GRATITUDELIST")) {
                         Log.e("loadfragment", "7");
                         loadFragment(new GratitudeMyListFragment(), "GratitudeMyList", bundle);
-                    } else if (bundle.getString("NOTIFICATIONTYPE").equals("HABITLIST")) {
+                    } */else if (bundle.getString("NOTIFICATIONTYPE").equals("HABITLIST")) {
                         Log.e("loadfragment", "8");
                         Bundle bundle1 = new Bundle();
                         bundle1.putInt("id", bundle.getInt("NOTIFICATIONID"));
@@ -2640,6 +2640,11 @@ public class MainActivity extends AppCompatActivity implements OnLoadFragmentReq
                          clearCacheForParticularFragment(LiveChatPlayerFragment.newInstance(Util.chat));
                         loadFragment(LiveChatPlayerFragment.newInstance(Util.chat), "LiveChatPlayer", null);
 
+                    }else if (bundle.getString("NOTIFICATIONTYPE").equals("ACHIEVEMENTLIST")) {
+                        Log.e("loadfragment","9");
+                        fungratitudeicon();
+                        clearCacheForParticularFragment(new MyAchievementsFragment());
+                        loadFragment(new MyAchievementsFragment(), "GratitudeMyList", null);
                     }
 
 
@@ -3943,9 +3948,9 @@ public class MainActivity extends AppCompatActivity implements OnLoadFragmentReq
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
+       // super.onBackPressed();
 
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
+        /*if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
             ConnectFragment connectFragment = (ConnectFragment) getSupportFragmentManager().findFragmentByTag("Connect");
@@ -3998,14 +4003,14 @@ public class MainActivity extends AppCompatActivity implements OnLoadFragmentReq
                     loadFragment(new SquadDailyListFragment(), "squaddaily", null);
 
                 }
-            } /*else if (sessionOverviewFragment != null) {
+            } *//*else if (sessionOverviewFragment != null) {
                 if (sessionOverviewFragment.isVisible()) {
                     loadFragment(new TrainOptionFragment(), "trainop", null);
 
                 }
-            }*/
+            }*//*
 
-        }
+        }*/
 
     }
 
@@ -5217,6 +5222,8 @@ LinearLayout ll_1=(LinearLayout)  dialog.findViewById(R.id.ll_1);
     @Override
     protected void onPause() {
         super.onPause();
+       // musicSrvce.cancelLiveChatNotification(this);
+
         //AppEventsLogger.deactivateApp(this);
 /*
         try {
@@ -5684,8 +5691,8 @@ LinearLayout ll_1=(LinearLayout)  dialog.findViewById(R.id.ll_1);
         super.onDestroy();
 
         unregisterReceiver(broadcastReceiver);
-
-
+        musicSrvce.cancelLiveChatNotification(this);
+        musicSrvce.stopMedia();
 
 /*
         if (mCountHandler != null) {
@@ -8562,7 +8569,7 @@ LinearLayout ll_1=(LinearLayout)  dialog.findViewById(R.id.ll_1);
 
     @Override
     protected void onStop() {
-        stopService(new Intent(this, NetworkSchedulerService.class));
+      //  stopService(new Intent(this, NetworkSchedulerService.class));
         mDisposable.clear();
         super.onStop();
     }
@@ -8571,12 +8578,12 @@ LinearLayout ll_1=(LinearLayout)  dialog.findViewById(R.id.ll_1);
     protected void onStart() {
         super.onStart();
         // Start service and provide it a way to communicate with this class.
-        try {
+      /*  try {
             Intent startServiceIntent = new Intent(MainActivity.this, NetworkSchedulerService.class);
             this.startService(startServiceIntent);
         } catch (Exception e) {
             e.printStackTrace();
-        }
+        }*/
 
     }
 /*commentout by sahenita*/

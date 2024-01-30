@@ -1,6 +1,10 @@
 package com.ashysystem.mbhq.fragment.habit_hacker;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 
@@ -26,9 +30,11 @@ import com.ashysystem.mbhq.R;
 import com.ashysystem.mbhq.Service.impl.FinisherServiceImpl;
 import com.ashysystem.mbhq.activity.MainActivity;
 import com.ashysystem.mbhq.model.habit_hacker.HabitSwap;
+import com.ashysystem.mbhq.util.AlarmReceiver;
 import com.ashysystem.mbhq.util.AlertDialogCustom;
 import com.ashysystem.mbhq.util.AlertDialogWithCustomButton;
 import com.ashysystem.mbhq.util.Connection;
+import com.ashysystem.mbhq.util.SetLocalNotificationForHabit;
 import com.ashysystem.mbhq.util.SharedPreference;
 import com.ashysystem.mbhq.util.Util;
 import com.google.gson.JsonObject;
@@ -250,10 +256,35 @@ public class HabitHackerAddTen extends Fragment {
             jsonObjectCall.enqueue(new Callback<JsonObject>() {
                 @Override
                 public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+
+                    if(Util.pushnotification)
+                    {
+
+                        Util.pushnotification=false;
+                        /*commented by sahenita temporary*/
+                        SetLocalNotificationForHabit.setNotificationForHabit(globalHabitSwapModel,getActivity());
+
+                        //  SetLocalNotificationForHabit.setAlarm(getActivity());
+
+                    }else {
+                        Util.pushnotification=false;
+                        /*commented by sahenita temporary*/
+                        try {
+                            AlarmManager am = (AlarmManager)getActivity().getSystemService(Context.ALARM_SERVICE);
+                            Intent intent = new Intent(getContext(), AlarmReceiver.class);
+                            intent.setAction(globalHabitSwapModel.getNewAction().getId()+"HABIT");
+                            PendingIntent sender = PendingIntent.getBroadcast(getActivity(),0, intent, PendingIntent.FLAG_NO_CREATE);
+                            am.cancel(sender);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+
                     Util.edittext="";
 
                     Util.edittext1="";
-                    Util.pushnotification=false;
+                   // Util.pushnotification=false;
                     Util.edittext2="";
                     Util.edittext3="";
                     Util.edittext4="";
@@ -269,7 +300,7 @@ public class HabitHackerAddTen extends Fragment {
                         Util.edittext="";
 
                         Util.edittext1="";
-                        Util.pushnotification=false;
+                       // Util.pushnotification=false;
                         Util.edittext2="";
                         Util.edittext3="";
                         Util.edittext4="";

@@ -1,6 +1,7 @@
 package com.ashysystem.mbhq.activity;
 
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
@@ -12,8 +13,12 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.Settings;
 import android.text.SpannableString;
 import android.text.Spanned;
@@ -33,9 +38,12 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.core.content.ContextCompat;
 
 import com.ashysystem.mbhq.R;
 import com.ashysystem.mbhq.Service.impl.FinisherServiceImpl;
@@ -49,6 +57,7 @@ import com.github.barteksc.pdfviewer.PDFView;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
+import java.io.File;
 import java.io.IOException;
 import java.lang.ref.WeakReference;
 import java.text.SimpleDateFormat;
@@ -218,15 +227,78 @@ public class LogInActivity extends Activity implements View.OnClickListener {
 
     }
 
-    /**
-     * Called when a view has been clicked.
-     *
-     * @param v The view that was clicked.
-     */
+
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String[] permissions, int[] grantResults) {
+
+
+        if (requestCode == 203) {
+            if (grantResults.length > 0
+                    && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                performLogin();
+
+            } else {
+                Log.e("camera", "21");
+                openAppSettings();
+                // Permission was denied
+                // You can disable the feature that requires the camera permission
+            }
+        }
+    }
+    private void openAppSettings() {
+        Intent intent = new Intent();
+        intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+        Uri uri = Uri.fromParts("package", getPackageName(), null);
+        intent.setData(uri);
+        startActivity(intent);
+    }
+
+    private boolean hasCameraPermission() {
+
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
+            // For Android versions below API level 30
+                return ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
+                        && ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
+
+
+
+        } else {
+            // For Android versions R (API level 30) and above
+            return ContextCompat.checkSelfPermission(this, Manifest.permission.READ_MEDIA_IMAGES) == PackageManager.PERMISSION_GRANTED
+                    && ContextCompat.checkSelfPermission(this, Manifest.permission.READ_MEDIA_VIDEO) == PackageManager.PERMISSION_GRANTED
+                    && ContextCompat.checkSelfPermission(this, Manifest.permission.READ_MEDIA_AUDIO) == PackageManager.PERMISSION_GRANTED;
+
+        }
+    }
+
+
+
+
+
     @Override
     public void onClick(View v) {
         if (v == rlLogIn) {
-            performLogin();
+
+            if (hasCameraPermission()) {
+                performLogin();
+            } else {
+                if (!Settings.System.canWrite(LogInActivity.this)) {
+//                            requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,
+//                                    Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.CAMERA}, 203);
+                    if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                        requestPermissions(new String[]{Manifest.permission.READ_MEDIA_IMAGES,Manifest.permission.READ_MEDIA_AUDIO,Manifest.permission.READ_MEDIA_VIDEO,Manifest.permission.CAMERA}, 203);
+                    }else{
+                            requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.CAMERA}, 203);
+
+                    }
+                }
+            }
+
+
+
+
         }  else if (v == btn_sign_up) {
 //            Intent signUpIntent = new Intent(mContext, SignUpActivity.class);
 //            signUpIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -376,6 +448,8 @@ public class LogInActivity extends Activity implements View.OnClickListener {
                         if (responseBody != null && responseBody.getSuccessFlag()) {
 
                             try {
+                                String downloadFolderPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath();
+                                Util.deleteFolder(new File(downloadFolderPath, "EFC_MEDITATION"));
 
                                 Util. accesstype=String.valueOf(responseBody.getSessionDetail().getMbhqAccessType());
                                 Util. CourseAccess=responseBody.getSessionDetail().getCourseAccess();

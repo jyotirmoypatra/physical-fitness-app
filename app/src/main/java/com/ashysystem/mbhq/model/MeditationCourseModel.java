@@ -481,7 +481,7 @@ public class MeditationCourseModel implements Serializable {
     }
 
     ////////////////////
-    public static class EventItemVideoDetail {
+    public static class EventItemVideoDetail implements Serializable{
 
         @SerializedName("EventItemVideoID")
         @Expose

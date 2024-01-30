@@ -521,5 +521,6 @@ This HELP section will be updated by October 2018 to ensure all help videos and 
     <string name="delete_">DELETE</string>
     <string name="history">History</string>
     <string name="today">Today</string>
+    <string name="notes">Notes</string>
 
 </resources>

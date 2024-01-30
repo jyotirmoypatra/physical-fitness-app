@@ -10,10 +10,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@drawable/s_cross"
-        android:layout_alignParentRight="true"
-        android:layout_marginRight="10dp"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="10dp"
         android:layout_marginTop="10dp"/>
+
     <LinearLayout
+
         android:id="@+id/llTextBlock"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -31,7 +33,7 @@
                 android:id="@+id/tvTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Notes"
+                android:text="@string/notes"
                 android:textSize="@dimen/fab_eighteen"
                 android:textColor="@color/black"
                 android:layout_centerInParent="true"/>
@@ -40,10 +42,18 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="@color/black"></View>
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+        <LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
         <com.ashysystem.mbhq.view.EditTextRaleWay
             android:id="@+id/edtDesc"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="150dp"
             android:minLines="6"
             android:textSize="@dimen/fab_eighteen"
             android:layout_margin="10dp"
@@ -54,6 +64,10 @@
             android:focusableInTouchMode="true"
             />
 
+
+
+</LinearLayout>
+        </ScrollView>
     </LinearLayout>
     <RelativeLayout
         android:id="@+id/rlSave"

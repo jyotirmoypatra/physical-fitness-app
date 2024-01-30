@@ -6,6 +6,7 @@ import android.app.DownloadManager;
 import android.app.Notification;
 import android.app.ProgressDialog;
 import android.content.ContentResolver;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.pm.ApplicationInfo;
@@ -91,26 +92,164 @@ import retrofit2.Response;
 public class Util {
   //  public static SimpleExoPlayer globalExoplayer;
 
-    public static long downloadFile(Context context, String fileUrl, String fileName, String wibiner) {
+//    public static long downloadFile(Context context, String fileUrl, String fileName, String wibiner) {
+//        DownloadManager.Request request = new DownloadManager.Request(Uri.parse(fileUrl));
+//        request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, fileName);
+//
+//        DownloadManager downloadManager = (DownloadManager) context.getSystemService(Context.DOWNLOAD_SERVICE);
+//        long downloadId = downloadManager.enqueue(request);
+//
+//
+//        return downloadId;
+//    }
+
+    public static long downloadFile_10_mp3(Context context, String fileUrl, String fileName, String wibiner) {
+        // Create a directory inside the "Downloads" folder
+        File downloadDirectory = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), "EFC_MEDITATION");
+
+        if (!downloadDirectory.exists()) {
+            downloadDirectory.mkdirs();
+        }
+
+        // Set the destination in the newly created directory
+        File destinationFile = new File(downloadDirectory, fileName);
+
         DownloadManager.Request request = new DownloadManager.Request(Uri.parse(fileUrl));
-        request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, fileName);
+        request.setDestinationUri(Uri.fromFile(destinationFile));
 
         DownloadManager downloadManager = (DownloadManager) context.getSystemService(Context.DOWNLOAD_SERVICE);
         long downloadId = downloadManager.enqueue(request);
-        //Toast.makeText(context,String.valueOf(downloadId),Toast.LENGTH_LONG).show();
 
-        // Save the download ID if you want to track the download progress or fetch the downloaded file later
-        // You can store it in SharedPreferences or a local database
-
-        // For example, you can save it to SharedPreferences:
-    /*SharedPreferences preferences = context.getSharedPreferences("MyAppPrefs", Context.MODE_PRIVATE);
-    SharedPreferences.Editor editor = preferences.edit();
-    editor.putLong("downloadId", downloadId);
-    editor.putString("my_downloaded_medicine", wibiner);
-    editor.apply();*/
 
         return downloadId;
     }
+    public static long downloadFile_12_mp3(Context context, String fileUrl, String fileName, String wibiner) {
+        ContentValues values = new ContentValues();
+        values.put(MediaStore.Downloads.TITLE, fileName);
+        values.put(MediaStore.Downloads.MIME_TYPE, "video/mp4");
+        values.put(MediaStore.Downloads.DISPLAY_NAME, fileName);
+
+        // Create a folder inside the public Downloads directory
+        values.put(MediaStore.Downloads.RELATIVE_PATH, Environment.DIRECTORY_DOWNLOADS + "/EFC_MEDITATION");
+
+        Uri uri = null;
+        String vdoPath ="";
+        File file=null;
+        try {
+            uri = context.getContentResolver().insert(MediaStore.Downloads.EXTERNAL_CONTENT_URI, values);
+            vdoPath = getRealPathFromUri(uri,context);
+            file= new File(vdoPath);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        if (vdoPath != null) {
+            DownloadManager.Request request = new DownloadManager.Request(Uri.parse(fileUrl));
+            Uri uri1 = Uri.fromFile(file);
+            request.setDestinationUri(uri1);
+
+            DownloadManager downloadManager = (DownloadManager) context.getSystemService(Context.DOWNLOAD_SERVICE);
+            long downloadId = downloadManager.enqueue(request);
+
+            return downloadId;
+        } else {
+            // Log an error or handle the case where uri is null
+            Log.e("DownloadFile", "Failed to insert into MediaStore.Downloads");
+            return -1;  // or another value to indicate an error
+        }
+    }
+
+public static long downloadFile_10(Context context, String fileUrl, String fileName, String wibiner) {
+    // Create a directory inside the "Downloads" folder
+    File downloadDirectory = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), "EFC_MEDITATION");
+
+    if (!downloadDirectory.exists()) {
+        downloadDirectory.mkdirs();
+    }
+
+    // Set the destination in the newly created directory
+    File destinationFile = new File(downloadDirectory, fileName);
+
+    DownloadManager.Request request = new DownloadManager.Request(Uri.parse(fileUrl));
+    request.setDestinationUri(Uri.fromFile(destinationFile));
+
+    DownloadManager downloadManager = (DownloadManager) context.getSystemService(Context.DOWNLOAD_SERVICE);
+    long downloadId = downloadManager.enqueue(request);
+
+
+    return downloadId;
+}
+
+    public static long downloadFile_12(Context context, String fileUrl, String fileName, String wibiner) {
+        ContentValues values = new ContentValues();
+        values.put(MediaStore.Downloads.TITLE, fileName);
+        values.put(MediaStore.Downloads.MIME_TYPE, "video/mp4");
+        values.put(MediaStore.Downloads.DISPLAY_NAME, fileName);
+
+        // Create a folder inside the public Downloads directory
+        values.put(MediaStore.Downloads.RELATIVE_PATH, Environment.DIRECTORY_DOWNLOADS + "/EFC_MEDITATION");
+
+        Uri uri = null;
+       String vdoPath ="";
+        File file=null;
+        try {
+            uri = context.getContentResolver().insert(MediaStore.Downloads.EXTERNAL_CONTENT_URI, values);
+            vdoPath = getRealPathFromUri(uri,context);
+             file= new File(vdoPath);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        if (vdoPath != null) {
+            DownloadManager.Request request = new DownloadManager.Request(Uri.parse(fileUrl));
+            Uri uri1 = Uri.fromFile(file);
+            request.setDestinationUri(uri1);
+
+            DownloadManager downloadManager = (DownloadManager) context.getSystemService(Context.DOWNLOAD_SERVICE);
+            long downloadId = downloadManager.enqueue(request);
+
+            return downloadId;
+        } else {
+            // Log an error or handle the case where uri is null
+            Log.e("DownloadFile", "Failed to insert into MediaStore.Downloads");
+            return -1;  // or another value to indicate an error
+        }
+    }
+
+    private static String getRealPathFromUri(Uri uri, Context context) {
+        String[] projection = {MediaStore.Images.Media.DATA};
+        Cursor cursor = context.getContentResolver().query(uri, projection, null, null, null);
+        if (cursor == null) {
+            // Handle the error gracefully
+            return null;
+        }
+
+        int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+        cursor.moveToFirst();
+        String filePath = cursor.getString(column_index);
+        cursor.close();
+        return filePath;
+    }
+
+    public static void deleteFolder(File folder) {
+        if (folder.exists()) {
+            File[] files = folder.listFiles();
+            if (files != null) {
+                for (File file : files) {
+                    if (file.isDirectory()) {
+                        deleteFolder(file);
+                    } else {
+                        file.delete();
+                    }
+                }
+            }
+            folder.delete();
+            System.out.println("Folder deleted successfully");
+        } else {
+            System.out.println("Folder does not exist");
+        }
+    }
+
     public static String getFilePathFromUri(Context context, Uri uri) {
         String filePath = null;
         if (uri.getScheme().equals("content")) {

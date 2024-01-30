@@ -23,16 +23,22 @@ import java.util.Locale;
 
 public class SetLocalNotificationForAchievement {
 
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public static void setNotificationForAchievement(MyAchievementsListInnerModel myAchievementsListInnerModel, Context context) {
 
         if (myAchievementsListInnerModel!=null && myAchievementsListInnerModel.getFrequencyId() != null && myAchievementsListInnerModel.getFrequencyId() != 0) {
 
             AlarmManager am = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
             Intent intent = new Intent(context, AlarmReceiver.class);
-            intent.setAction(myAchievementsListInnerModel.getId()+"ACHIEVEMENT");
+            intent.setAction("ACTION_ACHIEVEMENT");
+            Date now_ = new Date();
+            int id_ = Integer.parseInt(new SimpleDateFormat("SSS", Locale.getDefault()).format(now_));
             //PendingIntent sender = PendingIntent.getBroadcast(context,myAchievementsListInnerModel.getId(), intent, 0);
-            PendingIntent sender = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_NO_CREATE | PendingIntent.FLAG_IMMUTABLE);
+            PendingIntent sender = PendingIntent.getBroadcast(
+                    context,
+                    id_,
+                    intent,
+                    PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE
+            );
             try {
                 am.cancel(sender);
             } catch (Exception e) {
@@ -41,9 +47,16 @@ public class SetLocalNotificationForAchievement {
 
             AlarmManager am1 = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
             Intent intent1 = new Intent(context, AlarmReceiver.class);
-            intent.setAction(myAchievementsListInnerModel.getId()*200000+"ACHIEVEMENT");
+            intent.setAction("ACTION_ACHIEVEMENT");
+            Date now1_ = new Date();
+            int id1_ = Integer.parseInt(new SimpleDateFormat("SSS", Locale.getDefault()).format(now1_));
             //PendingIntent sender = PendingIntent.getBroadcast(context,myAchievementsListInnerModel.getId(), intent, 0);
-            PendingIntent sender1 = PendingIntent.getBroadcast(context, 0, intent1, PendingIntent.FLAG_NO_CREATE | PendingIntent.FLAG_IMMUTABLE);
+            PendingIntent sender1 = PendingIntent.getBroadcast(
+                    context,
+                    id1_,
+                    intent1,
+                    PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE
+            );
             try {
                 am1.cancel(sender1);
             } catch (Exception e) {
@@ -144,7 +157,7 @@ public class SetLocalNotificationForAchievement {
                     dailyCalendar1.add(Calendar.DATE,1);
                 }
                 Intent alarmIntent = new Intent(context, AlarmReceiver.class);
-                alarmIntent.setAction(myAchievementsListInnerModel.getId()+"ACHIEVEMENT");
+                alarmIntent.setAction("ACTION_ACHIEVEMENT");
                 alarmIntent.putExtra("NOTIFICATIONTYPE","ACHIEVEMENTLIST");
                 alarmIntent.putExtra("NOTIFICATIONID",myAchievementsListInnerModel.getId());
                 alarmIntent.putExtra("NOTIFICATIONHEADING",myAchievementsListInnerModel.getAchievement());
@@ -153,10 +166,16 @@ public class SetLocalNotificationForAchievement {
                 int id = Integer.parseInt(new SimpleDateFormat("SSS", Locale.getDefault()).format(now));
                 alarmIntent.putExtra("PENDINGINTENTID",id);
 
-                PendingIntent pendingIntent = PendingIntent.getBroadcast(context, id, alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+//                PendingIntent pendingIntent = PendingIntent.getBroadcast(context, id, alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+                PendingIntent pendingIntent = PendingIntent.getBroadcast(
+                        context,
+                        0,
+                        alarmIntent,
+                        PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE
+                );
 
                 Intent alarmIntent1 = new Intent(context, AlarmReceiver.class);
-                alarmIntent1.setAction(myAchievementsListInnerModel.getId()*200000+"ACHIEVEMENT");
+                alarmIntent1.setAction("ACTION_ACHIEVEMENT");
                 alarmIntent1.putExtra("NOTIFICATIONTYPE","ACHIEVEMENTLIST");
                 alarmIntent1.putExtra("NOTIFICATIONID",myAchievementsListInnerModel.getId());
                 alarmIntent1.putExtra("NOTIFICATIONHEADING",myAchievementsListInnerModel.getAchievement());
@@ -165,11 +184,24 @@ public class SetLocalNotificationForAchievement {
                 int id1 = Integer.parseInt(new SimpleDateFormat("SSS", Locale.getDefault()).format(now1));
                 alarmIntent.putExtra("PENDINGINTENTID",id1);
 
-                PendingIntent pendingIntent1 = PendingIntent.getBroadcast(context, id1, alarmIntent1, PendingIntent.FLAG_UPDATE_CURRENT);
+//                PendingIntent pendingIntent1 = PendingIntent.getBroadcast(context, id1, alarmIntent1, PendingIntent.FLAG_UPDATE_CURRENT);
+                PendingIntent pendingIntent1 = PendingIntent.getBroadcast(
+                        context,
+                        id1,
+                        alarmIntent1,
+                        PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE
+                );
                 AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-                alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, dailyCalendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pendingIntent);
-                alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, dailyCalendar1.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pendingIntent1);
-
+                AlarmManager alarmManager2 = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+              //  alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, dailyCalendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pendingIntent);
+               // alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, dailyCalendar1.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pendingIntent1);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                    alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, dailyCalendar.getTimeInMillis(), pendingIntent);
+                    alarmManager2.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, dailyCalendar1.getTimeInMillis(), pendingIntent1);
+                }else {
+                    alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, dailyCalendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pendingIntent);
+                    alarmManager2.setInexactRepeating(AlarmManager.RTC_WAKEUP, dailyCalendar1.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pendingIntent1);
+                }
 
             } else if (myAchievementsListInnerModel.getFrequencyId() - 1 == 2) {
 
@@ -856,6 +888,7 @@ public class SetLocalNotificationForAchievement {
 
 
     private static void atBetweenTwiceBetweenCheck(Calendar calender1, Calendar calender2,Integer reminderOption, Integer reminderAt1, Integer reminderAt2,Integer ID,Context context,String TYPE,MyAchievementsListInnerModel myAchievementsListInnerModel) {
+        Log.i("notification_count","2");
 
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
@@ -891,7 +924,7 @@ public class SetLocalNotificationForAchievement {
                 calender1.set(Calendar.SECOND,at1Second);
 
                 Intent alarmIntent = new Intent(context, AlarmReceiver.class);
-                alarmIntent.setAction(myAchievementsListInnerModel.getId()+"ACHIEVEMENT");
+                alarmIntent.setAction("ACTION_ACHIEVEMENT");
                 alarmIntent.putExtra("NOTIFICATIONTYPE","ACHIEVEMENTLIST");
                 alarmIntent.putExtra("NOTIFICATIONID",ID);
                 alarmIntent.putExtra("NOTIFICATIONHEADING",myAchievementsListInnerModel.getAchievement());
@@ -900,11 +933,16 @@ public class SetLocalNotificationForAchievement {
                 int id = Integer.parseInt(new SimpleDateFormat("SSS", Locale.getDefault()).format(now));
                 alarmIntent.putExtra("PENDINGINTENTID",id);
 
-                //alarmIntent.putExtra("NOTIFICATIONDATE",simpleDateFormat.format(format.parse(myAchievementsListInnerModel.getCompletionDate())));
-                PendingIntent pendingIntent = PendingIntent.getBroadcast(context, id, alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+                //alarmIntent.putExtra("NOTIFICATIONDATE",simpleDateFormat.format(format.parse(getGratitudeListModelInner.getCompletionDate())));
+                // PendingIntent pendingIntent = PendingIntent.getBroadcast(context, id, alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+                PendingIntent pendingIntent = PendingIntent.getBroadcast(
+                        context,
+                        id,
+                        alarmIntent,
+                        PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE
+                );
                 AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
                 switchMethodSet(alarmManager,pendingIntent,null,calender1,null,TYPE);
-
             } else if (reminderOption == 1) {
 
                 //For Between
@@ -915,7 +953,7 @@ public class SetLocalNotificationForAchievement {
                 calender1.set(Calendar.MINUTE, reminderOptionDiffMinutes);
                 calender1.set(Calendar.SECOND, 0);
                 Intent alarmIntent = new Intent(context, AlarmReceiver.class);
-                alarmIntent.setAction(myAchievementsListInnerModel.getId()+"ACHIEVEMENT");
+                alarmIntent.setAction("ACTION_ACHIEVEMENT");
                 alarmIntent.putExtra("NOTIFICATIONTYPE","ACHIEVEMENTLIST");
                 alarmIntent.putExtra("NOTIFICATIONID",ID);
                 alarmIntent.putExtra("NOTIFICATIONHEADING",myAchievementsListInnerModel.getAchievement());
@@ -924,8 +962,14 @@ public class SetLocalNotificationForAchievement {
                 int id = Integer.parseInt(new SimpleDateFormat("SSS", Locale.getDefault()).format(now));
                 alarmIntent.putExtra("PENDINGINTENTID",id);
 
-                //alarmIntent.putExtra("NOTIFICATIONDATE",simpleDateFormat.format(format.parse(myAchievementsListInnerModel.getCompletionDate())));
-                PendingIntent pendingIntent = PendingIntent.getBroadcast(context, id, alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+                //alarmIntent.putExtra("NOTIFICATIONDATE",simpleDateFormat.format(format.parse(getGratitudeListModelInner.getCompletionDate())));
+                //  PendingIntent pendingIntent = PendingIntent.getBroadcast(context, id, alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+                PendingIntent pendingIntent = PendingIntent.getBroadcast(
+                        context,
+                        id,
+                        alarmIntent,
+                        PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE
+                );
                 AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
 
                 switchMethodSet(alarmManager,pendingIntent,null,calender1,null,TYPE);
@@ -941,7 +985,7 @@ public class SetLocalNotificationForAchievement {
                 calender2.set(Calendar.MINUTE, at2Minute);
                 calender2.set(Calendar.SECOND, at2Second);
                 Intent alarmIntent = new Intent(context, AlarmReceiver.class);
-                alarmIntent.setAction(myAchievementsListInnerModel.getId()+"ACHIEVEMENT");
+                alarmIntent.setAction("ACTION_ACHIEVEMENT");
                 alarmIntent.putExtra("NOTIFICATIONTYPE","ACHIEVEMENTLIST");
                 alarmIntent.putExtra("NOTIFICATIONID",ID);
                 alarmIntent.putExtra("NOTIFICATIONHEADING",myAchievementsListInnerModel.getAchievement());
@@ -951,7 +995,7 @@ public class SetLocalNotificationForAchievement {
                 alarmIntent.putExtra("PENDINGINTENTID",id);
 
                 Intent alarmIntent1 = new Intent(context, AlarmReceiver.class);
-                alarmIntent1.setAction(myAchievementsListInnerModel.getId()*300000+"ACHIEVEMENT");
+                alarmIntent1.setAction("ACTION_ACHIEVEMENT");
                 alarmIntent1.putExtra("NOTIFICATIONTYPE","ACHIEVEMENTLIST");
                 alarmIntent1.putExtra("NOTIFICATIONID",ID);
                 alarmIntent1.putExtra("NOTIFICATIONHEADING",myAchievementsListInnerModel.getAchievement());
@@ -960,8 +1004,20 @@ public class SetLocalNotificationForAchievement {
                 int id1 = Integer.parseInt(new SimpleDateFormat("SSS", Locale.getDefault()).format(now1));
                 alarmIntent1.putExtra("PENDINGINTENTID",id1);
 
-                PendingIntent pendingIntent = PendingIntent.getBroadcast(context, id, alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-                PendingIntent pendingIntent1 = PendingIntent.getBroadcast(context, id1, alarmIntent1, PendingIntent.FLAG_UPDATE_CURRENT);
+                //PendingIntent pendingIntent = PendingIntent.getBroadcast(context, id, alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+                //PendingIntent pendingIntent1 = PendingIntent.getBroadcast(context, id1, alarmIntent1, PendingIntent.FLAG_UPDATE_CURRENT);
+                PendingIntent pendingIntent = PendingIntent.getBroadcast(
+                        context,
+                        id,
+                        alarmIntent,
+                        PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE
+                );
+                PendingIntent pendingIntent1 = PendingIntent.getBroadcast(
+                        context,
+                        id1,
+                        alarmIntent1,
+                        PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE
+                );
                 AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
 
                 switchMethodSet(alarmManager,pendingIntent,pendingIntent1,calender1,calender2,TYPE);
@@ -978,63 +1034,114 @@ public class SetLocalNotificationForAchievement {
         switch (TYPE) {
             case "":
                 if(!funalarmTimeElapsed(calender1)) {
-                    alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calender1.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pendingIntent);
+                  //  alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calender1.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pendingIntent);
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                        alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, calender1.getTimeInMillis(), pendingIntent);
+                    }else {
+                        alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, calender1.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pendingIntent);
+                    }
                 }
                 if(calender2!=null)
                 {
                     if(!funalarmTimeElapsed(calender2))
                     {
-                        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calender2.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pendingIntent1);
+                       // alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calender2.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pendingIntent1);
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                            alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, calender2.getTimeInMillis(), pendingIntent);
+                        }else {
+                            alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, calender2.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pendingIntent);
+                        }
                     }
                 }
 
                 break;
             case "WEEKLY":
                 if(!funalarmTimeElapsed(calender1)) {
-                    alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calender1.getTimeInMillis(), 7 * AlarmManager.INTERVAL_DAY, pendingIntent);
+                   // alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calender1.getTimeInMillis(), 7 * AlarmManager.INTERVAL_DAY, pendingIntent);
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                        alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, calender1.getTimeInMillis(), pendingIntent);
+                    }else {
+                        alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, calender1.getTimeInMillis(),7 * AlarmManager.INTERVAL_DAY, pendingIntent);
+                    }
                 }
                 if(calender2!=null)
                 {
                     if(!funalarmTimeElapsed(calender2)) {
-                        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calender2.getTimeInMillis(), 7 * AlarmManager.INTERVAL_DAY, pendingIntent1);
+                       // alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calender2.getTimeInMillis(), 7 * AlarmManager.INTERVAL_DAY, pendingIntent1);
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                            alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, calender2.getTimeInMillis(), pendingIntent);
+                        }else {
+                            alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, calender2.getTimeInMillis(),7 * AlarmManager.INTERVAL_DAY, pendingIntent);
+                        }
+
                     }
                 }
 
                 break;
             case "MONTHLY":
                 if(!funalarmTimeElapsed(calender1)) {
-                    alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calender1.getTimeInMillis(), 30 * AlarmManager.INTERVAL_DAY, pendingIntent);
+                  //  alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calender1.getTimeInMillis(), 30 * AlarmManager.INTERVAL_DAY, pendingIntent);
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                        alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, calender1.getTimeInMillis(), pendingIntent);
+                    }else {
+                        alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, calender1.getTimeInMillis(),30 * AlarmManager.INTERVAL_DAY, pendingIntent);
+                    }
                 }
 
 
                 if(calender2!=null)
                 {
                     if(!funalarmTimeElapsed(calender2)) {
-                        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calender2.getTimeInMillis(), 30 * AlarmManager.INTERVAL_DAY, pendingIntent);
+                       // alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calender2.getTimeInMillis(), 30 * AlarmManager.INTERVAL_DAY, pendingIntent);
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                            alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, calender2.getTimeInMillis(), pendingIntent);
+                        }else {
+                            alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, calender2.getTimeInMillis(),30 * AlarmManager.INTERVAL_DAY, pendingIntent);
+                        }
                     }
                 }
 
                 break;
             case "YEARLY":
                 if(!funalarmTimeElapsed(calender1)) {
-                    alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calender1.getTimeInMillis(), 365 * AlarmManager.INTERVAL_DAY, pendingIntent);
+                   // alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calender1.getTimeInMillis(), 365 * AlarmManager.INTERVAL_DAY, pendingIntent);
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                        alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, calender1.getTimeInMillis(), pendingIntent);
+                    }else {
+                        alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, calender1.getTimeInMillis(),365 * AlarmManager.INTERVAL_DAY, pendingIntent);
+                    }
                 }
                 if(calender2!=null)
                 {
                     if(!funalarmTimeElapsed(calender2)) {
-                        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calender2.getTimeInMillis(), 365 * AlarmManager.INTERVAL_DAY, pendingIntent1);
+                       // alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calender2.getTimeInMillis(), 365 * AlarmManager.INTERVAL_DAY, pendingIntent1);
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                            alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, calender2.getTimeInMillis(), pendingIntent);
+                        }else {
+                            alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, calender2.getTimeInMillis(),365 * AlarmManager.INTERVAL_DAY, pendingIntent);
+                        }
                     }
                 }
 
                 break;
             case "FORTNIGHTLY":
                 if(!funalarmTimeElapsed(calender1)) {
-                    alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calender1.getTimeInMillis(), 14 * AlarmManager.INTERVAL_DAY, pendingIntent);
+                  //  alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calender1.getTimeInMillis(), 14 * AlarmManager.INTERVAL_DAY, pendingIntent);
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                        alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, calender1.getTimeInMillis(), pendingIntent);
+                    }else {
+                        alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, calender1.getTimeInMillis(),14 * AlarmManager.INTERVAL_DAY, pendingIntent);
+                    }
                 }
                 if(calender2!=null)
                 {
                     if(!funalarmTimeElapsed(calender2)) {
-                        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calender2.getTimeInMillis(), 14 * AlarmManager.INTERVAL_DAY, pendingIntent1);
+                       // alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calender2.getTimeInMillis(), 14 * AlarmManager.INTERVAL_DAY, pendingIntent1);
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                            alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, calender2.getTimeInMillis(), pendingIntent);
+                        }else {
+                            alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, calender2.getTimeInMillis(),14 * AlarmManager.INTERVAL_DAY, pendingIntent);
+                        }
                     }
                 }
 

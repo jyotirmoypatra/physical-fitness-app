@@ -813,6 +813,7 @@ public class LiveChatPlayerFragment extends Fragment implements View.OnClickList
                             Log.i(TAG, "video height: " + musicSrv.getMediaPlayer().getVideoHeight() + " width: " + musicSrv.getMediaPlayer().getVideoWidth());
                             mediaPlayerHandler.removeCallbacks(mediaUpdateTimeTask);
                             mediaPlayerHandler.postDelayed(mediaUpdateTimeTask, 1000);
+                            //musicSrv.startMedia_(getActivity());
                             musicSrv.startMedia();
                             //  imgPlayPause.setImageDrawable(LiveChatPlayerFragment.this.requireContext().getDrawable(R.drawable.mbhq_pause));
 //                            imgPlayPause.setBackgroundResource(R.drawable.mbhq_pause); //
@@ -1186,6 +1187,7 @@ public class LiveChatPlayerFragment extends Fragment implements View.OnClickList
                                 imgPlayPauseOnVideo.setImageResource(R.drawable.mbhq_play_black);
                             } else {
                                 Log.i(TAG, "media player started");
+                                //musicSrv.startMedia_(getActivity());
                                 musicSrv.startMedia();
 //                                imgPlayPause.setBackgroundResource(R.drawable.mbhq_pause);
 //                                imgPlayPauseOnVideo.setBackgroundResource(R.drawable.mbhq_pause);
